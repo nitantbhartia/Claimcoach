@@ -111,6 +111,7 @@ export default function OfferAnalysisPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisStep, setAnalysisStep] = useState(0);
   const [analysis, setAnalysis] = useState<OfferAnalysis | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Computed totals
   const theirTotal = analysis
@@ -120,30 +121,50 @@ export default function OfferAnalysisPage() {
     ? analysis.line_items.reduce((s, i) => s + i.fair_amount, 0)
     : 0;
 
-  function handleAnalyze() {
+  async function handleAnalyze() {
     const parsed = parseFloat(offerAmount.replace(/[^0-9.]/g, ""));
     if (isNaN(parsed) || parsed <= 0) return;
 
     setIsAnalyzing(true);
     setAnalysisStep(0);
     setAnalysis(null);
+    setError(null);
 
-    const totalDuration = 2000;
-    const stepDuration = totalDuration / ANALYSIS_STEPS.length;
-    let currentStep = 0;
-
+    let current = 0;
     const stepInterval = setInterval(() => {
-      currentStep++;
-      if (currentStep < ANALYSIS_STEPS.length) {
-        setAnalysisStep(currentStep);
-      } else {
-        clearInterval(stepInterval);
-        setTimeout(() => {
-          setIsAnalyzing(false);
-          setAnalysis(MOCK_ANALYSIS);
-        }, 300);
+      current = (current + 1) % ANALYSIS_STEPS.length;
+      setAnalysisStep(current);
+    }, 2000);
+
+    try {
+      const res = await fetch("/api/ai/analyze-offer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          offerAmount: parsed,
+          claimType: "Auto Property Damage",
+          vehicleInfo: "2022 Honda Civic EX, 28,000 miles",
+          damageDescription: "Collision damage from rear-end accident",
+        }),
+      });
+
+      clearInterval(stepInterval);
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Analysis failed");
       }
-    }, stepDuration);
+
+      const data = await res.json();
+      setAnalysis(data.analysis);
+    } catch (err) {
+      clearInterval(stepInterval);
+      console.warn("API call failed, using mock data:", err);
+      setAnalysis(MOCK_ANALYSIS);
+      setError("Live AI analysis unavailable. Showing sample analysis.");
+    } finally {
+      setIsAnalyzing(false);
+    }
   }
 
   function getScoreLabel(score: number): string {
@@ -210,6 +231,12 @@ export default function OfferAnalysisPage() {
                 {ANALYSIS_STEPS[analysisStep]}
               </p>
             </div>
+          </div>
+        )}
+
+        {error && !isAnalyzing && (
+          <div className="bg-white rounded-lg border border-zinc-200 shadow-card p-4">
+            <p className="text-body-sm text-warning-500">{error}</p>
           </div>
         )}
 

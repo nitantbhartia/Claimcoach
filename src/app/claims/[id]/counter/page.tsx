@@ -172,6 +172,7 @@ export default function CounterOfferPage() {
   const [generationStep, setGenerationStep] = useState(0);
   const [counterOffer, setCounterOffer] = useState<CounterOffer | null>(null);
   const [copied, setCopied] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [expandedSteps, setExpandedSteps] = useState<Set<number>>(new Set());
 
   // Reference values from the offer analysis
@@ -182,27 +183,48 @@ export default function CounterOfferPage() {
   // Suppress unused variable warning for claimId
   void claimId;
 
-  function handleGenerate() {
+  async function handleGenerate() {
     setIsGenerating(true);
     setGenerationStep(0);
     setCounterOffer(null);
+    setError(null);
 
-    const totalDuration = 2500;
-    const stepDuration = totalDuration / GENERATION_STEPS.length;
-    let currentStep = 0;
-
+    let current = 0;
     const stepInterval = setInterval(() => {
-      currentStep++;
-      if (currentStep < GENERATION_STEPS.length) {
-        setGenerationStep(currentStep);
-      } else {
-        clearInterval(stepInterval);
-        setTimeout(() => {
-          setIsGenerating(false);
-          setCounterOffer(MOCK_COUNTER_OFFER);
-        }, 300);
+      current = (current + 1) % GENERATION_STEPS.length;
+      setGenerationStep(current);
+    }, 2000);
+
+    try {
+      const res = await fetch("/api/ai/generate-counter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          offerAmount: theirOffer,
+          offerAnalysis: { fairness_score: 38, total_gap: gap },
+          claimType: "Auto Property Damage",
+          vehicleInfo: "2022 Honda Civic EX, 28,000 miles",
+          insurerName: "State Farm",
+        }),
+      });
+
+      clearInterval(stepInterval);
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Generation failed");
       }
-    }, stepDuration);
+
+      const data = await res.json();
+      setCounterOffer(data.counterOffer);
+    } catch (err) {
+      clearInterval(stepInterval);
+      console.warn("API call failed, using mock data:", err);
+      setCounterOffer(MOCK_COUNTER_OFFER);
+      setError("Live AI generation unavailable. Showing sample counter-offer.");
+    } finally {
+      setIsGenerating(false);
+    }
   }
 
   function handleCopy() {
@@ -303,6 +325,12 @@ export default function CounterOfferPage() {
                 {GENERATION_STEPS[generationStep]}
               </p>
             </div>
+          </div>
+        )}
+
+        {error && !isGenerating && (
+          <div className="bg-white rounded-lg border border-zinc-200 shadow-card p-4">
+            <p className="text-body-sm text-warning-500">{error}</p>
           </div>
         )}
 

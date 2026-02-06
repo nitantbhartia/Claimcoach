@@ -173,31 +173,53 @@ export default function PolicyAnalysisPage() {
   const [expandedTactics, setExpandedTactics] = useState<Set<number>>(
     new Set()
   );
+  const [error, setError] = useState<string | null>(null);
 
   function handleFilesSelected(files: File[]) {
     if (files.length > 0) setPolicyFile(files[0]);
   }
 
-  function handleAnalyze() {
+  async function handleAnalyze() {
     if (!policyFile) return;
     setIsAnalyzing(true);
     setAnalysisStep(0);
+    setError(null);
 
-    const stepDuration = 3000 / ANALYSIS_STEPS.length;
+    // Cycle through step labels while waiting
     let current = 0;
+    const stepInterval = setInterval(() => {
+      current = (current + 1) % ANALYSIS_STEPS.length;
+      setAnalysisStep(current);
+    }, 2000);
 
-    const interval = setInterval(() => {
-      current++;
-      if (current < ANALYSIS_STEPS.length) {
-        setAnalysisStep(current);
-      } else {
-        clearInterval(interval);
-        setTimeout(() => {
-          setIsAnalyzing(false);
-          setAnalysis(MOCK_POLICY_ANALYSIS);
-        }, 400);
+    try {
+      // Read file as text for the API
+      const text = await policyFile.text();
+
+      const res = await fetch("/api/ai/analyze-policy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ policyText: text }),
+      });
+
+      clearInterval(stepInterval);
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Analysis failed");
       }
-    }, stepDuration);
+
+      const data = await res.json();
+      setAnalysis(data.analysis);
+    } catch (err) {
+      clearInterval(stepInterval);
+      // Fall back to mock data so app works without API key
+      console.warn("API call failed, using mock data:", err);
+      setAnalysis(MOCK_POLICY_ANALYSIS);
+      setError("Live AI analysis unavailable. Showing sample analysis.");
+    } finally {
+      setIsAnalyzing(false);
+    }
   }
 
   function toggle(set: Set<number>, index: number): Set<number> {
@@ -238,6 +260,10 @@ export default function PolicyAnalysisPage() {
                 </p>
                 <Button onClick={handleAnalyze}>Analyze</Button>
               </div>
+            )}
+
+            {error && (
+              <p className="text-body-sm text-warning-500 mt-3">{error}</p>
             )}
           </div>
         </div>

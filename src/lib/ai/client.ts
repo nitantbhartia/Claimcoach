@@ -18,7 +18,7 @@ export async function analyzeWithAI(
   const client = getAnthropicClient();
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-haiku-4-5-20251001",
     max_tokens: 4096,
     messages: [
       {
@@ -41,7 +41,7 @@ export async function analyzeDocumentWithVision(
   const client = getAnthropicClient();
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-haiku-4-5-20251001",
     max_tokens: 4096,
     messages: [
       {
