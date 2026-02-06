@@ -1,30 +1,12 @@
 "use client";
 
 import { DashboardShell } from "@/components/layout/dashboard-shell";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import {
-  formatCurrency,
-  formatDate,
-  getStatusLabel,
-  getStatusColor,
-  getProgressPercentage,
-} from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import { ClaimStatus } from "@/types";
 import Link from "next/link";
-import {
-  Plus,
-  FileText,
-  Camera,
-  DollarSign,
-  ArrowRight,
-  Clock,
-  CheckCircle2,
-  AlertCircle,
-  Car,
-} from "lucide-react";
+import { Plus, ArrowRight } from "lucide-react";
 
 // ---------------------------------------------------------------------------
 // Mock data -- will be replaced with real data fetching
@@ -33,313 +15,139 @@ import {
 const mockClaims = [
   {
     id: "demo",
+    vehicle: "2022 Honda Civic",
     type: "Auto Property Damage",
-    status: "offer_received" as ClaimStatus,
     insurer: "State Farm",
+    status: "offer_received" as ClaimStatus,
     date: "2026-01-15",
     offer: 4200,
-    vehicle: "2022 Honda Civic",
   },
   {
     id: "demo-2",
+    vehicle: "2024 Toyota RAV4",
     type: "Auto Collision",
-    status: "documenting" as ClaimStatus,
     insurer: "Progressive",
+    status: "documenting" as ClaimStatus,
     date: "2026-01-28",
     offer: null,
-    vehicle: "2024 Toyota RAV4",
   },
 ];
+
+const statusDot: Record<ClaimStatus, string> = {
+  setup: "bg-zinc-400",
+  documenting: "bg-blue-500",
+  policy_review: "bg-violet-500",
+  filed: "bg-amber-500",
+  offer_received: "bg-amber-500",
+  negotiating: "bg-orange-500",
+  escalating: "bg-red-500",
+  resolved: "bg-green-500",
+};
+
+const statusLabel: Record<ClaimStatus, string> = {
+  setup: "Setup",
+  documenting: "Documenting",
+  policy_review: "Policy review",
+  filed: "Filed",
+  offer_received: "Offer received",
+  negotiating: "Negotiating",
+  escalating: "Escalating",
+  resolved: "Resolved",
+};
 
 const quickActions = [
-  {
-    label: "Start New Claim",
-    description: "Begin a guided walkthrough to set up your claim.",
-    href: "/claims/new",
-    icon: Plus,
-    color: "bg-brand-50 text-brand-600",
-  },
-  {
-    label: "Upload Documents",
-    description: "Add photos, estimates, or policy documents.",
-    href: "/claims/demo/documents",
-    icon: Camera,
-    color: "bg-blue-50 text-blue-600",
-  },
-  {
-    label: "Review Offer",
-    description: "Analyze an insurer offer for fairness.",
-    href: "/claims/demo/offer",
-    icon: DollarSign,
-    color: "bg-orange-50 text-orange-600",
-  },
+  { label: "Upload documents", href: "/claims/demo/documents" },
+  { label: "Review an offer", href: "/claims/demo/offer" },
+  { label: "Analyze a policy", href: "/claims/demo/policy" },
 ];
-
-const recentActivity = [
-  {
-    id: "a1",
-    icon: AlertCircle,
-    iconColor: "text-orange-500",
-    title: "Offer received from State Farm",
-    description: "Initial settlement offer of $4,200 for your Honda Civic claim.",
-    timestamp: "2026-02-03T14:30:00Z",
-  },
-  {
-    id: "a2",
-    icon: FileText,
-    iconColor: "text-blue-500",
-    title: "Policy analysis complete",
-    description: "We found 2 hidden coverages that could increase your payout.",
-    timestamp: "2026-02-01T09:15:00Z",
-  },
-  {
-    id: "a3",
-    icon: Camera,
-    iconColor: "text-purple-500",
-    title: "Documents uploaded",
-    description: "3 photos and 1 repair estimate added to your claim.",
-    timestamp: "2026-01-30T16:45:00Z",
-  },
-  {
-    id: "a4",
-    icon: CheckCircle2,
-    iconColor: "text-green-500",
-    title: "Claim filed with Progressive",
-    description: "Your RAV4 collision claim has been submitted successfully.",
-    timestamp: "2026-01-28T11:00:00Z",
-  },
-];
-
-// ---------------------------------------------------------------------------
-// Helper: relative time label
-// ---------------------------------------------------------------------------
-
-function timeAgo(dateString: string): string {
-  const now = new Date();
-  const then = new Date(dateString);
-  const diffMs = now.getTime() - then.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-
-  if (diffMins < 1) return "Just now";
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays === 1) return "Yesterday";
-  if (diffDays < 7) return `${diffDays}d ago`;
-  return formatDate(dateString);
-}
 
 // ---------------------------------------------------------------------------
 // Page
 // ---------------------------------------------------------------------------
 
 export default function DashboardPage() {
-  const userName = "Alex";
-
   return (
     <DashboardShell>
-      {/* ----------------------------------------------------------------- */}
-      {/* Welcome header                                                    */}
-      {/* ----------------------------------------------------------------- */}
-      <section className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-            Welcome back, {userName}
-          </h1>
-          <p className="mt-1 text-gray-500">
-            Here is an overview of your active claims and recent activity.
-          </p>
-        </div>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-display-sm text-zinc-900">Your claims</h1>
         <Link href="/claims/new">
-          <Button size="lg" className="gap-2 w-full sm:w-auto">
-            <Plus className="w-5 h-5" />
+          <Button size="sm" className="gap-1.5">
+            <Plus className="w-4 h-4" />
             New Claim
           </Button>
         </Link>
-      </section>
+      </div>
 
-      {/* ----------------------------------------------------------------- */}
-      {/* Active Claims                                                     */}
-      {/* ----------------------------------------------------------------- */}
-      <section className="mb-10">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">
-            Active Claims
-          </h2>
-          <span className="text-sm text-gray-500">
-            {mockClaims.length} {mockClaims.length === 1 ? "claim" : "claims"}
-          </span>
-        </div>
+      {/* Claims list */}
+      <div className="border border-zinc-200 rounded-lg shadow-card overflow-hidden mb-10">
+        {mockClaims.map((claim, idx) => (
+          <Link
+            key={claim.id}
+            href={`/claims/${claim.id}`}
+            className={
+              "group flex items-center gap-4 px-4 py-4 sm:px-6 hover:bg-zinc-50 transition-colors" +
+              (idx < mockClaims.length - 1 ? " border-b border-zinc-100" : "")
+            }
+          >
+            {/* Vehicle + type */}
+            <div className="flex-1 min-w-0">
+              <p className="text-body font-medium text-zinc-900 truncate">
+                {claim.vehicle}
+              </p>
+              <p className="text-body-sm text-zinc-500 truncate sm:hidden">
+                {claim.insurer}
+              </p>
+            </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          {mockClaims.map((claim) => {
-            const progress = getProgressPercentage(claim.status);
-            return (
-              <Link key={claim.id} href={`/claims/${claim.id}`}>
-                <Card hover className="h-full">
-                  <CardHeader className="flex flex-row items-start justify-between gap-3">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100">
-                        <Car className="w-5 h-5 text-gray-600" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="font-semibold text-gray-900 truncate">
-                          {claim.type}
-                        </p>
-                        <p className="text-sm text-gray-500 truncate">
-                          {claim.vehicle}
-                        </p>
-                      </div>
-                    </div>
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${getStatusColor(
-                        claim.status
-                      )}`}
-                    >
-                      {getStatusLabel(claim.status)}
-                    </span>
-                  </CardHeader>
+            {/* Insurer -- hidden on mobile, shown inline above */}
+            <span className="hidden sm:block text-body-sm text-zinc-500 w-28 shrink-0">
+              {claim.insurer}
+            </span>
 
-                  <CardContent className="space-y-4">
-                    {/* Key details */}
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                      <div>
-                        <span className="text-gray-500">Insurer</span>
-                        <p className="font-medium text-gray-900">
-                          {claim.insurer}
-                        </p>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Date of Loss</span>
-                        <p className="font-medium text-gray-900">
-                          {formatDate(claim.date)}
-                        </p>
-                      </div>
-                      {claim.offer !== null && (
-                        <div className="col-span-2">
-                          <span className="text-gray-500">Current Offer</span>
-                          <p className="font-semibold text-orange-600">
-                            {formatCurrency(claim.offer)}
-                          </p>
-                        </div>
-                      )}
-                    </div>
+            {/* Status */}
+            <span className="hidden sm:flex items-center gap-1.5 text-body-sm text-zinc-600 w-36 shrink-0">
+              <span
+                className={`inline-block w-1.5 h-1.5 rounded-full ${statusDot[claim.status]}`}
+                aria-hidden="true"
+              />
+              {statusLabel[claim.status]}
+            </span>
 
-                    {/* Progress */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-xs font-medium text-gray-500">
-                          Claim Progress
-                        </span>
-                        <span className="text-xs font-medium text-gray-700">
-                          {progress}%
-                        </span>
-                      </div>
-                      <Progress value={progress} size="sm" color="brand" />
-                    </div>
+            {/* Date */}
+            <span className="hidden md:block text-body-sm text-zinc-400 w-24 shrink-0">
+              {new Date(claim.date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              })}
+            </span>
 
-                    {/* CTA hint */}
-                    <div className="flex items-center text-sm font-medium text-brand-600 gap-1">
-                      View details
-                      <ArrowRight className="w-4 h-4" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+            {/* Offer */}
+            <span className="text-body-sm font-medium text-zinc-900 w-20 shrink-0 text-right">
+              {claim.offer !== null ? formatCurrency(claim.offer) : "\u2014"}
+            </span>
 
-      {/* ----------------------------------------------------------------- */}
-      {/* Quick Actions                                                     */}
-      {/* ----------------------------------------------------------------- */}
-      <section className="mb-10">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          Quick Actions
-        </h2>
+            {/* Arrow */}
+            <ArrowRight className="w-4 h-4 text-zinc-300 group-hover:text-zinc-500 transition-colors shrink-0" />
+          </Link>
+        ))}
+      </div>
 
-        <div className="grid gap-4 sm:grid-cols-3">
-          {quickActions.map((action) => {
-            const Icon = action.icon;
-            return (
-              <Link key={action.label} href={action.href}>
-                <Card hover className="h-full">
-                  <CardContent className="flex flex-col items-start gap-3 py-5">
-                    <div
-                      className={`flex items-center justify-center w-10 h-10 rounded-lg ${action.color}`}
-                    >
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-900">
-                        {action.label}
-                      </p>
-                      <p className="mt-0.5 text-sm text-gray-500">
-                        {action.description}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+      {/* Mobile status badges -- visible below each row on small screens */}
+      {/* (status is embedded in the row layout via sm:hidden / sm:flex) */}
 
-      {/* ----------------------------------------------------------------- */}
-      {/* Recent Activity                                                   */}
-      {/* ----------------------------------------------------------------- */}
-      <section>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          Recent Activity
-        </h2>
-
-        <Card>
-          <CardContent className="divide-y divide-gray-100 p-0">
-            {recentActivity.map((event, idx) => {
-              const Icon = event.icon;
-              return (
-                <div
-                  key={event.id}
-                  className="flex items-start gap-4 px-6 py-4"
-                >
-                  {/* Timeline icon */}
-                  <div className="relative flex-shrink-0 mt-0.5">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-50">
-                      <Icon className={`w-4 h-4 ${event.iconColor}`} />
-                    </div>
-                    {/* Connector line (skip last item) */}
-                    {idx < recentActivity.length - 1 && (
-                      <span
-                        className="absolute left-1/2 top-8 -translate-x-1/2 w-px h-full bg-gray-200"
-                        aria-hidden="true"
-                      />
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900">
-                      {event.title}
-                    </p>
-                    <p className="mt-0.5 text-sm text-gray-500 line-clamp-2">
-                      {event.description}
-                    </p>
-                  </div>
-
-                  {/* Timestamp */}
-                  <div className="flex-shrink-0 flex items-center gap-1 text-xs text-gray-400 whitespace-nowrap">
-                    <Clock className="w-3.5 h-3.5" />
-                    {timeAgo(event.timestamp)}
-                  </div>
-                </div>
-              );
-            })}
-          </CardContent>
-        </Card>
-      </section>
+      {/* Quick actions */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6">
+        {quickActions.map((action) => (
+          <Link
+            key={action.href}
+            href={action.href}
+            className="text-body-sm text-zinc-500 hover:text-zinc-900 transition-colors py-1"
+          >
+            {action.label} &rarr;
+          </Link>
+        ))}
+      </div>
     </DashboardShell>
   );
 }

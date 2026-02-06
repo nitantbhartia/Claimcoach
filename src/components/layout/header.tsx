@@ -2,74 +2,96 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Shield, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-gray-100">
+    <header className="sticky top-0 z-40 bg-white border-b border-zinc-100 shadow-subtle">
       <div className="container-wide">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2">
-            <Shield className="w-8 h-8 text-brand-600" />
-            <span className="text-xl font-bold text-gray-900">
-              Claim<span className="text-brand-600">Coach</span>
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <span className="text-xl font-semibold text-zinc-900">
+              Claim<span className="text-brand-500">Coach</span>
             </span>
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link href="/pricing" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-              Pricing
-            </Link>
-            <Link href="/about" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+            <Link
+              href="/about"
+              className="text-body-sm text-zinc-500 hover:text-zinc-900 transition-colors"
+            >
               How It Works
             </Link>
-            <Link href="/login">
-              <Button variant="ghost" size="sm">Log In</Button>
+            <Link
+              href="/pricing"
+              className="text-body-sm text-zinc-500 hover:text-zinc-900 transition-colors"
+            >
+              Pricing
             </Link>
-            <Link href="/signup">
-              <Button size="sm">Start Free Claim</Button>
+            <Link
+              href="/login"
+              className="text-body-sm text-zinc-500 hover:text-zinc-900 transition-colors"
+            >
+              Log In
+            </Link>
+            <Link
+              href="/signup"
+              className="inline-flex items-center justify-center rounded-lg bg-brand-500 px-3.5 py-1.5 text-body-sm font-medium text-white hover:bg-brand-600 transition-colors"
+            >
+              Start Free
             </Link>
           </nav>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100"
+            className="md:hidden p-2 rounded-lg hover:bg-zinc-100"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? (
+              <X className="w-5 h-5 text-zinc-700" />
+            ) : (
+              <Menu className="w-5 h-5 text-zinc-700" />
+            )}
           </button>
         </div>
 
         {/* Mobile Nav */}
         {mobileMenuOpen && (
-          <div className="md:hidden pb-4 border-t border-gray-100 mt-2 pt-4">
+          <div className="md:hidden pb-4 border-t border-zinc-100 mt-2 pt-4">
             <nav className="flex flex-col gap-3">
               <Link
+                href="/about"
+                className="text-body-sm text-zinc-500 hover:text-zinc-900 px-2 py-1"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                How It Works
+              </Link>
+              <Link
                 href="/pricing"
-                className="text-sm font-medium text-gray-600 hover:text-gray-900 px-2 py-1"
+                className="text-body-sm text-zinc-500 hover:text-zinc-900 px-2 py-1"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Pricing
               </Link>
               <Link
-                href="/about"
-                className="text-sm font-medium text-gray-600 hover:text-gray-900 px-2 py-1"
+                href="/login"
+                className="text-body-sm text-zinc-500 hover:text-zinc-900 px-2 py-1"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                How It Works
+                Log In
               </Link>
-              <div className="flex gap-3 mt-2">
-                <Link href="/login" className="flex-1">
-                  <Button variant="outline" size="sm" className="w-full">Log In</Button>
-                </Link>
-                <Link href="/signup" className="flex-1">
-                  <Button size="sm" className="w-full">Start Free</Button>
-                </Link>
-              </div>
+              <Link
+                href="/signup"
+                className="inline-flex items-center justify-center rounded-lg bg-brand-500 px-3.5 py-1.5 text-body-sm font-medium text-white hover:bg-brand-600 transition-colors mt-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Start Free
+              </Link>
             </nav>
           </div>
         )}

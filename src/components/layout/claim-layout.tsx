@@ -3,28 +3,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import {
-  Shield,
-  ChevronLeft,
-  FileText,
-  Camera,
-  FileSearch,
-  DollarSign,
-  Scale,
-  ArrowLeft,
-} from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 interface ClaimLayoutProps {
   children: React.ReactNode;
   claimId: string;
 }
 
-const claimNavItems = [
-  { href: "", label: "Overview", icon: FileText },
-  { href: "/documents", label: "Documents", icon: Camera },
-  { href: "/policy", label: "Policy Analysis", icon: FileSearch },
-  { href: "/offer", label: "Offer Analysis", icon: DollarSign },
-  { href: "/counter", label: "Counter-Offer", icon: Scale },
+const claimTabs = [
+  { href: "", label: "Overview" },
+  { href: "/documents", label: "Documents" },
+  { href: "/policy", label: "Policy" },
+  { href: "/offer", label: "Offer" },
+  { href: "/counter", label: "Counter-Offer" },
 ];
 
 export function ClaimLayout({ children, claimId }: ClaimLayoutProps) {
@@ -32,43 +23,45 @@ export function ClaimLayout({ children, claimId }: ClaimLayoutProps) {
   const basePath = `/claims/${claimId}`;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-surface-50">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white border-b border-gray-200">
-        <div className="flex items-center h-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <header className="sticky top-0 z-40 bg-white border-b border-zinc-200">
+        {/* Top row: back link + claim ID */}
+        <div className="flex items-center justify-between h-14 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
           <Link
             href="/dashboard"
-            className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 mr-6"
+            className="flex items-center gap-1.5 text-body-sm text-zinc-500 hover:text-zinc-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">Back to Dashboard</span>
+            Dashboard
           </Link>
-          <div className="flex items-center gap-2">
-            <Shield className="w-6 h-6 text-brand-600" />
-            <span className="font-semibold text-gray-900">Claim #{claimId.slice(0, 8)}</span>
-          </div>
+
+          <span className="text-body-sm font-medium text-zinc-900">
+            Claim #{claimId.slice(0, 8)}
+          </span>
+
+          {/* Empty spacer to keep claim ID centered */}
+          <div className="w-20" />
         </div>
 
-        {/* Claim Tab Navigation */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex gap-1 overflow-x-auto pb-px -mb-px">
-            {claimNavItems.map((item) => {
-              const fullHref = basePath + item.href;
+        {/* Tab navigation */}
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex gap-6 overflow-x-auto -mb-px">
+            {claimTabs.map((tab) => {
+              const fullHref = basePath + tab.href;
               const isActive = pathname === fullHref;
-              const Icon = item.icon;
               return (
                 <Link
-                  key={item.href}
+                  key={tab.href}
                   href={fullHref}
                   className={cn(
-                    "flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 whitespace-nowrap transition-colors",
+                    "pb-3 text-body-sm whitespace-nowrap border-b-2 transition-colors",
                     isActive
-                      ? "border-brand-600 text-brand-600"
-                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                      ? "text-zinc-900 font-medium border-brand-500"
+                      : "text-zinc-500 border-transparent hover:text-zinc-700"
                   )}
                 >
-                  <Icon className="w-4 h-4" />
-                  {item.label}
+                  {tab.label}
                 </Link>
               );
             })}
@@ -77,7 +70,7 @@ export function ClaimLayout({ children, claimId }: ClaimLayoutProps) {
       </header>
 
       {/* Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>
     </div>

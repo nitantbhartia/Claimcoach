@@ -2,30 +2,7 @@ import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Shield,
-  FileText,
-  BarChart3,
-  MessageSquareText,
-  ArrowRight,
-  CheckCircle2,
-  AlertTriangle,
-  TrendingUp,
-  Scale,
-  Upload,
-  Search,
-  Zap,
-  Car,
-  Home,
-  Heart,
-  Building2,
-  ChevronRight,
-  Clock,
-  Lock,
-  Star,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function LandingPage() {
   return (
@@ -33,671 +10,367 @@ export default function LandingPage() {
       <Header />
 
       <main className="flex-1">
-        {/* ------------------------------------------------------------------ */}
-        {/* HERO                                                               */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="relative overflow-hidden gradient-hero text-white">
-          {/* Decorative background grid */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 opacity-[0.07]"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-              backgroundSize: "40px 40px",
-            }}
-          />
+        {/* ---- HERO ---- */}
+        <section className="bg-zinc-950 text-white">
+          <div className="container-wide py-24 sm:py-32 lg:py-40">
+            <h1 className="text-display-xl max-w-4xl text-balance">
+              Stop leaving money
+              <br />
+              on the table.
+            </h1>
 
-          <div className="container-wide relative py-20 sm:py-28 lg:py-36">
-            <div className="max-w-3xl">
-              <Badge variant="info" size="md" className="mb-6">
-                <Car className="w-3.5 h-3.5 mr-1.5" />
-                Now available for auto property damage claims
-              </Badge>
+            <p className="mt-6 text-body-lg text-zinc-400 max-w-xl">
+              Insurance adjusters are trained negotiators. You&apos;re not.
+              ClaimCoach gives you the analysis, leverage, and language to
+              fight back -- in minutes.
+            </p>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-balance leading-[1.1]">
-                Get the Settlement{" "}
-                <span className="text-brand-300">You Deserve</span>
-              </h1>
-
-              <p className="mt-6 text-lg sm:text-xl text-brand-100 max-w-2xl leading-relaxed">
-                Insurance companies have teams of adjusters working to minimize
-                your payout. ClaimCoach gives you AI-powered analysis, fairness
-                scoring, and professional counter-offer letters -- so you can
-                negotiate from a position of strength.
-              </p>
-
-              <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                <Link href="/claims/new">
-                  <Button
-                    size="lg"
-                    className="w-full sm:w-auto bg-white text-brand-700 hover:bg-brand-50 focus:ring-white"
-                  >
-                    Analyze My Claim Free
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </Link>
-                <Link href="/about">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="w-full sm:w-auto border-white/30 text-white hover:bg-white/10"
-                  >
-                    See How It Works
-                  </Button>
-                </Link>
-              </div>
-
-              <p className="mt-5 text-sm text-brand-200 flex items-center gap-2">
-                <Lock className="w-4 h-4" />
-                No credit card required &middot; Your data stays private
-              </p>
-            </div>
-          </div>
-
-          {/* Bottom gradient fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
-        </section>
-
-        {/* ------------------------------------------------------------------ */}
-        {/* STATS BAR                                                          */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="relative -mt-12 z-10">
-          <div className="container-wide">
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
-              <div className="px-8 py-8 text-center">
-                <p className="text-3xl sm:text-4xl font-extrabold text-brand-700">
-                  $2B+
-                </p>
-                <p className="mt-1 text-sm text-gray-500">
-                  In underpaid auto claims annually
-                </p>
-              </div>
-              <div className="px-8 py-8 text-center">
-                <p className="text-3xl sm:text-4xl font-extrabold text-brand-700">
-                  40&ndash;50%
-                </p>
-                <p className="mt-1 text-sm text-gray-500">
-                  Appeal success rate when policyholders push back
-                </p>
-              </div>
-              <div className="px-8 py-8 text-center">
-                <p className="text-3xl sm:text-4xl font-extrabold text-brand-700">
-                  &lt;1%
-                </p>
-                <p className="mt-1 text-sm text-gray-500">
-                  Of denied claims are ever formally appealed
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------------------------ */}
-        {/* PROBLEM STATEMENT / SOCIAL PROOF                                   */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="py-20 sm:py-28 bg-white">
-          <div className="container-wide">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 text-balance">
-                Insurance companies aren&apos;t on your side.{" "}
-                <span className="text-brand-600">Now you have backup.</span>
-              </h2>
-              <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-                Most people accept the first offer their insurer makes -- even
-                when it&apos;s far below what their policy covers. They
-                don&apos;t know what their policy actually says, they don&apos;t
-                know what a fair settlement looks like, and they don&apos;t know
-                how to push back professionally.
-              </p>
-              <p className="mt-4 text-lg text-gray-600 leading-relaxed">
-                ClaimCoach changes that. In minutes, not weeks.
-              </p>
-            </div>
-
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: AlertTriangle,
-                  color: "text-warning-500",
-                  bg: "bg-warning-50",
-                  title: "Lowball Offers Are the Norm",
-                  description:
-                    "Insurers routinely make initial offers 20-40% below fair value. Most policyholders don't realize they're being shortchanged.",
-                },
-                {
-                  icon: Scale,
-                  color: "text-brand-600",
-                  bg: "bg-brand-50",
-                  title: "The Knowledge Gap Is Real",
-                  description:
-                    "Insurance policies are dense and deliberately confusing. Without expertise, you can't know what you're actually owed.",
-                },
-                {
-                  icon: TrendingUp,
-                  color: "text-success-500",
-                  bg: "bg-success-50",
-                  title: "Pushing Back Works",
-                  description:
-                    "Studies show that policyholders who negotiate with data and documentation receive significantly higher settlements.",
-                },
-              ].map((item) => (
-                <Card key={item.title} hover>
-                  <CardContent className="pt-6">
-                    <div
-                      className={`w-12 h-12 ${item.bg} rounded-xl flex items-center justify-center mb-4`}
-                    >
-                      <item.icon className={`w-6 h-6 ${item.color}`} />
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-                      {item.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------------------------ */}
-        {/* HOW IT WORKS                                                       */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="py-20 sm:py-28 bg-gray-50">
-          <div className="container-wide">
-            <div className="text-center max-w-2xl mx-auto">
-              <Badge variant="info" size="md" className="mb-4">
-                Simple 3-step process
-              </Badge>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-                How ClaimCoach Works
-              </h2>
-              <p className="mt-4 text-lg text-gray-600">
-                From documentation to negotiation in minutes -- not weeks of
-                back-and-forth with your insurer.
-              </p>
-            </div>
-
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-              {[
-                {
-                  step: "01",
-                  icon: Upload,
-                  title: "Document",
-                  description:
-                    "Upload your insurance policy, the offer you received, and any supporting documents like repair estimates or photos. We'll organize everything for you.",
-                },
-                {
-                  step: "02",
-                  icon: Search,
-                  title: "Analyze",
-                  description:
-                    "Our AI reads your policy, identifies relevant coverages, and scores the fairness of your insurer's offer against comparable claims data and policy terms.",
-                },
-                {
-                  step: "03",
-                  icon: MessageSquareText,
-                  title: "Negotiate",
-                  description:
-                    "Get a professional counter-offer letter, talking points for your adjuster call, and step-by-step escalation guidance if they don't budge.",
-                },
-              ].map((item, index) => (
-                <div key={item.step} className="relative">
-                  {/* Connector line (desktop only) */}
-                  {index < 2 && (
-                    <div className="hidden md:block absolute top-12 -right-4 lg:-right-6 w-8 lg:w-12 border-t-2 border-dashed border-brand-200" />
-                  )}
-
-                  <Card className="h-full">
-                    <CardContent className="pt-6">
-                      <div className="flex items-center gap-4 mb-5">
-                        <div className="w-12 h-12 rounded-xl bg-brand-600 text-white flex items-center justify-center font-bold text-lg shrink-0">
-                          {item.step}
-                        </div>
-                        <item.icon className="w-6 h-6 text-brand-400" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-gray-900">
-                        {item.title}
-                      </h3>
-                      <p className="mt-3 text-sm text-gray-600 leading-relaxed">
-                        {item.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-12 text-center">
+            <div className="mt-10">
               <Link href="/claims/new">
-                <Button size="lg">
-                  Start Your Free Analysis
+                <Button
+                  size="lg"
+                  className="bg-brand-500 text-white hover:bg-brand-600 focus:ring-brand-500"
+                >
+                  Analyze my claim
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </Link>
             </div>
-          </div>
-        </section>
 
-        {/* ------------------------------------------------------------------ */}
-        {/* FEATURES                                                           */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="py-20 sm:py-28 bg-white">
-          <div className="container-wide">
-            <div className="text-center max-w-2xl mx-auto">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-                Everything You Need to Fight Back
-              </h2>
-              <p className="mt-4 text-lg text-gray-600">
-                Powerful tools that level the playing field between you and your
-                insurance company.
-              </p>
-            </div>
-
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
-              {[
-                {
-                  icon: FileText,
-                  title: "Policy Analysis",
-                  description:
-                    "Our AI reads your entire insurance policy and surfaces the specific clauses, coverages, and limits relevant to your claim. No more guessing what you're owed.",
-                  highlights: [
-                    "Coverage identification",
-                    "Limit & deductible extraction",
-                    "Exclusion flagging",
-                  ],
-                },
-                {
-                  icon: BarChart3,
-                  title: "Fairness Score",
-                  description:
-                    "Get a clear, data-backed score that tells you whether your insurer's offer is fair, low, or way below what you should accept. Understand exactly where you stand.",
-                  highlights: [
-                    "Comparable claims benchmarking",
-                    "Line-item breakdown",
-                    "Confidence rating",
-                  ],
-                },
-                {
-                  icon: MessageSquareText,
-                  title: "Counter-Offer Generator",
-                  description:
-                    "Generate a professional, policy-referenced counter-offer letter ready to send to your adjuster. Written in the language insurers respect and respond to.",
-                  highlights: [
-                    "Policy-backed arguments",
-                    "Professional tone & format",
-                    "Ready to send",
-                  ],
-                },
-                {
-                  icon: Zap,
-                  title: "Escalation Guidance",
-                  description:
-                    "If your insurer won't budge, we walk you through next steps: supervisor escalation, state insurance department complaints, and when to consider an attorney.",
-                  highlights: [
-                    "Step-by-step playbook",
-                    "State-specific resources",
-                    "Attorney referral triggers",
-                  ],
-                },
-              ].map((feature) => (
-                <Card key={feature.title} hover className="overflow-hidden">
-                  <CardContent className="p-8">
-                    <div className="w-12 h-12 bg-brand-50 rounded-xl flex items-center justify-center mb-5">
-                      <feature.icon className="w-6 h-6 text-brand-600" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900">
-                      {feature.title}
-                    </h3>
-                    <p className="mt-3 text-gray-600 leading-relaxed">
-                      {feature.description}
-                    </p>
-                    <ul className="mt-5 space-y-2">
-                      {feature.highlights.map((point) => (
-                        <li
-                          key={point}
-                          className="flex items-center gap-2 text-sm text-gray-700"
-                        >
-                          <CheckCircle2 className="w-4 h-4 text-success-500 shrink-0" />
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------------------------ */}
-        {/* CLAIM TYPES                                                        */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="py-20 sm:py-28 bg-gray-50">
-          <div className="container-wide">
-            <div className="text-center max-w-2xl mx-auto">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-                Claim Types
-              </h2>
-              <p className="mt-4 text-lg text-gray-600">
-                We&apos;re starting with the most common dispute -- auto
-                property damage -- and expanding from there.
-              </p>
-            </div>
-
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                {
-                  icon: Car,
-                  title: "Auto Property Damage",
-                  status: "available" as const,
-                  description:
-                    "Collision, comprehensive, and total loss claims. Get fair value for your vehicle.",
-                },
-                {
-                  icon: Home,
-                  title: "Homeowner",
-                  status: "coming_soon" as const,
-                  description:
-                    "Storm, fire, water damage, and other covered property losses.",
-                },
-                {
-                  icon: Heart,
-                  title: "Health",
-                  status: "coming_soon" as const,
-                  description:
-                    "Medical claim denials, out-of-network disputes, and billing errors.",
-                },
-                {
-                  icon: Building2,
-                  title: "Renter's",
-                  status: "coming_soon" as const,
-                  description:
-                    "Personal property theft, liability, and additional living expense claims.",
-                },
-              ].map((type) => (
-                <Card
-                  key={type.title}
-                  hover={type.status === "available"}
-                  className={
-                    type.status === "coming_soon" ? "opacity-75" : undefined
-                  }
-                >
-                  <CardContent className="pt-6 text-center">
-                    <div
-                      className={`w-14 h-14 mx-auto rounded-2xl flex items-center justify-center mb-4 ${
-                        type.status === "available"
-                          ? "bg-brand-50"
-                          : "bg-gray-100"
-                      }`}
-                    >
-                      <type.icon
-                        className={`w-7 h-7 ${
-                          type.status === "available"
-                            ? "text-brand-600"
-                            : "text-gray-400"
-                        }`}
-                      />
-                    </div>
-                    <h3 className="font-semibold text-gray-900">
-                      {type.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-                      {type.description}
-                    </p>
-                    <div className="mt-4">
-                      {type.status === "available" ? (
-                        <Badge variant="success" size="sm">
-                          Available Now
-                        </Badge>
-                      ) : (
-                        <Badge variant="default" size="sm">
-                          <Clock className="w-3 h-3 mr-1" />
-                          Coming Soon
-                        </Badge>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------------------------ */}
-        {/* PRICING PREVIEW                                                    */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="py-20 sm:py-28 bg-white">
-          <div className="container-wide">
-            <div className="text-center max-w-2xl mx-auto">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-                Simple, Transparent Pricing
-              </h2>
-              <p className="mt-4 text-lg text-gray-600">
-                Start for free. Pay only when you&apos;re ready to generate your
-                counter-offer.
-              </p>
-            </div>
-
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {/* Free tier */}
-              <Card className="relative">
-                <CardContent className="p-8">
-                  <h3 className="text-lg font-semibold text-gray-900">Free</h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    See where you stand
-                  </p>
-                  <p className="mt-6">
-                    <span className="text-4xl font-extrabold text-gray-900">
-                      $0
-                    </span>
-                  </p>
-                  <ul className="mt-8 space-y-3">
-                    {[
-                      "Upload policy & offer",
-                      "Basic fairness score",
-                      "Coverage summary",
-                    ].map((item) => (
-                      <li
-                        key={item}
-                        className="flex items-start gap-2 text-sm text-gray-700"
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-success-500 shrink-0 mt-0.5" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-8">
-                    <Link href="/signup">
-                      <Button variant="outline" className="w-full">
-                        Get Started
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Pro tier */}
-              <Card className="relative border-brand-600 border-2 shadow-lg">
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                  <Badge
-                    variant="info"
-                    size="md"
-                    className="bg-brand-600 text-white shadow-md"
-                  >
-                    <Star className="w-3.5 h-3.5 mr-1" />
-                    Most Popular
-                  </Badge>
-                </div>
-                <CardContent className="p-8">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Claim Pro
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Full negotiation toolkit
-                  </p>
-                  <p className="mt-6">
-                    <span className="text-4xl font-extrabold text-gray-900">
-                      $29
-                    </span>
-                    <span className="text-sm text-gray-500 ml-1">
-                      / claim
-                    </span>
-                  </p>
-                  <ul className="mt-8 space-y-3">
-                    {[
-                      "Everything in Free",
-                      "Detailed fairness analysis",
-                      "Counter-offer letter",
-                      "Adjuster talking points",
-                      "Escalation guidance",
-                    ].map((item) => (
-                      <li
-                        key={item}
-                        className="flex items-start gap-2 text-sm text-gray-700"
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-success-500 shrink-0 mt-0.5" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-8">
-                    <Link href="/signup">
-                      <Button className="w-full">
-                        Start Free, Upgrade Later
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Enterprise / Attorney tier */}
-              <Card className="relative">
-                <CardContent className="p-8">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Attorney
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    For legal professionals
-                  </p>
-                  <p className="mt-6">
-                    <span className="text-4xl font-extrabold text-gray-900">
-                      $99
-                    </span>
-                    <span className="text-sm text-gray-500 ml-1">/ mo</span>
-                  </p>
-                  <ul className="mt-8 space-y-3">
-                    {[
-                      "Everything in Claim Pro",
-                      "Unlimited claims",
-                      "Batch analysis",
-                      "Priority support",
-                      "Custom branding",
-                    ].map((item) => (
-                      <li
-                        key={item}
-                        className="flex items-start gap-2 text-sm text-gray-700"
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-success-500 shrink-0 mt-0.5" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-8">
-                    <Link href="/signup">
-                      <Button variant="outline" className="w-full">
-                        Contact Us
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <p className="mt-8 text-center text-sm text-gray-500">
-              All plans include a 30-day money-back guarantee. No subscriptions
-              required for individual claims.
+            <p className="mt-16 text-body text-zinc-500">
+              Insurance companies underpay claims by an average of
+              $3,000&ndash;$5,000. Most people never push back.
             </p>
           </div>
         </section>
 
-        {/* ------------------------------------------------------------------ */}
-        {/* TRUST / COMPLIANCE BAR                                             */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="py-12 bg-gray-50 border-y border-gray-100">
-          <div className="container-wide">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16 text-sm text-gray-500">
-              <div className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-brand-600" />
-                <span>256-bit encryption</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-brand-600" />
-                <span>SOC 2 compliant</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-brand-600" />
-                <span>No data sold to third parties</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-brand-600" />
-                <span>Not legal advice</span>
-              </div>
+        {/* ---- SOCIAL PROOF STRIP ---- */}
+        <section className="border-b border-zinc-100">
+          <div className="container-wide py-10 flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-0">
+            <div className="text-center sm:text-left flex-1">
+              <p className="text-display-sm text-zinc-900">850M+</p>
+              <p className="text-body-sm text-zinc-500 mt-1">
+                claims denied yearly
+              </p>
+            </div>
+
+            <div
+              aria-hidden="true"
+              className="hidden sm:block w-px h-12 bg-zinc-200"
+            />
+
+            <div className="text-center flex-1">
+              <p className="text-display-sm text-zinc-900">&lt;&thinsp;1%</p>
+              <p className="text-body-sm text-zinc-500 mt-1">
+                of those are ever appealed
+              </p>
+            </div>
+
+            <div
+              aria-hidden="true"
+              className="hidden sm:block w-px h-12 bg-zinc-200"
+            />
+
+            <div className="text-center sm:text-right flex-1">
+              <p className="text-display-sm text-zinc-900">40&ndash;50%</p>
+              <p className="text-body-sm text-zinc-500 mt-1">
+                win rate when they do
+              </p>
             </div>
           </div>
         </section>
 
-        {/* ------------------------------------------------------------------ */}
-        {/* FINAL CTA                                                          */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="relative overflow-hidden gradient-hero text-white">
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 opacity-[0.05]"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-              backgroundSize: "32px 32px",
-            }}
-          />
-
-          <div className="container-wide relative py-20 sm:py-28 text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-balance">
-              Stop Leaving Money on the Table
+        {/* ---- THE PROBLEM ---- */}
+        <section className="section-gap">
+          <div className="container-wide">
+            <h2 className="text-display text-zinc-900 max-w-2xl">
+              The deck is stacked against you.
             </h2>
-            <p className="mt-6 text-lg sm:text-xl text-brand-100 max-w-2xl mx-auto leading-relaxed">
-              Your insurance company has a team. Now you do too. Upload your
-              claim and find out in minutes whether you&apos;re getting a fair
-              deal.
+
+            <p className="mt-6 text-body-lg text-zinc-600 max-w-2xl leading-relaxed">
+              Your insurance adjuster handles 500+ claims a year. You handle
+              one, maybe two in your lifetime. They know exactly which
+              clauses to cite, which precedents to reference, and which
+              lowball number most people will accept without question.
+              That information asymmetry is by design.
             </p>
 
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+              {/* Left: The problem */}
+              <div>
+                <p className="text-caption uppercase tracking-widest text-zinc-400 mb-4">
+                  Without ClaimCoach
+                </p>
+                <ul className="space-y-4 text-body text-zinc-600">
+                  <li className="pl-4 border-l-2 border-zinc-200">
+                    You read a 40-page policy and miss the clause that
+                    covers your loss.
+                  </li>
+                  <li className="pl-4 border-l-2 border-zinc-200">
+                    You accept the first offer because you don&apos;t know
+                    what &quot;fair&quot; looks like.
+                  </li>
+                  <li className="pl-4 border-l-2 border-zinc-200">
+                    You call your adjuster, get flustered, and agree to
+                    less than you&apos;re owed.
+                  </li>
+                </ul>
+              </div>
+
+              {/* Right: The solution */}
+              <div>
+                <p className="text-caption uppercase tracking-widest text-brand-500 mb-4">
+                  With ClaimCoach
+                </p>
+                <ul className="space-y-4 text-body text-zinc-600">
+                  <li className="pl-4 border-l-2 border-brand-500">
+                    AI reads your policy and surfaces the exact coverages,
+                    limits, and exclusions that matter.
+                  </li>
+                  <li className="pl-4 border-l-2 border-brand-500">
+                    A fairness score tells you whether the offer is
+                    reasonable -- or $3,000 below market.
+                  </li>
+                  <li className="pl-4 border-l-2 border-brand-500">
+                    You get a professional counter-offer letter and
+                    talking points before you pick up the phone.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="divider" />
+
+        {/* ---- HOW IT WORKS ---- */}
+        <section className="section-gap">
+          <div className="container-wide">
+            <h2 className="text-display text-zinc-900 max-w-xl">
+              How it works
+            </h2>
+            <p className="mt-4 text-body-lg text-zinc-500 max-w-xl">
+              From upload to counter-offer in under ten minutes.
+            </p>
+
+            <div className="mt-16 space-y-16 max-w-2xl">
+              {/* Step 01 */}
+              <div>
+                <span className="text-display-xl text-zinc-100 select-none" aria-hidden="true">
+                  01
+                </span>
+                <h3 className="text-heading-lg text-zinc-900 -mt-4">
+                  Upload your documents
+                </h3>
+                <p className="mt-3 text-body text-zinc-600">
+                  Drop in your insurance policy, the settlement offer, and
+                  any supporting evidence -- repair estimates, photos,
+                  medical bills. We handle the rest.
+                </p>
+                <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-body-sm text-zinc-400">
+                  <li>PDF &amp; image support</li>
+                  <li>Auto-categorization</li>
+                  <li>Secure upload</li>
+                </ul>
+              </div>
+
+              {/* Step 02 */}
+              <div>
+                <span className="text-display-xl text-zinc-100 select-none" aria-hidden="true">
+                  02
+                </span>
+                <h3 className="text-heading-lg text-zinc-900 -mt-4">
+                  Get your analysis
+                </h3>
+                <p className="mt-3 text-body text-zinc-600">
+                  Our AI reads your entire policy, identifies relevant
+                  coverages, and scores the fairness of your insurer&apos;s
+                  offer against comparable claims and policy terms.
+                </p>
+                <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-body-sm text-zinc-400">
+                  <li>Coverage extraction</li>
+                  <li>Fairness scoring</li>
+                  <li>Gap identification</li>
+                </ul>
+              </div>
+
+              {/* Step 03 */}
+              <div>
+                <span className="text-display-xl text-zinc-100 select-none" aria-hidden="true">
+                  03
+                </span>
+                <h3 className="text-heading-lg text-zinc-900 -mt-4">
+                  Negotiate with confidence
+                </h3>
+                <p className="mt-3 text-body text-zinc-600">
+                  Receive a professional counter-offer letter, adjuster
+                  call talking points, and a step-by-step escalation
+                  playbook if they don&apos;t budge.
+                </p>
+                <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-body-sm text-zinc-400">
+                  <li>Counter-offer letter</li>
+                  <li>Talking points</li>
+                  <li>Escalation guide</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="divider" />
+
+        {/* ---- THE TOOLKIT ---- */}
+        <section className="section-gap">
+          <div className="container-wide">
+            <h2 className="text-display text-zinc-900 max-w-xl">
+              Everything you need to fight back.
+            </h2>
+
+            <div className="mt-14 grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-12">
+              {/* Left: large feature */}
+              <div className="md:col-span-3">
+                <p className="text-caption uppercase tracking-widest text-brand-500 mb-3">
+                  Core
+                </p>
+                <h3 className="text-heading-lg text-zinc-900">
+                  Policy Analysis
+                </h3>
+                <p className="mt-3 text-body text-zinc-600 max-w-md leading-relaxed">
+                  Our AI reads your entire insurance policy and surfaces
+                  the specific clauses, coverages, limits, and exclusions
+                  relevant to your claim. No more guessing what
+                  you&apos;re owed -- every argument is backed by your own
+                  policy language.
+                </p>
+              </div>
+
+              {/* Right: stacked smaller features */}
+              <div className="md:col-span-2 space-y-10">
+                <div>
+                  <h3 className="text-heading text-zinc-900">
+                    Fairness Score
+                  </h3>
+                  <p className="mt-2 text-body-sm text-zinc-500 leading-relaxed">
+                    A clear, data-backed score that tells you whether your
+                    insurer&apos;s offer is fair, low, or significantly
+                    below market value. Know exactly where you stand.
+                  </p>
+                </div>
+
+                <div className="border-t border-zinc-100 pt-10">
+                  <h3 className="text-heading text-zinc-900">
+                    Counter-Offers
+                  </h3>
+                  <p className="mt-2 text-body-sm text-zinc-500 leading-relaxed">
+                    Professional, policy-referenced counter-offer letters
+                    written in the language insurers respect. Ready to
+                    send.
+                  </p>
+                </div>
+
+                <div className="border-t border-zinc-100 pt-10">
+                  <h3 className="text-heading text-zinc-900">
+                    Escalation Guide
+                  </h3>
+                  <p className="mt-2 text-body-sm text-zinc-500 leading-relaxed">
+                    Step-by-step playbook: supervisor escalation, state
+                    insurance department complaints, and when to consider
+                    an attorney.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="divider" />
+
+        {/* ---- PRICING ---- */}
+        <section className="section-gap">
+          <div className="container-wide">
+            <h2 className="text-display text-zinc-900 max-w-md">
+              Simple pricing.
+            </h2>
+            <p className="mt-4 text-body-lg text-zinc-500 max-w-lg">
+              Start free. Pay only when you need the full toolkit.
+            </p>
+
+            <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl">
+              {/* Free */}
+              <div className="py-8">
+                <h3 className="text-heading-lg text-zinc-900">Free</h3>
+                <p className="mt-1 text-body-sm text-zinc-500">
+                  See where you stand
+                </p>
+                <div className="mt-6 space-y-2 text-body text-zinc-600">
+                  <p>Upload your policy and offer documents</p>
+                  <p>Basic fairness score</p>
+                  <p>Coverage summary</p>
+                </div>
+                <div className="mt-8">
+                  <Link href="/signup">
+                    <Button variant="outline" size="md">
+                      Get started
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Paid */}
+              <div className="py-8 px-8 bg-brand-50 rounded-2xl">
+                <h3 className="text-heading-lg text-zinc-900">
+                  Full Toolkit
+                </h3>
+                <p className="mt-1 text-body-sm text-zinc-500">
+                  $29 per claim
+                </p>
+                <div className="mt-6 space-y-2 text-body text-zinc-600">
+                  <p>Everything in Free</p>
+                  <p>Detailed fairness analysis with line-item breakdown</p>
+                  <p>Professional counter-offer letter</p>
+                  <p>Adjuster call talking points</p>
+                  <p>Step-by-step escalation guidance</p>
+                </div>
+                <div className="mt-8">
+                  <Link href="/signup">
+                    <Button size="md">
+                      Start free, upgrade later
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <p className="mt-10 text-body-sm text-zinc-400 max-w-lg">
+              Pro plan: $14.99/mo for unlimited claims.
+              All plans include a 30-day money-back guarantee.
+            </p>
+          </div>
+        </section>
+
+        {/* ---- FINAL CTA ---- */}
+        <section className="bg-zinc-950 text-white">
+          <div className="container-wide py-24 sm:py-32 text-center">
+            <h2 className="text-display text-white max-w-2xl mx-auto text-balance">
+              Your claim deserves a fair evaluation.
+            </h2>
+
+            <div className="mt-10">
               <Link href="/claims/new">
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto bg-white text-brand-700 hover:bg-brand-50 focus:ring-white"
+                  className="bg-brand-500 text-white hover:bg-brand-600 focus:ring-brand-500"
                 >
-                  Analyze My Claim Free
+                  Analyze my claim
                   <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-              <Link href="/pricing">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full sm:w-auto border-white/30 text-white hover:bg-white/10"
-                >
-                  View Pricing
-                  <ChevronRight className="ml-1 w-4 h-4" />
                 </Button>
               </Link>
             </div>
 
-            <p className="mt-6 text-sm text-brand-200">
-              Free to start &middot; No credit card required &middot; Results in
-              under 5 minutes
+            <p className="mt-6 text-body-sm text-zinc-500">
+              Free to start. No credit card required. Results in under five
+              minutes.
             </p>
           </div>
         </section>

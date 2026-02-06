@@ -3,26 +3,10 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { ClaimLayout } from "@/components/layout/claim-layout";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { FileUpload } from "@/components/ui/file-upload";
 import { PolicyAnalysis } from "@/types";
-import {
-  FileSearch,
-  Upload,
-  CheckCircle2,
-  AlertTriangle,
-  Eye,
-  EyeOff,
-  Shield,
-  Lightbulb,
-  Target,
-  FileText,
-  Sparkles,
-  DollarSign,
-  Info,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
 // Mock policy analysis data -- realistic State Farm auto policy
@@ -157,7 +141,7 @@ const MOCK_POLICY_ANALYSIS: PolicyAnalysis = {
 };
 
 // ---------------------------------------------------------------------------
-// Progress animation steps for the analysis loading state
+// Analysis loading steps
 // ---------------------------------------------------------------------------
 
 const ANALYSIS_STEPS = [
@@ -179,11 +163,9 @@ export default function PolicyAnalysisPage() {
   const params = useParams<{ id: string }>();
   const claimId = params.id;
 
-  // ---- State ----
   const [policyFile, setPolicyFile] = useState<File | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisStep, setAnalysisStep] = useState(0);
-  const [analysisProgress, setAnalysisProgress] = useState(0);
   const [analysis, setAnalysis] = useState<PolicyAnalysis | null>(null);
   const [expandedRedFlags, setExpandedRedFlags] = useState<Set<number>>(
     new Set()
@@ -192,40 +174,24 @@ export default function PolicyAnalysisPage() {
     new Set()
   );
 
-  // ---- Handlers ----
   function handleFilesSelected(files: File[]) {
-    if (files.length > 0) {
-      setPolicyFile(files[0]);
-    }
-  }
-
-  function handleRemoveFile() {
-    setPolicyFile(null);
-    setAnalysis(null);
+    if (files.length > 0) setPolicyFile(files[0]);
   }
 
   function handleAnalyze() {
     if (!policyFile) return;
     setIsAnalyzing(true);
     setAnalysisStep(0);
-    setAnalysisProgress(0);
 
-    // Simulate analysis progress over ~3 seconds
-    const totalDuration = 3000;
-    const stepDuration = totalDuration / ANALYSIS_STEPS.length;
-    let currentStep = 0;
+    const stepDuration = 3000 / ANALYSIS_STEPS.length;
+    let current = 0;
 
-    const stepInterval = setInterval(() => {
-      currentStep++;
-      if (currentStep < ANALYSIS_STEPS.length) {
-        setAnalysisStep(currentStep);
-        setAnalysisProgress(
-          Math.round((currentStep / ANALYSIS_STEPS.length) * 100)
-        );
+    const interval = setInterval(() => {
+      current++;
+      if (current < ANALYSIS_STEPS.length) {
+        setAnalysisStep(current);
       } else {
-        clearInterval(stepInterval);
-        setAnalysisProgress(100);
-        // Short pause at 100% before showing results
+        clearInterval(interval);
         setTimeout(() => {
           setIsAnalyzing(false);
           setAnalysis(MOCK_POLICY_ANALYSIS);
@@ -234,469 +200,248 @@ export default function PolicyAnalysisPage() {
     }, stepDuration);
   }
 
-  function toggleRedFlag(index: number) {
-    setExpandedRedFlags((prev) => {
-      const next = new Set(prev);
-      if (next.has(index)) {
-        next.delete(index);
-      } else {
-        next.add(index);
-      }
-      return next;
-    });
+  function toggle(set: Set<number>, index: number): Set<number> {
+    const next = new Set(set);
+    if (next.has(index)) next.delete(index);
+    else next.add(index);
+    return next;
   }
 
-  function toggleTactic(index: number) {
-    setExpandedTactics((prev) => {
-      const next = new Set(prev);
-      if (next.has(index)) {
-        next.delete(index);
-      } else {
-        next.add(index);
-      }
-      return next;
-    });
-  }
+  // ---- Upload state (no analysis yet) ----
+  if (!analysis && !isAnalyzing) {
+    return (
+      <ClaimLayout claimId={claimId}>
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-heading-lg text-zinc-900">Policy Analysis</h1>
+            <p className="text-body text-zinc-500 mt-1">
+              Upload your insurance policy document and our AI will analyze your
+              coverages, find hidden benefits, and identify provisions that could
+              affect your claim.
+            </p>
+          </div>
 
-  // ---- Render ----
-  return (
-    <ClaimLayout claimId={claimId}>
-      <div className="space-y-8">
-        {/* --------------------------------------------------------------- */}
-        {/* 1. Page Header                                                   */}
-        {/* --------------------------------------------------------------- */}
-        <Card>
-          <CardContent className="py-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <div className="flex items-center gap-3 mb-1">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-purple-100">
-                    <FileSearch className="w-5 h-5 text-purple-600" />
-                  </div>
-                  <div>
-                    <h1 className="text-2xl font-bold text-gray-900">
-                      AI Policy Analysis
-                    </h1>
-                    <p className="text-sm text-gray-500">
-                      Upload your insurance policy and let AI uncover what you
-                      are really covered for.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              {analysis && (
-                <Badge variant="success" size="md">
-                  <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
-                  Analysis Complete
-                </Badge>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+          <div className="bg-white rounded-lg border border-zinc-200 shadow-card p-6">
+            <FileUpload
+              onFilesSelected={handleFilesSelected}
+              accept={{ "application/pdf": [".pdf"] }}
+              maxFiles={1}
+              maxSize={25 * 1024 * 1024}
+              hint="PDF files only. Max 25 MB."
+            />
 
-        {/* --------------------------------------------------------------- */}
-        {/* 2. Policy Upload Section                                         */}
-        {/* --------------------------------------------------------------- */}
-        <Card>
-          <CardHeader>
-            <h2 className="text-lg font-semibold text-gray-900">
-              Policy Document
-            </h2>
-          </CardHeader>
-          <CardContent>
-            {!policyFile ? (
-              /* -- No file uploaded: show prominent upload area -- */
-              <div className="text-center">
-                <div className="mx-auto w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-4">
-                  <Upload className="w-8 h-8 text-purple-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                  Upload Your Insurance Policy
-                </h3>
-                <p className="text-sm text-gray-500 mb-6 max-w-md mx-auto">
-                  Upload your declarations page or full policy document as a
-                  PDF. Our AI will analyze it to find coverages, hidden
-                  benefits, red flags, and predict adjuster strategies.
+            {policyFile && (
+              <div className="mt-4 flex items-center justify-between">
+                <p className="text-body-sm text-zinc-500 truncate">
+                  {policyFile.name} --{" "}
+                  {(policyFile.size / 1024).toFixed(0)} KB
                 </p>
-                <FileUpload
-                  onFilesSelected={handleFilesSelected}
-                  accept={{ "application/pdf": [".pdf"] }}
-                  maxFiles={1}
-                  maxSize={25 * 1024 * 1024}
-                  hint="PDF files only. Max 25 MB."
-                  className="max-w-lg mx-auto"
-                />
-              </div>
-            ) : (
-              /* -- File uploaded: show file info and analyze button -- */
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-purple-100 flex-shrink-0">
-                    <FileText className="w-6 h-6 text-purple-600" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-900 truncate">
-                      {policyFile.name}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {(policyFile.size / 1024).toFixed(0)} KB -- PDF Document
-                    </p>
-                  </div>
-                  {!isAnalyzing && (
-                    <button
-                      type="button"
-                      onClick={handleRemoveFile}
-                      className="text-sm text-gray-500 hover:text-red-600 transition-colors flex-shrink-0"
-                    >
-                      Remove
-                    </button>
-                  )}
-                </div>
-
-                {/* Analyze button or loading state */}
-                {!analysis && !isAnalyzing && (
-                  <Button size="lg" onClick={handleAnalyze} className="w-full">
-                    <Sparkles className="w-5 h-5 mr-2" />
-                    Analyze My Policy
-                  </Button>
-                )}
-
-                {/* Analysis progress animation */}
-                {isAnalyzing && (
-                  <div className="rounded-lg border border-purple-200 bg-purple-50 p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="relative">
-                        <div className="w-8 h-8 rounded-full border-2 border-purple-300 border-t-purple-600 animate-spin" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-purple-900">
-                          Analyzing your policy...
-                        </p>
-                        <p className="text-xs text-purple-600">
-                          {ANALYSIS_STEPS[analysisStep]}
-                        </p>
-                      </div>
-                    </div>
-                    {/* Progress bar */}
-                    <div className="w-full bg-purple-200 rounded-full h-2.5 overflow-hidden">
-                      <div
-                        className="bg-purple-600 h-2.5 rounded-full transition-all duration-300 ease-out"
-                        style={{ width: `${analysisProgress}%` }}
-                      />
-                    </div>
-                    <p className="text-xs text-purple-500 mt-2 text-right">
-                      {analysisProgress}%
-                    </p>
-                  </div>
-                )}
-
-                {/* Re-analyze prompt after analysis is done */}
-                {analysis && !isAnalyzing && (
-                  <div className="flex items-center gap-3 text-sm text-gray-500">
-                    <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
-                    <span>
-                      Analysis complete. Upload a different policy to re-analyze.
-                    </span>
-                  </div>
-                )}
+                <Button onClick={handleAnalyze}>Analyze</Button>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
+      </ClaimLayout>
+    );
+  }
 
-        {/* --------------------------------------------------------------- */}
-        {/* ANALYSIS RESULTS (only shown after analysis completes)           */}
-        {/* --------------------------------------------------------------- */}
-        {analysis && (
-          <>
-            {/* ------------------------------------------------------------- */}
-            {/* 3. Plain-English Summary                                       */}
-            {/* ------------------------------------------------------------- */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100">
-                    <FileText className="w-4 h-4 text-blue-600" />
-                  </div>
-                  <h2 className="text-lg font-semibold text-gray-900">
-                    Plain-English Summary
-                  </h2>
+  // ---- Loading state ----
+  if (isAnalyzing) {
+    return (
+      <ClaimLayout claimId={claimId}>
+        <div className="flex items-center justify-center py-24">
+          <div className="flex items-center gap-3">
+            <Loader2 className="w-5 h-5 text-brand-500 animate-spin" />
+            <p className="text-body-sm text-zinc-500">
+              {ANALYSIS_STEPS[analysisStep]}
+            </p>
+          </div>
+        </div>
+      </ClaimLayout>
+    );
+  }
+
+  // ---- Results ----
+  if (!analysis) return null;
+
+  return (
+    <ClaimLayout claimId={claimId}>
+      <div className="space-y-6">
+        <h1 className="text-heading-lg text-zinc-900">Policy Analysis</h1>
+
+        {/* Summary */}
+        <section className="bg-white rounded-lg border border-zinc-200 shadow-card p-6">
+          <h2 className="text-heading text-zinc-900 mb-3">Summary</h2>
+          <p className="text-body text-zinc-600 leading-relaxed">
+            {analysis.summary}
+          </p>
+        </section>
+
+        {/* Coverages */}
+        <section className="bg-white rounded-lg border border-zinc-200 shadow-card">
+          <div className="p-6 pb-0">
+            <h2 className="text-heading text-zinc-900">Your Coverage</h2>
+          </div>
+          <div className="mt-4">
+            {analysis.coverages.map((coverage, i) => (
+              <div
+                key={i}
+                className={`px-6 py-4 ${i !== analysis.coverages.length - 1 ? "border-b border-zinc-100" : ""}`}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                  <p className="text-body font-medium text-zinc-900">
+                    {coverage.name}
+                  </p>
+                  <p className="text-body-sm text-zinc-500">{coverage.limit}</p>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-700 leading-relaxed">
-                  {analysis.summary}
+                <p className="text-body-sm text-zinc-600 mt-1 leading-relaxed">
+                  {coverage.description}
                 </p>
-              </CardContent>
-            </Card>
+              </div>
+            ))}
+          </div>
+        </section>
 
-            {/* ------------------------------------------------------------- */}
-            {/* 4. Coverage Details                                            */}
-            {/* ------------------------------------------------------------- */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-green-100">
-                    <Shield className="w-4 h-4 text-green-600" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold text-gray-900">
-                      Coverage Details
-                    </h2>
-                    <p className="text-xs text-gray-500">
-                      {analysis.coverages.length} coverages identified in your
-                      policy
-                    </p>
-                  </div>
+        {/* Hidden coverages */}
+        <section className="bg-white rounded-lg border border-zinc-200 shadow-card">
+          <div className="p-6 pb-0">
+            <h2 className="text-heading text-zinc-900">
+              Coverages You Might Be Missing
+            </h2>
+          </div>
+          <div className="mt-4">
+            {analysis.hidden_coverages.map((hidden, i) => (
+              <div
+                key={i}
+                className={`px-6 py-4 ${i !== analysis.hidden_coverages.length - 1 ? "border-b border-zinc-100" : ""}`}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                  <p className="text-body font-medium text-zinc-900">
+                    {hidden.name}
+                  </p>
+                  <p className="text-body-sm text-brand-500 font-medium">
+                    {hidden.potential_value}
+                  </p>
                 </div>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="divide-y divide-gray-100">
-                  {analysis.coverages.map((coverage, index) => (
-                    <div key={index} className="px-6 py-4">
-                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
-                        <h3 className="text-sm font-semibold text-gray-900">
-                          {coverage.name}
-                        </h3>
-                        <Badge variant="info" size="sm">
-                          {coverage.limit}
-                        </Badge>
+                <p className="text-body-sm text-zinc-600 mt-1 leading-relaxed">
+                  {hidden.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Red flags */}
+        <section className="bg-white rounded-lg border border-zinc-200 shadow-card">
+          <div className="p-6 pb-0">
+            <h2 className="text-heading text-zinc-900">Watch Out For</h2>
+          </div>
+          <div className="mt-4">
+            {analysis.red_flags.map((flag, i) => {
+              const expanded = expandedRedFlags.has(i);
+              return (
+                <div
+                  key={i}
+                  className={`${i !== analysis.red_flags.length - 1 ? "border-b border-zinc-100" : ""}`}
+                >
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setExpandedRedFlags((prev) => toggle(prev, i))
+                    }
+                    className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left hover:bg-zinc-50 transition-colors"
+                  >
+                    <p className="text-body font-medium text-zinc-900">
+                      {flag.provision}
+                    </p>
+                    {expanded ? (
+                      <ChevronUp className="w-4 h-4 text-zinc-400 flex-shrink-0" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-zinc-400 flex-shrink-0" />
+                    )}
+                  </button>
+                  {expanded && (
+                    <div className="px-6 pb-5 space-y-3">
+                      <div>
+                        <p className="text-body-sm font-medium text-zinc-700 mb-1">
+                          Risk
+                        </p>
+                        <p className="text-body-sm text-zinc-600 leading-relaxed">
+                          {flag.risk}
+                        </p>
                       </div>
-                      <p className="text-sm text-gray-600 leading-relaxed">
-                        {coverage.description}
+                      <div>
+                        <p className="text-body-sm font-medium text-zinc-700 mb-1">
+                          Recommendation
+                        </p>
+                        <p className="text-body-sm text-zinc-600 leading-relaxed">
+                          {flag.recommendation}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Adjuster tactics */}
+        <section className="bg-white rounded-lg border border-zinc-200 shadow-card">
+          <div className="p-6 pb-0">
+            <h2 className="text-heading text-zinc-900">
+              Predicted Adjuster Tactics
+            </h2>
+          </div>
+          <div className="mt-4">
+            {analysis.adjuster_tactics.map((item, i) => {
+              const expanded = expandedTactics.has(i);
+              return (
+                <div
+                  key={i}
+                  className={`${i !== analysis.adjuster_tactics.length - 1 ? "border-b border-zinc-100" : ""}`}
+                >
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setExpandedTactics((prev) => toggle(prev, i))
+                    }
+                    className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left hover:bg-zinc-50 transition-colors"
+                  >
+                    <p className="text-body font-medium text-zinc-900">
+                      {item.tactic}
+                    </p>
+                    {expanded ? (
+                      <ChevronUp className="w-4 h-4 text-zinc-400 flex-shrink-0" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-zinc-400 flex-shrink-0" />
+                    )}
+                  </button>
+                  {expanded && (
+                    <div className="px-6 pb-5">
+                      <p className="text-body-sm font-medium text-zinc-700 mb-1">
+                        Counter-strategy
+                      </p>
+                      <p className="text-body-sm text-zinc-600 leading-relaxed">
+                        {item.counter}
                       </p>
                     </div>
-                  ))}
+                  )}
                 </div>
-              </CardContent>
-            </Card>
+              );
+            })}
+          </div>
+        </section>
 
-            {/* ------------------------------------------------------------- */}
-            {/* 5. Hidden Coverages Found                                      */}
-            {/* ------------------------------------------------------------- */}
-            <Card className="ring-2 ring-green-200">
-              <CardHeader className="bg-green-50 border-b-green-200">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-green-100">
-                    <Eye className="w-4 h-4 text-green-600" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold text-green-900">
-                      Hidden Coverages Found
-                    </h2>
-                    <p className="text-xs text-green-700">
-                      {analysis.hidden_coverages.length} coverages you might not
-                      know about -- these could put money back in your pocket
-                    </p>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="divide-y divide-green-100">
-                  {analysis.hidden_coverages.map((hidden, index) => (
-                    <div key={index} className="px-6 py-5">
-                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
-                        <div className="flex items-center gap-2">
-                          <Lightbulb className="w-4 h-4 text-green-500 flex-shrink-0" />
-                          <h3 className="text-sm font-semibold text-gray-900">
-                            {hidden.name}
-                          </h3>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <DollarSign className="w-3.5 h-3.5 text-green-600" />
-                          <span className="text-sm font-bold text-green-700">
-                            {hidden.potential_value}
-                          </span>
-                        </div>
-                      </div>
-                      <p className="text-sm text-gray-600 leading-relaxed pl-6">
-                        {hidden.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* ------------------------------------------------------------- */}
-            {/* 6. Red Flags                                                   */}
-            {/* ------------------------------------------------------------- */}
-            <Card className="ring-2 ring-red-200">
-              <CardHeader className="bg-red-50 border-b-red-200">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100">
-                    <AlertTriangle className="w-4 h-4 text-red-600" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold text-red-900">
-                      Red Flags
-                    </h2>
-                    <p className="text-xs text-red-700">
-                      {analysis.red_flags.length} provisions that could hurt
-                      your claim -- read carefully
-                    </p>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="divide-y divide-red-100">
-                  {analysis.red_flags.map((flag, index) => {
-                    const isExpanded = expandedRedFlags.has(index);
-                    return (
-                      <div key={index} className="px-6 py-4">
-                        <button
-                          type="button"
-                          onClick={() => toggleRedFlag(index)}
-                          className="w-full text-left flex items-start gap-3"
-                        >
-                          <AlertTriangle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between gap-2">
-                              <h3 className="text-sm font-semibold text-gray-900">
-                                {flag.provision}
-                              </h3>
-                              {isExpanded ? (
-                                <EyeOff className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                              ) : (
-                                <Eye className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                              )}
-                            </div>
-                            {!isExpanded && (
-                              <p className="text-xs text-gray-500 mt-1 line-clamp-2">
-                                {flag.risk}
-                              </p>
-                            )}
-                          </div>
-                        </button>
-
-                        {isExpanded && (
-                          <div className="mt-3 ml-7 space-y-3">
-                            <div className="rounded-lg bg-red-50 border border-red-200 p-3">
-                              <p className="text-xs font-semibold text-red-800 mb-1">
-                                Risk
-                              </p>
-                              <p className="text-sm text-red-700 leading-relaxed">
-                                {flag.risk}
-                              </p>
-                            </div>
-                            <div className="rounded-lg bg-green-50 border border-green-200 p-3">
-                              <p className="text-xs font-semibold text-green-800 mb-1">
-                                Your Counter-Strategy
-                              </p>
-                              <p className="text-sm text-green-700 leading-relaxed">
-                                {flag.recommendation}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* ------------------------------------------------------------- */}
-            {/* 7. Adjuster Tactics                                            */}
-            {/* ------------------------------------------------------------- */}
-            <Card className="ring-2 ring-orange-200">
-              <CardHeader className="bg-orange-50 border-b-orange-200">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-orange-100">
-                    <Target className="w-4 h-4 text-orange-600" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold text-orange-900">
-                      Predicted Adjuster Tactics
-                    </h2>
-                    <p className="text-xs text-orange-700">
-                      {analysis.adjuster_tactics.length} tactics the adjuster
-                      may use -- and how to counter each one
-                    </p>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="divide-y divide-orange-100">
-                  {analysis.adjuster_tactics.map((item, index) => {
-                    const isExpanded = expandedTactics.has(index);
-                    return (
-                      <div key={index} className="px-6 py-4">
-                        <button
-                          type="button"
-                          onClick={() => toggleTactic(index)}
-                          className="w-full text-left flex items-start gap-3"
-                        >
-                          <Target className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between gap-2">
-                              <h3 className="text-sm font-semibold text-gray-900">
-                                {item.tactic}
-                              </h3>
-                              {isExpanded ? (
-                                <EyeOff className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                              ) : (
-                                <Eye className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                              )}
-                            </div>
-                            {!isExpanded && (
-                              <p className="text-xs text-gray-500 mt-1 line-clamp-2">
-                                {item.counter}
-                              </p>
-                            )}
-                          </div>
-                        </button>
-
-                        {isExpanded && (
-                          <div className="mt-3 ml-7">
-                            <div className="rounded-lg bg-orange-50 border border-orange-200 p-4">
-                              <div className="flex items-start gap-2 mb-2">
-                                <Shield className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                                <p className="text-xs font-semibold text-orange-800">
-                                  How to Counter This Tactic
-                                </p>
-                              </div>
-                              <p className="text-sm text-orange-900 leading-relaxed">
-                                {item.counter}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* ------------------------------------------------------------- */}
-            {/* 8. Disclaimer                                                  */}
-            {/* ------------------------------------------------------------- */}
-            <Card className="bg-gray-50 border-gray-200">
-              <CardContent className="py-4">
-                <div className="flex items-start gap-3">
-                  <Info className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-xs font-semibold text-gray-600 mb-1">
-                      Important Disclaimer
-                    </p>
-                    <p className="text-xs text-gray-500 leading-relaxed">
-                      This analysis is educational and does not constitute legal
-                      advice. Insurance policies are complex legal documents and
-                      their interpretation can vary by state and specific
-                      circumstances. The information provided is based on a
-                      general reading of your uploaded document and may not
-                      capture every nuance or amendment. For decisions involving
-                      significant financial amounts or legal disputes, consult
-                      with a licensed insurance attorney or public adjuster in
-                      your state.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </>
-        )}
+        {/* Disclaimer */}
+        <p className="text-caption text-zinc-400">
+          This analysis is educational and does not constitute legal advice.
+          Insurance policies are complex legal documents and their
+          interpretation can vary by state and specific circumstances. For
+          decisions involving significant financial amounts or legal disputes,
+          consult with a licensed insurance attorney or public adjuster in your
+          state.
+        </p>
       </div>
     </ClaimLayout>
   );

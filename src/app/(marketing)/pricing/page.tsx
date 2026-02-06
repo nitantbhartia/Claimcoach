@@ -2,180 +2,134 @@ import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, X } from "lucide-react";
-
-const plans = [
-  {
-    name: "Free",
-    price: "$0",
-    period: "",
-    description: "Explore the basics and see what ClaimCoach can do.",
-    features: [
-      { text: "1 active claim", included: true },
-      { text: "Basic documentation checklists", included: true },
-      { text: "General tips and guidance", included: true },
-      { text: "Claim status tracking", included: true },
-      { text: "Policy analysis", included: false },
-      { text: "Fairness Score", included: false },
-      { text: "Counter-offer generation", included: false },
-      { text: "Negotiation talking points", included: false },
-    ],
-    cta: "Start Free",
-    href: "/signup",
-    highlighted: false,
-  },
-  {
-    name: "Per Claim",
-    price: "$29",
-    period: "per claim",
-    description: "Full toolkit for a single claim. Pay only when you need it.",
-    badge: "Most Popular",
-    features: [
-      { text: "Everything in Free, plus:", included: true },
-      { text: "Full AI policy analysis", included: true },
-      { text: "Fairness Score (1-100)", included: true },
-      { text: "Counter-offer letter generation", included: true },
-      { text: "Negotiation talking points", included: true },
-      { text: "Evidence package compilation", included: true },
-      { text: "Escalation roadmap", included: true },
-      { text: "Downloadable PDF documents", included: true },
-    ],
-    cta: "Get Started",
-    href: "/signup",
-    highlighted: true,
-  },
-  {
-    name: "Pro Monthly",
-    price: "$14.99",
-    period: "per month",
-    description: "For landlords, families, and anyone managing multiple claims.",
-    features: [
-      { text: "Everything in Per Claim, plus:", included: true },
-      { text: "Unlimited claims", included: true },
-      { text: "Family coverage (up to 5 members)", included: true },
-      { text: "Priority AI analysis", included: true },
-      { text: "Claim history and analytics", included: true },
-      { text: "Proactive policy review", included: true },
-      { text: "Multi-property management", included: true },
-      { text: "Email support", included: true },
-    ],
-    cta: "Subscribe",
-    href: "/signup",
-    highlighted: false,
-  },
-];
+import { ArrowRight } from "lucide-react";
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen">
       <Header />
 
-      <main>
-        {/* Hero */}
-        <section className="py-16 sm:py-24 bg-gray-50">
+      <main className="flex-1">
+        {/* ---- HERO ---- */}
+        <section className="py-20 sm:py-28">
           <div className="container-wide text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-              Simple, transparent pricing
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Start free. Pay only when you need the full toolkit. The average user recovers
-              thousands more than our fee.
+            <h1 className="text-display-sm text-zinc-900">Simple pricing</h1>
+            <p className="mt-4 text-body-lg text-zinc-500 max-w-lg mx-auto">
+              Start free. Pay only when you need the full toolkit.
             </p>
           </div>
         </section>
 
-        {/* Plans */}
-        <section className="py-16 -mt-8">
-          <div className="container-wide">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {plans.map((plan) => (
-                <Card
-                  key={plan.name}
-                  className={
-                    plan.highlighted
-                      ? "border-2 border-brand-600 shadow-lg relative"
-                      : "relative"
-                  }
-                >
-                  {plan.badge && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <Badge variant="info" size="md">
-                        {plan.badge}
-                      </Badge>
-                    </div>
-                  )}
-                  <CardHeader>
-                    <h3 className="text-lg font-semibold text-gray-900">{plan.name}</h3>
-                    <div className="mt-2">
-                      <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
-                      {plan.period && (
-                        <span className="text-sm text-gray-500 ml-1">/{plan.period}</span>
-                      )}
-                    </div>
-                    <p className="text-sm text-gray-600 mt-2">{plan.description}</p>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-3">
-                      {plan.features.map((feature) => (
-                        <li key={feature.text} className="flex items-start gap-2">
-                          {feature.included ? (
-                            <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          ) : (
-                            <X className="w-5 h-5 text-gray-300 flex-shrink-0 mt-0.5" />
-                          )}
-                          <span
-                            className={
-                              feature.included ? "text-sm text-gray-700" : "text-sm text-gray-400"
-                            }
-                          >
-                            {feature.text}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                  <CardFooter>
-                    <Link href={plan.href} className="w-full">
-                      <Button
-                        variant={plan.highlighted ? "primary" : "outline"}
-                        className="w-full"
-                      >
-                        {plan.cta}
-                      </Button>
-                    </Link>
-                  </CardFooter>
-                </Card>
-              ))}
+        {/* ---- TIERS ---- */}
+        <section className="pb-20 sm:pb-28">
+          <div className="container-narrow">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Free */}
+              <div className="rounded-2xl border border-zinc-200 bg-white p-8 sm:p-10">
+                <h2 className="text-heading-lg text-zinc-900">Free</h2>
+                <p className="mt-1 text-display-sm text-zinc-900">$0</p>
+                <p className="mt-1 text-body-sm text-zinc-500">
+                  No credit card required
+                </p>
+
+                <div className="mt-8 space-y-3 text-body text-zinc-500">
+                  <p>&mdash; 1 active claim</p>
+                  <p>&mdash; Upload your policy and offer</p>
+                  <p>&mdash; Basic fairness score</p>
+                  <p>&mdash; Coverage summary</p>
+                </div>
+
+                <div className="mt-10">
+                  <Link href="/signup">
+                    <Button variant="outline" size="md" className="w-full">
+                      Start Free
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Per Claim */}
+              <div className="rounded-2xl border border-brand-200 bg-brand-50 p-8 sm:p-10">
+                <h2 className="text-heading-lg text-zinc-900">Per Claim</h2>
+                <p className="mt-1 text-display-sm text-zinc-900">$29</p>
+                <p className="mt-1 text-body-sm text-zinc-500">
+                  One-time, per claim
+                </p>
+
+                <div className="mt-8 space-y-3 text-body text-zinc-500">
+                  <p>&mdash; Everything in Free</p>
+                  <p>&mdash; Full AI policy analysis</p>
+                  <p>&mdash; Detailed fairness score with breakdown</p>
+                  <p>&mdash; Professional counter-offer letter</p>
+                  <p>&mdash; Adjuster call talking points</p>
+                  <p>&mdash; Step-by-step escalation guidance</p>
+                </div>
+
+                <div className="mt-10">
+                  <Link href="/signup">
+                    <Button
+                      size="md"
+                      className="w-full bg-brand-500 text-white hover:bg-brand-600 focus:ring-brand-500"
+                    >
+                      Get Started
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             </div>
+
+            <p className="mt-8 text-body-sm text-zinc-400 text-center">
+              Need unlimited claims?{" "}
+              <Link
+                href="/signup"
+                className="text-brand-500 underline underline-offset-2 hover:text-brand-600"
+              >
+                Pro: $14.99/mo
+              </Link>{" "}
+              for families and landlords managing multiple claims.
+            </p>
           </div>
         </section>
 
-        {/* FAQ-like section */}
-        <section className="py-16 bg-gray-50">
-          <div className="container-narrow text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              The math speaks for itself
+        <div className="divider" />
+
+        {/* ---- ROI ---- */}
+        <section className="section-gap">
+          <div className="container-narrow">
+            <h2 className="text-display text-zinc-900">
+              The math is simple.
             </h2>
-            <p className="text-gray-600 max-w-xl mx-auto mb-8">
-              The average auto property damage claim is underpaid by $1,500-$5,000. Our $29
-              per-claim fee pays for itself many times over with a successful counter-offer.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-              <div className="p-6 bg-white rounded-xl border border-gray-200">
-                <p className="text-3xl font-bold text-brand-600">$29</p>
-                <p className="text-sm text-gray-600 mt-1">ClaimCoach fee</p>
+
+            <div className="mt-12 flex flex-col sm:flex-row items-baseline gap-4 sm:gap-8">
+              <div>
+                <p className="text-display-xl text-zinc-900">$29</p>
+                <p className="text-body-sm text-zinc-500 mt-1">
+                  ClaimCoach fee
+                </p>
               </div>
-              <div className="p-6 bg-white rounded-xl border border-gray-200">
-                <p className="text-3xl font-bold text-green-600">$2,100+</p>
-                <p className="text-sm text-gray-600 mt-1">Average additional recovery</p>
-              </div>
-              <div className="p-6 bg-white rounded-xl border border-gray-200">
-                <p className="text-3xl font-bold text-brand-600">72x</p>
-                <p className="text-sm text-gray-600 mt-1">Return on investment</p>
+
+              <span
+                className="hidden sm:block text-display text-zinc-300 select-none"
+                aria-hidden="true"
+              >
+                &rarr;
+              </span>
+
+              <div>
+                <p className="text-display-xl text-brand-500">$2,100+</p>
+                <p className="text-body-sm text-zinc-500 mt-1">
+                  Average additional recovery
+                </p>
               </div>
             </div>
+
+            <p className="mt-10 text-body-lg text-zinc-600 max-w-xl leading-relaxed">
+              The average auto property damage claim is underpaid by
+              $1,500&ndash;$5,000. A single successful counter-offer typically
+              recovers more than 70x our fee. You pay $29 once -- and keep every
+              dollar of the increase.
+            </p>
           </div>
         </section>
       </main>

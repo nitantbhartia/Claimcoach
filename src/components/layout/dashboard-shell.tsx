@@ -3,86 +3,83 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import {
-  Shield,
-  LayoutDashboard,
-  FilePlus,
-  Settings,
-  LogOut,
-  ChevronLeft,
-  Bell,
-} from "lucide-react";
+import { LayoutDashboard, FilePlus, LogOut } from "lucide-react";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/claims/new", label: "New Claim", icon: FilePlus },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-surface-50">
       {/* Top Bar */}
-      <header className="sticky top-0 z-40 bg-white border-b border-gray-200">
-        <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center gap-2">
-              <Shield className="w-7 h-7 text-brand-600" />
-              <span className="text-lg font-bold text-gray-900 hidden sm:inline">
-                Claim<span className="text-brand-600">Coach</span>
-              </span>
-            </Link>
-          </div>
+      <header className="sticky top-0 z-40 bg-white border-b border-zinc-200">
+        <div className="flex items-center justify-between h-14 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <span className="text-body-lg font-semibold">
+              <span className="text-zinc-900">Claim</span>
+              <span className="text-brand-500">Coach</span>
+            </span>
+          </Link>
 
-          <nav className="hidden md:flex items-center gap-1">
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-6">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+              const isActive =
+                pathname === item.href ||
+                pathname.startsWith(item.href + "/");
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                    "relative flex items-center gap-1.5 pb-0.5 text-body-sm transition-colors",
                     isActive
-                      ? "bg-brand-50 text-brand-700"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                      ? "text-zinc-900 font-medium"
+                      : "text-zinc-500 hover:text-zinc-700"
                   )}
                 >
                   <Icon className="w-4 h-4" />
                   {item.label}
+                  {isActive && (
+                    <span className="absolute -bottom-[17px] left-0 right-0 h-0.5 bg-brand-500 rounded-full" />
+                  )}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="flex items-center gap-3">
-            <button className="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors relative">
-              <Bell className="w-5 h-5" />
-            </button>
-            <button className="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors">
-              <LogOut className="w-5 h-5" />
-            </button>
-          </div>
+          {/* User actions */}
+          <button className="flex items-center gap-1.5 text-body-sm text-zinc-500 hover:text-zinc-700 transition-colors">
+            <LogOut className="w-4 h-4" />
+            <span className="hidden sm:inline">Log out</span>
+          </button>
         </div>
 
-        {/* Mobile Bottom Nav */}
-        <div className="md:hidden flex border-t border-gray-100">
+        {/* Mobile nav */}
+        <div className="md:hidden flex gap-4 px-4 overflow-x-auto border-t border-zinc-100">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+            const isActive =
+              pathname === item.href ||
+              pathname.startsWith(item.href + "/");
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex-1 flex flex-col items-center gap-1 py-2 text-xs font-medium transition-colors",
-                  isActive ? "text-brand-600" : "text-gray-500"
+                  "flex items-center gap-1.5 py-2.5 text-body-sm whitespace-nowrap border-b-2 transition-colors",
+                  isActive
+                    ? "text-zinc-900 font-medium border-brand-500"
+                    : "text-zinc-500 border-transparent hover:text-zinc-700"
                 )}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-4 h-4" />
                 {item.label}
               </Link>
             );
@@ -91,7 +88,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>
     </div>

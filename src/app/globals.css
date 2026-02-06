@@ -2,38 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&display=swap');
 
 @layer base {
   html {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   body {
-    @apply bg-white text-gray-900 antialiased;
+    @apply bg-white text-zinc-900;
+  }
+
+  ::selection {
+    @apply bg-brand-100 text-brand-900;
   }
 }
 
 @layer components {
   .container-narrow {
-    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-3xl mx-auto px-5 sm:px-6;
   }
 
   .container-wide {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-6xl mx-auto px-5 sm:px-6;
   }
 
-  .gradient-brand {
-    @apply bg-gradient-to-r from-brand-600 to-brand-500;
+  .section-gap {
+    @apply py-20 sm:py-28;
   }
 
-  .gradient-hero {
-    @apply bg-gradient-to-br from-brand-900 via-brand-800 to-brand-600;
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-500 to-brand-700;
   }
-}
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .divider {
+    @apply border-t border-zinc-100;
   }
 }
