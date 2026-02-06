@@ -238,10 +238,10 @@ export default function NewClaimPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-heading-lg text-zinc-900">
+          <h2 className="text-heading-lg text-slate-900">
             What type of claim do you have?
           </h2>
-          <p className="mt-2 text-body text-zinc-500">
+          <p className="mt-2 text-body text-slate-500">
             Select the category that best matches your situation. We are
             currently focused on auto property damage claims.
           </p>
@@ -262,16 +262,16 @@ export default function NewClaimPage() {
                 className={
                   "text-left rounded-lg border p-4 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 " +
                   (isSelected
-                    ? "border-zinc-200 border-l-4 border-l-brand-500 bg-white shadow-card"
+                    ? "border-slate-200 border-l-4 border-l-brand-500 bg-white shadow-card"
                     : type.enabled
-                    ? "border-zinc-200 bg-white hover:border-zinc-300 cursor-pointer"
-                    : "border-zinc-100 bg-zinc-50 cursor-not-allowed")
+                    ? "border-slate-200 bg-white hover:border-slate-300 cursor-pointer"
+                    : "border-slate-100 bg-slate-50 cursor-not-allowed")
                 }
               >
                 <h3
                   className={
                     "text-body font-semibold " +
-                    (type.enabled ? "text-zinc-900" : "text-zinc-400")
+                    (type.enabled ? "text-slate-900" : "text-slate-400")
                   }
                 >
                   {type.title}
@@ -279,14 +279,14 @@ export default function NewClaimPage() {
                 <p
                   className={
                     "mt-1 text-body-sm " +
-                    (type.enabled ? "text-zinc-500" : "text-zinc-300")
+                    (type.enabled ? "text-slate-500" : "text-slate-300")
                   }
                 >
                   {type.description}
                 </p>
 
                 {!type.enabled && (
-                  <span className="mt-2 inline-block text-caption text-zinc-400 font-medium">
+                  <span className="mt-2 inline-block text-caption text-slate-400 font-medium">
                     Coming soon
                   </span>
                 )}
@@ -303,10 +303,10 @@ export default function NewClaimPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-heading-lg text-zinc-900">
+          <h2 className="text-heading-lg text-slate-900">
             Tell us about the accident
           </h2>
-          <p className="mt-2 text-body text-zinc-500">
+          <p className="mt-2 text-body text-slate-500">
             This helps us understand the context of your claim and prepare the
             best analysis.
           </p>
@@ -355,10 +355,10 @@ export default function NewClaimPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-heading-lg text-zinc-900">
+          <h2 className="text-heading-lg text-slate-900">
             Insurance information
           </h2>
-          <p className="mt-2 text-body text-zinc-500">
+          <p className="mt-2 text-body text-slate-500">
             Let us know where you stand with your insurance company so we can
             tailor our guidance.
           </p>
@@ -367,7 +367,7 @@ export default function NewClaimPage() {
         <div className="space-y-5">
           {/* Filed with insurer? */}
           <div className="space-y-1">
-            <label className="block text-body-sm font-medium text-zinc-700">
+            <label className="block text-body-sm font-medium text-slate-700">
               Have you filed a claim with your insurer?
             </label>
             <div className="flex gap-3 mt-2">
@@ -378,7 +378,7 @@ export default function NewClaimPage() {
                   "flex-1 py-2.5 px-4 rounded-lg border text-body-sm font-medium transition-all " +
                   (formData.filed_with_insurer
                     ? "border-brand-500 bg-brand-50 text-brand-700"
-                    : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300")
+                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300")
                 }
               >
                 Yes, I have
@@ -394,7 +394,7 @@ export default function NewClaimPage() {
                   "flex-1 py-2.5 px-4 rounded-lg border text-body-sm font-medium transition-all " +
                   (!formData.filed_with_insurer
                     ? "border-brand-500 bg-brand-50 text-brand-700"
-                    : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300")
+                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300")
                 }
               >
                 Not yet
@@ -404,7 +404,7 @@ export default function NewClaimPage() {
 
           {/* Conditional: insurer name + claim number */}
           {formData.filed_with_insurer && (
-            <div className="space-y-5 pl-4 border-l-2 border-zinc-100">
+            <div className="space-y-5 pl-4 border-l-2 border-slate-100">
               <Input
                 id="insurer_name"
                 label="Insurance company name"
@@ -426,7 +426,7 @@ export default function NewClaimPage() {
 
           {/* Have you received an offer? */}
           <div className="space-y-1">
-            <label className="block text-body-sm font-medium text-zinc-700">
+            <label className="block text-body-sm font-medium text-slate-700">
               Have you received a settlement offer?
             </label>
             <div className="flex gap-3 mt-2">
@@ -437,7 +437,7 @@ export default function NewClaimPage() {
                   "flex-1 py-2.5 px-4 rounded-lg border text-body-sm font-medium transition-all " +
                   (formData.has_offer
                     ? "border-brand-500 bg-brand-50 text-brand-700"
-                    : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300")
+                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300")
                 }
               >
                 Yes
@@ -452,7 +452,7 @@ export default function NewClaimPage() {
                   "flex-1 py-2.5 px-4 rounded-lg border text-body-sm font-medium transition-all " +
                   (!formData.has_offer
                     ? "border-brand-500 bg-brand-50 text-brand-700"
-                    : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300")
+                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300")
                 }
               >
                 No
@@ -462,7 +462,7 @@ export default function NewClaimPage() {
 
           {/* Conditional: offer amount */}
           {formData.has_offer && (
-            <div className="pl-4 border-l-2 border-zinc-100">
+            <div className="pl-4 border-l-2 border-slate-100">
               <Input
                 id="offer_amount"
                 label="Settlement offer amount"
@@ -495,10 +495,10 @@ export default function NewClaimPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-heading-lg text-zinc-900">
+          <h2 className="text-heading-lg text-slate-900">
             Your vehicle details
           </h2>
-          <p className="mt-2 text-body text-zinc-500">
+          <p className="mt-2 text-body text-slate-500">
             We need basic vehicle information to look up comparable values and
             assess the fairness of any offer.
           </p>
@@ -540,10 +540,10 @@ export default function NewClaimPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-heading-lg text-zinc-900">
+          <h2 className="text-heading-lg text-slate-900">
             Upload your insurance policy
           </h2>
-          <p className="mt-2 text-body text-zinc-500">
+          <p className="mt-2 text-body text-slate-500">
             If you have a copy of your insurance policy, upload it here so our
             AI can identify your coverages, limits, and any hidden benefits.
             This step is optional -- you can always add it later.
@@ -559,11 +559,11 @@ export default function NewClaimPage() {
           hint="PDF up to 20 MB. Your declarations page or full policy document."
         />
 
-        <div className="rounded-lg border border-zinc-200 p-4">
-          <p className="text-body-sm font-medium text-zinc-900">
+        <div className="rounded-lg border border-slate-200 p-4">
+          <p className="text-body-sm font-medium text-slate-900">
             Where do I find my policy?
           </p>
-          <ul className="mt-2 list-disc pl-4 space-y-1 text-body-sm text-zinc-500">
+          <ul className="mt-2 list-disc pl-4 space-y-1 text-body-sm text-slate-500">
             <li>
               Check your email for a &quot;Declarations Page&quot; or
               &quot;Policy Documents&quot; email from your insurer.
@@ -587,10 +587,10 @@ export default function NewClaimPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-heading-lg text-zinc-900">
+          <h2 className="text-heading-lg text-slate-900">
             Review your information
           </h2>
-          <p className="mt-2 text-body text-zinc-500">
+          <p className="mt-2 text-body text-slate-500">
             Please confirm everything looks correct before we create your claim.
             You can click &quot;Edit&quot; on any section to go back and make
             changes.
@@ -702,9 +702,9 @@ export default function NewClaimPage() {
         </div>
 
         {/* Disclaimer */}
-        <div className="rounded-lg border border-zinc-200 p-4">
-          <p className="text-body-sm text-zinc-500 leading-relaxed">
-            <span className="font-medium text-zinc-700">Disclaimer:</span>{" "}
+        <div className="rounded-lg border border-slate-200 p-4">
+          <p className="text-body-sm text-slate-500 leading-relaxed">
+            <span className="font-medium text-slate-700">Disclaimer:</span>{" "}
             ClaimCoach provides informational guidance to help you understand
             your insurance claim. It is not legal advice, and we recommend
             consulting an attorney for complex disputes.
@@ -748,18 +748,18 @@ export default function NewClaimPage() {
       {/* ------------------------------------------------------------------ */}
       {/*  Header + Progress bar                                              */}
       {/* ------------------------------------------------------------------ */}
-      <header className="bg-white border-b border-zinc-200 sticky top-0 z-30">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="font-semibold text-lg">
-            <span className="text-zinc-900">Claim</span>
+            <span className="text-slate-900">Claim</span>
             <span className="text-brand-500">Coach</span>
           </Link>
 
-          <span className="text-caption text-zinc-400">
+          <span className="text-caption text-slate-400">
             Step {currentStep} of {TOTAL_STEPS}
             <span className="hidden sm:inline">
               {" "}&mdash;{" "}
-              <span className="text-zinc-600">
+              <span className="text-slate-600">
                 {STEP_LABELS[currentStep - 1]}
               </span>
             </span>
@@ -767,7 +767,7 @@ export default function NewClaimPage() {
         </div>
 
         {/* Progress bar: h-1 with brand-500 fill */}
-        <div className="h-1 bg-zinc-100">
+        <div className="h-1 bg-slate-100">
           <div
             className="h-full bg-brand-500 transition-all duration-500 ease-out"
             style={{ width: `${progressPercent}%` }}
@@ -791,7 +791,7 @@ export default function NewClaimPage() {
       {/* ------------------------------------------------------------------ */}
       {/*  Navigation footer                                                   */}
       {/* ------------------------------------------------------------------ */}
-      <footer className="bg-white border-t border-zinc-200 sticky bottom-0 z-30">
+      <footer className="bg-white border-t border-slate-200 sticky bottom-0 z-30">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           {/* Back button */}
           {currentStep > 1 ? (
@@ -844,9 +844,9 @@ function SummarySection({
   children: React.ReactNode;
 }) {
   return (
-    <div className="border-b border-zinc-100 last:border-b-0 pb-4 last:pb-0">
+    <div className="border-b border-slate-100 last:border-b-0 pb-4 last:pb-0">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-body font-semibold text-zinc-900">{title}</h3>
+        <h3 className="text-body font-semibold text-slate-900">{title}</h3>
         <button
           type="button"
           onClick={onEdit}
@@ -863,8 +863,8 @@ function SummarySection({
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-4">
-      <dt className="text-body-sm text-zinc-400 sm:w-40 shrink-0">{label}</dt>
-      <dd className="text-body-sm text-zinc-900 break-words">{value}</dd>
+      <dt className="text-body-sm text-slate-400 sm:w-40 shrink-0">{label}</dt>
+      <dd className="text-body-sm text-slate-900 break-words">{value}</dd>
     </div>
   );
 }

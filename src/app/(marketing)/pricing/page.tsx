@@ -13,8 +13,8 @@ export default function PricingPage() {
         {/* ---- HERO ---- */}
         <section className="py-20 sm:py-28">
           <div className="container-wide text-center">
-            <h1 className="text-display-sm text-zinc-900">Simple pricing</h1>
-            <p className="mt-4 text-body-lg text-zinc-500 max-w-lg mx-auto">
+            <h1 className="text-display-sm text-slate-900">Simple pricing</h1>
+            <p className="mt-4 text-body-lg text-slate-500 max-w-lg mx-auto">
               Start free. Pay only when you need the full toolkit.
             </p>
           </div>
@@ -25,14 +25,14 @@ export default function PricingPage() {
           <div className="container-narrow">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Free */}
-              <div className="rounded-2xl border border-zinc-200 bg-white p-8 sm:p-10">
-                <h2 className="text-heading-lg text-zinc-900">Free</h2>
-                <p className="mt-1 text-display-sm text-zinc-900">$0</p>
-                <p className="mt-1 text-body-sm text-zinc-500">
+              <div className="rounded-2xl border border-slate-200 bg-white p-8 sm:p-10">
+                <h2 className="text-heading-lg text-slate-900">Free</h2>
+                <p className="mt-1 text-display-sm text-slate-900">$0</p>
+                <p className="mt-1 text-body-sm text-slate-500">
                   No credit card required
                 </p>
 
-                <div className="mt-8 space-y-3 text-body text-zinc-500">
+                <div className="mt-8 space-y-3 text-body text-slate-500">
                   <p>&mdash; 1 active claim</p>
                   <p>&mdash; Upload your policy and offer</p>
                   <p>&mdash; Basic fairness score</p>
@@ -50,13 +50,13 @@ export default function PricingPage() {
 
               {/* Per Claim */}
               <div className="rounded-2xl border border-brand-200 bg-brand-50 p-8 sm:p-10">
-                <h2 className="text-heading-lg text-zinc-900">Per Claim</h2>
-                <p className="mt-1 text-display-sm text-zinc-900">$29</p>
-                <p className="mt-1 text-body-sm text-zinc-500">
+                <h2 className="text-heading-lg text-slate-900">Per Claim</h2>
+                <p className="mt-1 text-display-sm text-slate-900">$29</p>
+                <p className="mt-1 text-body-sm text-slate-500">
                   One-time, per claim
                 </p>
 
-                <div className="mt-8 space-y-3 text-body text-zinc-500">
+                <div className="mt-8 space-y-3 text-body text-slate-500">
                   <p>&mdash; Everything in Free</p>
                   <p>&mdash; Full AI policy analysis</p>
                   <p>&mdash; Detailed fairness score with breakdown</p>
@@ -79,7 +79,7 @@ export default function PricingPage() {
               </div>
             </div>
 
-            <p className="mt-8 text-body-sm text-zinc-400 text-center">
+            <p className="mt-8 text-body-sm text-slate-400 text-center">
               Need unlimited claims?{" "}
               <Link
                 href="/signup"
@@ -97,20 +97,20 @@ export default function PricingPage() {
         {/* ---- ROI ---- */}
         <section className="section-gap">
           <div className="container-narrow">
-            <h2 className="text-display text-zinc-900">
+            <h2 className="text-display text-slate-900">
               The math is simple.
             </h2>
 
             <div className="mt-12 flex flex-col sm:flex-row items-baseline gap-4 sm:gap-8">
               <div>
-                <p className="text-display-xl text-zinc-900">$29</p>
-                <p className="text-body-sm text-zinc-500 mt-1">
+                <p className="text-display-xl text-slate-900">$29</p>
+                <p className="text-body-sm text-slate-500 mt-1">
                   ClaimCoach fee
                 </p>
               </div>
 
               <span
-                className="hidden sm:block text-display text-zinc-300 select-none"
+                className="hidden sm:block text-display text-slate-300 select-none"
                 aria-hidden="true"
               >
                 &rarr;
@@ -118,13 +118,13 @@ export default function PricingPage() {
 
               <div>
                 <p className="text-display-xl text-brand-500">$2,100+</p>
-                <p className="text-body-sm text-zinc-500 mt-1">
+                <p className="text-body-sm text-slate-500 mt-1">
                   Average additional recovery
                 </p>
               </div>
             </div>
 
-            <p className="mt-10 text-body-lg text-zinc-600 max-w-xl leading-relaxed">
+            <p className="mt-10 text-body-lg text-slate-600 max-w-xl leading-relaxed">
               The average auto property damage claim is underpaid by
               $1,500&ndash;$5,000. A single successful counter-offer typically
               recovers more than 70x our fee. You pay $29 once -- and keep every

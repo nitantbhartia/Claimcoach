@@ -25,18 +25,18 @@ export function ClaimLayout({ children, claimId }: ClaimLayoutProps) {
   return (
     <div className="min-h-screen bg-surface-50">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white border-b border-zinc-200">
+      <header className="sticky top-0 z-40 bg-white border-b border-slate-200">
         {/* Top row: back link + claim ID */}
         <div className="flex items-center justify-between h-14 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
           <Link
             href="/dashboard"
-            className="flex items-center gap-1.5 text-body-sm text-zinc-500 hover:text-zinc-700 transition-colors"
+            className="flex items-center gap-1.5 text-body-sm text-slate-500 hover:text-slate-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Dashboard
           </Link>
 
-          <span className="text-body-sm font-medium text-zinc-900">
+          <span className="text-body-sm font-medium text-slate-900">
             Claim #{claimId.slice(0, 8)}
           </span>
 
@@ -57,8 +57,8 @@ export function ClaimLayout({ children, claimId }: ClaimLayoutProps) {
                   className={cn(
                     "pb-3 text-body-sm whitespace-nowrap border-b-2 transition-colors",
                     isActive
-                      ? "text-zinc-900 font-medium border-brand-500"
-                      : "text-zinc-500 border-transparent hover:text-zinc-700"
+                      ? "text-slate-900 font-medium border-brand-500"
+                      : "text-slate-500 border-transparent hover:text-slate-700"
                   )}
                 >
                   {tab.label}

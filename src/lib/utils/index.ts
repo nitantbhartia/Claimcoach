@@ -37,7 +37,7 @@ export function getStatusLabel(status: ClaimStatus): string {
 
 export function getStatusColor(status: ClaimStatus): string {
   const colors: Record<ClaimStatus, string> = {
-    setup: "bg-gray-100 text-gray-700",
+    setup: "bg-slate-100 text-slate-700",
     documenting: "bg-blue-100 text-blue-700",
     policy_review: "bg-purple-100 text-purple-700",
     filed: "bg-yellow-100 text-yellow-700",

@@ -192,11 +192,11 @@ export default function DocumentsPage() {
         {/* Header                                                           */}
         {/* ---------------------------------------------------------------- */}
         <div>
-          <h1 className="text-heading-lg text-zinc-900">Documentation</h1>
-          <p className="text-body-sm text-zinc-500 mt-1">
+          <h1 className="text-heading-lg text-slate-900">Documentation</h1>
+          <p className="text-body-sm text-slate-500 mt-1">
             {completedRequired} of {requiredItems.length} required items completed
           </p>
-          <div className="mt-3 h-1 w-full rounded-full bg-zinc-200">
+          <div className="mt-3 h-1 w-full rounded-full bg-slate-200">
             <div
               className="h-1 rounded-full bg-brand-500 transition-all duration-500"
               style={{ width: `${progressPercent}%` }}
@@ -207,32 +207,32 @@ export default function DocumentsPage() {
         {/* ---------------------------------------------------------------- */}
         {/* Checklist                                                        */}
         {/* ---------------------------------------------------------------- */}
-        <div className="bg-white rounded-lg border border-zinc-200 shadow-card">
+        <div className="bg-white rounded-lg border border-slate-200 shadow-card">
           {CATEGORY_ORDER.filter((cat) => grouped[cat]).map((category, catIdx) => {
             const items = grouped[category];
             const isCollapsed = collapsedSections[category] ?? false;
             const catCompleted = items.filter((i) => i.completed).length;
 
             return (
-              <div key={category} className={catIdx > 0 ? "border-t border-zinc-200" : ""}>
+              <div key={category} className={catIdx > 0 ? "border-t border-slate-200" : ""}>
                 {/* Section header */}
                 <button
                   type="button"
                   onClick={() => toggleSection(category)}
-                  className="w-full flex items-center justify-between px-5 py-3 hover:bg-zinc-50 transition-colors"
+                  className="w-full flex items-center justify-between px-5 py-3 hover:bg-slate-50 transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-body-sm font-medium uppercase tracking-wider text-zinc-400">
+                    <span className="text-body-sm font-medium uppercase tracking-wider text-slate-400">
                       {CATEGORY_LABELS[category] ?? category}
                     </span>
-                    <span className="text-caption text-zinc-400">
+                    <span className="text-caption text-slate-400">
                       {catCompleted}/{items.length}
                     </span>
                   </div>
                   {isCollapsed ? (
-                    <ChevronDown className="w-4 h-4 text-zinc-400" />
+                    <ChevronDown className="w-4 h-4 text-slate-400" />
                   ) : (
-                    <ChevronUp className="w-4 h-4 text-zinc-400" />
+                    <ChevronUp className="w-4 h-4 text-slate-400" />
                   )}
                 </button>
 
@@ -241,7 +241,7 @@ export default function DocumentsPage() {
                   <div>
                     {items.map((item, i) => (
                       <div key={item.id}>
-                        {i > 0 && <div className="mx-5 border-t border-zinc-100" />}
+                        {i > 0 && <div className="mx-5 border-t border-slate-100" />}
                         <div className="flex items-center gap-3 px-5 py-2.5">
                           {/* Checkbox */}
                           <button
@@ -259,21 +259,21 @@ export default function DocumentsPage() {
                                 <Check className="w-3 h-3 text-white" />
                               </div>
                             ) : (
-                              <Circle className="w-5 h-5 text-zinc-300" />
+                              <Circle className="w-5 h-5 text-slate-300" />
                             )}
                           </button>
 
                           {/* Label */}
                           <span
                             className={`flex-1 text-body-sm ${
-                              item.completed ? "line-through text-zinc-400" : "text-zinc-900"
+                              item.completed ? "line-through text-slate-400" : "text-slate-900"
                             }`}
                           >
                             {item.label}
                           </span>
 
                           {/* Required / Optional */}
-                          <span className="text-caption text-zinc-400 flex-shrink-0">
+                          <span className="text-caption text-slate-400 flex-shrink-0">
                             {item.required ? "Required" : "Optional"}
                           </span>
 
@@ -312,27 +312,27 @@ export default function DocumentsPage() {
         {/* ---------------------------------------------------------------- */}
         <div>
           <div className="flex items-baseline justify-between mb-4">
-            <h2 className="text-heading text-zinc-900">Expenses</h2>
-            <span className="text-heading text-zinc-900">{formatCurrency(expenseTotal)}</span>
+            <h2 className="text-heading text-slate-900">Expenses</h2>
+            <span className="text-heading text-slate-900">{formatCurrency(expenseTotal)}</span>
           </div>
 
           {expenses.length > 0 && (
-            <div className="bg-white rounded-lg border border-zinc-200 shadow-card divide-y divide-zinc-100">
+            <div className="bg-white rounded-lg border border-slate-200 shadow-card divide-y divide-slate-100">
               {expenses.map((expense) => (
                 <div key={expense.id} className="flex items-center gap-4 px-5 py-3">
-                  <span className="text-body-sm text-zinc-900 flex-1 min-w-0 truncate">
+                  <span className="text-body-sm text-slate-900 flex-1 min-w-0 truncate">
                     {expense.description}
                   </span>
-                  <span className="text-caption text-zinc-400 flex-shrink-0">
+                  <span className="text-caption text-slate-400 flex-shrink-0">
                     {formatExpenseCategory(expense.category)}
                   </span>
-                  <span className="text-body-sm font-medium text-zinc-900 flex-shrink-0">
+                  <span className="text-body-sm font-medium text-slate-900 flex-shrink-0">
                     {formatCurrency(expense.amount)}
                   </span>
                   <button
                     type="button"
                     onClick={() => removeExpense(expense.id)}
-                    className="p-1 text-zinc-400 hover:text-red-500 transition-colors flex-shrink-0"
+                    className="p-1 text-slate-400 hover:text-red-500 transition-colors flex-shrink-0"
                     aria-label={`Remove expense: ${expense.description}`}
                   >
                     <Trash2 className="w-4 h-4" />
@@ -343,7 +343,7 @@ export default function DocumentsPage() {
           )}
 
           {expenses.length === 0 && (
-            <p className="text-body-sm text-zinc-400 py-6 text-center">
+            <p className="text-body-sm text-slate-400 py-6 text-center">
               No expenses tracked yet. Add your first below.
             </p>
           )}
@@ -400,24 +400,24 @@ export default function DocumentsPage() {
         {/* ---------------------------------------------------------------- */}
         <div>
           <div className="flex items-baseline gap-2 mb-4">
-            <h2 className="text-heading text-zinc-900">Files</h2>
-            <span className="text-body-sm text-zinc-400">{MOCK_UPLOADED_FILES.length}</span>
+            <h2 className="text-heading text-slate-900">Files</h2>
+            <span className="text-body-sm text-slate-400">{MOCK_UPLOADED_FILES.length}</span>
           </div>
 
           {MOCK_UPLOADED_FILES.length > 0 ? (
-            <div className="bg-white rounded-lg border border-zinc-200 shadow-card divide-y divide-zinc-100">
+            <div className="bg-white rounded-lg border border-slate-200 shadow-card divide-y divide-slate-100">
               {MOCK_UPLOADED_FILES.map((doc) => (
                 <div key={doc.id} className="flex items-center gap-4 px-5 py-3">
-                  <span className="text-body-sm text-zinc-900 flex-1 min-w-0 truncate">
+                  <span className="text-body-sm text-slate-900 flex-1 min-w-0 truncate">
                     {doc.fileName}
                   </span>
-                  <span className="text-caption text-zinc-400 flex-shrink-0">
+                  <span className="text-caption text-slate-400 flex-shrink-0">
                     {CATEGORY_LABELS[doc.category] ?? doc.category}
                   </span>
-                  <span className="text-caption text-zinc-400 flex-shrink-0">
+                  <span className="text-caption text-slate-400 flex-shrink-0">
                     {formatFileSize(doc.size)}
                   </span>
-                  <span className="text-caption text-zinc-400 flex-shrink-0">
+                  <span className="text-caption text-slate-400 flex-shrink-0">
                     {new Date(doc.uploadedAt).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -427,7 +427,7 @@ export default function DocumentsPage() {
               ))}
             </div>
           ) : (
-            <p className="text-body-sm text-zinc-400 py-6 text-center">No files uploaded yet.</p>
+            <p className="text-body-sm text-slate-400 py-6 text-center">No files uploaded yet.</p>
           )}
         </div>
       </div>

@@ -16,12 +16,12 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-surface-50">
       {/* Top Bar */}
-      <header className="sticky top-0 z-40 bg-white border-b border-zinc-200">
+      <header className="sticky top-0 z-40 bg-white border-b border-slate-200">
         <div className="flex items-center justify-between h-14 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <span className="text-body-lg font-semibold">
-              <span className="text-zinc-900">Claim</span>
+              <span className="text-slate-900">Claim</span>
               <span className="text-brand-500">Coach</span>
             </span>
           </Link>
@@ -40,8 +40,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "relative flex items-center gap-1.5 pb-0.5 text-body-sm transition-colors",
                     isActive
-                      ? "text-zinc-900 font-medium"
-                      : "text-zinc-500 hover:text-zinc-700"
+                      ? "text-slate-900 font-medium"
+                      : "text-slate-500 hover:text-slate-700"
                   )}
                 >
                   <Icon className="w-4 h-4" />
@@ -55,14 +55,14 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           </nav>
 
           {/* User actions */}
-          <button className="flex items-center gap-1.5 text-body-sm text-zinc-500 hover:text-zinc-700 transition-colors">
+          <button className="flex items-center gap-1.5 text-body-sm text-slate-500 hover:text-slate-700 transition-colors">
             <LogOut className="w-4 h-4" />
             <span className="hidden sm:inline">Log out</span>
           </button>
         </div>
 
         {/* Mobile nav */}
-        <div className="md:hidden flex gap-4 px-4 overflow-x-auto border-t border-zinc-100">
+        <div className="md:hidden flex gap-4 px-4 overflow-x-auto border-t border-slate-100">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive =
@@ -75,8 +75,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex items-center gap-1.5 py-2.5 text-body-sm whitespace-nowrap border-b-2 transition-colors",
                   isActive
-                    ? "text-zinc-900 font-medium border-brand-500"
-                    : "text-zinc-500 border-transparent hover:text-zinc-700"
+                    ? "text-slate-900 font-medium border-brand-500"
+                    : "text-slate-500 border-transparent hover:text-slate-700"
                 )}
               >
                 <Icon className="w-4 h-4" />

@@ -36,7 +36,7 @@ const MOCK_CLAIM = {
 
 function getStatusDotColor(status: ClaimStatus): string {
   const map: Record<ClaimStatus, string> = {
-    setup: "bg-zinc-400",
+    setup: "bg-slate-400",
     documenting: "bg-blue-500",
     policy_review: "bg-brand-500",
     filed: "bg-yellow-500",
@@ -106,22 +106,22 @@ export default function ClaimOverviewPage() {
         {/* -------------------------------------------------------------- */}
         {/* 1. Status bar                                                   */}
         {/* -------------------------------------------------------------- */}
-        <div className="bg-white border border-zinc-200 rounded-lg shadow-card px-5 py-4">
+        <div className="bg-white border border-slate-200 rounded-lg shadow-card px-5 py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-4">
               {/* Status */}
               <div className="flex items-center gap-2">
                 <span className={`w-2 h-2 rounded-full ${dotColor}`} />
-                <span className="text-body-sm font-medium text-zinc-900">
+                <span className="text-body-sm font-medium text-slate-900">
                   {statusLabel}
                 </span>
               </div>
 
               {/* Divider */}
-              <span className="hidden sm:block w-px h-4 bg-zinc-200" />
+              <span className="hidden sm:block w-px h-4 bg-slate-200" />
 
               {/* Progress */}
-              <span className="text-body-sm text-zinc-500">
+              <span className="text-body-sm text-slate-500">
                 {progress}% complete
               </span>
             </div>
@@ -142,32 +142,32 @@ export default function ClaimOverviewPage() {
           {/* Left column - wider (3/5) */}
           <div className="lg:col-span-3 space-y-6">
             {/* Claim details */}
-            <div className="bg-white border border-zinc-200 rounded-lg shadow-card p-5">
-              <h2 className="text-heading text-zinc-900 mb-4">
+            <div className="bg-white border border-slate-200 rounded-lg shadow-card p-5">
+              <h2 className="text-heading text-slate-900 mb-4">
                 Claim Details
               </h2>
               <dl className="space-y-3">
-                <div className="flex justify-between py-1.5 border-b border-zinc-100">
-                  <dt className="text-body-sm text-zinc-500">Vehicle</dt>
-                  <dd className="text-body-sm font-medium text-zinc-900">
+                <div className="flex justify-between py-1.5 border-b border-slate-100">
+                  <dt className="text-body-sm text-slate-500">Vehicle</dt>
+                  <dd className="text-body-sm font-medium text-slate-900">
                     {claim.vehicleYear} {claim.vehicleMake} {claim.vehicleModel}
                   </dd>
                 </div>
-                <div className="flex justify-between py-1.5 border-b border-zinc-100">
-                  <dt className="text-body-sm text-zinc-500">Insurer</dt>
-                  <dd className="text-body-sm font-medium text-zinc-900">
+                <div className="flex justify-between py-1.5 border-b border-slate-100">
+                  <dt className="text-body-sm text-slate-500">Insurer</dt>
+                  <dd className="text-body-sm font-medium text-slate-900">
                     {claim.insurerName}
                   </dd>
                 </div>
-                <div className="flex justify-between py-1.5 border-b border-zinc-100">
-                  <dt className="text-body-sm text-zinc-500">Claim #</dt>
-                  <dd className="text-body-sm font-medium text-zinc-900">
+                <div className="flex justify-between py-1.5 border-b border-slate-100">
+                  <dt className="text-body-sm text-slate-500">Claim #</dt>
+                  <dd className="text-body-sm font-medium text-slate-900">
                     {claim.claimNumber}
                   </dd>
                 </div>
-                <div className="flex justify-between py-1.5 border-b border-zinc-100">
-                  <dt className="text-body-sm text-zinc-500">Accident date</dt>
-                  <dd className="text-body-sm font-medium text-zinc-900">
+                <div className="flex justify-between py-1.5 border-b border-slate-100">
+                  <dt className="text-body-sm text-slate-500">Accident date</dt>
+                  <dd className="text-body-sm font-medium text-slate-900">
                     {new Date(claim.accidentDate).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "long",
@@ -176,8 +176,8 @@ export default function ClaimOverviewPage() {
                   </dd>
                 </div>
                 <div className="flex justify-between py-1.5">
-                  <dt className="text-body-sm text-zinc-500">Fault status</dt>
-                  <dd className="text-body-sm font-medium text-zinc-900">
+                  <dt className="text-body-sm text-slate-500">Fault status</dt>
+                  <dd className="text-body-sm font-medium text-slate-900">
                     {claim.faultStatus}
                   </dd>
                 </div>
@@ -185,24 +185,24 @@ export default function ClaimOverviewPage() {
             </div>
 
             {/* Financial summary */}
-            <div className="bg-white border border-zinc-200 rounded-lg shadow-card p-5">
-              <h2 className="text-heading text-zinc-900 mb-4">
+            <div className="bg-white border border-slate-200 rounded-lg shadow-card p-5">
+              <h2 className="text-heading text-slate-900 mb-4">
                 Financial Summary
               </h2>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-caption text-zinc-500 mb-1">
+                  <p className="text-caption text-slate-500 mb-1">
                     Documented expenses
                   </p>
-                  <p className="text-heading-lg text-zinc-900">
+                  <p className="text-heading-lg text-slate-900">
                     {formatCurrency(claim.trackedExpenses)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-caption text-zinc-500 mb-1">
+                  <p className="text-caption text-slate-500 mb-1">
                     Insurer&apos;s offer
                   </p>
-                  <p className="text-heading-lg text-zinc-900">
+                  <p className="text-heading-lg text-slate-900">
                     {claim.offerAmount
                       ? formatCurrency(claim.offerAmount)
                       : "--"}
@@ -215,44 +215,44 @@ export default function ClaimOverviewPage() {
           {/* Right column - narrower (2/5) */}
           <div className="lg:col-span-2 space-y-6">
             {/* Fairness score */}
-            <div className="bg-white border border-zinc-200 rounded-lg shadow-card p-5 flex flex-col items-center">
-              <h2 className="text-body-sm font-medium text-zinc-500 mb-4 self-start">
+            <div className="bg-white border border-slate-200 rounded-lg shadow-card p-5 flex flex-col items-center">
+              <h2 className="text-body-sm font-medium text-slate-500 mb-4 self-start">
                 Fairness Score
               </h2>
               <ScoreGauge score={claim.fairnessScore} size="md" />
             </div>
 
             {/* Next steps */}
-            <div className="bg-white border border-zinc-200 rounded-lg shadow-card p-5">
-              <h2 className="text-body-sm font-medium text-zinc-500 mb-3">
+            <div className="bg-white border border-slate-200 rounded-lg shadow-card p-5">
+              <h2 className="text-body-sm font-medium text-slate-500 mb-3">
                 Recommended Next Steps
               </h2>
               <ul className="space-y-2.5">
                 <li>
                   <Link
                     href={`/claims/${claimId}/offer`}
-                    className="flex items-center justify-between text-body-sm text-zinc-900 hover:text-brand-500 transition-colors"
+                    className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
                   >
                     Review the insurer&apos;s offer in detail
-                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400 flex-shrink-0" />
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                   </Link>
                 </li>
                 <li>
                   <Link
                     href={`/claims/${claimId}/counter`}
-                    className="flex items-center justify-between text-body-sm text-zinc-900 hover:text-brand-500 transition-colors"
+                    className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
                   >
                     Build a counter-offer with evidence
-                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400 flex-shrink-0" />
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                   </Link>
                 </li>
                 <li>
                   <Link
                     href={`/claims/${claimId}/documents`}
-                    className="flex items-center justify-between text-body-sm text-zinc-900 hover:text-brand-500 transition-colors"
+                    className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
                   >
                     Upload additional documentation
-                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400 flex-shrink-0" />
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                   </Link>
                 </li>
               </ul>
@@ -263,22 +263,22 @@ export default function ClaimOverviewPage() {
         {/* -------------------------------------------------------------- */}
         {/* 3. Navigation links                                             */}
         {/* -------------------------------------------------------------- */}
-        <div className="bg-white border border-zinc-200 rounded-lg shadow-card">
+        <div className="bg-white border border-slate-200 rounded-lg shadow-card">
           {SUB_PAGES.map((page, idx) => (
             <Link
               key={page.label}
               href={page.href(claimId)}
               className={`flex items-center justify-between px-5 py-4 hover:bg-surface-50 transition-colors ${
-                idx < SUB_PAGES.length - 1 ? "border-b border-zinc-100" : ""
+                idx < SUB_PAGES.length - 1 ? "border-b border-slate-100" : ""
               }`}
             >
               <div>
-                <p className="text-body font-medium text-zinc-900">
+                <p className="text-body font-medium text-slate-900">
                   {page.label}
                 </p>
-                <p className="text-caption text-zinc-500">{page.description}</p>
+                <p className="text-caption text-slate-500">{page.description}</p>
               </div>
-              <ArrowRight className="w-4 h-4 text-zinc-400 flex-shrink-0" />
+              <ArrowRight className="w-4 h-4 text-slate-400 flex-shrink-0" />
             </Link>
           ))}
         </div>

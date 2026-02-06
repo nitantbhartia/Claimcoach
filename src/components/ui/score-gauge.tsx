@@ -47,7 +47,7 @@ export function ScoreGauge({ score, size = "md", label, className }: ScoreGaugeP
             cy="50"
             r={radius}
             fill="none"
-            stroke="#e4e4e7"
+            stroke="#e2e8f0"
             strokeWidth="8"
           />
           {/* Score ring */}
@@ -66,11 +66,11 @@ export function ScoreGauge({ score, size = "md", label, className }: ScoreGaugeP
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className={cn("font-bold", s.number, color.text)}>{clampedScore}</span>
-          <span className={cn("font-medium text-zinc-400", s.sub)}>/ 100</span>
+          <span className={cn("font-medium text-slate-400", s.sub)}>/ 100</span>
         </div>
       </div>
       {/* Plain text label below gauge -- no colored bg pill */}
-      <span className={cn("font-medium text-zinc-500", s.label)}>
+      <span className={cn("font-medium text-slate-500", s.label)}>
         {label || getLabel()}
       </span>
     </div>

@@ -180,18 +180,18 @@ export default function OfferAnalysisPage() {
         {/* ----------------------------------------------------------------- */}
         {/* 1. Input Section                                                   */}
         {/* ----------------------------------------------------------------- */}
-        <div className="bg-white rounded-lg border border-zinc-200 shadow-card p-6">
-          <h1 className="text-display-sm font-semibold text-zinc-900">
+        <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
+          <h1 className="text-display-sm font-semibold text-slate-900">
             Offer Analysis
           </h1>
-          <p className="text-body text-zinc-500 mt-1 mb-6">
+          <p className="text-body text-slate-500 mt-1 mb-6">
             Enter the insurer&apos;s offer amount to get an instant fairness
             analysis backed by market data.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 max-w-xl">
             <div className="flex-1 relative">
-              <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400 text-body font-medium">
+              <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-body font-medium">
                 $
               </span>
               <Input
@@ -224,10 +224,10 @@ export default function OfferAnalysisPage() {
         {/* 2. Loading State                                                   */}
         {/* ----------------------------------------------------------------- */}
         {isAnalyzing && (
-          <div className="bg-white rounded-lg border border-zinc-200 shadow-card p-6">
+          <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
             <div className="flex items-center gap-3">
               <Loader2 className="w-5 h-5 text-brand-500 animate-spin" />
-              <p className="text-body text-zinc-600">
+              <p className="text-body text-slate-600">
                 {ANALYSIS_STEPS[analysisStep]}
               </p>
             </div>
@@ -235,7 +235,7 @@ export default function OfferAnalysisPage() {
         )}
 
         {error && !isAnalyzing && (
-          <div className="bg-white rounded-lg border border-zinc-200 shadow-card p-4">
+          <div className="bg-white rounded-lg border border-slate-200 shadow-card p-4">
             <p className="text-body-sm text-warning-500">{error}</p>
           </div>
         )}
@@ -248,7 +248,7 @@ export default function OfferAnalysisPage() {
             {/* -------------------------------------------------------------- */}
             {/* 3. Score + Summary                                              */}
             {/* -------------------------------------------------------------- */}
-            <div className="bg-white rounded-lg border border-zinc-200 shadow-card p-6">
+            <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
               <div className="flex flex-col md:flex-row items-center gap-8">
                 <ScoreGauge
                   score={analysis.fairness_score}
@@ -257,24 +257,24 @@ export default function OfferAnalysisPage() {
                 />
 
                 <div className="flex-1 text-center md:text-left space-y-4">
-                  <p className="text-body-sm font-medium text-zinc-500">
+                  <p className="text-body-sm font-medium text-slate-500">
                     {getScoreLabel(analysis.fairness_score)}
                   </p>
-                  <p className="text-body text-zinc-600 leading-relaxed">
+                  <p className="text-body text-slate-600 leading-relaxed">
                     {analysis.summary}
                   </p>
 
                   {/* Their offer vs Fair value */}
                   <div className="flex flex-wrap items-baseline gap-6">
                     <div>
-                      <p className="text-caption text-zinc-400">Their offer</p>
-                      <p className="text-heading-lg font-semibold text-zinc-900 font-mono">
+                      <p className="text-caption text-slate-400">Their offer</p>
+                      <p className="text-heading-lg font-semibold text-slate-900 font-mono">
                         {formatCurrency(theirTotal)}
                       </p>
                     </div>
                     <div>
-                      <p className="text-caption text-zinc-400">Fair value</p>
-                      <p className="text-heading-lg font-semibold text-zinc-900 font-mono">
+                      <p className="text-caption text-slate-400">Fair value</p>
+                      <p className="text-heading-lg font-semibold text-slate-900 font-mono">
                         {formatCurrency(fairTotal)}
                       </p>
                     </div>
@@ -289,9 +289,9 @@ export default function OfferAnalysisPage() {
             {/* -------------------------------------------------------------- */}
             {/* 4. Line Items                                                   */}
             {/* -------------------------------------------------------------- */}
-            <div className="bg-white rounded-lg border border-zinc-200 shadow-card overflow-hidden">
-              <div className="px-6 py-4 border-b border-zinc-100">
-                <h2 className="text-heading font-semibold text-zinc-900">
+            <div className="bg-white rounded-lg border border-slate-200 shadow-card overflow-hidden">
+              <div className="px-6 py-4 border-b border-slate-100">
+                <h2 className="text-heading font-semibold text-slate-900">
                   Line-Item Breakdown
                 </h2>
               </div>
@@ -300,17 +300,17 @@ export default function OfferAnalysisPage() {
               <div className="hidden md:block">
                 <table className="w-full text-body-sm">
                   <thead>
-                    <tr className="border-b border-zinc-100">
-                      <th className="text-left py-3 px-6 font-medium text-zinc-500">
+                    <tr className="border-b border-slate-100">
+                      <th className="text-left py-3 px-6 font-medium text-slate-500">
                         Category
                       </th>
-                      <th className="text-right py-3 px-6 font-medium text-zinc-500">
+                      <th className="text-right py-3 px-6 font-medium text-slate-500">
                         Their Amount
                       </th>
-                      <th className="text-right py-3 px-6 font-medium text-zinc-500">
+                      <th className="text-right py-3 px-6 font-medium text-slate-500">
                         Fair Amount
                       </th>
-                      <th className="text-right py-3 px-6 font-medium text-zinc-500">
+                      <th className="text-right py-3 px-6 font-medium text-slate-500">
                         Difference
                       </th>
                     </tr>
@@ -319,22 +319,22 @@ export default function OfferAnalysisPage() {
                     {analysis.line_items.map((item, index) => (
                       <tr
                         key={index}
-                        className="border-b border-zinc-100 last:border-b-0"
+                        className="border-b border-slate-100 last:border-b-0"
                       >
                         <td className="py-4 px-6">
-                          <p className="font-medium text-zinc-900">
+                          <p className="font-medium text-slate-900">
                             {item.category}
                           </p>
-                          <p className="text-body-sm text-zinc-500 mt-1 max-w-md leading-relaxed">
+                          <p className="text-body-sm text-slate-500 mt-1 max-w-md leading-relaxed">
                             {item.reasoning}
                           </p>
                         </td>
-                        <td className="py-4 px-6 text-right font-mono text-zinc-900">
+                        <td className="py-4 px-6 text-right font-mono text-slate-900">
                           {item.insurer_amount === 0
                             ? "$0"
                             : formatCurrency(item.insurer_amount)}
                         </td>
-                        <td className="py-4 px-6 text-right font-mono text-zinc-900">
+                        <td className="py-4 px-6 text-right font-mono text-slate-900">
                           {formatCurrency(item.fair_amount)}
                         </td>
                         <td className="py-4 px-6 text-right font-mono">
@@ -343,21 +343,21 @@ export default function OfferAnalysisPage() {
                               -{formatCurrency(item.difference)}
                             </span>
                           ) : (
-                            <span className="text-zinc-400">&mdash;</span>
+                            <span className="text-slate-400">&mdash;</span>
                           )}
                         </td>
                       </tr>
                     ))}
                   </tbody>
                   <tfoot>
-                    <tr className="border-t-2 border-zinc-200 bg-zinc-50">
-                      <td className="py-3 px-6 font-semibold text-zinc-900">
+                    <tr className="border-t-2 border-slate-200 bg-slate-50">
+                      <td className="py-3 px-6 font-semibold text-slate-900">
                         Total
                       </td>
-                      <td className="py-3 px-6 text-right font-mono font-semibold text-zinc-900">
+                      <td className="py-3 px-6 text-right font-mono font-semibold text-slate-900">
                         {formatCurrency(theirTotal)}
                       </td>
-                      <td className="py-3 px-6 text-right font-mono font-semibold text-zinc-900">
+                      <td className="py-3 px-6 text-right font-mono font-semibold text-slate-900">
                         {formatCurrency(fairTotal)}
                       </td>
                       <td className="py-3 px-6 text-right font-mono font-semibold text-danger-600">
@@ -369,11 +369,11 @@ export default function OfferAnalysisPage() {
               </div>
 
               {/* Mobile layout */}
-              <div className="md:hidden divide-y divide-zinc-100">
+              <div className="md:hidden divide-y divide-slate-100">
                 {analysis.line_items.map((item, index) => (
                   <div key={index} className="px-6 py-4">
                     <div className="flex items-start justify-between gap-2 mb-2">
-                      <p className="text-body-sm font-medium text-zinc-900">
+                      <p className="text-body-sm font-medium text-slate-900">
                         {item.category}
                       </p>
                       {item.difference > 0 && (
@@ -384,32 +384,32 @@ export default function OfferAnalysisPage() {
                     </div>
                     <div className="grid grid-cols-2 gap-3 mb-2">
                       <div>
-                        <p className="text-caption text-zinc-400">
+                        <p className="text-caption text-slate-400">
                           Their Amount
                         </p>
-                        <p className="text-body-sm font-mono text-zinc-900">
+                        <p className="text-body-sm font-mono text-slate-900">
                           {item.insurer_amount === 0
                             ? "$0"
                             : formatCurrency(item.insurer_amount)}
                         </p>
                       </div>
                       <div>
-                        <p className="text-caption text-zinc-400">
+                        <p className="text-caption text-slate-400">
                           Fair Amount
                         </p>
-                        <p className="text-body-sm font-mono text-zinc-900">
+                        <p className="text-body-sm font-mono text-slate-900">
                           {formatCurrency(item.fair_amount)}
                         </p>
                       </div>
                     </div>
-                    <p className="text-body-sm text-zinc-500 leading-relaxed">
+                    <p className="text-body-sm text-slate-500 leading-relaxed">
                       {item.reasoning}
                     </p>
                   </div>
                 ))}
-                <div className="px-6 py-4 bg-zinc-50">
+                <div className="px-6 py-4 bg-slate-50">
                   <div className="flex items-center justify-between">
-                    <span className="text-body-sm font-semibold text-zinc-900">
+                    <span className="text-body-sm font-semibold text-slate-900">
                       Total Gap
                     </span>
                     <span className="text-body-sm font-semibold text-danger-600 font-mono">
@@ -423,24 +423,24 @@ export default function OfferAnalysisPage() {
             {/* -------------------------------------------------------------- */}
             {/* 5. Market Data                                                  */}
             {/* -------------------------------------------------------------- */}
-            <div className="bg-white rounded-lg border border-zinc-200 shadow-card">
-              <div className="px-6 py-4 border-b border-zinc-100">
-                <h2 className="text-heading font-semibold text-zinc-900">
+            <div className="bg-white rounded-lg border border-slate-200 shadow-card">
+              <div className="px-6 py-4 border-b border-slate-100">
+                <h2 className="text-heading font-semibold text-slate-900">
                   Market Data
                 </h2>
               </div>
-              <div className="divide-y divide-zinc-100">
+              <div className="divide-y divide-slate-100">
                 {analysis.comparable_data.map((comp, index) => (
                   <div key={index} className="px-6 py-4">
                     <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
-                      <p className="text-body-sm font-medium text-zinc-900">
+                      <p className="text-body-sm font-medium text-slate-900">
                         {comp.source}
                       </p>
-                      <p className="text-body-sm font-semibold text-zinc-900 font-mono">
+                      <p className="text-body-sm font-semibold text-slate-900 font-mono">
                         {comp.value}
                       </p>
                     </div>
-                    <p className="text-body-sm text-zinc-500 leading-relaxed">
+                    <p className="text-body-sm text-slate-500 leading-relaxed">
                       {comp.details}
                     </p>
                   </div>
@@ -451,11 +451,11 @@ export default function OfferAnalysisPage() {
             {/* -------------------------------------------------------------- */}
             {/* 6. Recommendation                                               */}
             {/* -------------------------------------------------------------- */}
-            <div className="bg-white rounded-lg border border-zinc-200 shadow-card p-6">
-              <h2 className="text-heading font-semibold text-zinc-900 mb-3">
+            <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
+              <h2 className="text-heading font-semibold text-slate-900 mb-3">
                 Recommendation
               </h2>
-              <p className="text-body text-zinc-600 leading-relaxed">
+              <p className="text-body text-slate-600 leading-relaxed">
                 {analysis.recommendation}
               </p>
               <div className="mt-4">
@@ -472,7 +472,7 @@ export default function OfferAnalysisPage() {
             {/* -------------------------------------------------------------- */}
             {/* 7. Disclaimer                                                   */}
             {/* -------------------------------------------------------------- */}
-            <p className="text-caption text-zinc-400 leading-relaxed">
+            <p className="text-caption text-slate-400 leading-relaxed">
               This analysis is for educational purposes and does not constitute
               legal or financial advice. Fair market values are estimates based
               on publicly available data and may not reflect your exact
