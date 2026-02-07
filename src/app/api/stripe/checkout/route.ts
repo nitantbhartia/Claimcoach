@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
               name: "ClaimCoach Full Toolkit",
               description: "Complete AI analysis, counter-offer letter, and negotiation toolkit for one claim",
             },
-            unit_amount: 2900, // $29.00
+            unit_amount: 7900, // $79.00
           },
           quantity: 1,
         },
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
               name: "ClaimCoach Pro",
               description: "Unlimited claims, full AI toolkit, priority support",
             },
-            unit_amount: 1499, // $14.99
+            unit_amount: 2900, // $29.00
             recurring: { interval: "month" },
           },
           quantity: 1,

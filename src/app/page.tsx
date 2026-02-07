@@ -609,7 +609,7 @@ export default function LandingPage() {
                   Full Toolkit
                 </h3>
                 <p className="text-body-sm text-slate-500 mt-1 mb-6">
-                  $29 per claim
+                  $79 per claim
                 </p>
                 <div className="space-y-3">
                   {[
@@ -638,7 +638,7 @@ export default function LandingPage() {
             </div>
 
             <p className="mt-8 text-caption text-slate-400 text-center">
-              Pro plan: $14.99/mo for unlimited claims. 30-day money-back guarantee.
+              Pro plan: $29/mo for unlimited claims. 30-day money-back guarantee.
             </p>
           </div>
         </section>
