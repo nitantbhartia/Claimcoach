@@ -13,7 +13,7 @@ export default function AboutPage() {
         {/* ---- HERO ---- */}
         <section>
           <div className="container-wide py-20 sm:py-28">
-            <h1 className="text-display text-slate-900 max-w-3xl text-balance">
+            <h1 className="text-display-sm sm:text-display text-slate-900 max-w-3xl text-balance">
               How ClaimCoach works
             </h1>
             <p className="mt-6 text-body-lg text-slate-500 max-w-xl">

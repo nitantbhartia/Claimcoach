@@ -12,8 +12,8 @@ export default function LandingPage() {
       <main className="flex-1">
         {/* ---- HERO ---- */}
         <section className="bg-white">
-          <div className="container-wide py-24 sm:py-32 lg:py-40">
-            <h1 className="text-display-xl max-w-4xl text-balance text-slate-900">
+          <div className="container-wide py-16 sm:py-24 lg:py-40">
+            <h1 className="text-display sm:text-display-xl max-w-4xl text-balance text-slate-900">
               Stop leaving <span className="text-brand-600">money</span>
               <br />
               on the table.
@@ -46,9 +46,9 @@ export default function LandingPage() {
 
         {/* ---- SOCIAL PROOF STRIP ---- */}
         <section className="border-b border-slate-100">
-          <div className="container-wide py-10 flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-0">
+          <div className="container-wide py-8 sm:py-10 flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-0">
             <div className="text-center sm:text-left flex-1">
-              <p className="text-display-sm text-slate-900">850M+</p>
+              <p className="text-heading-lg sm:text-display-sm text-slate-900">850M+</p>
               <p className="text-body-sm text-slate-500 mt-1">
                 claims denied yearly
               </p>
@@ -60,7 +60,7 @@ export default function LandingPage() {
             />
 
             <div className="text-center flex-1">
-              <p className="text-display-sm text-slate-900">&lt;&thinsp;1%</p>
+              <p className="text-heading-lg sm:text-display-sm text-slate-900">&lt;&thinsp;1%</p>
               <p className="text-body-sm text-slate-500 mt-1">
                 of those are ever appealed
               </p>
@@ -72,7 +72,7 @@ export default function LandingPage() {
             />
 
             <div className="text-center sm:text-right flex-1">
-              <p className="text-display-sm text-slate-900">40&ndash;50%</p>
+              <p className="text-heading-lg sm:text-display-sm text-slate-900">40&ndash;50%</p>
               <p className="text-body-sm text-slate-500 mt-1">
                 win rate when they do
               </p>
@@ -83,7 +83,7 @@ export default function LandingPage() {
         {/* ---- THE PROBLEM ---- */}
         <section className="section-gap">
           <div className="container-wide">
-            <h2 className="text-display text-slate-900 max-w-2xl">
+            <h2 className="text-display-sm sm:text-display text-slate-900 max-w-2xl">
               The deck is stacked against you.
             </h2>
 
@@ -146,7 +146,7 @@ export default function LandingPage() {
         {/* ---- HOW IT WORKS ---- */}
         <section className="section-gap">
           <div className="container-wide">
-            <h2 className="text-display text-slate-900 max-w-xl">
+            <h2 className="text-display-sm sm:text-display text-slate-900 max-w-xl">
               How it works
             </h2>
             <p className="mt-4 text-body-lg text-slate-500 max-w-xl">
@@ -156,7 +156,7 @@ export default function LandingPage() {
             <div className="mt-16 space-y-16 max-w-2xl">
               {/* Step 01 */}
               <div>
-                <span className="text-display-xl text-slate-100 select-none" aria-hidden="true">
+                <span className="text-display sm:text-display-xl text-slate-100 select-none" aria-hidden="true">
                   01
                 </span>
                 <h3 className="text-heading-lg text-slate-900 -mt-4">
@@ -176,7 +176,7 @@ export default function LandingPage() {
 
               {/* Step 02 */}
               <div>
-                <span className="text-display-xl text-slate-100 select-none" aria-hidden="true">
+                <span className="text-display sm:text-display-xl text-slate-100 select-none" aria-hidden="true">
                   02
                 </span>
                 <h3 className="text-heading-lg text-slate-900 -mt-4">
@@ -196,7 +196,7 @@ export default function LandingPage() {
 
               {/* Step 03 */}
               <div>
-                <span className="text-display-xl text-slate-100 select-none" aria-hidden="true">
+                <span className="text-display sm:text-display-xl text-slate-100 select-none" aria-hidden="true">
                   03
                 </span>
                 <h3 className="text-heading-lg text-slate-900 -mt-4">
@@ -222,7 +222,7 @@ export default function LandingPage() {
         {/* ---- THE TOOLKIT ---- */}
         <section className="section-gap">
           <div className="container-wide">
-            <h2 className="text-display text-slate-900 max-w-xl">
+            <h2 className="text-display-sm sm:text-display text-slate-900 max-w-xl">
               Everything you need to fight back.
             </h2>
 
@@ -288,7 +288,7 @@ export default function LandingPage() {
         {/* ---- PRICING ---- */}
         <section className="section-gap">
           <div className="container-wide">
-            <h2 className="text-display text-slate-900 max-w-md">
+            <h2 className="text-display-sm sm:text-display text-slate-900 max-w-md">
               Simple pricing.
             </h2>
             <p className="mt-4 text-body-lg text-slate-500 max-w-lg">
@@ -351,8 +351,8 @@ export default function LandingPage() {
 
         {/* ---- FINAL CTA ---- */}
         <section className="bg-brand-50">
-          <div className="container-wide py-24 sm:py-32 text-center">
-            <h2 className="text-display text-slate-900 max-w-2xl mx-auto text-balance">
+          <div className="container-wide py-16 sm:py-24 lg:py-32 text-center">
+            <h2 className="text-display-sm sm:text-display text-slate-900 max-w-2xl mx-auto text-balance">
               Your claim deserves a fair evaluation.
             </h2>
 

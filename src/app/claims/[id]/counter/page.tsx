@@ -269,7 +269,7 @@ export default function CounterOfferPage() {
         {/* 1. Summary Bar                                                     */}
         {/* ----------------------------------------------------------------- */}
         <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
-          <h1 className="text-display-sm font-semibold text-slate-900 mb-6">
+          <h1 className="text-heading-lg sm:text-display-sm font-semibold text-slate-900 mb-4 sm:mb-6">
             Counter-Offer
           </h1>
 
@@ -375,8 +375,8 @@ export default function CounterOfferPage() {
                   </button>
                 </div>
               </div>
-              <div className="p-6">
-                <pre className="whitespace-pre-wrap font-mono text-body-sm text-slate-700 leading-relaxed">
+              <div className="p-4 sm:p-6">
+                <pre className="whitespace-pre-wrap break-words font-mono text-caption sm:text-body-sm text-slate-700 leading-relaxed overflow-x-auto">
                   {counterOffer.demand_letter}
                 </pre>
               </div>
@@ -478,7 +478,7 @@ export default function CounterOfferPage() {
                             {step.description}
                           </p>
                           {step.template && (
-                            <pre className="whitespace-pre-wrap text-body-sm text-slate-500 font-mono leading-relaxed bg-slate-50 rounded-lg border border-slate-100 p-4">
+                            <pre className="whitespace-pre-wrap break-words text-caption sm:text-body-sm text-slate-500 font-mono leading-relaxed bg-slate-50 rounded-lg border border-slate-100 p-3 sm:p-4 overflow-x-auto">
                               {step.template}
                             </pre>
                           )}

@@ -85,7 +85,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Mobile nav */}
-        <div className="md:hidden flex gap-4 px-4 overflow-x-auto border-t border-slate-100">
+        <div className="md:hidden flex gap-4 px-4 overflow-x-auto scrollbar-hide border-t border-slate-100">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive =

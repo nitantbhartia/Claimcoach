@@ -181,7 +181,7 @@ export default function OfferAnalysisPage() {
         {/* 1. Input Section                                                   */}
         {/* ----------------------------------------------------------------- */}
         <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
-          <h1 className="text-display-sm font-semibold text-slate-900">
+          <h1 className="text-heading-lg sm:text-display-sm font-semibold text-slate-900">
             Offer Analysis
           </h1>
           <p className="text-body text-slate-500 mt-1 mb-6">

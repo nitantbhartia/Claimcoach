@@ -46,7 +46,7 @@ export function ClaimLayout({ children, claimId }: ClaimLayoutProps) {
 
         {/* Tab navigation */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex gap-6 overflow-x-auto -mb-px">
+          <nav className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide -mb-px">
             {claimTabs.map((tab) => {
               const fullHref = basePath + tab.href;
               const isActive = pathname === fullHref;

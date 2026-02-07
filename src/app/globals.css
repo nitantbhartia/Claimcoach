@@ -31,7 +31,7 @@
   }
 
   .section-gap {
-    @apply py-20 sm:py-28;
+    @apply py-16 sm:py-20 md:py-28;
   }
 
   .text-gradient {
@@ -40,5 +40,14 @@
 
   .divider {
     @apply border-t border-slate-100;
+  }
+
+  /* Hide scrollbar but keep scroll functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }

@@ -69,8 +69,8 @@ export default function DashboardPage() {
   return (
     <DashboardShell>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-display-sm text-slate-900">Your claims</h1>
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
+        <h1 className="text-heading-lg sm:text-display-sm text-slate-900">Your claims</h1>
         <Link href="/claims/new">
           <Button size="sm" className="gap-1.5">
             <Plus className="w-4 h-4" />
@@ -95,9 +95,15 @@ export default function DashboardPage() {
               <p className="text-body font-medium text-slate-900 truncate">
                 {claim.vehicle}
               </p>
-              <p className="text-body-sm text-slate-500 truncate sm:hidden">
-                {claim.insurer}
-              </p>
+              <div className="flex items-center gap-1.5 sm:hidden mt-0.5">
+                <span
+                  className={`inline-block w-1.5 h-1.5 rounded-full ${statusDot[claim.status]}`}
+                  aria-hidden="true"
+                />
+                <span className="text-caption text-slate-500 truncate">
+                  {statusLabel[claim.status]} &middot; {claim.insurer}
+                </span>
+              </div>
             </div>
 
             {/* Insurer -- hidden on mobile, shown inline above */}

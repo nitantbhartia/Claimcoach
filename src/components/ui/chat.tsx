@@ -77,7 +77,7 @@ export function Chat({ context, placeholder = "Ask a follow-up question...", cla
       <button
         onClick={() => setIsOpen(true)}
         className={cn(
-          "fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-brand-600 px-5 py-3 text-white shadow-float hover:bg-brand-700 transition-colors",
+          "fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2 rounded-full bg-brand-600 px-4 sm:px-5 py-3 text-white shadow-float hover:bg-brand-700 transition-colors",
           className
         )}
       >
@@ -88,7 +88,7 @@ export function Chat({ context, placeholder = "Ask a follow-up question...", cla
   }
 
   return (
-    <div className={cn("fixed bottom-6 right-6 z-50 w-96 max-w-[calc(100vw-2rem)] rounded-2xl bg-white border border-slate-200 shadow-float flex flex-col", className)} style={{ maxHeight: "32rem" }}>
+    <div className={cn("fixed z-50 bg-white border border-slate-200 shadow-float flex flex-col inset-0 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-96 sm:max-w-[calc(100vw-2rem)] sm:rounded-2xl sm:max-h-[32rem]", className)}>
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
         <div className="flex items-center gap-2">
@@ -104,7 +104,7 @@ export function Chat({ context, placeholder = "Ask a follow-up question...", cla
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3" style={{ minHeight: "12rem" }}>
+      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 min-h-0">
         {messages.length === 0 && (
           <div className="text-center py-8">
             <p className="text-body-sm text-slate-400">

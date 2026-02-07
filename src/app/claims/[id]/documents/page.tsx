@@ -272,8 +272,8 @@ export default function DocumentsPage() {
                             {item.label}
                           </span>
 
-                          {/* Required / Optional */}
-                          <span className="text-caption text-slate-400 flex-shrink-0">
+                          {/* Required / Optional -- hide on small screens */}
+                          <span className="hidden sm:inline text-caption text-slate-400 flex-shrink-0">
                             {item.required ? "Required" : "Optional"}
                           </span>
 
@@ -319,11 +319,16 @@ export default function DocumentsPage() {
           {expenses.length > 0 && (
             <div className="bg-white rounded-lg border border-slate-200 shadow-card divide-y divide-slate-100">
               {expenses.map((expense) => (
-                <div key={expense.id} className="flex items-center gap-4 px-5 py-3">
-                  <span className="text-body-sm text-slate-900 flex-1 min-w-0 truncate">
-                    {expense.description}
-                  </span>
-                  <span className="text-caption text-slate-400 flex-shrink-0">
+                <div key={expense.id} className="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-body-sm text-slate-900 truncate">
+                      {expense.description}
+                    </p>
+                    <p className="text-caption text-slate-400 sm:hidden">
+                      {formatExpenseCategory(expense.category)}
+                    </p>
+                  </div>
+                  <span className="hidden sm:inline text-caption text-slate-400 flex-shrink-0">
                     {formatExpenseCategory(expense.category)}
                   </span>
                   <span className="text-body-sm font-medium text-slate-900 flex-shrink-0">
@@ -349,35 +354,45 @@ export default function DocumentsPage() {
           )}
 
           {/* Add expense form */}
-          <div className="mt-4 flex flex-col sm:flex-row gap-2">
-            <Select
-              id="expense-category"
-              value={newExpense.category}
-              onChange={(e) => setNewExpense((prev) => ({ ...prev, category: e.target.value }))}
-              options={EXPENSE_CATEGORIES}
-              placeholder="Category"
-            />
-            <Input
-              id="expense-description"
-              placeholder="Description"
-              value={newExpense.description}
-              onChange={(e) => setNewExpense((prev) => ({ ...prev, description: e.target.value }))}
-            />
-            <Input
-              id="expense-amount"
-              type="number"
-              placeholder="Amount ($)"
-              min="0"
-              step="0.01"
-              value={newExpense.amount}
-              onChange={(e) => setNewExpense((prev) => ({ ...prev, amount: e.target.value }))}
-            />
-            <Input
-              id="expense-date"
-              type="date"
-              value={newExpense.date}
-              onChange={(e) => setNewExpense((prev) => ({ ...prev, date: e.target.value }))}
-            />
+          <div className="mt-4 space-y-2 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-2">
+            <div className="sm:w-40">
+              <Select
+                id="expense-category"
+                value={newExpense.category}
+                onChange={(e) => setNewExpense((prev) => ({ ...prev, category: e.target.value }))}
+                options={EXPENSE_CATEGORIES}
+                placeholder="Category"
+              />
+            </div>
+            <div className="sm:flex-1 sm:min-w-[140px]">
+              <Input
+                id="expense-description"
+                placeholder="Description"
+                value={newExpense.description}
+                onChange={(e) => setNewExpense((prev) => ({ ...prev, description: e.target.value }))}
+              />
+            </div>
+            <div className="flex gap-2">
+              <div className="flex-1 sm:w-28 sm:flex-initial">
+                <Input
+                  id="expense-amount"
+                  type="number"
+                  placeholder="Amount ($)"
+                  min="0"
+                  step="0.01"
+                  value={newExpense.amount}
+                  onChange={(e) => setNewExpense((prev) => ({ ...prev, amount: e.target.value }))}
+                />
+              </div>
+              <div className="flex-1 sm:w-36 sm:flex-initial">
+                <Input
+                  id="expense-date"
+                  type="date"
+                  value={newExpense.date}
+                  onChange={(e) => setNewExpense((prev) => ({ ...prev, date: e.target.value }))}
+                />
+              </div>
+            </div>
             <Button
               size="sm"
               onClick={addExpense}
@@ -387,7 +402,7 @@ export default function DocumentsPage() {
                 !newExpense.amount ||
                 !newExpense.date
               }
-              className="flex-shrink-0"
+              className="w-full sm:w-auto flex-shrink-0"
             >
               <Plus className="w-4 h-4 mr-1" />
               Add
@@ -407,14 +422,19 @@ export default function DocumentsPage() {
           {MOCK_UPLOADED_FILES.length > 0 ? (
             <div className="bg-white rounded-lg border border-slate-200 shadow-card divide-y divide-slate-100">
               {MOCK_UPLOADED_FILES.map((doc) => (
-                <div key={doc.id} className="flex items-center gap-4 px-5 py-3">
-                  <span className="text-body-sm text-slate-900 flex-1 min-w-0 truncate">
-                    {doc.fileName}
-                  </span>
-                  <span className="text-caption text-slate-400 flex-shrink-0">
+                <div key={doc.id} className="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-body-sm text-slate-900 truncate">
+                      {doc.fileName}
+                    </p>
+                    <p className="text-caption text-slate-400 sm:hidden">
+                      {CATEGORY_LABELS[doc.category] ?? doc.category} &middot; {formatFileSize(doc.size)}
+                    </p>
+                  </div>
+                  <span className="hidden sm:inline text-caption text-slate-400 flex-shrink-0">
                     {CATEGORY_LABELS[doc.category] ?? doc.category}
                   </span>
-                  <span className="text-caption text-slate-400 flex-shrink-0">
+                  <span className="hidden sm:inline text-caption text-slate-400 flex-shrink-0">
                     {formatFileSize(doc.size)}
                   </span>
                   <span className="text-caption text-slate-400 flex-shrink-0">
