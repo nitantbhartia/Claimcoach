@@ -111,7 +111,7 @@ export default function PricingPage() {
               <div className="rounded-xl border border-slate-200 bg-white p-8">
                 <h2 className="font-serif text-heading-lg text-ink-800">Pro</h2>
                 <p className="mt-2">
-                  <span className="text-display-sm font-serif font-bold text-ink-800">$29</span>
+                  <span className="text-display-sm font-serif font-bold text-ink-800">$49</span>
                   <span className="text-body-sm text-slate-500 ml-1">/month</span>
                 </p>
                 <p className="text-body-sm text-slate-500 mt-1 mb-8">

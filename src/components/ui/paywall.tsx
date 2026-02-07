@@ -63,7 +63,7 @@ export function Paywall({ feature, claimId, children, isPaid = false }: PaywallP
               onClick={() => handleCheckout("pro")}
               className="text-body-sm text-ink-800 hover:text-ink-900 font-medium"
             >
-              Or go Pro for $29/mo (unlimited claims)
+              Or go Pro for $49/mo (unlimited claims)
             </button>
           </div>
         </div>

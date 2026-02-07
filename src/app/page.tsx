@@ -638,7 +638,7 @@ export default function LandingPage() {
             </div>
 
             <p className="mt-8 text-caption text-slate-400 text-center">
-              Pro plan: $29/mo for unlimited claims. 30-day money-back guarantee.
+              Pro plan: $49/mo for unlimited claims. 30-day money-back guarantee.
             </p>
           </div>
         </section>
