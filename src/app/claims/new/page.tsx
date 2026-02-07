@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, ArrowLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ArrowLeft, ChevronRight, Search, Loader2, Camera, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -97,6 +97,17 @@ export default function NewClaimPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [policyFiles, setPolicyFiles] = useState<File[]>([]);
 
+  /* ---- VIN lookup state ---- */
+  const [vinInput, setVinInput] = useState("");
+  const [vinLoading, setVinLoading] = useState(false);
+  const [vinResult, setVinResult] = useState<{ year: string; make: string; model: string; trim: string | null } | null>(null);
+  const [vinError, setVinError] = useState("");
+
+  /* ---- Insurance card scan state ---- */
+  const [cardScanning, setCardScanning] = useState(false);
+  const [cardScanned, setCardScanned] = useState(false);
+  const [cardError, setCardError] = useState("");
+
   /* ---- Form errors per step ---- */
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -129,6 +140,105 @@ export default function NewClaimPage() {
         delete next[key as string];
         return next;
       });
+    }
+  }
+
+  /* ------------------------------------------------------------------------ */
+  /*  VIN Lookup                                                               */
+  /* ------------------------------------------------------------------------ */
+
+  async function handleVinLookup() {
+    const cleaned = vinInput.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+    if (cleaned.length !== 17) {
+      setVinError("VIN must be exactly 17 characters.");
+      return;
+    }
+
+    setVinLoading(true);
+    setVinError("");
+    setVinResult(null);
+
+    try {
+      const res = await fetch(`/api/vin?vin=${encodeURIComponent(cleaned)}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        setVinError(data.error || "Could not decode VIN.");
+        return;
+      }
+
+      if (data.year) updateField("vehicle_year", data.year);
+      if (data.make) updateField("vehicle_make", data.make);
+      if (data.model) {
+        const modelWithTrim = data.trim ? `${data.model} ${data.trim}` : data.model;
+        updateField("vehicle_model", modelWithTrim);
+      }
+
+      setVinResult({ year: data.year, make: data.make, model: data.model, trim: data.trim });
+    } catch {
+      setVinError("Failed to look up VIN. Please try again.");
+    } finally {
+      setVinLoading(false);
+    }
+  }
+
+  /* ------------------------------------------------------------------------ */
+  /*  Insurance Card Scan                                                      */
+  /* ------------------------------------------------------------------------ */
+
+  async function handleCardScan(files: File[]) {
+    if (files.length === 0) return;
+    const file = files[0];
+
+    setCardScanning(true);
+    setCardError("");
+    setCardScanned(false);
+
+    try {
+      const formDataObj = new FormData();
+      formDataObj.append("file", file);
+
+      const res = await fetch("/api/ai/extract-card", {
+        method: "POST",
+        body: formDataObj,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setCardError(data.error || "Could not read insurance card.");
+        return;
+      }
+
+      const ext = data.extracted;
+
+      // Auto-fill fields from extracted data
+      if (ext.insurer_name && !formData.insurer_name) {
+        updateField("insurer_name", ext.insurer_name);
+      }
+      if (ext.policy_number && !formData.claim_number) {
+        updateField("claim_number", ext.policy_number);
+      }
+      if (ext.vehicle_year && !formData.vehicle_year) {
+        updateField("vehicle_year", ext.vehicle_year);
+      }
+      if (ext.vehicle_make && !formData.vehicle_make) {
+        updateField("vehicle_make", ext.vehicle_make);
+      }
+      if (ext.vehicle_model && !formData.vehicle_model) {
+        updateField("vehicle_model", ext.vehicle_model);
+      }
+
+      // If card shows they have insurance, mark as filed
+      if (ext.insurer_name) {
+        updateField("filed_with_insurer", true);
+      }
+
+      setCardScanned(true);
+    } catch {
+      setCardError("Failed to scan insurance card. Please try again.");
+    } finally {
+      setCardScanning(false);
     }
   }
 
@@ -364,6 +474,55 @@ export default function NewClaimPage() {
           </p>
         </div>
 
+        {/* Insurance card scan */}
+        <div className="rounded-lg border border-dashed border-slate-300 p-4 bg-slate-50">
+          <div className="flex items-start gap-3">
+            <div className="w-9 h-9 rounded-lg bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Camera className="w-4.5 h-4.5 text-brand-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-body-sm font-medium text-slate-900">
+                Have your insurance card?
+              </p>
+              <p className="text-caption text-slate-500 mt-0.5">
+                Snap a photo and we&apos;ll auto-fill your insurer name, policy number, and vehicle details.
+              </p>
+              <div className="mt-3">
+                {cardScanned ? (
+                  <div className="flex items-center gap-2 text-body-sm text-success-600">
+                    <CheckCircle2 className="w-4 h-4" />
+                    Fields populated from your card
+                  </div>
+                ) : cardScanning ? (
+                  <div className="flex items-center gap-2 text-body-sm text-slate-500">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Reading your insurance card...
+                  </div>
+                ) : (
+                  <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-body-sm font-medium text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors">
+                    <Camera className="w-4 h-4" />
+                    Upload card photo
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      className="hidden"
+                      onChange={(e) => {
+                        const files = e.target.files;
+                        if (files && files.length > 0) {
+                          handleCardScan(Array.from(files));
+                        }
+                      }}
+                    />
+                  </label>
+                )}
+                {cardError && (
+                  <p className="text-caption text-danger-600 mt-1">{cardError}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="space-y-5">
           {/* Filed with insurer? */}
           <div className="space-y-1">
@@ -502,6 +661,70 @@ export default function NewClaimPage() {
             We need basic vehicle information to look up comparable values and
             assess the fairness of any offer.
           </p>
+        </div>
+
+        {/* VIN Lookup */}
+        <div className="rounded-lg border border-dashed border-slate-300 p-4 bg-slate-50">
+          <div className="flex items-start gap-3">
+            <div className="w-9 h-9 rounded-lg bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Search className="w-4.5 h-4.5 text-brand-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-body-sm font-medium text-slate-900">
+                Know your VIN?
+              </p>
+              <p className="text-caption text-slate-500 mt-0.5">
+                Enter your 17-character VIN and we&apos;ll auto-fill year, make, and model.
+              </p>
+              <div className="mt-3 flex gap-2">
+                <input
+                  type="text"
+                  value={vinInput}
+                  onChange={(e) => {
+                    setVinInput(e.target.value.toUpperCase());
+                    setVinError("");
+                  }}
+                  placeholder="e.g., 1HGCV1F34NA012345"
+                  maxLength={17}
+                  className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-body-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 font-mono tracking-wide"
+                />
+                <button
+                  type="button"
+                  onClick={handleVinLookup}
+                  disabled={vinLoading || vinInput.length < 17}
+                  className="px-3 py-1.5 rounded-lg bg-brand-600 text-white text-body-sm font-medium hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
+                >
+                  {vinLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Search className="w-4 h-4" />
+                  )}
+                  Decode
+                </button>
+              </div>
+              {vinError && (
+                <p className="text-caption text-danger-600 mt-1">{vinError}</p>
+              )}
+              {vinResult && (
+                <div className="flex items-center gap-2 text-body-sm text-success-600 mt-2">
+                  <CheckCircle2 className="w-4 h-4" />
+                  Found: {vinResult.year} {vinResult.make} {vinResult.model}{vinResult.trim ? ` ${vinResult.trim}` : ""}
+                </div>
+              )}
+              <p className="text-caption text-slate-400 mt-2">
+                Find your VIN on your registration, insurance card, or driver-side door jamb.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-slate-200" />
+          </div>
+          <div className="relative flex justify-center">
+            <span className="bg-white px-3 text-caption text-slate-400">or enter manually</span>
+          </div>
         </div>
 
         <div className="space-y-5">
