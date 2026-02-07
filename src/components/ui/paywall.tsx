@@ -1,0 +1,76 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Lock } from "lucide-react";
+
+interface PaywallProps {
+  feature: string;
+  claimId?: string;
+  children: React.ReactNode;
+  isPaid?: boolean;
+}
+
+export function Paywall({ feature, claimId, children, isPaid = false }: PaywallProps) {
+  const [loading, setLoading] = useState(false);
+
+  if (isPaid) {
+    return <>{children}</>;
+  }
+
+  async function handleCheckout(priceType: "per_claim" | "pro") {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceType, claimId }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      console.error("Checkout failed:", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="relative">
+      <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
+        <div className="text-center p-8 max-w-md">
+          <div className="w-12 h-12 rounded-full bg-brand-50 flex items-center justify-center mx-auto mb-4">
+            <Lock className="w-5 h-5 text-brand-600" />
+          </div>
+          <h3 className="text-heading text-slate-900 mb-2">
+            Unlock {feature}
+          </h3>
+          <p className="text-body-sm text-slate-500 mb-6">
+            Get the full AI-powered toolkit to maximize your settlement.
+          </p>
+          <div className="space-y-3">
+            <Button
+              onClick={() => handleCheckout("per_claim")}
+              loading={loading}
+              className="w-full bg-brand-600 hover:bg-brand-700"
+            >
+              Unlock this claim &mdash; $29
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+            <button
+              onClick={() => handleCheckout("pro")}
+              className="text-body-sm text-brand-600 hover:text-brand-700 font-medium"
+            >
+              Or go Pro for $14.99/mo (unlimited claims)
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="pointer-events-none select-none" aria-hidden="true">
+        {children}
+      </div>
+    </div>
+  );
+}

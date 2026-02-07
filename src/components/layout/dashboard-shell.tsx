@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { LayoutDashboard, FilePlus, LogOut } from "lucide-react";
+import { useAuth } from "@/lib/auth/context";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -12,6 +13,18 @@ const navItems = [
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, signOut } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut();
+    router.push("/login");
+  };
+
+  const displayName =
+    user?.user_metadata?.full_name ||
+    user?.email ||
+    "";
 
   return (
     <div className="min-h-screen bg-surface-50">
@@ -55,10 +68,20 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           </nav>
 
           {/* User actions */}
-          <button className="flex items-center gap-1.5 text-body-sm text-slate-500 hover:text-slate-700 transition-colors">
-            <LogOut className="w-4 h-4" />
-            <span className="hidden sm:inline">Log out</span>
-          </button>
+          <div className="flex items-center gap-3">
+            {displayName && (
+              <span className="hidden sm:inline text-body-sm text-slate-500 truncate max-w-[160px]">
+                {displayName}
+              </span>
+            )}
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1.5 text-body-sm text-slate-500 hover:text-slate-700 transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Log out</span>
+            </button>
+          </div>
         </div>
 
         {/* Mobile nav */}

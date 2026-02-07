@@ -1,0 +1,68 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getAnthropicClient } from "@/lib/ai/client";
+
+export const runtime = "nodejs";
+export const maxDuration = 60;
+
+interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
+const CHAT_SYSTEM_PROMPT = `You are ClaimCoach AI, a helpful insurance claim advisor. You have deep expertise in auto insurance policies, claim negotiation, and settlement strategies.
+
+You are having a follow-up conversation with a user about their insurance policy or claim. Be concise, helpful, and actionable. When referencing policy details, be specific about clause names, coverage types, and dollar amounts when available.
+
+Guidelines:
+- Give clear, practical advice a non-expert can follow
+- Reference specific policy language when relevant
+- Suggest concrete next steps
+- Be empathetic but professional
+- If you don't know something specific to their policy, say so rather than guessing
+- Keep responses focused and under 300 words unless the user asks for detail
+- You are NOT a lawyer - always recommend consulting an attorney for legal questions`;
+
+export async function POST(request: NextRequest) {
+  try {
+    const { messages, context } = await request.json() as {
+      messages: ChatMessage[];
+      context?: string;
+    };
+
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return NextResponse.json(
+        { error: "Messages array is required" },
+        { status: 400 }
+      );
+    }
+
+    const client = getAnthropicClient();
+
+    // Build system prompt with optional context (e.g., policy analysis results)
+    let systemPrompt = CHAT_SYSTEM_PROMPT;
+    if (context) {
+      systemPrompt += `\n\nThe user has the following policy analysis context:\n${context}`;
+    }
+
+    const response = await client.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 1024,
+      system: systemPrompt,
+      messages: messages.map((m) => ({
+        role: m.role,
+        content: m.content,
+      })),
+    });
+
+    const textBlock = response.content.find((block) => block.type === "text");
+    const reply = textBlock ? textBlock.text : "";
+
+    return NextResponse.json({ reply });
+  } catch (error) {
+    console.error("Chat error:", error);
+    return NextResponse.json(
+      { error: "Failed to generate response" },
+      { status: 500 }
+    );
+  }
+}

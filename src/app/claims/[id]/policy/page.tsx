@@ -6,6 +6,7 @@ import { ClaimLayout } from "@/components/layout/claim-layout";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/ui/file-upload";
 import { PolicyAnalysis } from "@/types";
+import { Chat } from "@/components/ui/chat";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -145,7 +146,7 @@ const MOCK_POLICY_ANALYSIS: PolicyAnalysis = {
 // ---------------------------------------------------------------------------
 
 const ANALYSIS_STEPS = [
-  "Extracting policy text with OCR...",
+  "Extracting text from PDF...",
   "Identifying coverage sections...",
   "Analyzing coverage limits and deductibles...",
   "Scanning for hidden coverages...",
@@ -193,13 +194,35 @@ export default function PolicyAnalysisPage() {
     }, 2000);
 
     try {
-      // Read file as text for the API
-      const text = await policyFile.text();
+      // Step 1: Extract text from PDF
+      let policyText: string;
 
+      if (policyFile.type === "application/pdf") {
+        const formData = new FormData();
+        formData.append("file", policyFile);
+
+        const extractRes = await fetch("/api/ai/extract-pdf", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!extractRes.ok) {
+          const extractData = await extractRes.json().catch(() => ({}));
+          throw new Error(extractData.error || "PDF text extraction failed");
+        }
+
+        const extractData = await extractRes.json();
+        policyText = extractData.text;
+      } else {
+        // Fallback: read file as text for non-PDF files
+        policyText = await policyFile.text();
+      }
+
+      // Step 2: Send extracted text for AI analysis
       const res = await fetch("/api/ai/analyze-policy", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ policyText: text }),
+        body: JSON.stringify({ policyText }),
       });
 
       clearInterval(stepInterval);
@@ -469,6 +492,9 @@ export default function PolicyAnalysisPage() {
           state.
         </p>
       </div>
+
+      {/* Chat for follow-up questions */}
+      <Chat context={JSON.stringify(analysis)} />
     </ClaimLayout>
   );
 }
