@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, ArrowLeft, ChevronRight, Search, Loader2, Camera, CheckCircle2 } from "lucide-react";
+import { ArrowRight, ArrowLeft, ChevronRight, Search, Loader2, Camera, CheckCircle2, ImagePlus, FileText, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -108,6 +108,21 @@ export default function NewClaimPage() {
   const [cardScanned, setCardScanned] = useState(false);
   const [cardError, setCardError] = useState("");
 
+  /* ---- Damage photo analysis state ---- */
+  const [damageAnalyzing, setDamageAnalyzing] = useState(false);
+  const [damageAnalyzed, setDamageAnalyzed] = useState(false);
+  const [damageError, setDamageError] = useState("");
+  const [damagePhotos, setDamagePhotos] = useState<File[]>([]);
+
+  /* ---- Offer letter scan state ---- */
+  const [offerScanning, setOfferScanning] = useState(false);
+  const [offerScanned, setOfferScanned] = useState(false);
+  const [offerError, setOfferError] = useState("");
+  const [offerDetails, setOfferDetails] = useState<Record<string, unknown> | null>(null);
+
+  /* ---- Track which fields were auto-filled ---- */
+  const [autoFilled, setAutoFilled] = useState<Set<string>>(new Set());
+
   /* ---- Form errors per step ---- */
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -143,6 +158,103 @@ export default function NewClaimPage() {
     }
   }
 
+  /* ---- Auto-fill helper ---- */
+  function autoFillField<K extends keyof OnboardingData>(key: K, value: OnboardingData[K]) {
+    updateField(key, value);
+    setAutoFilled((prev) => new Set(prev).add(key as string));
+  }
+
+  /* ------------------------------------------------------------------------ */
+  /*  Damage Photo Analysis                                                    */
+  /* ------------------------------------------------------------------------ */
+
+  async function handleDamagePhotoAnalysis(files: File[]) {
+    if (files.length === 0) return;
+
+    setDamagePhotos(files);
+    setDamageAnalyzing(true);
+    setDamageError("");
+    setDamageAnalyzed(false);
+
+    try {
+      const formDataObj = new FormData();
+      files.forEach((file) => formDataObj.append("files", file));
+
+      const res = await fetch("/api/ai/analyze-damage", {
+        method: "POST",
+        body: formDataObj,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setDamageError(data.error || "Could not analyze damage photos.");
+        return;
+      }
+
+      if (data.description) {
+        autoFillField("damage_description", data.description);
+        setDamageAnalyzed(true);
+      }
+    } catch {
+      setDamageError("Failed to analyze photos. Please try again.");
+    } finally {
+      setDamageAnalyzing(false);
+    }
+  }
+
+  /* ------------------------------------------------------------------------ */
+  /*  Offer Letter Scan                                                        */
+  /* ------------------------------------------------------------------------ */
+
+  async function handleOfferLetterScan(files: File[]) {
+    if (files.length === 0) return;
+    const file = files[0];
+
+    setOfferScanning(true);
+    setOfferError("");
+    setOfferScanned(false);
+
+    try {
+      const formDataObj = new FormData();
+      formDataObj.append("file", file);
+
+      const res = await fetch("/api/ai/extract-offer-letter", {
+        method: "POST",
+        body: formDataObj,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setOfferError(data.error || "Could not read offer letter.");
+        return;
+      }
+
+      const ext = data.extracted;
+      setOfferDetails(ext);
+
+      // Auto-fill offer fields
+      if (ext.offer_amount && typeof ext.offer_amount === "number") {
+        autoFillField("offer_amount", ext.offer_amount);
+        autoFillField("has_offer", true);
+      }
+      if (ext.insurer_name && !formData.insurer_name) {
+        autoFillField("insurer_name", ext.insurer_name);
+        autoFillField("filed_with_insurer", true);
+      }
+      if (ext.claim_number && !formData.claim_number) {
+        autoFillField("claim_number", ext.claim_number);
+      }
+
+      setOfferScanned(true);
+    } catch {
+      setOfferError("Failed to scan offer letter. Please try again.");
+    } finally {
+      setOfferScanning(false);
+    }
+  }
+
   /* ------------------------------------------------------------------------ */
   /*  VIN Lookup                                                               */
   /* ------------------------------------------------------------------------ */
@@ -167,11 +279,11 @@ export default function NewClaimPage() {
         return;
       }
 
-      if (data.year) updateField("vehicle_year", data.year);
-      if (data.make) updateField("vehicle_make", data.make);
+      if (data.year) autoFillField("vehicle_year", data.year);
+      if (data.make) autoFillField("vehicle_make", data.make);
       if (data.model) {
         const modelWithTrim = data.trim ? `${data.model} ${data.trim}` : data.model;
-        updateField("vehicle_model", modelWithTrim);
+        autoFillField("vehicle_model", modelWithTrim);
       }
 
       setVinResult({ year: data.year, make: data.make, model: data.model, trim: data.trim });
@@ -214,24 +326,24 @@ export default function NewClaimPage() {
 
       // Auto-fill fields from extracted data
       if (ext.insurer_name && !formData.insurer_name) {
-        updateField("insurer_name", ext.insurer_name);
+        autoFillField("insurer_name", ext.insurer_name);
       }
       if (ext.policy_number && !formData.claim_number) {
-        updateField("claim_number", ext.policy_number);
+        autoFillField("claim_number", ext.policy_number);
       }
       if (ext.vehicle_year && !formData.vehicle_year) {
-        updateField("vehicle_year", ext.vehicle_year);
+        autoFillField("vehicle_year", ext.vehicle_year);
       }
       if (ext.vehicle_make && !formData.vehicle_make) {
-        updateField("vehicle_make", ext.vehicle_make);
+        autoFillField("vehicle_make", ext.vehicle_make);
       }
       if (ext.vehicle_model && !formData.vehicle_model) {
-        updateField("vehicle_model", ext.vehicle_model);
+        autoFillField("vehicle_model", ext.vehicle_model);
       }
 
       // If card shows they have insurance, mark as filed
       if (ext.insurer_name) {
-        updateField("filed_with_insurer", true);
+        autoFillField("filed_with_insurer", true);
       }
 
       setCardScanned(true);
@@ -446,15 +558,94 @@ export default function NewClaimPage() {
             }
           />
 
-          <Textarea
-            id="damage_description"
-            label="Describe the damage to your vehicle"
-            placeholder="e.g., Rear-ended at a stoplight. Bumper crushed, trunk won't close, tail lights broken. Airbags did not deploy."
-            value={formData.damage_description}
-            onChange={(e) => updateField("damage_description", e.target.value)}
-            error={errors.damage_description}
-            rows={4}
-          />
+          {/* Damage photo analysis */}
+          <div className="rounded-lg border border-dashed border-slate-300 p-4 bg-slate-50">
+            <div className="flex items-start gap-3">
+              <div className="w-9 h-9 rounded-lg bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <ImagePlus className="w-4.5 h-4.5 text-brand-600" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-body-sm font-medium text-slate-900">
+                  Have photos of the damage?
+                </p>
+                <p className="text-caption text-slate-500 mt-0.5">
+                  Upload up to 5 photos and our AI will write the damage description for you.
+                </p>
+                <div className="mt-3">
+                  {damageAnalyzed ? (
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-body-sm text-success-600">
+                        <CheckCircle2 className="w-4 h-4" />
+                        Description generated from {damagePhotos.length} photo{damagePhotos.length !== 1 ? "s" : ""}
+                      </div>
+                      <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-caption font-medium text-slate-500 hover:bg-slate-50 cursor-pointer transition-colors">
+                        Upload different photos
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          multiple
+                          className="hidden"
+                          onChange={(e) => {
+                            const files = e.target.files;
+                            if (files && files.length > 0) {
+                              handleDamagePhotoAnalysis(Array.from(files).slice(0, 5));
+                            }
+                          }}
+                        />
+                      </label>
+                    </div>
+                  ) : damageAnalyzing ? (
+                    <div className="flex items-center gap-2 text-body-sm text-slate-500">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Analyzing damage photos...
+                    </div>
+                  ) : (
+                    <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-body-sm font-medium text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors">
+                      <ImagePlus className="w-4 h-4" />
+                      Upload damage photos
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        multiple
+                        className="hidden"
+                        onChange={(e) => {
+                          const files = e.target.files;
+                          if (files && files.length > 0) {
+                            handleDamagePhotoAnalysis(Array.from(files).slice(0, 5));
+                          }
+                        }}
+                      />
+                    </label>
+                  )}
+                  {damageError && (
+                    <p className="text-caption text-danger-600 mt-1">{damageError}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <label htmlFor="damage_description" className="block text-body-sm font-medium text-slate-700">
+                Describe the damage to your vehicle
+              </label>
+              {autoFilled.has("damage_description") && (
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                  <Sparkles className="w-3 h-3" />
+                  AI
+                </span>
+              )}
+            </div>
+            <Textarea
+              id="damage_description"
+              placeholder="e.g., Rear-ended at a stoplight. Bumper crushed, trunk won&apos;t close, tail lights broken. Airbags did not deploy."
+              value={formData.damage_description}
+              onChange={(e) => updateField("damage_description", e.target.value)}
+              error={errors.damage_description}
+              rows={4}
+            />
+          </div>
         </div>
       </div>
     );
@@ -564,22 +755,46 @@ export default function NewClaimPage() {
           {/* Conditional: insurer name + claim number */}
           {formData.filed_with_insurer && (
             <div className="space-y-5 pl-4 border-l-2 border-slate-100">
-              <Input
-                id="insurer_name"
-                label="Insurance company name"
-                placeholder="e.g., State Farm, GEICO, Progressive"
-                value={formData.insurer_name}
-                onChange={(e) => updateField("insurer_name", e.target.value)}
-                error={errors.insurer_name}
-              />
-              <Input
-                id="claim_number"
-                label="Claim number (optional)"
-                placeholder="e.g., CLM-2024-123456"
-                value={formData.claim_number}
-                onChange={(e) => updateField("claim_number", e.target.value)}
-                hint="You can find this on any correspondence from your insurer."
-              />
+              <div>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <label htmlFor="insurer_name" className="block text-body-sm font-medium text-slate-700">
+                    Insurance company name
+                  </label>
+                  {autoFilled.has("insurer_name") && (
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                      <Sparkles className="w-3 h-3" />
+                      AI
+                    </span>
+                  )}
+                </div>
+                <Input
+                  id="insurer_name"
+                  placeholder="e.g., State Farm, GEICO, Progressive"
+                  value={formData.insurer_name}
+                  onChange={(e) => updateField("insurer_name", e.target.value)}
+                  error={errors.insurer_name}
+                />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <label htmlFor="claim_number" className="block text-body-sm font-medium text-slate-700">
+                    Claim number (optional)
+                  </label>
+                  {autoFilled.has("claim_number") && (
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                      <Sparkles className="w-3 h-3" />
+                      AI
+                    </span>
+                  )}
+                </div>
+                <Input
+                  id="claim_number"
+                  placeholder="e.g., CLM-2024-123456"
+                  value={formData.claim_number}
+                  onChange={(e) => updateField("claim_number", e.target.value)}
+                  hint="You can find this on any correspondence from your insurer."
+                />
+              </div>
             </div>
           )}
 
@@ -619,29 +834,98 @@ export default function NewClaimPage() {
             </div>
           </div>
 
-          {/* Conditional: offer amount */}
+          {/* Conditional: offer amount + letter scan */}
           {formData.has_offer && (
-            <div className="pl-4 border-l-2 border-slate-100">
-              <Input
-                id="offer_amount"
-                label="Settlement offer amount"
-                type="number"
-                placeholder="e.g., 4500"
-                value={
-                  formData.offer_amount !== null
-                    ? String(formData.offer_amount)
-                    : ""
-                }
-                onChange={(e) => {
-                  const val = e.target.value;
-                  updateField(
-                    "offer_amount",
-                    val === "" ? null : parseFloat(val)
-                  );
-                }}
-                error={errors.offer_amount}
-                hint="Enter the dollar amount your insurer offered."
-              />
+            <div className="pl-4 border-l-2 border-slate-100 space-y-4">
+              {/* Offer letter scan */}
+              <div className="rounded-lg border border-dashed border-slate-300 p-3 bg-slate-50">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <FileText className="w-4 h-4 text-brand-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-body-sm font-medium text-slate-900">
+                      Have the offer letter?
+                    </p>
+                    <p className="text-caption text-slate-500 mt-0.5">
+                      Upload a photo and we&apos;ll extract the amount, adjuster info, and breakdown.
+                    </p>
+                    <div className="mt-2">
+                      {offerScanned ? (
+                        <div className="space-y-1.5">
+                          <div className="flex items-center gap-2 text-body-sm text-success-600">
+                            <CheckCircle2 className="w-4 h-4" />
+                            Offer details extracted
+                          </div>
+                          {offerDetails && offerDetails.adjuster_name ? (
+                            <p className="text-caption text-slate-500">
+                              Adjuster: {String(offerDetails.adjuster_name)}
+                              {offerDetails.adjuster_phone ? ` (${String(offerDetails.adjuster_phone)})` : ""}
+                            </p>
+                          ) : null}
+                        </div>
+                      ) : offerScanning ? (
+                        <div className="flex items-center gap-2 text-body-sm text-slate-500">
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Reading offer letter...
+                        </div>
+                      ) : (
+                        <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-caption font-medium text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors">
+                          <FileText className="w-3.5 h-3.5" />
+                          Upload offer letter
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            className="hidden"
+                            onChange={(e) => {
+                              const files = e.target.files;
+                              if (files && files.length > 0) {
+                                handleOfferLetterScan(Array.from(files));
+                              }
+                            }}
+                          />
+                        </label>
+                      )}
+                      {offerError && (
+                        <p className="text-caption text-danger-600 mt-1">{offerError}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <label htmlFor="offer_amount" className="block text-body-sm font-medium text-slate-700">
+                    Settlement offer amount
+                  </label>
+                  {autoFilled.has("offer_amount") && (
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                      <Sparkles className="w-3 h-3" />
+                      AI
+                    </span>
+                  )}
+                </div>
+                <Input
+                  id="offer_amount"
+                  type="number"
+                  placeholder="e.g., 4500"
+                  value={
+                    formData.offer_amount !== null
+                      ? String(formData.offer_amount)
+                      : ""
+                  }
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    updateField(
+                      "offer_amount",
+                      val === "" ? null : parseFloat(val)
+                    );
+                  }}
+                  error={errors.offer_amount}
+                  hint="Enter the dollar amount your insurer offered."
+                />
+              </div>
             </div>
           )}
         </div>
@@ -728,31 +1012,61 @@ export default function NewClaimPage() {
         </div>
 
         <div className="space-y-5">
-          <Input
-            id="vehicle_year"
-            label="Year"
-            placeholder="e.g., 2021"
-            value={formData.vehicle_year}
-            onChange={(e) => updateField("vehicle_year", e.target.value)}
-            error={errors.vehicle_year}
-            maxLength={4}
-          />
-          <Input
-            id="vehicle_make"
-            label="Make"
-            placeholder="e.g., Toyota"
-            value={formData.vehicle_make}
-            onChange={(e) => updateField("vehicle_make", e.target.value)}
-            error={errors.vehicle_make}
-          />
-          <Input
-            id="vehicle_model"
-            label="Model"
-            placeholder="e.g., Camry SE"
-            value={formData.vehicle_model}
-            onChange={(e) => updateField("vehicle_model", e.target.value)}
-            error={errors.vehicle_model}
-          />
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <label htmlFor="vehicle_year" className="block text-body-sm font-medium text-slate-700">Year</label>
+              {autoFilled.has("vehicle_year") && (
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                  <Sparkles className="w-3 h-3" />
+                  AI
+                </span>
+              )}
+            </div>
+            <Input
+              id="vehicle_year"
+              placeholder="e.g., 2021"
+              value={formData.vehicle_year}
+              onChange={(e) => updateField("vehicle_year", e.target.value)}
+              error={errors.vehicle_year}
+              maxLength={4}
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <label htmlFor="vehicle_make" className="block text-body-sm font-medium text-slate-700">Make</label>
+              {autoFilled.has("vehicle_make") && (
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                  <Sparkles className="w-3 h-3" />
+                  AI
+                </span>
+              )}
+            </div>
+            <Input
+              id="vehicle_make"
+              placeholder="e.g., Toyota"
+              value={formData.vehicle_make}
+              onChange={(e) => updateField("vehicle_make", e.target.value)}
+              error={errors.vehicle_make}
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <label htmlFor="vehicle_model" className="block text-body-sm font-medium text-slate-700">Model</label>
+              {autoFilled.has("vehicle_model") && (
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                  <Sparkles className="w-3 h-3" />
+                  AI
+                </span>
+              )}
+            </div>
+            <Input
+              id="vehicle_model"
+              placeholder="e.g., Camry SE"
+              value={formData.vehicle_model}
+              onChange={(e) => updateField("vehicle_model", e.target.value)}
+              error={errors.vehicle_model}
+            />
+          </div>
         </div>
       </div>
     );
