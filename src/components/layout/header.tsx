@@ -18,13 +18,13 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-slate-100 shadow-subtle">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-slate-100">
       <div className="container-wide">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="text-xl font-semibold text-slate-900">
-              Claim<span className="text-brand-600">Coach</span>
+            <span className="text-xl font-serif font-bold text-ink-800">
+              Claim<span className="text-ink-500">Coach</span>
             </span>
           </Link>
 
@@ -32,13 +32,13 @@ export function Header() {
           <nav className="hidden md:flex items-center gap-8">
             <Link
               href="/about"
-              className="text-body-sm text-slate-500 hover:text-slate-900 transition-colors"
+              className="text-body-sm text-slate-500 hover:text-ink-800 transition-colors"
             >
               How It Works
             </Link>
             <Link
               href="/pricing"
-              className="text-body-sm text-slate-500 hover:text-slate-900 transition-colors"
+              className="text-body-sm text-slate-500 hover:text-ink-800 transition-colors"
             >
               Pricing
             </Link>
@@ -46,13 +46,13 @@ export function Header() {
               <>
                 <Link
                   href="/dashboard"
-                  className="text-body-sm text-slate-500 hover:text-slate-900 transition-colors"
+                  className="text-body-sm text-slate-500 hover:text-ink-800 transition-colors"
                 >
                   Dashboard
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="text-body-sm text-slate-500 hover:text-slate-900 transition-colors"
+                  className="text-body-sm text-slate-500 hover:text-ink-800 transition-colors"
                 >
                   Log out
                 </button>
@@ -61,13 +61,13 @@ export function Header() {
               <>
                 <Link
                   href="/login"
-                  className="text-body-sm text-slate-500 hover:text-slate-900 transition-colors"
+                  className="text-body-sm text-slate-500 hover:text-ink-800 transition-colors"
                 >
                   Log In
                 </Link>
                 <Link
                   href="/signup"
-                  className="inline-flex items-center justify-center rounded-lg bg-brand-500 px-3.5 py-1.5 text-body-sm font-medium text-white hover:bg-brand-600 transition-colors"
+                  className="inline-flex items-center justify-center rounded-lg bg-ink-800 px-4 py-2 text-body-sm font-medium text-white hover:bg-ink-900 transition-colors"
                 >
                   Start Free
                 </Link>
@@ -134,7 +134,7 @@ export function Header() {
                   </Link>
                   <Link
                     href="/signup"
-                    className="inline-flex items-center justify-center rounded-lg bg-brand-500 px-3.5 py-1.5 text-body-sm font-medium text-white hover:bg-brand-600 transition-colors mt-2"
+                    className="inline-flex items-center justify-center rounded-lg bg-ink-800 px-4 py-2 text-body-sm font-medium text-white hover:bg-ink-900 transition-colors mt-2"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Start Free
