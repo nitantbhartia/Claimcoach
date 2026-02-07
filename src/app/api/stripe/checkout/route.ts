@@ -67,8 +67,8 @@ export async function POST(request: NextRequest) {
               name: "ClaimCoach Pro",
               description: "Unlimited claims, full AI toolkit, priority support",
             },
-            unit_amount: 46800, // $468.00/year ($39/mo billed annually)
-            recurring: { interval: "year" },
+            unit_amount: 14700, // $147.00/quarter ($49/mo billed quarterly)
+            recurring: { interval: "month", interval_count: 3 },
           },
           quantity: 1,
         },
