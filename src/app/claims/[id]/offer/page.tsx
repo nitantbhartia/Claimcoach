@@ -9,7 +9,8 @@ import { ScoreGauge } from "@/components/ui/score-gauge";
 import { OfferAnalysis } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { LiveAuditOffer } from "@/components/ui/live-audit-offer";
 
 // ---------------------------------------------------------------------------
 // Mock offer analysis data -- 2022 Honda Civic, $4,200 offer from State Farm
@@ -221,17 +222,10 @@ export default function OfferAnalysisPage() {
         </div>
 
         {/* ----------------------------------------------------------------- */}
-        {/* 2. Loading State                                                   */}
+        {/* 2. Loading State — Live Audit                                      */}
         {/* ----------------------------------------------------------------- */}
         {isAnalyzing && (
-          <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
-            <div className="flex items-center gap-3">
-              <Loader2 className="w-5 h-5 text-brand-500 animate-spin" />
-              <p className="text-body text-slate-600">
-                {ANALYSIS_STEPS[analysisStep]}
-              </p>
-            </div>
-          </div>
+          <LiveAuditOffer duration={12000} />
         )}
 
         {error && !isAnalyzing && (

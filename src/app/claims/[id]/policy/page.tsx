@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/ui/file-upload";
 import { PolicyAnalysis } from "@/types";
 import { Chat } from "@/components/ui/chat";
-import { ChevronDown, ChevronUp, Loader2, ArrowRight } from "lucide-react";
+import { ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { LiveAudit } from "@/components/ui/live-audit";
 
 // ---------------------------------------------------------------------------
 // Mock policy analysis data -- realistic State Farm auto policy
@@ -295,17 +296,18 @@ export default function PolicyAnalysisPage() {
     );
   }
 
-  // ---- Loading state ----
+  // ---- Loading state: Live Audit ----
   if (isAnalyzing) {
     return (
       <ClaimLayout claimId={claimId}>
-        <div className="flex items-center justify-center py-24">
-          <div className="flex items-center gap-3">
-            <Loader2 className="w-5 h-5 text-brand-500 animate-spin" />
-            <p className="text-body-sm text-slate-500">
-              {ANALYSIS_STEPS[analysisStep]}
+        <div className="space-y-4">
+          <div>
+            <h1 className="font-serif text-heading-lg text-ink-800">Policy Analysis</h1>
+            <p className="text-body-sm text-slate-500 mt-1">
+              Our AI is reading your policy document...
             </p>
           </div>
+          <LiveAudit totalPages={42} duration={14000} />
         </div>
       </ClaimLayout>
     );
