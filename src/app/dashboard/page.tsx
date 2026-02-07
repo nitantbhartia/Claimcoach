@@ -15,21 +15,23 @@ import { Plus, ArrowRight } from "lucide-react";
 const mockClaims = [
   {
     id: "demo",
-    vehicle: "2022 Honda Civic",
+    vehicle: "2022 Honda Civic EX",
     type: "Auto Property Damage",
     insurer: "State Farm",
     status: "offer_received" as ClaimStatus,
-    date: "2026-01-15",
+    date: "2025-11-14",
     offer: 4200,
+    fairnessScore: 38,
   },
   {
     id: "demo-2",
-    vehicle: "2024 Toyota RAV4",
+    vehicle: "2024 Toyota RAV4 XLE",
     type: "Auto Collision",
     insurer: "Progressive",
     status: "documenting" as ClaimStatus,
     date: "2026-01-28",
     offer: null,
+    fairnessScore: null,
   },
 ];
 
@@ -37,10 +39,10 @@ const statusDot: Record<ClaimStatus, string> = {
   setup: "bg-slate-400",
   documenting: "bg-blue-500",
   policy_review: "bg-brand-500",
-  filed: "bg-amber-500",
-  offer_received: "bg-amber-500",
-  negotiating: "bg-orange-500",
-  escalating: "bg-red-500",
+  filed: "bg-yellow-500",
+  offer_received: "bg-orange-500",
+  negotiating: "bg-red-500",
+  escalating: "bg-red-600",
   resolved: "bg-green-500",
 };
 
@@ -80,80 +82,95 @@ export default function DashboardPage() {
       </div>
 
       {/* Claims list */}
-      <div className="border border-slate-200 rounded-lg shadow-card overflow-hidden mb-10">
-        {mockClaims.map((claim, idx) => (
-          <Link
-            key={claim.id}
-            href={`/claims/${claim.id}`}
-            className={
-              "group flex items-center gap-4 px-4 py-4 sm:px-6 hover:bg-slate-50 transition-colors" +
-              (idx < mockClaims.length - 1 ? " border-b border-slate-100" : "")
-            }
-          >
-            {/* Vehicle + type */}
-            <div className="flex-1 min-w-0">
-              <p className="text-body font-medium text-slate-900 truncate">
-                {claim.vehicle}
-              </p>
-              <div className="flex items-center gap-1.5 sm:hidden mt-0.5">
+      {mockClaims.length > 0 ? (
+        <div className="border border-slate-200 rounded-lg shadow-card overflow-hidden mb-10">
+          {mockClaims.map((claim, idx) => (
+            <Link
+              key={claim.id}
+              href={`/claims/${claim.id}`}
+              className={
+                "group flex items-center gap-4 px-4 py-4 sm:px-6 hover:bg-slate-50 transition-colors" +
+                (idx < mockClaims.length - 1 ? " border-b border-slate-100" : "")
+              }
+            >
+              {/* Vehicle + type */}
+              <div className="flex-1 min-w-0">
+                <p className="text-body font-medium text-slate-900 truncate">
+                  {claim.vehicle}
+                </p>
+                <div className="flex items-center gap-1.5 sm:hidden mt-0.5">
+                  <span
+                    className={`inline-block w-1.5 h-1.5 rounded-full ${statusDot[claim.status]}`}
+                    aria-hidden="true"
+                  />
+                  <span className="text-caption text-slate-500 truncate">
+                    {statusLabel[claim.status]} &middot; {claim.insurer}
+                  </span>
+                </div>
+              </div>
+
+              {/* Insurer -- hidden on mobile, shown inline above */}
+              <span className="hidden sm:block text-body-sm text-slate-500 w-28 shrink-0">
+                {claim.insurer}
+              </span>
+
+              {/* Status */}
+              <span className="hidden sm:flex items-center gap-1.5 text-body-sm text-slate-600 w-36 shrink-0">
                 <span
                   className={`inline-block w-1.5 h-1.5 rounded-full ${statusDot[claim.status]}`}
                   aria-hidden="true"
                 />
-                <span className="text-caption text-slate-500 truncate">
-                  {statusLabel[claim.status]} &middot; {claim.insurer}
-                </span>
-              </div>
-            </div>
+                {statusLabel[claim.status]}
+              </span>
 
-            {/* Insurer -- hidden on mobile, shown inline above */}
-            <span className="hidden sm:block text-body-sm text-slate-500 w-28 shrink-0">
-              {claim.insurer}
-            </span>
+              {/* Date */}
+              <span className="hidden md:block text-body-sm text-slate-400 w-24 shrink-0">
+                {new Date(claim.date).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })}
+              </span>
 
-            {/* Status */}
-            <span className="hidden sm:flex items-center gap-1.5 text-body-sm text-slate-600 w-36 shrink-0">
-              <span
-                className={`inline-block w-1.5 h-1.5 rounded-full ${statusDot[claim.status]}`}
-                aria-hidden="true"
-              />
-              {statusLabel[claim.status]}
-            </span>
+              {/* Offer */}
+              <span className="text-body-sm font-medium text-slate-900 w-20 shrink-0 text-right">
+                {claim.offer !== null ? formatCurrency(claim.offer) : "\u2014"}
+              </span>
 
-            {/* Date */}
-            <span className="hidden md:block text-body-sm text-slate-400 w-24 shrink-0">
-              {new Date(claim.date).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-              })}
-            </span>
-
-            {/* Offer */}
-            <span className="text-body-sm font-medium text-slate-900 w-20 shrink-0 text-right">
-              {claim.offer !== null ? formatCurrency(claim.offer) : "\u2014"}
-            </span>
-
-            {/* Arrow */}
-            <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-slate-500 transition-colors shrink-0" />
+              {/* Arrow */}
+              <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-slate-500 transition-colors shrink-0" />
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="border border-slate-200 rounded-lg shadow-card p-12 text-center mb-10">
+          <p className="text-heading text-slate-900 mb-2">No claims yet</p>
+          <p className="text-body-sm text-slate-500 mb-6 max-w-md mx-auto">
+            Start your first claim and our AI will analyze your insurance policy,
+            evaluate offers, and help you negotiate a fair settlement.
+          </p>
+          <Link href="/claims/new">
+            <Button className="gap-1.5">
+              <Plus className="w-4 h-4" />
+              Start Your First Claim
+            </Button>
           </Link>
-        ))}
-      </div>
-
-      {/* Mobile status badges -- visible below each row on small screens */}
-      {/* (status is embedded in the row layout via sm:hidden / sm:flex) */}
+        </div>
+      )}
 
       {/* Quick actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6">
-        {quickActions.map((action) => (
-          <Link
-            key={action.href}
-            href={action.href}
-            className="text-body-sm text-slate-500 hover:text-slate-900 transition-colors py-1"
-          >
-            {action.label} &rarr;
-          </Link>
-        ))}
-      </div>
+      {mockClaims.length > 0 && (
+        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6">
+          {quickActions.map((action) => (
+            <Link
+              key={action.href}
+              href={action.href}
+              className="text-body-sm text-slate-500 hover:text-slate-900 transition-colors py-1"
+            >
+              {action.label} &rarr;
+            </Link>
+          ))}
+        </div>
+      )}
     </DashboardShell>
   );
 }

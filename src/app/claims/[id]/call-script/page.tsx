@@ -5,7 +5,8 @@ import { useParams } from "next/navigation";
 import { ClaimLayout } from "@/components/layout/claim-layout";
 import { Button } from "@/components/ui/button";
 import { CallScript } from "@/types";
-import { Loader2, Phone, Copy, Check, ChevronDown, ChevronUp, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Loader2, Phone, Copy, Check, ChevronDown, ChevronUp, ThumbsUp, ThumbsDown, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 // ---------------------------------------------------------------------------
 // Mock call script data
@@ -108,8 +109,6 @@ export default function CallScriptPage() {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  void claimId;
-
   async function handleGenerate() {
     setIsGenerating(true);
     setGenerationStep(0);
@@ -189,7 +188,7 @@ export default function CallScriptPage() {
   }
 
   return (
-    <ClaimLayout claimId={params.id}>
+    <ClaimLayout claimId={claimId}>
       <div className="space-y-6">
         {/* Header */}
         <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
@@ -383,6 +382,27 @@ export default function CallScriptPage() {
                     </li>
                   ))}
                 </ul>
+              </div>
+            </div>
+
+            {/* Next steps */}
+            <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5">
+              <p className="text-body-sm font-medium text-slate-500 mb-3">What&apos;s next?</p>
+              <div className="space-y-2">
+                <Link
+                  href={`/claims/${claimId}/counter`}
+                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                >
+                  Send a formal counter-offer with your demand letter
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                </Link>
+                <Link
+                  href={`/claims/${claimId}/export`}
+                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                >
+                  Export your full analysis report as PDF
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                </Link>
               </div>
             </div>
 

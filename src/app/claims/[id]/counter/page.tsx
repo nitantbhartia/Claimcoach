@@ -6,7 +6,8 @@ import { ClaimLayout } from "@/components/layout/claim-layout";
 import { Button } from "@/components/ui/button";
 import { CounterOffer } from "@/types";
 import { formatCurrency } from "@/lib/utils";
-import { Copy, Download, ChevronDown, ChevronUp, Loader2, ArrowRight, Check } from "lucide-react";
+import { Copy, Download, ChevronDown, ChevronUp, Loader2, ArrowRight, Check, Phone } from "lucide-react";
+import Link from "next/link";
 
 // ---------------------------------------------------------------------------
 // Mock counter-offer data -- based on $4,200 offer + $5,781 gap
@@ -180,9 +181,6 @@ export default function CounterOfferPage() {
   const demand = 9981;
   const gap = 5781;
 
-  // Suppress unused variable warning for claimId
-  void claimId;
-
   async function handleGenerate() {
     setIsGenerating(true);
     setGenerationStep(0);
@@ -263,7 +261,7 @@ export default function CounterOfferPage() {
   }
 
   return (
-    <ClaimLayout claimId={params.id}>
+    <ClaimLayout claimId={claimId}>
       <div className="space-y-6">
         {/* ----------------------------------------------------------------- */}
         {/* 1. Summary Bar                                                     */}
@@ -491,7 +489,36 @@ export default function CounterOfferPage() {
             </div>
 
             {/* -------------------------------------------------------------- */}
-            {/* 7. Disclaimer                                                   */}
+            {/* 7. Next steps                                                   */}
+            {/* -------------------------------------------------------------- */}
+            <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5">
+              <p className="text-body-sm font-medium text-slate-500 mb-3">What&apos;s next?</p>
+              <div className="space-y-2">
+                <Link
+                  href={`/claims/${claimId}/call-script`}
+                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <Phone className="w-3.5 h-3.5 text-slate-400" />
+                    Prepare a call script to negotiate with the adjuster
+                  </span>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                </Link>
+                <Link
+                  href={`/claims/${claimId}/export`}
+                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <Download className="w-3.5 h-3.5 text-slate-400" />
+                    Export your full analysis report as PDF
+                  </span>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                </Link>
+              </div>
+            </div>
+
+            {/* -------------------------------------------------------------- */}
+            {/* 8. Disclaimer                                                   */}
             {/* -------------------------------------------------------------- */}
             <p className="text-caption text-slate-400 leading-relaxed">
               This counter-offer package is generated for educational and

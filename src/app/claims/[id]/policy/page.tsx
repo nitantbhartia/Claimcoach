@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/ui/file-upload";
 import { PolicyAnalysis } from "@/types";
 import { Chat } from "@/components/ui/chat";
-import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { ChevronDown, ChevronUp, Loader2, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 // ---------------------------------------------------------------------------
 // Mock policy analysis data -- realistic State Farm auto policy
@@ -481,6 +482,27 @@ export default function PolicyAnalysisPage() {
             })}
           </div>
         </section>
+
+        {/* Next steps */}
+        <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5">
+          <p className="text-body-sm font-medium text-slate-500 mb-3">What&apos;s next?</p>
+          <div className="space-y-2">
+            <Link
+              href={`/claims/${claimId}/offer`}
+              className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+            >
+              Analyze the insurer&apos;s settlement offer
+              <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+            </Link>
+            <Link
+              href={`/claims/${claimId}/documents`}
+              className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+            >
+              Upload supporting documentation
+              <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+            </Link>
+          </div>
+        </div>
 
         {/* Disclaimer */}
         <p className="text-caption text-slate-400">

@@ -18,7 +18,7 @@ import { ArrowRight, Loader2 } from "lucide-react";
 const MOCK_ANALYSIS: OfferAnalysis = {
   fairness_score: 38,
   summary:
-    "State Farm&apos;s offer of $4,200 is significantly below the fair market value of your 2022 Honda Civic. The offer fails to account for diminished value, loss of use, sales tax on a replacement vehicle, and registration/title transfer fees. Based on comparable market data, your vehicle&apos;s fair value alone is $6,500-$7,200 before accounting for these additional legitimate damages. The total gap between their offer and your fair compensation is $5,781.",
+    "State Farm\u2019s offer of $4,200 is significantly below the fair market value of your 2022 Honda Civic. The offer fails to account for diminished value, loss of use, sales tax on a replacement vehicle, and registration/title transfer fees. Based on comparable market data, your vehicle\u2019s fair value alone is $6,500-$7,200 before accounting for these additional legitimate damages. The total gap between their offer and your fair compensation is $5,781.",
   line_items: [
     {
       category: "Vehicle Base Value",
@@ -470,7 +470,30 @@ export default function OfferAnalysisPage() {
             </div>
 
             {/* -------------------------------------------------------------- */}
-            {/* 7. Disclaimer                                                   */}
+            {/* 7. Next steps                                                   */}
+            {/* -------------------------------------------------------------- */}
+            <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5">
+              <p className="text-body-sm font-medium text-slate-500 mb-3">What&apos;s next?</p>
+              <div className="space-y-2">
+                <Link
+                  href={`/claims/${claimId}/counter`}
+                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                >
+                  Generate a counter-offer with demand letter
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                </Link>
+                <Link
+                  href={`/claims/${claimId}/call-script`}
+                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                >
+                  Prepare a call script for the adjuster
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                </Link>
+              </div>
+            </div>
+
+            {/* -------------------------------------------------------------- */}
+            {/* 8. Disclaimer                                                   */}
             {/* -------------------------------------------------------------- */}
             <p className="text-caption text-slate-400 leading-relaxed">
               This analysis is for educational purposes and does not constitute
