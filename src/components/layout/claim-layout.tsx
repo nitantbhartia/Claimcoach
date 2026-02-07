@@ -16,6 +16,7 @@ const claimTabs = [
   { href: "/policy", label: "Policy" },
   { href: "/offer", label: "Offer" },
   { href: "/counter", label: "Counter-Offer" },
+  { href: "/call-script", label: "Call Script" },
 ];
 
 export function ClaimLayout({ children, claimId }: ClaimLayoutProps) {

@@ -156,6 +156,43 @@ export interface OnboardingData {
   vehicle_make: string;
   vehicle_model: string;
   damage_description: string;
+  state: string;
+}
+
+export interface CallScript {
+  opening: string;
+  key_points: {
+    topic: string;
+    what_to_say: string;
+    if_they_say: string;
+    your_response: string;
+  }[];
+  closing: string;
+  dos: string[];
+  donts: string[];
+}
+
+export interface StateGuidance {
+  state_name: string;
+  state_code: string;
+  key_laws: {
+    name: string;
+    summary: string;
+    how_it_helps: string;
+  }[];
+  deadlines: {
+    name: string;
+    timeframe: string;
+    description: string;
+  }[];
+  consumer_rights: string[];
+  doi_info: {
+    name: string;
+    website: string;
+    complaint_url: string;
+    phone: string;
+  };
+  bad_faith_notes: string;
 }
 
 export interface User {

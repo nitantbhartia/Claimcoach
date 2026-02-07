@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ScoreGauge } from "@/components/ui/score-gauge";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Download, Phone } from "lucide-react";
 import type { ClaimStatus } from "@/types";
 
 // ---------------------------------------------------------------------------
@@ -85,6 +85,8 @@ const SUB_PAGES = [
   { label: "Policy Analysis", description: "Coverage details and red flags", href: (id: string) => `/claims/${id}/policy` },
   { label: "Offer Analysis", description: "Fairness breakdown of the insurer\u2019s offer", href: (id: string) => `/claims/${id}/offer` },
   { label: "Counter-Offer", description: "Demand letter and negotiation plan", href: (id: string) => `/claims/${id}/counter` },
+  { label: "Call Script", description: "AI-generated phone script for adjuster calls", href: (id: string) => `/claims/${id}/call-script` },
+  { label: "Export Report", description: "Print or save full analysis as PDF", href: (id: string) => `/claims/${id}/export` },
 ];
 
 // ---------------------------------------------------------------------------
@@ -126,12 +128,26 @@ export default function ClaimOverviewPage() {
               </span>
             </div>
 
-            <Link href={`/claims/${claimId}/offer`}>
-              <Button size="sm">
-                Review offer
-                <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
-              </Button>
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link href={`/claims/${claimId}/call-script`}>
+                <Button size="sm" variant="outline">
+                  <Phone className="w-3.5 h-3.5 mr-1.5" />
+                  Call Script
+                </Button>
+              </Link>
+              <Link href={`/claims/${claimId}/export`}>
+                <Button size="sm" variant="outline">
+                  <Download className="w-3.5 h-3.5 mr-1.5" />
+                  Export PDF
+                </Button>
+              </Link>
+              <Link href={`/claims/${claimId}/offer`}>
+                <Button size="sm">
+                  Review offer
+                  <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
 
