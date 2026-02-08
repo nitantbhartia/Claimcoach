@@ -94,6 +94,10 @@
     @apply bg-ice px-1;
   }
 
+  .mark-gold {
+    @apply bg-gold-200 px-1;
+  }
+
   /* Monospace date/code style */
   .mono-label {
     @apply font-mono text-caption text-[#4a555e] uppercase;

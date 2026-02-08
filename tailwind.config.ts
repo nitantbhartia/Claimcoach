@@ -49,6 +49,25 @@ const config: Config = {
           900: "#001729",
           950: "#000e1a",
         },
+        // Warm marketing palette (landing page)
+        navy: {
+          DEFAULT: "#1a2744",
+          50: "#f0f3f8",
+          100: "#d6dde8",
+          700: "#1e3554",
+          800: "#1a2744",
+          900: "#0f1a2e",
+        },
+        gold: {
+          DEFAULT: "#d4a853",
+          50: "#fdf8ef",
+          100: "#f8edcc",
+          200: "#f0d994",
+          300: "#e8c668",
+          400: "#d4a853",
+          500: "#b8903a",
+          600: "#96722c",
+        },
         // Semantic
         success: {
           50: "#f0fdf4",
@@ -78,6 +97,13 @@ const config: Config = {
           "-apple-system",
           "BlinkMacSystemFont",
           "sans-serif",
+        ],
+        serif: [
+          "Georgia",
+          "Cambria",
+          "Times New Roman",
+          "Times",
+          "serif",
         ],
         mono: ["Courier New", "Courier", "JetBrains Mono", "monospace"],
       },
