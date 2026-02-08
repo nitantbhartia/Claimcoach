@@ -39,6 +39,9 @@ export interface Claim {
   coverage_limits: CoverageLimits | null;
   hidden_coverages: string[] | null;
 
+  // Location
+  state: string | null;
+
   // Vehicle info (auto claims)
   vehicle_year: string | null;
   vehicle_make: string | null;

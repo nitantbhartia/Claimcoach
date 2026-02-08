@@ -121,6 +121,7 @@ export async function PATCH(
       "vehicle_year",
       "vehicle_make",
       "vehicle_model",
+      "state",
     ]);
 
     const updates: Record<string, unknown> = {};

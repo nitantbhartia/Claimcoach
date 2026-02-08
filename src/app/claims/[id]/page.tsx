@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { ScoreGauge } from "@/components/ui/score-gauge";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
-import { ArrowRight, Download, Loader2, Phone } from "lucide-react";
-import type { Claim, ClaimDocument, ClaimStatus, FaultStatus, FinancialImpact } from "@/types";
+import { ArrowRight, ChevronDown, ChevronUp, Download, Loader2, Phone, Scale } from "lucide-react";
+import type { Claim, ClaimDocument, ClaimStatus, FaultStatus, FinancialImpact, StateGuidance } from "@/types";
 
 // ---------------------------------------------------------------------------
 // Fault status display mapping
@@ -96,6 +96,9 @@ export default function ClaimOverviewPage() {
   const [expenses, setExpenses] = useState<FinancialImpact[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [stateGuidance, setStateGuidance] = useState<StateGuidance | null>(null);
+  const [stateGuidanceLoading, setStateGuidanceLoading] = useState(false);
+  const [stateGuidanceExpanded, setStateGuidanceExpanded] = useState(false);
 
   useEffect(() => {
     async function fetchClaim() {
@@ -119,6 +122,31 @@ export default function ClaimOverviewPage() {
 
     fetchClaim();
   }, [claimId]);
+
+  // Fetch state guidance when claim has a state
+  const claimState = claim?.state;
+  useEffect(() => {
+    if (!claimState) return;
+    async function fetchStateGuidance() {
+      setStateGuidanceLoading(true);
+      try {
+        const res = await fetch("/api/ai/state-guidance", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ state: claimState, claimType: "auto property damage" }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setStateGuidance(data.guidance);
+        }
+      } catch {
+        // Non-critical — silently fail
+      } finally {
+        setStateGuidanceLoading(false);
+      }
+    }
+    fetchStateGuidance();
+  }, [claimState]);
 
   if (loading) {
     return (
@@ -324,7 +352,102 @@ export default function ClaimOverviewPage() {
         </div>
 
         {/* -------------------------------------------------------------- */}
-        {/* 3. Navigation links                                             */}
+        {/* 3. State Rights                                                 */}
+        {/* -------------------------------------------------------------- */}
+        {claim.state && (
+          <div className="bg-panel border border-black/10">
+            <button
+              type="button"
+              onClick={() => setStateGuidanceExpanded(!stateGuidanceExpanded)}
+              className="w-full px-5 py-4 flex items-center justify-between hover:bg-panel-alt transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <Scale className="w-4 h-4 text-coral" />
+                <div className="text-left">
+                  <p className="text-body font-medium text-black">
+                    Your State Rights
+                  </p>
+                  <p className="text-caption text-[#4a555e]">
+                    {stateGuidanceLoading
+                      ? "Loading state-specific guidance..."
+                      : stateGuidance
+                      ? `${stateGuidance.state_name} — ${stateGuidance.key_laws.length} key laws, ${stateGuidance.deadlines.length} deadlines`
+                      : "State laws, deadlines, and consumer protections"}
+                  </p>
+                </div>
+              </div>
+              {stateGuidanceLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin text-[#4a555e]" />
+              ) : stateGuidanceExpanded ? (
+                <ChevronUp className="w-4 h-4 text-[#4a555e]" />
+              ) : (
+                <ChevronDown className="w-4 h-4 text-[#4a555e]" />
+              )}
+            </button>
+
+            {stateGuidanceExpanded && stateGuidance && (
+              <div className="border-t border-black/10">
+                {/* Key Laws */}
+                <div className="px-5 py-4 border-b border-black/5">
+                  <h3 className="text-body-sm font-semibold text-black mb-3">Key Laws</h3>
+                  <div className="space-y-3">
+                    {stateGuidance.key_laws.map((law, i) => (
+                      <div key={i}>
+                        <p className="text-body-sm font-medium text-black">{law.name}</p>
+                        <p className="text-caption text-[#4a555e]">{law.summary}</p>
+                        <p className="text-caption text-coral mt-0.5">{law.how_it_helps}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Deadlines */}
+                <div className="px-5 py-4 border-b border-black/5">
+                  <h3 className="text-body-sm font-semibold text-black mb-3">Deadlines</h3>
+                  <div className="space-y-2">
+                    {stateGuidance.deadlines.map((d, i) => (
+                      <div key={i} className="flex items-baseline justify-between gap-4">
+                        <div>
+                          <p className="text-body-sm font-medium text-black">{d.name}</p>
+                          <p className="text-caption text-[#4a555e]">{d.description}</p>
+                        </div>
+                        <span className="text-body-sm font-semibold text-black whitespace-nowrap">{d.timeframe}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Consumer Rights */}
+                <div className="px-5 py-4 border-b border-black/5">
+                  <h3 className="text-body-sm font-semibold text-black mb-2">Your Consumer Rights</h3>
+                  <ul className="space-y-1.5">
+                    {stateGuidance.consumer_rights.map((right, i) => (
+                      <li key={i} className="text-caption text-[#4a555e] flex items-baseline gap-2">
+                        <span className="text-black/20">&bull;</span>
+                        {right}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* DOI + Bad Faith */}
+                <div className="px-5 py-4">
+                  <h3 className="text-body-sm font-semibold text-black mb-2">Department of Insurance</h3>
+                  <p className="text-caption text-[#4a555e]">
+                    {stateGuidance.doi_info.name} &mdash; {stateGuidance.doi_info.phone}
+                  </p>
+                  <p className="text-caption text-[#4a555e] mt-2">
+                    <span className="font-medium text-black">Bad faith:</span>{" "}
+                    {stateGuidance.bad_faith_notes}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* -------------------------------------------------------------- */}
+        {/* 4. Navigation links                                             */}
         {/* -------------------------------------------------------------- */}
         <div className="bg-panel border border-black/10">
           {SUB_PAGES.map((page, idx) => (

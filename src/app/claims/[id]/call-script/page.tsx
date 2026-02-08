@@ -97,7 +97,7 @@ export default function CallScriptPage() {
             .filter(Boolean)
             .join(" "),
           insurerName: claim.insurer_name,
-          state: "",
+          state: claim.state || "",
         }),
       });
 

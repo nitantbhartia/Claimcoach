@@ -579,8 +579,12 @@ export default function LandingPage() {
   function handleWaitlist(e: React.FormEvent) {
     e.preventDefault();
     if (!email.includes("@")) return;
-    // In production: POST to /api/waitlist
     setEmailSubmitted(true);
+    fetch("/api/waitlist", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, interest: "home_health" }),
+    }).catch(() => {});
   }
 
   return (

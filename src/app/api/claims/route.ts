@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
         vehicle_make: body.vehicle_make || null,
         vehicle_model: body.vehicle_model || null,
         damage_description: body.damage_description || null,
+        state: body.state || null,
         status: body.has_offer ? "offer_received" : "documenting",
       })
       .select()
