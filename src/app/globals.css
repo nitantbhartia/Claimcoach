@@ -64,4 +64,40 @@
   .mark-peach {
     @apply bg-highlight-peach px-1 rounded-sm;
   }
+
+  /* Premium glass card — holographic edge effect */
+  .premium-card {
+    position: relative;
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .premium-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    padding: 2px;
+    background: linear-gradient(
+      135deg,
+      #002244 0%,
+      #3f669f 25%,
+      #7994bc 40%,
+      #FDE68A 50%,
+      #7994bc 60%,
+      #3f669f 75%,
+      #002244 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Odometer digit styling */
+  .odometer-digit {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+  }
 }

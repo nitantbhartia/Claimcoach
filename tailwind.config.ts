@@ -150,6 +150,14 @@ const config: Config = {
           "0 4px 16px -2px rgb(0 0 0 / 0.08), 0 1px 4px -1px rgb(0 0 0 / 0.04)",
         document:
           "0 25px 50px -12px rgb(0 0 0 / 0.12), 0 0 0 1px rgb(0 0 0 / 0.03)",
+        // Sharp, deep shadows for "hover 20px" effect
+        sharp:
+          "0 20px 40px -8px rgb(0 0 0 / 0.18), 0 8px 16px -4px rgb(0 0 0 / 0.08)",
+        "sharp-sm":
+          "0 8px 20px -4px rgb(0 0 0 / 0.14), 0 4px 8px -2px rgb(0 0 0 / 0.06)",
+        // Premium glow for pricing card
+        "premium-glow":
+          "0 0 0 1px rgb(0 34 68 / 0.1), 0 20px 50px -10px rgb(0 34 68 / 0.2), 0 0 60px -15px rgb(0 34 68 / 0.15)",
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-out",
@@ -158,6 +166,14 @@ const config: Config = {
         "scan-line": "scanLine 2.5s ease-in-out infinite",
         "count-up": "countUp 1.5s cubic-bezier(0.16, 1, 0.3, 1)",
         "reveal": "reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+        // New: pulsing glow for gap pill
+        "pulse-glow": "pulseGlow 2s ease-in-out infinite",
+        // New: odometer digit blur
+        "odometer": "odometer 0.15s ease-out",
+        // New: bridge fill on scroll
+        "bridge-fill": "bridgeFill 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        // New: grow card
+        "grow-in": "growIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
       },
       keyframes: {
         fadeIn: {
@@ -184,6 +200,22 @@ const config: Config = {
         reveal: {
           "0%": { opacity: "0", transform: "translateY(30px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        pulseGlow: {
+          "0%, 100%": { boxShadow: "0 0 8px 2px rgb(22 163 74 / 0.3)" },
+          "50%": { boxShadow: "0 0 20px 6px rgb(22 163 74 / 0.5)" },
+        },
+        odometer: {
+          "0%": { opacity: "0", transform: "translateY(-100%)", filter: "blur(4px)" },
+          "100%": { opacity: "1", transform: "translateY(0)", filter: "blur(0)" },
+        },
+        bridgeFill: {
+          "0%": { width: "0%" },
+          "100%": { width: "100%" },
+        },
+        growIn: {
+          "0%": { transform: "scale(0.95)", opacity: "0.5" },
+          "100%": { transform: "scale(1.03)", opacity: "1" },
         },
       },
     },
