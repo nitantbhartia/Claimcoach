@@ -2,44 +2,44 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="bg-stone-50">
+    <footer className="bg-paper-warm border-t border-slate-100">
       <div className="container-wide py-10">
         {/* Top row */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <Link href="/" className="flex items-center">
-            <span className="text-lg font-semibold text-slate-900">
-              Claim<span className="text-brand-500">Coach</span>
+            <span className="text-lg font-serif font-bold text-ink-800">
+              Claim<span className="text-ink-500">Coach</span>
             </span>
           </Link>
 
           <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
             <Link
               href="/about"
-              className="text-body-sm text-slate-500 hover:text-slate-700 transition-colors"
+              className="text-body-sm text-slate-500 hover:text-ink-800 transition-colors"
             >
               How It Works
             </Link>
             <Link
               href="/pricing"
-              className="text-body-sm text-slate-500 hover:text-slate-700 transition-colors"
+              className="text-body-sm text-slate-500 hover:text-ink-800 transition-colors"
             >
               Pricing
             </Link>
             <Link
               href="/login"
-              className="text-body-sm text-slate-500 hover:text-slate-700 transition-colors"
+              className="text-body-sm text-slate-500 hover:text-ink-800 transition-colors"
             >
               Log In
             </Link>
             <Link
               href="/privacy"
-              className="text-body-sm text-slate-500 hover:text-slate-700 transition-colors"
+              className="text-body-sm text-slate-500 hover:text-ink-800 transition-colors"
             >
               Privacy
             </Link>
             <Link
               href="/terms"
-              className="text-body-sm text-slate-500 hover:text-slate-700 transition-colors"
+              className="text-body-sm text-slate-500 hover:text-ink-800 transition-colors"
             >
               Terms
             </Link>

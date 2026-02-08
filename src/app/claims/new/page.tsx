@@ -512,9 +512,9 @@ export default function NewClaimPage() {
                   if (type.enabled) updateField("claim_type", type.key);
                 }}
                 className={
-                  "text-left rounded-lg border p-4 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 " +
+                  "text-left rounded-lg border p-4 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ink-800 " +
                   (isSelected
-                    ? "border-slate-200 border-l-4 border-l-brand-500 bg-white shadow-card"
+                    ? "border-slate-200 border-l-4 border-l-ink-800 bg-white shadow-card"
                     : type.enabled
                     ? "border-slate-200 bg-white hover:border-slate-300 cursor-pointer"
                     : "border-slate-100 bg-slate-50 cursor-not-allowed")
@@ -591,8 +591,8 @@ export default function NewClaimPage() {
           {/* Damage photo analysis */}
           <div className="rounded-lg border border-dashed border-slate-300 p-4 bg-slate-50">
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-lg bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <ImagePlus className="w-4.5 h-4.5 text-brand-600" />
+              <div className="w-9 h-9 rounded-lg bg-ink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <ImagePlus className="w-4.5 h-4.5 text-ink-800" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-body-sm font-medium text-slate-900">
@@ -661,7 +661,7 @@ export default function NewClaimPage() {
                 Describe the damage to your vehicle
               </label>
               {autoFilled.has("damage_description") && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
                   <Sparkles className="w-3 h-3" />
                   AI
                 </span>
@@ -698,8 +698,8 @@ export default function NewClaimPage() {
         {/* Insurance card scan */}
         <div className="rounded-lg border border-dashed border-slate-300 p-4 bg-slate-50">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-lg bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Camera className="w-4.5 h-4.5 text-brand-600" />
+            <div className="w-9 h-9 rounded-lg bg-ink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Camera className="w-4.5 h-4.5 text-ink-800" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-body-sm font-medium text-slate-900">
@@ -757,7 +757,7 @@ export default function NewClaimPage() {
                 className={
                   "flex-1 py-2.5 px-4 rounded-lg border text-body-sm font-medium transition-all " +
                   (formData.filed_with_insurer
-                    ? "border-brand-500 bg-brand-50 text-brand-700"
+                    ? "border-ink-800 bg-ink-50 text-ink-900"
                     : "border-slate-200 bg-white text-slate-700 hover:border-slate-300")
                 }
               >
@@ -773,7 +773,7 @@ export default function NewClaimPage() {
                 className={
                   "flex-1 py-2.5 px-4 rounded-lg border text-body-sm font-medium transition-all " +
                   (!formData.filed_with_insurer
-                    ? "border-brand-500 bg-brand-50 text-brand-700"
+                    ? "border-ink-800 bg-ink-50 text-ink-900"
                     : "border-slate-200 bg-white text-slate-700 hover:border-slate-300")
                 }
               >
@@ -791,7 +791,7 @@ export default function NewClaimPage() {
                     Insurance company name
                   </label>
                   {autoFilled.has("insurer_name") && (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
                       <Sparkles className="w-3 h-3" />
                       AI
                     </span>
@@ -811,7 +811,7 @@ export default function NewClaimPage() {
                     Claim number (optional)
                   </label>
                   {autoFilled.has("claim_number") && (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
                       <Sparkles className="w-3 h-3" />
                       AI
                     </span>
@@ -840,7 +840,7 @@ export default function NewClaimPage() {
                 className={
                   "flex-1 py-2.5 px-4 rounded-lg border text-body-sm font-medium transition-all " +
                   (formData.has_offer
-                    ? "border-brand-500 bg-brand-50 text-brand-700"
+                    ? "border-ink-800 bg-ink-50 text-ink-900"
                     : "border-slate-200 bg-white text-slate-700 hover:border-slate-300")
                 }
               >
@@ -855,7 +855,7 @@ export default function NewClaimPage() {
                 className={
                   "flex-1 py-2.5 px-4 rounded-lg border text-body-sm font-medium transition-all " +
                   (!formData.has_offer
-                    ? "border-brand-500 bg-brand-50 text-brand-700"
+                    ? "border-ink-800 bg-ink-50 text-ink-900"
                     : "border-slate-200 bg-white text-slate-700 hover:border-slate-300")
                 }
               >
@@ -870,8 +870,8 @@ export default function NewClaimPage() {
               {/* Offer letter scan */}
               <div className="rounded-lg border border-dashed border-slate-300 p-3 bg-slate-50">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <FileText className="w-4 h-4 text-brand-600" />
+                  <div className="w-8 h-8 rounded-lg bg-ink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <FileText className="w-4 h-4 text-ink-800" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-body-sm font-medium text-slate-900">
@@ -930,7 +930,7 @@ export default function NewClaimPage() {
                     Settlement offer amount
                   </label>
                   {autoFilled.has("offer_amount") && (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
                       <Sparkles className="w-3 h-3" />
                       AI
                     </span>
@@ -993,8 +993,8 @@ export default function NewClaimPage() {
         {/* VIN Lookup */}
         <div className="rounded-lg border border-dashed border-slate-300 p-4 bg-slate-50">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-lg bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Search className="w-4.5 h-4.5 text-brand-600" />
+            <div className="w-9 h-9 rounded-lg bg-ink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Search className="w-4.5 h-4.5 text-ink-800" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-body-sm font-medium text-slate-900">
@@ -1013,13 +1013,13 @@ export default function NewClaimPage() {
                   }}
                   placeholder="e.g., 1HGCV1F34NA012345"
                   maxLength={17}
-                  className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-body-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 font-mono tracking-wide"
+                  className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-body-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-ink-800 focus:border-ink-800 font-mono tracking-wide"
                 />
                 <button
                   type="button"
                   onClick={handleVinLookup}
                   disabled={vinLoading || vinInput.length < 17}
-                  className="px-3 py-1.5 rounded-lg bg-brand-600 text-white text-body-sm font-medium hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-lg bg-ink-800 text-white text-body-sm font-medium hover:bg-ink-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
                 >
                   {vinLoading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -1059,7 +1059,7 @@ export default function NewClaimPage() {
             <div className="flex items-center gap-2 mb-1.5">
               <label htmlFor="vehicle_year" className="block text-body-sm font-medium text-slate-700">Year</label>
               {autoFilled.has("vehicle_year") && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
                   <Sparkles className="w-3 h-3" />
                   AI
                 </span>
@@ -1078,7 +1078,7 @@ export default function NewClaimPage() {
             <div className="flex items-center gap-2 mb-1.5">
               <label htmlFor="vehicle_make" className="block text-body-sm font-medium text-slate-700">Make</label>
               {autoFilled.has("vehicle_make") && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
                   <Sparkles className="w-3 h-3" />
                   AI
                 </span>
@@ -1096,7 +1096,7 @@ export default function NewClaimPage() {
             <div className="flex items-center gap-2 mb-1.5">
               <label htmlFor="vehicle_model" className="block text-body-sm font-medium text-slate-700">Model</label>
               {autoFilled.has("vehicle_model") && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-brand-50 text-caption text-brand-600">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
                   <Sparkles className="w-3 h-3" />
                   AI
                 </span>
@@ -1338,7 +1338,7 @@ export default function NewClaimPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="font-semibold text-lg">
             <span className="text-slate-900">Claim</span>
-            <span className="text-brand-500">Coach</span>
+            <span className="text-ink-800">Coach</span>
           </Link>
 
           <span className="text-caption text-slate-400">
@@ -1352,10 +1352,10 @@ export default function NewClaimPage() {
           </span>
         </div>
 
-        {/* Progress bar: h-1 with brand-500 fill */}
+        {/* Progress bar: h-1 with ink-800 fill */}
         <div className="h-1 bg-slate-100">
           <div
-            className="h-full bg-brand-500 transition-all duration-500 ease-out"
+            className="h-full bg-ink-800 transition-all duration-500 ease-out"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -1404,7 +1404,7 @@ export default function NewClaimPage() {
             <Button
               onClick={handleSubmit}
               loading={isSubmitting}
-              className="min-w-[180px] bg-brand-500 hover:bg-brand-600"
+              className="min-w-[180px] bg-ink-800 hover:bg-ink-800"
             >
               {isSubmitting ? "Creating Claim..." : "Create My Claim"}
               {!isSubmitting && <ChevronRight className="w-4 h-4 ml-1" />}
@@ -1436,7 +1436,7 @@ function SummarySection({
         <button
           type="button"
           onClick={onEdit}
-          className="text-body-sm text-brand-500 hover:text-brand-600 font-medium transition-colors"
+          className="text-body-sm text-ink-800 hover:text-ink-800 font-medium transition-colors"
         >
           Edit
         </button>

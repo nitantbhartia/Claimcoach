@@ -97,7 +97,7 @@ export default function ExportPage() {
               })}
             </span>
           </div>
-          <div className="border-b-2 border-brand-500 pb-4">
+          <div className="border-b-2 border-ink-800 pb-4">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-body-sm">
               <div>
                 <p className="text-slate-500">Vehicle</p>
@@ -231,7 +231,7 @@ export default function ExportPage() {
             {data.hiddenCoverages.map((cov, i) => (
               <div key={i} className="flex justify-between py-1.5 border-b border-slate-100">
                 <span className="text-body-sm text-slate-700">{cov.name}</span>
-                <span className="text-body-sm font-medium text-brand-600">{cov.value}</span>
+                <span className="text-body-sm font-medium text-ink-800">{cov.value}</span>
               </div>
             ))}
           </div>

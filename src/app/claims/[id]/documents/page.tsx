@@ -198,7 +198,7 @@ export default function DocumentsPage() {
           </p>
           <div className="mt-3 h-1 w-full rounded-full bg-slate-200">
             <div
-              className="h-1 rounded-full bg-brand-500 transition-all duration-500"
+              className="h-1 rounded-full bg-ink-800 transition-all duration-500"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -255,7 +255,7 @@ export default function DocumentsPage() {
                             }
                           >
                             {item.completed ? (
-                              <div className="w-5 h-5 rounded-full bg-brand-500 flex items-center justify-center">
+                              <div className="w-5 h-5 rounded-full bg-ink-800 flex items-center justify-center">
                                 <Check className="w-3 h-3 text-white" />
                               </div>
                             ) : (
@@ -281,7 +281,7 @@ export default function DocumentsPage() {
                           <button
                             type="button"
                             onClick={() => handleUploadClick(item.id)}
-                            className="text-body-sm text-brand-500 hover:text-brand-600 transition-colors flex-shrink-0"
+                            className="text-body-sm text-ink-800 hover:text-ink-800 transition-colors flex-shrink-0"
                           >
                             Upload
                           </button>

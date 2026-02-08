@@ -58,7 +58,7 @@ export function ClaimLayout({ children, claimId }: ClaimLayoutProps) {
                   className={cn(
                     "pb-3 text-body-sm whitespace-nowrap border-b-2 transition-colors",
                     isActive
-                      ? "text-slate-900 font-medium border-brand-500"
+                      ? "text-slate-900 font-medium border-ink-800"
                       : "text-slate-500 border-transparent hover:text-slate-700"
                   )}
                 >

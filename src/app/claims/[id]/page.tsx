@@ -38,7 +38,7 @@ function getStatusDotColor(status: ClaimStatus): string {
   const map: Record<ClaimStatus, string> = {
     setup: "bg-slate-400",
     documenting: "bg-blue-500",
-    policy_review: "bg-brand-500",
+    policy_review: "bg-ink-800",
     filed: "bg-yellow-500",
     offer_received: "bg-orange-500",
     negotiating: "bg-red-500",
@@ -247,7 +247,7 @@ export default function ClaimOverviewPage() {
                 <li>
                   <Link
                     href={`/claims/${claimId}/offer`}
-                    className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                    className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
                   >
                     Review the insurer&apos;s offer in detail
                     <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
@@ -256,7 +256,7 @@ export default function ClaimOverviewPage() {
                 <li>
                   <Link
                     href={`/claims/${claimId}/counter`}
-                    className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                    className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
                   >
                     Build a counter-offer with evidence
                     <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
@@ -265,7 +265,7 @@ export default function ClaimOverviewPage() {
                 <li>
                   <Link
                     href={`/claims/${claimId}/documents`}
-                    className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                    className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
                   >
                     Upload additional documentation
                     <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />

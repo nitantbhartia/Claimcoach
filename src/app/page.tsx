@@ -643,6 +643,126 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* ---- OUTCOMES ---- */}
+        <section className="section-gap bg-paper-warm">
+          <div className="container-wide">
+            <div className="text-center mb-14">
+              <p className="text-caption uppercase tracking-[0.2em] text-ink-800/60 font-medium mb-3">
+                Outcomes
+              </p>
+              <h2 className="font-serif text-display-sm sm:text-display text-ink-800">
+                The data doesn&apos;t lie.
+              </h2>
+              <p className="mt-4 text-body-lg text-slate-500 max-w-xl mx-auto">
+                Insurance companies settle for less when policyholders don&apos;t push back.
+                Here&apos;s what the research shows.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              <div className="bg-white rounded-xl border border-slate-100 p-6 text-center">
+                <p className="text-display-sm font-serif font-bold text-ink-800">$3,000&ndash;$5,000</p>
+                <p className="text-body-sm text-slate-500 mt-2">
+                  Average underpayment on auto property damage claims
+                </p>
+                <p className="text-caption text-slate-400 mt-3">
+                  Source: NAIC consumer complaint data
+                </p>
+              </div>
+              <div className="bg-white rounded-xl border border-slate-100 p-6 text-center">
+                <p className="text-display-sm font-serif font-bold text-ink-800">
+                  <span className="mark-yellow">2&ndash;3x</span>
+                </p>
+                <p className="text-body-sm text-slate-500 mt-2">
+                  Higher settlements when policyholders counter with documented evidence
+                </p>
+                <p className="text-caption text-slate-400 mt-3">
+                  Source: Insurance industry studies
+                </p>
+              </div>
+              <div className="bg-white rounded-xl border border-slate-100 p-6 text-center">
+                <p className="text-display-sm font-serif font-bold text-emerald-600">85%</p>
+                <p className="text-body-sm text-slate-500 mt-2">
+                  Of first offers can be successfully negotiated upward
+                </p>
+                <p className="text-caption text-slate-400 mt-3">
+                  Source: Consumer advocacy research
+                </p>
+              </div>
+              <div className="bg-white rounded-xl border border-slate-100 p-6 text-center">
+                <p className="text-display-sm font-serif font-bold text-ink-800">44x</p>
+                <p className="text-body-sm text-slate-500 mt-2">
+                  Return on ClaimCoach&apos;s $79 fee based on avg. recovery increase
+                </p>
+                <p className="text-caption text-slate-400 mt-3">
+                  $79 fee vs. $3,500 avg. additional recovery
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ---- FAQ ---- */}
+        <section className="section-gap bg-white">
+          <div className="container-narrow">
+            <div className="text-center mb-14">
+              <p className="text-caption uppercase tracking-[0.2em] text-ink-800/60 font-medium mb-3">
+                FAQ
+              </p>
+              <h2 className="font-serif text-display-sm sm:text-display text-ink-800">
+                Common questions.
+              </h2>
+            </div>
+
+            <div className="space-y-0 divide-y divide-slate-100">
+              {[
+                {
+                  q: "Is ClaimCoach legal advice?",
+                  a: "No. ClaimCoach is an educational and analytical tool that helps you understand your policy and evaluate settlement offers. We don\u2019t provide legal advice, represent you in disputes, or act as a public adjuster. If you need legal counsel, we recommend consulting a licensed attorney in your state.",
+                },
+                {
+                  q: "How is the fair value calculated?",
+                  a: "Our AI analyzes your vehicle\u2019s year, make, model, mileage, condition, and local market data from sources like KBB and NADA. It then compares the insurer\u2019s offer against comparable vehicles, applicable coverages (diminished value, loss of use, sales tax), and your specific policy terms to determine a data-backed fair value range.",
+                },
+                {
+                  q: "What if my claim has already been denied?",
+                  a: "ClaimCoach can still help. We\u2019ll analyze the denial reason against your policy language, identify potential grounds for appeal, and generate the documentation you need to reopen your claim. Many denials are overturned when policyholders respond with specific policy citations.",
+                },
+                {
+                  q: "Do I still need a lawyer?",
+                  a: "Most auto property damage claims can be resolved without an attorney. ClaimCoach gives you the same analytical tools and negotiation materials that professionals use. However, if your claim involves injuries, bad faith, or amounts over $25,000, we recommend also consulting an attorney.",
+                },
+                {
+                  q: "How long does the analysis take?",
+                  a: "Most analyses complete in under five minutes. Upload your policy and offer documents, and our AI immediately begins scanning, highlighting key clauses, and generating your fairness score, counter-offer letter, and negotiation toolkit.",
+                },
+                {
+                  q: "What types of claims do you support?",
+                  a: "Currently, ClaimCoach specializes in auto property damage claims (total loss, collision, comprehensive). This includes vehicle valuation disputes, diminished value claims, loss of use, and supplemental damage claims. Homeowners and other claim types are coming soon.",
+                },
+                {
+                  q: "What if the insurer won\u2019t budge?",
+                  a: "ClaimCoach includes a step-by-step escalation playbook: from supervisor requests to Department of Insurance complaints to small claims court guidance. Each step includes templates, scripts, and state-specific deadlines. Most insurers respond to well-documented escalation.",
+                },
+              ].map((item) => (
+                <details key={item.q} className="group py-5">
+                  <summary className="flex items-center justify-between cursor-pointer list-none">
+                    <span className="text-heading text-ink-800 font-medium pr-4">
+                      {item.q}
+                    </span>
+                    <span className="text-slate-400 group-open:rotate-45 transition-transform duration-200 flex-shrink-0 text-xl leading-none">
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-3 text-body text-slate-500 leading-relaxed max-w-2xl">
+                    {item.a}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ---- FINAL CTA ---- */}
         <section className="bg-ink-800 text-white">
           <div className="container-wide py-16 sm:py-24 lg:py-28 text-center">

@@ -371,7 +371,7 @@ export default function PolicyAnalysisPage() {
                   <p className="text-body font-medium text-slate-900">
                     {hidden.name}
                   </p>
-                  <p className="text-body-sm text-brand-500 font-medium">
+                  <p className="text-body-sm text-ink-800 font-medium">
                     {hidden.potential_value}
                   </p>
                 </div>
@@ -491,14 +491,14 @@ export default function PolicyAnalysisPage() {
           <div className="space-y-2">
             <Link
               href={`/claims/${claimId}/offer`}
-              className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+              className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
             >
               Analyze the insurer&apos;s settlement offer
               <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
             </Link>
             <Link
               href={`/claims/${claimId}/documents`}
-              className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+              className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
             >
               Upload supporting documentation
               <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />

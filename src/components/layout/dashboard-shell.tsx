@@ -35,7 +35,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           <Link href="/" className="flex items-center">
             <span className="text-body-lg font-semibold">
               <span className="text-slate-900">Claim</span>
-              <span className="text-brand-500">Coach</span>
+              <span className="text-ink-800">Coach</span>
             </span>
           </Link>
 
@@ -60,7 +60,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                   <Icon className="w-4 h-4" />
                   {item.label}
                   {isActive && (
-                    <span className="absolute -bottom-[17px] left-0 right-0 h-0.5 bg-brand-500 rounded-full" />
+                    <span className="absolute -bottom-[17px] left-0 right-0 h-0.5 bg-ink-800 rounded-full" />
                   )}
                 </Link>
               );
@@ -98,7 +98,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex items-center gap-1.5 py-2.5 text-body-sm whitespace-nowrap border-b-2 transition-colors",
                   isActive
-                    ? "text-slate-900 font-medium border-brand-500"
+                    ? "text-slate-900 font-medium border-ink-800"
                     : "text-slate-500 border-transparent hover:text-slate-700"
                 )}
               >

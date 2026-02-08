@@ -318,7 +318,7 @@ export default function CounterOfferPage() {
         {isGenerating && (
           <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
             <div className="flex items-center gap-3">
-              <Loader2 className="w-5 h-5 text-brand-500 animate-spin" />
+              <Loader2 className="w-5 h-5 text-ink-800 animate-spin" />
               <p className="text-body text-slate-600">
                 {GENERATION_STEPS[generationStep]}
               </p>
@@ -349,7 +349,7 @@ export default function CounterOfferPage() {
                   <button
                     type="button"
                     onClick={handleCopy}
-                    className="inline-flex items-center gap-1.5 text-body-sm font-medium text-brand-500 hover:text-brand-600"
+                    className="inline-flex items-center gap-1.5 text-body-sm font-medium text-ink-800 hover:text-ink-800"
                   >
                     {copied ? (
                       <>
@@ -366,7 +366,7 @@ export default function CounterOfferPage() {
                   <button
                     type="button"
                     onClick={handleDownload}
-                    className="inline-flex items-center gap-1.5 text-body-sm font-medium text-brand-500 hover:text-brand-600"
+                    className="inline-flex items-center gap-1.5 text-body-sm font-medium text-ink-800 hover:text-ink-800"
                   >
                     <Download className="w-4 h-4" />
                     Download
@@ -496,7 +496,7 @@ export default function CounterOfferPage() {
               <div className="space-y-2">
                 <Link
                   href={`/claims/${claimId}/call-script`}
-                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
                 >
                   <span className="flex items-center gap-2">
                     <Phone className="w-3.5 h-3.5 text-slate-400" />
@@ -506,7 +506,7 @@ export default function CounterOfferPage() {
                 </Link>
                 <Link
                   href={`/claims/${claimId}/export`}
-                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
                 >
                   <span className="flex items-center gap-2">
                     <Download className="w-3.5 h-3.5 text-slate-400" />

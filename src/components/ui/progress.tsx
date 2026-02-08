@@ -26,7 +26,7 @@ export function Progress({
   };
 
   const colors = {
-    brand: "bg-brand-600",
+    brand: "bg-ink-800",
     success: "bg-green-500",
     warning: "bg-yellow-500",
     danger: "bg-red-500",

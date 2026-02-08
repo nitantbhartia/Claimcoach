@@ -193,8 +193,8 @@ export default function CallScriptPage() {
         {/* Header */}
         <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-brand-100 flex items-center justify-center flex-shrink-0">
-              <Phone className="w-5 h-5 text-brand-600" />
+            <div className="w-10 h-10 rounded-lg bg-ink-100 flex items-center justify-center flex-shrink-0">
+              <Phone className="w-5 h-5 text-ink-800" />
             </div>
             <div>
               <h1 className="text-heading-lg sm:text-display-sm font-semibold text-slate-900">
@@ -225,7 +225,7 @@ export default function CallScriptPage() {
         {isGenerating && (
           <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
             <div className="flex items-center gap-3">
-              <Loader2 className="w-5 h-5 text-brand-500 animate-spin" />
+              <Loader2 className="w-5 h-5 text-ink-800 animate-spin" />
               <p className="text-body text-slate-600">
                 {GENERATION_STEPS[generationStep]}
               </p>
@@ -246,7 +246,7 @@ export default function CallScriptPage() {
             <div className="flex justify-end">
               <button
                 onClick={handleCopyAll}
-                className="inline-flex items-center gap-1.5 text-body-sm font-medium text-brand-500 hover:text-brand-600"
+                className="inline-flex items-center gap-1.5 text-body-sm font-medium text-ink-800 hover:text-ink-800"
               >
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 {copied ? "Copied" : "Copy full script"}
@@ -256,7 +256,7 @@ export default function CallScriptPage() {
             {/* Opening */}
             <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5 sm:p-6">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-caption font-semibold uppercase tracking-wider text-brand-500">
+                <span className="text-caption font-semibold uppercase tracking-wider text-ink-800">
                   Opening
                 </span>
               </div>
@@ -286,7 +286,7 @@ export default function CallScriptPage() {
                         className="w-full px-5 sm:px-6 py-4 flex items-start justify-between gap-3 text-left hover:bg-slate-50 transition-colors"
                       >
                         <div className="flex items-start gap-3">
-                          <span className="text-body-sm font-semibold text-brand-500 flex-shrink-0 mt-0.5">
+                          <span className="text-body-sm font-semibold text-ink-800 flex-shrink-0 mt-0.5">
                             {i + 1}.
                           </span>
                           <div>
@@ -324,11 +324,11 @@ export default function CallScriptPage() {
                               &ldquo;{point.if_they_say}&rdquo;
                             </p>
                           </div>
-                          <div className="bg-brand-50 border border-brand-100 rounded-lg p-3">
-                            <p className="text-caption font-semibold uppercase tracking-wider text-brand-600 mb-1.5">
+                          <div className="bg-ink-50 border border-ink-100 rounded-lg p-3">
+                            <p className="text-caption font-semibold uppercase tracking-wider text-ink-800 mb-1.5">
                               Your response
                             </p>
-                            <p className="text-body-sm text-brand-900 leading-relaxed">
+                            <p className="text-body-sm text-ink-900 leading-relaxed">
                               {point.your_response}
                             </p>
                           </div>
@@ -343,7 +343,7 @@ export default function CallScriptPage() {
             {/* Closing */}
             <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5 sm:p-6">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-caption font-semibold uppercase tracking-wider text-brand-500">
+                <span className="text-caption font-semibold uppercase tracking-wider text-ink-800">
                   Closing
                 </span>
               </div>
@@ -391,14 +391,14 @@ export default function CallScriptPage() {
               <div className="space-y-2">
                 <Link
                   href={`/claims/${claimId}/counter`}
-                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
                 >
                   Send a formal counter-offer with your demand letter
                   <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                 </Link>
                 <Link
                   href={`/claims/${claimId}/export`}
-                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
                 >
                   Export your full analysis report as PDF
                   <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />

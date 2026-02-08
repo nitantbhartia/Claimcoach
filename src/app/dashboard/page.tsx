@@ -38,7 +38,7 @@ const mockClaims = [
 const statusDot: Record<ClaimStatus, string> = {
   setup: "bg-slate-400",
   documenting: "bg-blue-500",
-  policy_review: "bg-brand-500",
+  policy_review: "bg-ink-800",
   filed: "bg-yellow-500",
   offer_received: "bg-orange-500",
   negotiating: "bg-red-500",

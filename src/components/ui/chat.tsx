@@ -77,7 +77,7 @@ export function Chat({ context, placeholder = "Ask a follow-up question...", cla
       <button
         onClick={() => setIsOpen(true)}
         className={cn(
-          "fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2 rounded-full bg-brand-600 px-4 sm:px-5 py-3 text-white shadow-float hover:bg-brand-700 transition-colors",
+          "fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2 rounded-full bg-ink-800 px-4 sm:px-5 py-3 text-white shadow-float hover:bg-ink-900 transition-colors",
           className
         )}
       >
@@ -92,7 +92,7 @@ export function Chat({ context, placeholder = "Ask a follow-up question...", cla
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
         <div className="flex items-center gap-2">
-          <MessageCircle className="w-4 h-4 text-brand-600" />
+          <MessageCircle className="w-4 h-4 text-ink-800" />
           <span className="text-body-sm font-medium text-slate-900">ClaimCoach AI</span>
         </div>
         <button
@@ -118,7 +118,7 @@ export function Chat({ context, placeholder = "Ask a follow-up question...", cla
             className={cn(
               "max-w-[85%] rounded-xl px-3 py-2 text-body-sm",
               msg.role === "user"
-                ? "ml-auto bg-brand-600 text-white"
+                ? "ml-auto bg-ink-800 text-white"
                 : "mr-auto bg-slate-100 text-slate-800"
             )}
           >
@@ -145,7 +145,7 @@ export function Chat({ context, placeholder = "Ask a follow-up question...", cla
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             disabled={isLoading}
-            className="flex-1 rounded-lg border border-slate-200 px-3 py-2 text-body-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 disabled:opacity-50"
+            className="flex-1 rounded-lg border border-slate-200 px-3 py-2 text-body-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-ink-800 focus:border-ink-800 disabled:opacity-50"
           />
           <Button
             size="sm"

@@ -455,7 +455,7 @@ export default function OfferAnalysisPage() {
               <div className="mt-4">
                 <Link
                   href={`/claims/${claimId}/counter`}
-                  className="inline-flex items-center gap-2 text-body font-medium text-brand-500 hover:text-brand-600"
+                  className="inline-flex items-center gap-2 text-body font-medium text-ink-800 hover:text-ink-800"
                 >
                   Generate a counter-offer
                   <ArrowRight className="w-4 h-4" />
@@ -471,14 +471,14 @@ export default function OfferAnalysisPage() {
               <div className="space-y-2">
                 <Link
                   href={`/claims/${claimId}/counter`}
-                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
                 >
                   Generate a counter-offer with demand letter
                   <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                 </Link>
                 <Link
                   href={`/claims/${claimId}/call-script`}
-                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-brand-500 transition-colors"
+                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
                 >
                   Prepare a call script for the adjuster
                   <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />

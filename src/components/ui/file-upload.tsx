@@ -60,8 +60,8 @@ export function FileUpload({
         className={cn(
           "border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200",
           isDragActive
-            ? "border-brand-500 bg-brand-50"
-            : "border-slate-300 hover:border-brand-400 hover:bg-slate-50"
+            ? "border-ink-800 bg-ink-50"
+            : "border-slate-300 hover:border-ink-600 hover:bg-slate-50"
         )}
       >
         <input {...getInputProps()} />

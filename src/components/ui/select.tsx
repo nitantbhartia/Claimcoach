@@ -27,7 +27,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             "focus:outline-none focus:ring-2 focus:ring-offset-0",
             error
               ? "border-red-300 focus:border-red-500 focus:ring-red-200"
-              : "border-slate-300 focus:border-brand-500 focus:ring-brand-200",
+              : "border-slate-300 focus:border-ink-800 focus:ring-ink-200",
             className
           )}
           {...props}
