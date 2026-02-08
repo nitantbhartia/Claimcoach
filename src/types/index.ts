@@ -39,6 +39,12 @@ export interface Claim {
   coverage_limits: CoverageLimits | null;
   hidden_coverages: string[] | null;
 
+  // Vehicle info (auto claims)
+  vehicle_year: string | null;
+  vehicle_make: string | null;
+  vehicle_model: string | null;
+  damage_description: string | null;
+
   // Resolution
   final_settlement: number | null;
   resolved_at: string | null;

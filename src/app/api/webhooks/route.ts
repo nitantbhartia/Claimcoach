@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe/server";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
@@ -26,54 +27,83 @@ export async function POST(request: NextRequest) {
         );
       } catch (err) {
         const message = err instanceof Error ? err.message : "Unknown error";
-        console.error("Webhook signature verification failed:", message);
         return NextResponse.json(
           { error: `Webhook signature verification failed: ${message}` },
           { status: 400 }
         );
       }
     } else {
-      // No webhook secret configured - parse raw (dev mode only)
       event = JSON.parse(body);
     }
+
+    const supabase = createServerSupabaseClient();
 
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object;
         const { userId, claimId, priceType } = session.metadata || {};
 
-        console.log(
-          `Payment successful: user=${userId}, claim=${claimId}, type=${priceType}`
-        );
+        if (userId) {
+          if (priceType === "per_claim") {
+            await supabase
+              .from("profiles")
+              .update({
+                subscription_tier: "per_claim",
+                stripe_customer_id: session.customer,
+                claims_used: 1,
+              })
+              .eq("id", userId);
 
-        // TODO: When Supabase is connected, update user's subscription_tier
-        // and unlock the specific claim if per_claim payment
+            if (claimId) {
+              await supabase
+                .from("claims")
+                .update({ status: "offer_received" })
+                .eq("id", claimId);
+            }
+          } else if (priceType === "pro") {
+            await supabase
+              .from("profiles")
+              .update({
+                subscription_tier: "pro",
+                stripe_customer_id: session.customer,
+              })
+              .eq("id", userId);
+          }
+        }
         break;
       }
 
       case "customer.subscription.updated": {
         const subscription = event.data.object;
-        console.log("Subscription updated:", subscription.id, "Status:", subscription.status);
-        // TODO: Update user's subscription status in Supabase
+        const customerId = subscription.customer;
+
+        if (subscription.status === "active") {
+          await supabase
+            .from("profiles")
+            .update({ subscription_tier: "pro" })
+            .eq("stripe_customer_id", customerId);
+        }
         break;
       }
 
       case "customer.subscription.deleted": {
         const subscription = event.data.object;
-        console.log("Subscription cancelled:", subscription.id);
-        // TODO: Downgrade user to free tier in Supabase
+        const customerId = subscription.customer;
+
+        await supabase
+          .from("profiles")
+          .update({ subscription_tier: "free" })
+          .eq("stripe_customer_id", customerId);
         break;
       }
 
       case "invoice.payment_failed": {
-        const invoice = event.data.object;
-        console.log("Payment failed for customer:", invoice.customer);
-        // TODO: Notify user of failed payment
+        // Subscription status changes are handled by customer.subscription.updated
         break;
       }
 
       default:
-        console.log("Unhandled event type:", event.type);
+        break;
     }
 
     return NextResponse.json({ received: true });

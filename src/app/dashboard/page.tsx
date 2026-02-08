@@ -1,39 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/utils";
-import { ClaimStatus } from "@/types";
+import { Claim, ClaimStatus } from "@/types";
 import Link from "next/link";
-import { Plus, ArrowRight } from "lucide-react";
-
-// ---------------------------------------------------------------------------
-// Mock data -- will be replaced with real data fetching
-// ---------------------------------------------------------------------------
-
-const mockClaims = [
-  {
-    id: "demo",
-    vehicle: "2022 Honda Civic EX",
-    type: "Auto Property Damage",
-    insurer: "State Farm",
-    status: "offer_received" as ClaimStatus,
-    date: "2025-11-14",
-    offer: 4200,
-    fairnessScore: 38,
-  },
-  {
-    id: "demo-2",
-    vehicle: "2024 Toyota RAV4 XLE",
-    type: "Auto Collision",
-    insurer: "Progressive",
-    status: "documenting" as ClaimStatus,
-    date: "2026-01-28",
-    offer: null,
-    fairnessScore: null,
-  },
-];
+import { Plus, ArrowRight, Loader2 } from "lucide-react";
 
 const statusDot: Record<ClaimStatus, string> = {
   setup: "bg-slate-400",
@@ -57,17 +30,33 @@ const statusLabel: Record<ClaimStatus, string> = {
   resolved: "Resolved",
 };
 
-const quickActions = [
-  { label: "Upload documents", href: "/claims/demo/documents" },
-  { label: "Review an offer", href: "/claims/demo/offer" },
-  { label: "Analyze a policy", href: "/claims/demo/policy" },
-];
-
-// ---------------------------------------------------------------------------
-// Page
-// ---------------------------------------------------------------------------
+function vehicleLabel(claim: Claim): string {
+  const parts = [claim.vehicle_year, claim.vehicle_make, claim.vehicle_model].filter(Boolean);
+  return parts.length > 0 ? parts.join(" ") : "Untitled claim";
+}
 
 export default function DashboardPage() {
+  const [claims, setClaims] = useState<Claim[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/claims")
+      .then((res) => res.json())
+      .then((data) => setClaims(data.claims ?? []))
+      .catch(() => setClaims([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const firstClaimId = claims[0]?.id;
+
+  const quickActions = firstClaimId
+    ? [
+        { label: "Upload documents", href: `/claims/${firstClaimId}/documents` },
+        { label: "Review an offer", href: `/claims/${firstClaimId}/offer` },
+        { label: "Analyze a policy", href: `/claims/${firstClaimId}/policy` },
+      ]
+    : [];
+
   return (
     <DashboardShell>
       {/* Header */}
@@ -81,22 +70,29 @@ export default function DashboardPage() {
         </Link>
       </div>
 
+      {/* Loading */}
+      {loading && (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="w-5 h-5 animate-spin text-[#4a555e]" />
+        </div>
+      )}
+
       {/* Claims list */}
-      {mockClaims.length > 0 ? (
+      {!loading && claims.length > 0 ? (
         <div className="border border-black/10 overflow-hidden mb-10">
-          {mockClaims.map((claim, idx) => (
+          {claims.map((claim, idx) => (
             <Link
               key={claim.id}
               href={`/claims/${claim.id}`}
               className={
                 "group flex items-center gap-4 px-4 py-4 sm:px-6 hover:bg-panel-alt transition-colors" +
-                (idx < mockClaims.length - 1 ? " border-b border-black/10" : "")
+                (idx < claims.length - 1 ? " border-b border-black/10" : "")
               }
             >
               {/* Vehicle + type */}
               <div className="flex-1 min-w-0">
                 <p className="text-body font-medium text-black truncate">
-                  {claim.vehicle}
+                  {vehicleLabel(claim)}
                 </p>
                 <div className="flex items-center gap-1.5 sm:hidden mt-0.5">
                   <span
@@ -104,14 +100,14 @@ export default function DashboardPage() {
                     aria-hidden="true"
                   />
                   <span className="text-caption text-[#4a555e] truncate">
-                    {statusLabel[claim.status]} &middot; {claim.insurer}
+                    {statusLabel[claim.status]} &middot; {claim.insurer_name || "No insurer"}
                   </span>
                 </div>
               </div>
 
-              {/* Insurer -- hidden on mobile, shown inline above */}
+              {/* Insurer */}
               <span className="hidden sm:block text-body-sm text-[#4a555e] w-28 shrink-0">
-                {claim.insurer}
+                {claim.insurer_name || "\u2014"}
               </span>
 
               {/* Status */}
@@ -125,7 +121,7 @@ export default function DashboardPage() {
 
               {/* Date */}
               <span className="hidden md:block text-body-sm text-[#4a555e] w-24 shrink-0">
-                {new Date(claim.date).toLocaleDateString("en-US", {
+                {new Date(claim.created_at).toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
                 })}
@@ -133,7 +129,7 @@ export default function DashboardPage() {
 
               {/* Offer */}
               <span className="text-body-sm font-medium text-black w-20 shrink-0 text-right">
-                {claim.offer !== null ? formatCurrency(claim.offer) : "\u2014"}
+                {claim.offer_amount !== null ? formatCurrency(claim.offer_amount) : "\u2014"}
               </span>
 
               {/* Arrow */}
@@ -141,7 +137,7 @@ export default function DashboardPage() {
             </Link>
           ))}
         </div>
-      ) : (
+      ) : !loading ? (
         <div className="border border-black/10 p-12 text-center mb-10">
           <p className="text-heading text-black mb-2">No claims yet</p>
           <p className="text-body-sm text-[#4a555e] mb-6 max-w-md mx-auto">
@@ -155,10 +151,10 @@ export default function DashboardPage() {
             </Button>
           </Link>
         </div>
-      )}
+      ) : null}
 
       {/* Quick actions */}
-      {mockClaims.length > 0 && (
+      {!loading && claims.length > 0 && (
         <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6">
           {quickActions.map((action) => (
             <Link

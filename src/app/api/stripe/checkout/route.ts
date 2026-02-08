@@ -1,11 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe/server";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
   try {
-    const { priceType, claimId, userId, userEmail } = await request.json();
+    const supabase = createServerSupabaseClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const { priceType, claimId } = await request.json();
+    const userId = user?.id || "";
+    const userEmail = user?.email || "";
 
     if (!priceType || !["per_claim", "pro"].includes(priceType)) {
       return NextResponse.json(

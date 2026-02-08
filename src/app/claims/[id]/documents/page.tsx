@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { ClaimLayout } from "@/components/layout/claim-layout";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { Select } from "@/components/ui/select";
 import { FileUpload } from "@/components/ui/file-upload";
 import { autoClaimChecklist } from "@/lib/utils/checklist";
 import { ChecklistItem, FinancialImpact } from "@/types";
-import { Check, Circle, ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
+import { Check, Circle, ChevronDown, ChevronUp, Plus, Trash2, Loader2 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 
 // ---------------------------------------------------------------------------
@@ -49,58 +49,20 @@ const EXPENSE_CATEGORIES = [
 ];
 
 // ---------------------------------------------------------------------------
-// Mock data
+// Uploaded file shape (matches API response)
 // ---------------------------------------------------------------------------
 
-const MOCK_UPLOADED_FILES = [
-  {
-    id: "doc-1",
-    fileName: "front-bumper-damage.jpg",
-    fileType: "image/jpeg",
-    category: "vehicle_damage",
-    uploadedAt: "2025-12-01T14:23:00Z",
-    size: 2_340_000,
-  },
-  {
-    id: "doc-2",
-    fileName: "rear-view.jpg",
-    fileType: "image/jpeg",
-    category: "vehicle_damage",
-    uploadedAt: "2025-12-01T14:24:00Z",
-    size: 1_870_000,
-  },
-  {
-    id: "doc-3",
-    fileName: "police-report-SF-2025.pdf",
-    fileType: "application/pdf",
-    category: "police_report",
-    uploadedAt: "2025-12-02T09:10:00Z",
-    size: 456_000,
-  },
-];
-
-const MOCK_INITIAL_EXPENSES: FinancialImpact[] = [
-  {
-    id: "exp-1",
-    claim_id: "demo-claim-001",
-    category: "rental_car",
-    description: "Enterprise rental - 5 days while car in shop",
-    amount: 247,
-    date: "2025-12-03",
-    receipt_url: null,
-  },
-  {
-    id: "exp-2",
-    claim_id: "demo-claim-001",
-    category: "towing",
-    description: "AAA tow from accident scene to body shop",
-    amount: 185,
-    date: "2025-11-14",
-    receipt_url: null,
-  },
-];
-
-const INITIAL_COMPLETED_IDS = new Set(["photo-front", "photo-rear", "police-report"]);
+interface UploadedFile {
+  id: string;
+  claim_id: string;
+  category: string;
+  file_name: string;
+  file_url: string;
+  file_type: string;
+  file_size: number;
+  notes: string | null;
+  created_at: string;
+}
 
 // ---------------------------------------------------------------------------
 // Page component
@@ -110,24 +72,71 @@ export default function DocumentsPage() {
   const params = useParams<{ id: string }>();
   const claimId = params.id;
 
+  // Loading state
+  const [loading, setLoading] = useState(true);
+
   // Checklist state
   const [checklist, setChecklist] = useState<ChecklistItem[]>(() =>
     autoClaimChecklist.map((item) => ({
       ...item,
-      completed: INITIAL_COMPLETED_IDS.has(item.id),
+      completed: false,
     }))
   );
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
   const [activeUploadId, setActiveUploadId] = useState<string | null>(null);
 
+  // Uploaded files state
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+
   // Expense state
-  const [expenses, setExpenses] = useState<FinancialImpact[]>(MOCK_INITIAL_EXPENSES);
+  const [expenses, setExpenses] = useState<FinancialImpact[]>([]);
   const [newExpense, setNewExpense] = useState({
     category: "",
     description: "",
     amount: "",
     date: "",
   });
+
+  // Fetch claim data on mount
+  useEffect(() => {
+    async function fetchClaimData() {
+      try {
+        const res = await fetch(`/api/claims/${claimId}`);
+        if (res.ok) {
+          const data = await res.json();
+
+          // Initialize uploaded files from fetched documents
+          if (data.documents) {
+            setUploadedFiles(data.documents);
+          }
+
+          // Initialize expenses from fetched data
+          if (data.expenses) {
+            setExpenses(data.expenses);
+          }
+
+          // Mark checklist items as completed based on existing documents
+          if (data.documents && data.documents.length > 0) {
+            const docCategories = new Set(
+              data.documents.map((doc: UploadedFile) => doc.category)
+            );
+            setChecklist((prev) =>
+              prev.map((item) => ({
+                ...item,
+                completed: docCategories.has(item.category),
+              }))
+            );
+          }
+        }
+      } catch {
+        // Silently handle fetch errors; user sees empty state
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchClaimData();
+  }, [claimId]);
 
   // Derived
   const grouped = groupByCategory(checklist);
@@ -152,28 +161,63 @@ export default function DocumentsPage() {
     setActiveUploadId((prev) => (prev === itemId ? null : itemId));
   }
 
-  function handleFilesSelected(_files: File[]) {
-    // Placeholder: would upload to storage and mark item complete
+  async function handleFilesSelected(files: File[], itemId?: string) {
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("category", checklist.find((i) => i.id === itemId)?.category || "other");
+      const res = await fetch(`/api/claims/${claimId}/documents`, {
+        method: "POST",
+        body: formData,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setUploadedFiles((prev) => [data.document, ...prev]);
+      }
+    }
+    if (itemId) {
+      toggleItem(itemId);
+    }
   }
 
-  function addExpense() {
+  async function addExpense() {
     if (!newExpense.category || !newExpense.description || !newExpense.amount || !newExpense.date)
       return;
-    const expense: FinancialImpact = {
-      id: `exp-${Date.now()}`,
-      claim_id: claimId,
+    const body = {
       category: newExpense.category,
       description: newExpense.description,
       amount: parseFloat(newExpense.amount),
       date: newExpense.date,
-      receipt_url: null,
     };
-    setExpenses((prev) => [...prev, expense]);
-    setNewExpense({ category: "", description: "", amount: "", date: "" });
+    try {
+      const res = await fetch(`/api/claims/${claimId}/expenses`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setExpenses((prev) => [...prev, data.expense]);
+        setNewExpense({ category: "", description: "", amount: "", date: "" });
+      }
+    } catch {
+      // Silently handle errors
+    }
   }
 
-  function removeExpense(id: string) {
-    setExpenses((prev) => prev.filter((e) => e.id !== id));
+  async function removeExpense(id: string) {
+    try {
+      const res = await fetch(`/api/claims/${claimId}/expenses`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) {
+        setExpenses((prev) => prev.filter((e) => e.id !== id));
+      }
+    } catch {
+      // Silently handle errors
+    }
   }
 
   function formatFileSize(bytes: number): string {
@@ -183,6 +227,16 @@ export default function DocumentsPage() {
 
   function formatExpenseCategory(value: string): string {
     return EXPENSE_CATEGORIES.find((c) => c.value === value)?.label ?? value;
+  }
+
+  if (loading) {
+    return (
+      <ClaimLayout claimId={claimId}>
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="w-6 h-6 animate-spin text-[#4a555e]" />
+        </div>
+      </ClaimLayout>
+    );
   }
 
   return (
@@ -291,7 +345,7 @@ export default function DocumentsPage() {
                         {activeUploadId === item.id && (
                           <div className="px-5 pb-3 ml-8">
                             <FileUpload
-                              onFilesSelected={handleFilesSelected}
+                              onFilesSelected={(files) => handleFilesSelected(files, item.id)}
                               label={`Upload: ${item.label}`}
                               hint="Drag and drop photos or PDFs, or click to browse. Max 10 MB per file."
                               maxFiles={5}
@@ -416,29 +470,29 @@ export default function DocumentsPage() {
         <div>
           <div className="flex items-baseline gap-2 mb-4">
             <h2 className="text-heading text-black">Files</h2>
-            <span className="text-body-sm text-[#4a555e]">{MOCK_UPLOADED_FILES.length}</span>
+            <span className="text-body-sm text-[#4a555e]">{uploadedFiles.length}</span>
           </div>
 
-          {MOCK_UPLOADED_FILES.length > 0 ? (
+          {uploadedFiles.length > 0 ? (
             <div className="bg-panel border border-black/10 divide-y divide-black/10">
-              {MOCK_UPLOADED_FILES.map((doc) => (
+              {uploadedFiles.map((doc) => (
                 <div key={doc.id} className="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3">
                   <div className="flex-1 min-w-0">
                     <p className="text-body-sm text-black truncate">
-                      {doc.fileName}
+                      {doc.file_name}
                     </p>
                     <p className="text-caption text-[#4a555e] sm:hidden">
-                      {CATEGORY_LABELS[doc.category] ?? doc.category} &middot; {formatFileSize(doc.size)}
+                      {CATEGORY_LABELS[doc.category] ?? doc.category} &middot; {formatFileSize(doc.file_size)}
                     </p>
                   </div>
                   <span className="hidden sm:inline text-caption text-[#4a555e] flex-shrink-0">
                     {CATEGORY_LABELS[doc.category] ?? doc.category}
                   </span>
                   <span className="hidden sm:inline text-caption text-[#4a555e] flex-shrink-0">
-                    {formatFileSize(doc.size)}
+                    {formatFileSize(doc.file_size)}
                   </span>
                   <span className="text-caption text-[#4a555e] flex-shrink-0">
-                    {new Date(doc.uploadedAt).toLocaleDateString("en-US", {
+                    {new Date(doc.created_at).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                     })}

@@ -473,12 +473,36 @@ export default function NewClaimPage() {
   async function handleSubmit() {
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const res = await fetch("/api/claims", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    // In production this would POST to /api/claims with formData + policyFiles
-    // and return a real claim ID. For now, redirect to the demo claim.
-    router.push("/claims/demo");
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to create claim");
+      }
+
+      const claimId = data.claim.id;
+
+      // Upload policy files to storage if any
+      for (const file of policyFiles) {
+        const uploadForm = new FormData();
+        uploadForm.append("file", file);
+        uploadForm.append("category", "policy");
+        await fetch(`/api/claims/${claimId}/documents`, {
+          method: "POST",
+          body: uploadForm,
+        });
+      }
+
+      router.push(`/claims/${claimId}`);
+    } catch {
+      setIsSubmitting(false);
+    }
   }
 
   /* ------------------------------------------------------------------------ */

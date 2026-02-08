@@ -1,85 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { ClaimLayout } from "@/components/layout/claim-layout";
 import { Button } from "@/components/ui/button";
-import { CallScript } from "@/types";
+import { Claim, CallScript, CounterOffer } from "@/types";
 import { Loader2, Phone, Copy, Check, ChevronDown, ChevronUp, ThumbsUp, ThumbsDown, ArrowRight } from "lucide-react";
 import Link from "next/link";
-
-// ---------------------------------------------------------------------------
-// Mock call script data
-// ---------------------------------------------------------------------------
-
-const MOCK_SCRIPT: CallScript = {
-  opening:
-    "Hi, this is [Your Name] calling about claim number SF-2025-88431 for my 2022 Honda Civic. I received your settlement offer of $4,200 and I'd like to discuss it with you. Do you have a few minutes?",
-  key_points: [
-    {
-      topic: "Vehicle Valuation",
-      what_to_say:
-        "I appreciate the offer, but after researching comparable vehicles, I believe the fair market value is significantly higher. I found three 2022 Honda Civic EX models within 50 miles listed at $6,900, $7,200, and $7,200. KBB puts the fair range at $6,500 to $7,200, and NADA's clean retail value is $6,900.",
-      if_they_say:
-        "Our valuation is based on our comparable vehicles database and reflects the fair market value.",
-      your_response:
-        "I understand you have your own comparables, and I'd like to see them. Can you provide me with the VINs, mileage, trim level, and condition of the vehicles you used? I want to make sure we're comparing apples to apples — my vehicle is an EX trim with 28,000 miles in good pre-accident condition.",
-    },
-    {
-      topic: "Missing Line Items",
-      what_to_say:
-        "Your offer doesn't include several legitimate damages. My policy provides $30 per day for rental reimbursement, and I was without my vehicle for 24 days — that's $720 your offer doesn't account for. There's also diminished value, sales tax on a replacement vehicle, and registration fees.",
-      if_they_say:
-        "Those items aren't typically included in the settlement offer.",
-      your_response:
-        "Rental reimbursement is explicitly covered under my policy's Transportation Expense provision. And diminished value is a recognized element of damages in our state. I'm not asking for anything unusual — these are standard items that should be part of a complete settlement. I can provide documentation for each one.",
-    },
-    {
-      topic: "Diminished Value",
-      what_to_say:
-        "My vehicle now has an accident on its Carfax history, which reduces its resale value by an estimated 10 to 15 percent. Based on the 17c diminished value formula, that's approximately $1,800.",
-      if_they_say:
-        "We don't typically compensate for diminished value on first-party claims.",
-      your_response:
-        "I understand that's your position, but diminished value is a real, measurable loss. If you're disputing the amount, I'd welcome your own diminished value assessment rather than simply excluding it. The market data clearly shows vehicles with accident history sell for less.",
-    },
-    {
-      topic: "Total Demand",
-      what_to_say:
-        "When you add up the fair vehicle value of $6,800, rental reimbursement of $720, diminished value of $1,800, sales tax of $476, and registration fees of $185, my documented demand is $9,981. I've prepared a detailed demand letter with supporting documentation for each line item.",
-      if_they_say: "That amount is much higher than what we can offer.",
-      your_response:
-        "I understand there's a gap, and I'm open to a good-faith negotiation. But I need the revised offer to be based on actual market data. Every dollar in my demand is documented — I'm not inflating anything. What specific items in my demand do you disagree with, and what's the basis for your disagreement?",
-    },
-    {
-      topic: "Next Steps",
-      what_to_say:
-        "I'll be sending my formal demand letter with all supporting documentation today. I'd like a revised offer within 15 business days.",
-      if_they_say:
-        "I'll need to review the documentation and get back to you.",
-      your_response:
-        "That's completely reasonable. I want to make sure you have everything you need. Can I confirm the best email to send the demand package to? And just so we're on the same page — if we can't reach an agreement, I'm prepared to invoke the appraisal clause under Section 9 of my policy.",
-    },
-  ],
-  closing:
-    "Thank you for your time today. To summarize: I'm sending a formal demand for $9,981 with full documentation. I'd appreciate a revised offer within 15 business days. If we can't reach an agreement, I'll explore the appraisal process and file a complaint with the Department of Insurance. I look forward to resolving this fairly. Have a good day.",
-  dos: [
-    "Stay calm and professional throughout the entire call",
-    "Take notes on everything the adjuster says, including their name and direct number",
-    "Reference specific dollar amounts and evidence sources",
-    "Ask them to explain their valuation methodology in detail",
-    "Use silence after making key points — don't fill the gap",
-    "Follow up with an email summarizing the call within 24 hours",
-  ],
-  donts: [
-    "Don't accept any offer on the spot — always say you need time to review",
-    "Don't get emotional or raise your voice, even if they're dismissive",
-    "Don't volunteer information they didn't ask for",
-    "Don't say 'I think' or 'I feel' — use 'the data shows' and 'my documentation confirms'",
-    "Don't agree to a recorded statement without preparation",
-    "Don't threaten legal action unless you're prepared to follow through",
-  ],
-};
 
 // ---------------------------------------------------------------------------
 // Loading steps
@@ -102,6 +29,11 @@ export default function CallScriptPage() {
   const params = useParams<{ id: string }>();
   const claimId = params.id;
 
+  const [claim, setClaim] = useState<Claim | null>(null);
+  const [counterOffer, setCounterOffer] = useState<CounterOffer | null>(null);
+  const [loadingClaim, setLoadingClaim] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState(0);
   const [script, setScript] = useState<CallScript | null>(null);
@@ -109,7 +41,32 @@ export default function CallScriptPage() {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch claim data on mount
+  useEffect(() => {
+    async function fetchClaim() {
+      try {
+        const res = await fetch(`/api/claims/${claimId}`);
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || "Failed to load claim");
+        }
+        const data = await res.json();
+        setClaim(data.claim);
+        setCounterOffer(data.counterOffer ?? null);
+      } catch (err) {
+        setLoadError(
+          err instanceof Error ? err.message : "Failed to load claim data"
+        );
+      } finally {
+        setLoadingClaim(false);
+      }
+    }
+    fetchClaim();
+  }, [claimId]);
+
   async function handleGenerate() {
+    if (!claim) return;
+
     setIsGenerating(true);
     setGenerationStep(0);
     setScript(null);
@@ -126,11 +83,21 @@ export default function CallScriptPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          offerAmount: 4200,
-          demandAmount: 9981,
-          vehicleInfo: "2022 Honda Civic EX, 28,000 miles",
-          insurerName: "State Farm",
-          state: "California",
+          offerAmount: claim.offer_amount,
+          demandAmount:
+            counterOffer?.demand_amount ??
+            (claim.offer_amount
+              ? Math.round(claim.offer_amount * 2.4)
+              : 0),
+          vehicleInfo: [
+            claim.vehicle_year,
+            claim.vehicle_make,
+            claim.vehicle_model,
+          ]
+            .filter(Boolean)
+            .join(" "),
+          insurerName: claim.insurer_name,
+          state: "",
         }),
       });
 
@@ -145,9 +112,9 @@ export default function CallScriptPage() {
       setScript(data.script);
     } catch (err) {
       clearInterval(stepInterval);
-      console.warn("API call failed, using mock data:", err);
-      setScript(MOCK_SCRIPT);
-      setError("Live AI generation unavailable. Showing sample call script.");
+      setError(
+        err instanceof Error ? err.message : "Generation failed. Please try again."
+      );
     } finally {
       setIsGenerating(false);
     }
@@ -185,6 +152,33 @@ export default function CallScriptPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
+  }
+
+  // Loading state while fetching claim data
+  if (loadingClaim) {
+    return (
+      <ClaimLayout claimId={claimId}>
+        <div className="bg-panel border border-black/10 p-6">
+          <div className="flex items-center gap-3">
+            <Loader2 className="w-5 h-5 text-coral animate-spin" />
+            <p className="text-body text-[#4a555e]">Loading claim data...</p>
+          </div>
+        </div>
+      </ClaimLayout>
+    );
+  }
+
+  // Error loading claim data
+  if (loadError || !claim) {
+    return (
+      <ClaimLayout claimId={claimId}>
+        <div className="bg-panel border border-black/10 p-6">
+          <p className="text-body text-danger-600">
+            {loadError || "Claim not found."}
+          </p>
+        </div>
+      </ClaimLayout>
+    );
   }
 
   return (

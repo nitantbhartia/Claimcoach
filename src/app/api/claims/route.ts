@@ -1,25 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
-// Create a new claim
 export async function POST(request: NextRequest) {
   try {
+    const supabase = createServerSupabaseClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
 
-    // In production, this would save to Supabase
-    // For now, return a mock response with a generated ID
-    const claimId = crypto.randomUUID();
+    const { data, error } = await supabase
+      .from("claims")
+      .insert({
+        user_id: user.id,
+        claim_type: body.claim_type || "auto",
+        accident_date: body.accident_date || null,
+        fault_status: body.fault_status || "unknown",
+        filed_with_insurer: body.filed_with_insurer ?? false,
+        insurer_name: body.insurer_name || null,
+        claim_number: body.claim_number || null,
+        has_offer: body.has_offer ?? false,
+        offer_amount: body.offer_amount ?? null,
+        vehicle_year: body.vehicle_year || null,
+        vehicle_make: body.vehicle_make || null,
+        vehicle_model: body.vehicle_model || null,
+        damage_description: body.damage_description || null,
+        status: body.has_offer ? "offer_received" : "documenting",
+      })
+      .select()
+      .single();
 
-    const claim = {
-      id: claimId,
-      ...body,
-      status: "setup",
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
-    return NextResponse.json({ claim }, { status: 201 });
+    return NextResponse.json({ claim: data }, { status: 201 });
   } catch (error) {
     console.error("Create claim error:", error);
     return NextResponse.json(
@@ -29,25 +51,27 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// List claims for a user
 export async function GET() {
   try {
-    // In production, this would fetch from Supabase with auth
-    const claims = [
-      {
-        id: "demo",
-        claim_type: "auto",
-        status: "offer_received",
-        insurer_name: "State Farm",
-        accident_date: "2026-01-15",
-        offer_amount: 4200,
-        vehicle: "2022 Honda Civic",
-        created_at: "2026-01-16T10:00:00Z",
-        updated_at: "2026-02-01T14:30:00Z",
-      },
-    ];
+    const supabase = createServerSupabaseClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    return NextResponse.json({ claims });
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { data, error } = await supabase
+      .from("claims")
+      .select("*")
+      .order("updated_at", { ascending: false });
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ claims: data ?? [] });
   } catch (error) {
     console.error("List claims error:", error);
     return NextResponse.json(

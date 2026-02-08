@@ -1,34 +1,28 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { ClaimLayout } from "@/components/layout/claim-layout";
 import { Button } from "@/components/ui/button";
 import { ScoreGauge } from "@/components/ui/score-gauge";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
-import { ArrowRight, Download, Phone } from "lucide-react";
-import type { ClaimStatus } from "@/types";
+import { ArrowRight, Download, Loader2, Phone } from "lucide-react";
+import type { Claim, ClaimDocument, ClaimStatus, FaultStatus, FinancialImpact } from "@/types";
 
 // ---------------------------------------------------------------------------
-// Mock data -- will be replaced with real fetching once the API is wired up
+// Fault status display mapping
 // ---------------------------------------------------------------------------
 
-const MOCK_CLAIM = {
-  id: "demo-claim-001",
-  status: "offer_received" as ClaimStatus,
-  vehicleYear: 2022,
-  vehicleMake: "Honda",
-  vehicleModel: "Civic",
-  accidentDate: "2025-11-14",
-  insurerName: "State Farm",
-  claimNumber: "SF-2025-88431",
-  faultStatus: "Not at fault",
-  offerAmount: 4200,
-  fairnessScore: 38,
-  documentsUploaded: 8,
-  trackedExpenses: 1247,
-  policyUploaded: true,
-};
+function getFaultStatusLabel(status: FaultStatus): string {
+  const labels: Record<FaultStatus, string> = {
+    not_at_fault: "Not at fault",
+    partial_fault: "Partial fault",
+    at_fault: "At fault",
+    unknown: "Unknown",
+  };
+  return labels[status];
+}
 
 // ---------------------------------------------------------------------------
 // Status dot color mapping
@@ -96,11 +90,62 @@ const SUB_PAGES = [
 export default function ClaimOverviewPage() {
   const params = useParams<{ id: string }>();
   const claimId = params.id;
-  const claim = { ...MOCK_CLAIM, id: claimId };
+
+  const [claim, setClaim] = useState<Claim | null>(null);
+  const [documents, setDocuments] = useState<ClaimDocument[]>([]);
+  const [expenses, setExpenses] = useState<FinancialImpact[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchClaim() {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await fetch(`/api/claims/${claimId}`);
+        if (!res.ok) {
+          throw new Error(`Failed to load claim (${res.status})`);
+        }
+        const data = await res.json();
+        setClaim(data.claim);
+        setDocuments(data.documents ?? []);
+        setExpenses(data.expenses ?? []);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Something went wrong");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchClaim();
+  }, [claimId]);
+
+  if (loading) {
+    return (
+      <ClaimLayout claimId={claimId}>
+        <div className="flex items-center justify-center py-24">
+          <Loader2 className="w-6 h-6 animate-spin text-[#4a555e]" />
+        </div>
+      </ClaimLayout>
+    );
+  }
+
+  if (error || !claim) {
+    return (
+      <ClaimLayout claimId={claimId}>
+        <div className="bg-panel border border-black/10 px-5 py-12 text-center">
+          <p className="text-body text-red-600">
+            {error ?? "Claim not found"}
+          </p>
+        </div>
+      </ClaimLayout>
+    );
+  }
 
   const progress = getProgressPercentage(claim.status);
   const statusLabel = getStatusLabel(claim.status);
   const dotColor = getStatusDotColor(claim.status);
+  const expenseTotal = expenses.reduce((s, e) => s + e.amount, 0);
 
   return (
     <ClaimLayout claimId={claimId}>
@@ -166,35 +211,37 @@ export default function ClaimOverviewPage() {
                 <div className="flex justify-between py-1.5 border-b border-black/10">
                   <dt className="text-body-sm text-[#4a555e]">Vehicle</dt>
                   <dd className="text-body-sm font-medium text-black">
-                    {claim.vehicleYear} {claim.vehicleMake} {claim.vehicleModel}
+                    {claim.vehicle_year} {claim.vehicle_make} {claim.vehicle_model}
                   </dd>
                 </div>
                 <div className="flex justify-between py-1.5 border-b border-black/10">
                   <dt className="text-body-sm text-[#4a555e]">Insurer</dt>
                   <dd className="text-body-sm font-medium text-black">
-                    {claim.insurerName}
+                    {claim.insurer_name ?? "--"}
                   </dd>
                 </div>
                 <div className="flex justify-between py-1.5 border-b border-black/10">
                   <dt className="text-body-sm text-[#4a555e]">Claim #</dt>
                   <dd className="text-body-sm font-medium text-black">
-                    {claim.claimNumber}
+                    {claim.claim_number ?? "--"}
                   </dd>
                 </div>
                 <div className="flex justify-between py-1.5 border-b border-black/10">
                   <dt className="text-body-sm text-[#4a555e]">Accident date</dt>
                   <dd className="text-body-sm font-medium text-black">
-                    {new Date(claim.accidentDate).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+                    {claim.accident_date
+                      ? new Date(claim.accident_date).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })
+                      : "--"}
                   </dd>
                 </div>
                 <div className="flex justify-between py-1.5">
                   <dt className="text-body-sm text-[#4a555e]">Fault status</dt>
                   <dd className="text-body-sm font-medium text-black">
-                    {claim.faultStatus}
+                    {getFaultStatusLabel(claim.fault_status)}
                   </dd>
                 </div>
               </dl>
@@ -208,10 +255,10 @@ export default function ClaimOverviewPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-caption text-[#4a555e] mb-1">
-                    Documented expenses
+                    Documented expenses ({documents.length} docs)
                   </p>
                   <p className="text-heading-lg text-black">
-                    {formatCurrency(claim.trackedExpenses)}
+                    {formatCurrency(expenseTotal)}
                   </p>
                 </div>
                 <div>
@@ -219,8 +266,8 @@ export default function ClaimOverviewPage() {
                     Insurer&apos;s offer
                   </p>
                   <p className="text-heading-lg text-black">
-                    {claim.offerAmount
-                      ? formatCurrency(claim.offerAmount)
+                    {claim.offer_amount
+                      ? formatCurrency(claim.offer_amount)
                       : "--"}
                   </p>
                 </div>
@@ -235,7 +282,7 @@ export default function ClaimOverviewPage() {
               <h2 className="text-body-sm font-medium text-[#4a555e] mb-4 self-start">
                 Fairness Score
               </h2>
-              <ScoreGauge score={claim.fairnessScore} size="md" />
+              <ScoreGauge score={claim.fairness_score ?? 0} size="md" />
             </div>
 
             {/* Next steps */}

@@ -1,91 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { ClaimLayout } from "@/components/layout/claim-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScoreGauge } from "@/components/ui/score-gauge";
-import { OfferAnalysis } from "@/types";
+import { Claim, OfferAnalysis } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { LiveAuditOffer } from "@/components/ui/live-audit-offer";
-
-// ---------------------------------------------------------------------------
-// Mock offer analysis data -- 2022 Honda Civic, $4,200 offer from State Farm
-// ---------------------------------------------------------------------------
-
-const MOCK_ANALYSIS: OfferAnalysis = {
-  fairness_score: 38,
-  summary:
-    "State Farm\u2019s offer of $4,200 is significantly below the fair market value of your 2022 Honda Civic. The offer fails to account for diminished value, loss of use, sales tax on a replacement vehicle, and registration/title transfer fees. Based on comparable market data, your vehicle\u2019s fair value alone is $6,500-$7,200 before accounting for these additional legitimate damages. The total gap between their offer and your fair compensation is $5,781.",
-  line_items: [
-    {
-      category: "Vehicle Base Value",
-      insurer_amount: 4200,
-      fair_amount: 6800,
-      difference: 2600,
-      reasoning:
-        "State Farm uses cherry-picked comparables with higher mileage and lower trim levels. KBB, NADA, and local market listings all support a fair value of $6,500-$7,200 for your 2022 Honda Civic EX with 28,000 miles in good condition.",
-    },
-    {
-      category: "Loss of Use / Rental",
-      insurer_amount: 0,
-      fair_amount: 720,
-      difference: 720,
-      reasoning:
-        "Your policy includes Transportation Expense coverage at $30/day for up to 30 days. You were without your vehicle for 24 days. State Farm did not include this in their offer.",
-    },
-    {
-      category: "Diminished Value",
-      insurer_amount: 0,
-      fair_amount: 1800,
-      difference: 1800,
-      reasoning:
-        "Your vehicle now has an accident on its Carfax history, reducing resale value by an estimated 10-15%. Conservatively estimated at $1,800 based on pre-accident value.",
-    },
-    {
-      category: "Sales Tax on Replacement",
-      insurer_amount: 0,
-      fair_amount: 476,
-      difference: 476,
-      reasoning:
-        "At your state\u2019s 7% sales tax rate applied to the fair vehicle value of $6,800, replacement sales tax amounts to $476. Often omitted from initial offers.",
-    },
-    {
-      category: "Registration / Title Transfer",
-      insurer_amount: 0,
-      fair_amount: 185,
-      difference: 185,
-      reasoning:
-        "Replacing your vehicle requires new registration and title transfer fees totaling approximately $185 based on your state\u2019s DMV fee schedule.",
-    },
-  ],
-  total_gap: 5781,
-  comparable_data: [
-    {
-      source: "Kelley Blue Book (KBB)",
-      value: "$6,500 - $7,200",
-      details:
-        "Fair Market Range for 2022 Honda Civic EX, 28,000 miles, good condition. Factors in your zip code, local demand, and vehicle-specific features.",
-    },
-    {
-      source: "NADA Guides",
-      value: "$6,900 (Clean Retail)",
-      details:
-        "Clean Retail value assumes good condition with no mechanical defects. Reflects what a consumer would expect to pay at a dealership.",
-    },
-    {
-      source: "Local Market Listings",
-      value: "$7,100 average (3 vehicles)",
-      details:
-        "Three comparable 2022 Civic EX vehicles within 50 miles: $6,900 at 31,200 mi, $7,200 at 26,800 mi, $7,200 at 29,500 mi.",
-    },
-  ],
-  recommendation:
-    "Your offer is significantly below fair market value. The insurer\u2019s offer of $4,200 accounts for only 42% of your total fair compensation of $9,981. We strongly recommend submitting a formal counter-demand for $9,981 supported by the comparable vehicle data and itemized damages above. Based on similar claims, policyholders who counter with documented evidence typically settle for 70-85% of their demand amount, which in your case would be $6,987-$8,484.",
-};
 
 // ---------------------------------------------------------------------------
 // Analysis loading steps
@@ -108,11 +33,37 @@ export default function OfferAnalysisPage() {
   const params = useParams<{ id: string }>();
   const claimId = params.id;
 
+  const [claim, setClaim] = useState<Claim | null>(null);
+  const [claimLoading, setClaimLoading] = useState(true);
   const [offerAmount, setOfferAmount] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisStep, setAnalysisStep] = useState(0);
   const [analysis, setAnalysis] = useState<OfferAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Fetch claim data on mount
+  useEffect(() => {
+    async function fetchClaim() {
+      try {
+        const res = await fetch(`/api/claims/${claimId}`);
+        if (!res.ok) throw new Error("Failed to load claim");
+        const claimData = await res.json();
+        setClaim(claimData);
+
+        // Pre-populate analysis if cached
+        if (claimData.offerAnalysis) {
+          setAnalysis(claimData.offerAnalysis);
+        }
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to load claim data."
+        );
+      } finally {
+        setClaimLoading(false);
+      }
+    }
+    fetchClaim();
+  }, [claimId]);
 
   // Computed totals
   const theirTotal = analysis
@@ -144,8 +95,10 @@ export default function OfferAnalysisPage() {
         body: JSON.stringify({
           offerAmount: parsed,
           claimType: "Auto Property Damage",
-          vehicleInfo: "2022 Honda Civic EX, 28,000 miles",
-          damageDescription: "Collision damage from rear-end accident",
+          vehicleInfo: claim
+            ? `${claim.vehicle_year} ${claim.vehicle_make} ${claim.vehicle_model}`
+            : "Unknown vehicle",
+          damageDescription: claim?.damage_description ?? "No description provided",
         }),
       });
 
@@ -158,11 +111,21 @@ export default function OfferAnalysisPage() {
 
       const data = await res.json();
       setAnalysis(data.analysis);
+
+      // Cache analysis in Supabase
+      fetch(`/api/claims/${claimId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fairness_score: data.analysis.fairness_score,
+          status: "offer_received",
+        }),
+      });
     } catch (err) {
       clearInterval(stepInterval);
-      console.warn("API call failed, using mock data:", err);
-      setAnalysis(MOCK_ANALYSIS);
-      setError("Live AI analysis unavailable. Showing sample analysis.");
+      setError(
+        err instanceof Error ? err.message : "Analysis failed. Please try again."
+      );
     } finally {
       setIsAnalyzing(false);
     }
@@ -173,6 +136,17 @@ export default function OfferAnalysisPage() {
     if (score >= 60) return "Borderline -- some room for negotiation";
     if (score >= 40) return "Below fair value -- significant gap identified";
     return "Well below fair value -- strongly recommend counter-offer";
+  }
+
+  // Show loading spinner while claim data is being fetched
+  if (claimLoading) {
+    return (
+      <ClaimLayout claimId={claimId}>
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="w-8 h-8 animate-spin text-[#4a555e]/60" />
+        </div>
+      </ClaimLayout>
+    );
   }
 
   return (
