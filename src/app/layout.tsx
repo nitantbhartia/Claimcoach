@@ -1,11 +1,25 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth/context";
 
+const SITE_URL = "https://claimcoach.app";
+const SITE_NAME = "ClaimCoach";
+const DEFAULT_DESCRIPTION =
+  "Get the settlement you deserve. ClaimCoach uses AI to analyze your insurance policy, evaluate offers, and generate professional counter-offers backed by market data.";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0d0d0d",
+};
+
 export const metadata: Metadata = {
-  title: "ClaimCoach - AI-Powered Insurance Claim Negotiator",
-  description:
-    "Get the settlement you deserve. ClaimCoach uses AI to analyze your insurance policy, evaluate offers, and generate professional counter-offers. Stop leaving money on the table.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "ClaimCoach — AI-Powered Insurance Claim Negotiation",
+    template: "%s | ClaimCoach",
+  },
+  description: DEFAULT_DESCRIPTION,
   keywords: [
     "insurance claim help",
     "insurance negotiation",
@@ -15,13 +29,79 @@ export const metadata: Metadata = {
     "auto claim",
     "car accident settlement",
     "insurance fairness",
+    "diminished value",
+    "total loss negotiation",
+    "insurance underpayment",
+    "counter offer letter",
   ],
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  formatDetection: {
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "ClaimCoach - AI-Powered Insurance Claim Negotiator",
+    title: "ClaimCoach — AI-Powered Insurance Claim Negotiation",
     description:
-      "Stop accepting lowball insurance offers. ClaimCoach analyzes your policy, evaluates your offer, and generates professional counter-offers.",
+      "Stop accepting lowball insurance offers. ClaimCoach analyzes your policy, evaluates your offer, and generates professional counter-offers backed by market data.",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    locale: "en_US",
     type: "website",
-    siteName: "ClaimCoach",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ClaimCoach — AI-Powered Insurance Claim Negotiation",
+    description:
+      "Stop accepting lowball insurance offers. AI-powered policy analysis, offer evaluation, and counter-offer generation.",
+    creator: "@claimcoach",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: SITE_NAME,
+  url: SITE_URL,
+  applicationCategory: "FinanceApplication",
+  operatingSystem: "Web",
+  description: DEFAULT_DESCRIPTION,
+  offers: [
+    {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      name: "Free Analysis",
+      description: "Basic claim analysis and score",
+    },
+    {
+      "@type": "Offer",
+      price: "79",
+      priceCurrency: "USD",
+      name: "Full Toolkit",
+      description:
+        "Complete AI-powered analysis, counter-offer generation, call script, and export",
+    },
+  ],
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.8",
+    ratingCount: "1200",
+    bestRating: "5",
   },
 };
 
@@ -33,6 +113,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

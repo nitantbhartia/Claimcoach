@@ -536,9 +536,26 @@ const MYTHS = [
 /* Main page                                                                  */
 /* -------------------------------------------------------------------------- */
 
+const FAQ_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: MYTHS.map((m) => ({
+    "@type": "Question",
+    name: m.myth.replace(/\u201C|\u201D/g, ""),
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: m.reality,
+    },
+  })),
+};
+
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-frame">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD) }}
+      />
       <Header />
       <StickyCTA />
 

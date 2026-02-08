@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -11,6 +12,19 @@ import {
   Search,
   TrendingUp,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "ClaimCoach levels the playing field between you and your insurance company. Learn how our AI-powered tools help policyholders get the settlements they deserve.",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: "About ClaimCoach",
+    description:
+      "Learn how ClaimCoach uses AI to help policyholders fight lowball insurance settlements and get fair compensation.",
+    url: "https://claimcoach.app/about",
+  },
+};
 
 export default function AboutPage() {
   return (

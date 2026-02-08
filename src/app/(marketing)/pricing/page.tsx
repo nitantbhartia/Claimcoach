@@ -1,8 +1,22 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Pricing",
+  description:
+    "ClaimCoach pricing: free basic analysis, $79 per claim for the full AI toolkit, or $49/mo Pro for unlimited claims. No hidden fees.",
+  alternates: { canonical: "/pricing" },
+  openGraph: {
+    title: "ClaimCoach Pricing — Plans Starting at $0",
+    description:
+      "Free basic analysis, $79/claim full toolkit, or $49/mo Pro. AI-powered insurance claim negotiation tools.",
+    url: "https://claimcoach.app/pricing",
+  },
+};
 
 export default function PricingPage() {
   return (
