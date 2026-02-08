@@ -38,7 +38,8 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("Create claim DB error:", error);
+      return NextResponse.json({ error: "Failed to create claim" }, { status: 500 });
     }
 
     return NextResponse.json({ claim: data }, { status: 201 });
@@ -62,13 +63,16 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Explicit user_id filter as defense-in-depth (supplements RLS)
     const { data, error } = await supabase
       .from("claims")
       .select("*")
+      .eq("user_id", user.id)
       .order("updated_at", { ascending: false });
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("List claims DB error:", error);
+      return NextResponse.json({ error: "Failed to fetch claims" }, { status: 500 });
     }
 
     return NextResponse.json({ claims: data ?? [] });

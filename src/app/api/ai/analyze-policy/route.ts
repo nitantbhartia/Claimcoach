@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { analyzeWithAI } from "@/lib/ai/client";
 import { POLICY_ANALYSIS_PROMPT } from "@/lib/ai/prompts";
 import { requireAuth } from "@/lib/auth";
+import { extractJSON } from "@/lib/ai/sanitize";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -34,16 +35,16 @@ export async function POST(request: NextRequest) {
       `Here is the insurance policy document text:\n\n${policyText}`
     );
 
-    // Parse the JSON response from the AI
-    const jsonMatch = result.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    // Parse the JSON response from the AI using safe brace-counting extraction
+    const jsonStr = extractJSON(result);
+    if (!jsonStr) {
       return NextResponse.json(
         { error: "Failed to parse AI response" },
         { status: 500 }
       );
     }
 
-    const analysis = JSON.parse(jsonMatch[0]);
+    const analysis = JSON.parse(jsonStr);
 
     return NextResponse.json({ analysis });
   } catch (error) {

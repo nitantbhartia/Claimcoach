@@ -17,6 +17,18 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Verify claim ownership explicitly to prevent IDOR
+    const { data: claim } = await supabase
+      .from("claims")
+      .select("id, user_id")
+      .eq("id", params.id)
+      .eq("user_id", user.id)
+      .single();
+
+    if (!claim) {
+      return NextResponse.json({ error: "Claim not found" }, { status: 404 });
+    }
+
     const body = await request.json();
 
     const { data, error } = await supabase
@@ -33,7 +45,11 @@ export async function POST(
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("Create expense DB error:", error);
+      return NextResponse.json(
+        { error: "Failed to create expense" },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({ expense: data }, { status: 201 });
@@ -60,6 +76,18 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Verify claim ownership explicitly to prevent IDOR
+    const { data: claim } = await supabase
+      .from("claims")
+      .select("id, user_id")
+      .eq("id", params.id)
+      .eq("user_id", user.id)
+      .single();
+
+    if (!claim) {
+      return NextResponse.json({ error: "Claim not found" }, { status: 404 });
+    }
+
     const { expenseId } = await request.json();
 
     const { error } = await supabase
@@ -69,7 +97,11 @@ export async function DELETE(
       .eq("claim_id", params.id);
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("Delete expense DB error:", error);
+      return NextResponse.json(
+        { error: "Failed to delete expense" },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({ success: true });

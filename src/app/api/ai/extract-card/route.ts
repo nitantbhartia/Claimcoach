@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeDocumentWithVision } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
+import { extractJSON } from "@/lib/ai/sanitize";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -81,16 +82,16 @@ export async function POST(request: NextRequest) {
       mediaType
     );
 
-    // Parse JSON from the AI response
-    const jsonMatch = result.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    // Parse JSON from the AI response using safe brace-counting extraction
+    const jsonStr = extractJSON(result);
+    if (!jsonStr) {
       return NextResponse.json(
         { error: "Could not extract information from the image" },
         { status: 422 }
       );
     }
 
-    const extracted = JSON.parse(jsonMatch[0]);
+    const extracted = JSON.parse(jsonStr);
 
     return NextResponse.json({ extracted });
   } catch (error) {

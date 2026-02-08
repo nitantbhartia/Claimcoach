@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAnthropicClient } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
+import { extractJSON } from "@/lib/ai/sanitize";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -105,15 +106,15 @@ export async function POST(request: NextRequest) {
     const textBlock = response.content.find((block) => block.type === "text");
     const raw = textBlock ? textBlock.text : "";
 
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    const jsonStr = extractJSON(raw);
+    if (!jsonStr) {
       return NextResponse.json(
         { error: "Could not extract offer details from the document" },
         { status: 422 }
       );
     }
 
-    const extracted = JSON.parse(jsonMatch[0]);
+    const extracted = JSON.parse(jsonStr);
 
     return NextResponse.json({ extracted });
   } catch (error) {

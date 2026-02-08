@@ -36,7 +36,12 @@ function LoginForm() {
         return;
       }
 
-      const next = searchParams.get("next") ?? "/dashboard";
+      const rawNext = searchParams.get("next") ?? "/dashboard";
+      // Prevent open redirect: only allow internal paths
+      const next =
+        rawNext.startsWith("/") && !rawNext.startsWith("//") && !rawNext.includes("://")
+          ? rawNext
+          : "/dashboard";
       router.push(next);
       router.refresh();
     } catch {

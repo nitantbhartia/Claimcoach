@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAnthropicClient } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
+import { validateState, sanitizeField, extractJSON } from "@/lib/ai/sanitize";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -54,6 +55,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "State is required" }, { status: 400 });
     }
 
+    // Validate state against known US state codes to prevent injection
+    const validState = validateState(state);
+    if (!validState) {
+      return NextResponse.json({ error: "Invalid US state code" }, { status: 400 });
+    }
+
+    const VALID_CLAIM_TYPES = ["auto property damage", "auto collision", "comprehensive", "uninsured motorist"];
+    const safeClaimType = VALID_CLAIM_TYPES.includes(claimType?.toLowerCase?.())
+      ? sanitizeField(claimType, 50)
+      : "auto property damage";
+
     const client = getAnthropicClient();
 
     const response = await client.messages.create({
@@ -63,7 +75,7 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: "user",
-          content: `Provide state-specific insurance guidance for ${state} for a ${claimType || "auto property damage"} claim. Include relevant state laws, deadlines, consumer rights, DOI info, and bad faith notes.`,
+          content: `Provide state-specific insurance guidance for ${validState} for a ${safeClaimType} claim. Include relevant state laws, deadlines, consumer rights, DOI info, and bad faith notes.`,
         },
       ],
     });
@@ -71,12 +83,12 @@ export async function POST(request: NextRequest) {
     const textBlock = response.content.find((b) => b.type === "text");
     const raw = textBlock ? textBlock.text : "";
 
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    const jsonStr = extractJSON(raw);
+    if (!jsonStr) {
       return NextResponse.json({ error: "Failed to generate state guidance" }, { status: 500 });
     }
 
-    const guidance = JSON.parse(jsonMatch[0]);
+    const guidance = JSON.parse(jsonStr);
     return NextResponse.json({ guidance });
   } catch (error) {
     console.error("State guidance error:", error);

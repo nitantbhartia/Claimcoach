@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAnthropicClient } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
+import { sanitizeField, extractJSON } from "@/lib/ai/sanitize";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -47,15 +48,17 @@ export async function POST(request: NextRequest) {
 
     const client = getAnthropicClient();
 
-    const userPrompt = `Generate a phone call script for negotiating with ${insurerName || "the insurance company"}.
+    const safeOffer = Number(offerAmount) || 0;
+    const safeDemand = Number(demandAmount) || 0;
+    const userPrompt = `Generate a phone call script for negotiating with ${sanitizeField(insurerName || "the insurance company", 100)}.
 
 Claim details:
-- Vehicle: ${vehicleInfo || "Not specified"}
-- Their offer: $${offerAmount}
-- My demand: $${demandAmount}
-- Gap: $${demandAmount - offerAmount}
-- State: ${state || "Not specified"}
-${lineItems ? `- Line items: ${JSON.stringify(lineItems)}` : ""}
+- Vehicle: ${sanitizeField(vehicleInfo || "Not specified", 200)}
+- Their offer: $${safeOffer}
+- My demand: $${safeDemand}
+- Gap: $${safeDemand - safeOffer}
+- State: ${sanitizeField(state || "Not specified", 50)}
+${lineItems ? `- Line items: ${sanitizeField(JSON.stringify(lineItems), 3000)}` : ""}
 
 Create a complete call script with opening, key negotiation points with objection handlers, closing, and behavioral dos/donts.`;
 
@@ -69,12 +72,12 @@ Create a complete call script with opening, key negotiation points with objectio
     const textBlock = response.content.find((b) => b.type === "text");
     const raw = textBlock ? textBlock.text : "";
 
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    const jsonStr = extractJSON(raw);
+    if (!jsonStr) {
       return NextResponse.json({ error: "Failed to generate call script" }, { status: 500 });
     }
 
-    const script = JSON.parse(jsonMatch[0]);
+    const script = JSON.parse(jsonStr);
     return NextResponse.json({ script });
   } catch (error) {
     console.error("Call script generation error:", error);

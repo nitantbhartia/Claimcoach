@@ -22,7 +22,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const origin = request.headers.get("origin") || "http://localhost:3000";
+    // Use configured app URL to prevent host header poisoning
+    const origin = process.env.NEXT_PUBLIC_APP_URL || request.headers.get("origin");
+    if (!origin) {
+      return NextResponse.json(
+        { error: "App URL not configured" },
+        { status: 500 }
+      );
+    }
 
     // Look up or create customer
     let customerId: string | undefined;

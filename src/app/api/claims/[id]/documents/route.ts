@@ -66,8 +66,9 @@ export async function POST(
       .upload(filePath, file);
 
     if (uploadError) {
+      console.error("Upload storage error:", uploadError);
       return NextResponse.json(
-        { error: uploadError.message },
+        { error: "Failed to upload file" },
         { status: 500 }
       );
     }
@@ -92,7 +93,8 @@ export async function POST(
       .single();
 
     if (docError) {
-      return NextResponse.json({ error: docError.message }, { status: 500 });
+      console.error("Create document record error:", docError);
+      return NextResponse.json({ error: "Failed to save document record" }, { status: 500 });
     }
 
     return NextResponse.json({ document: doc }, { status: 201 });
@@ -119,6 +121,18 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Verify claim ownership for DELETE too
+    const { data: claim } = await supabase
+      .from("claims")
+      .select("id, user_id")
+      .eq("id", params.id)
+      .eq("user_id", user.id)
+      .single();
+
+    if (!claim) {
+      return NextResponse.json({ error: "Claim not found" }, { status: 404 });
+    }
+
     const { documentId } = await request.json();
 
     const { error } = await supabase
@@ -128,7 +142,8 @@ export async function DELETE(
       .eq("claim_id", params.id);
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("Delete document error:", error);
+      return NextResponse.json({ error: "Failed to delete document" }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });

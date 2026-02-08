@@ -17,11 +17,12 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Fetch claim (RLS ensures user can only see their own)
+    // Fetch claim with explicit user_id filter (defense-in-depth, supplements RLS)
     const { data: claim, error: claimError } = await supabase
       .from("claims")
       .select("*")
       .eq("id", params.id)
+      .eq("user_id", user.id)
       .single();
 
     if (claimError || !claim) {
@@ -131,15 +132,18 @@ export async function PATCH(
       return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
     }
 
+    // Explicit user_id filter on PATCH to prevent IDOR
     const { data, error } = await supabase
       .from("claims")
       .update(updates)
       .eq("id", params.id)
+      .eq("user_id", user.id)
       .select()
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("Update claim DB error:", error);
+      return NextResponse.json({ error: "Failed to update claim" }, { status: 500 });
     }
 
     return NextResponse.json({ claim: data });

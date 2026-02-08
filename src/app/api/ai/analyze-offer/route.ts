@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { analyzeWithAI } from "@/lib/ai/client";
 import { OFFER_ANALYSIS_PROMPT } from "@/lib/ai/prompts";
 import { requireAuth } from "@/lib/auth";
+import { sanitizeField, extractJSON } from "@/lib/ai/sanitize";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -21,28 +22,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const safeAmount = Number(offerAmount) || 0;
     const prompt = OFFER_ANALYSIS_PROMPT
-      .replace("{claimType}", claimType || "Auto Property Damage")
-      .replace("{vehicleInfo}", vehicleInfo || "Not provided")
-      .replace("{damageDescription}", damageDescription || "Not provided")
-      .replace("{offerAmount}", offerAmount.toString())
-      .replace("{coverageLimits}", JSON.stringify(coverageLimits || {}))
-      .replace("{expenses}", JSON.stringify(expenses || []));
+      .replace("{claimType}", sanitizeField(claimType || "Auto Property Damage", 100))
+      .replace("{vehicleInfo}", sanitizeField(vehicleInfo || "Not provided", 200))
+      .replace("{damageDescription}", sanitizeField(damageDescription || "Not provided", 1000))
+      .replace("{offerAmount}", sanitizeField(String(safeAmount), 20))
+      .replace("{coverageLimits}", sanitizeField(JSON.stringify(coverageLimits || {}), 5000))
+      .replace("{expenses}", sanitizeField(JSON.stringify(expenses || []), 5000));
 
     const result = await analyzeWithAI(
       prompt,
-      `Please analyze this settlement offer of $${offerAmount} for the described claim.`
+      `Please analyze this settlement offer of $${safeAmount} for the described claim.`
     );
 
-    const jsonMatch = result.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    const jsonStr = extractJSON(result);
+    if (!jsonStr) {
       return NextResponse.json(
         { error: "Failed to parse AI response" },
         { status: 500 }
       );
     }
 
-    const analysis = JSON.parse(jsonMatch[0]);
+    const analysis = JSON.parse(jsonStr);
 
     return NextResponse.json({ analysis });
   } catch (error) {
