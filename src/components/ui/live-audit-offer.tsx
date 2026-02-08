@@ -91,13 +91,13 @@ export function LiveAuditOffer({
   const progress = (visibleFindings.length / OFFER_FINDINGS.length) * 100;
 
   return (
-    <div className="bg-paper-white rounded-xl overflow-hidden border border-slate-200 shadow-document">
+    <div className="bg-panel overflow-hidden border border-slate-200">
       {/* ---- Progress bar ---- */}
       <div className="px-4 sm:px-6 pt-4 pb-3 border-b border-slate-100 bg-white">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-caption font-medium text-ink-800 uppercase tracking-wider">
+            <div className="w-2 h-2 rounded-full bg-coral animate-pulse" />
+            <span className="text-caption font-medium text-coral uppercase tracking-wider">
               {isComplete ? "Evaluation Complete" : "Evaluating Offer"}
             </span>
           </div>
@@ -107,7 +107,7 @@ export function LiveAuditOffer({
         </div>
         <div className="w-full bg-slate-100 rounded-full h-1">
           <motion.div
-            className="h-1 rounded-full bg-ink-800"
+            className="h-1 rounded-full bg-coral"
             initial={{ width: "0%" }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.3, ease: "easeOut" }}
@@ -117,13 +117,13 @@ export function LiveAuditOffer({
 
       {/* ---- Value comparison bar (appears as gaps are found) ---- */}
       {totalGap > 0 && (
-        <div className="px-4 sm:px-6 py-3 border-b border-slate-100 bg-paper-cream/50">
+        <div className="px-4 sm:px-6 py-3 border-b border-slate-100 bg-panel-alt/50">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-4 text-caption">
               <span className="text-slate-400">
                 Offer: <span className="font-mono text-slate-500 line-through">$4,200</span>
               </span>
-              <span className="text-ink-800 font-semibold">
+              <span className="text-coral font-semibold">
                 Fair: <span className="font-mono">${(4200 + totalGap).toLocaleString()}</span>
               </span>
             </div>
@@ -131,7 +131,7 @@ export function LiveAuditOffer({
               key={totalGap}
               initial={{ scale: 1.2 }}
               animate={{ scale: 1 }}
-              className="text-body-sm font-serif font-bold text-emerald-600"
+              className="text-body-sm font-bold text-coral"
             >
               +${totalGap.toLocaleString()}
             </motion.span>
@@ -145,14 +145,14 @@ export function LiveAuditOffer({
             </div>
             {/* Offer marker */}
             <motion.div
-              className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-danger-500 shadow-sm z-10"
+              className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-danger-500 z-10"
               initial={{ left: "50%" }}
               animate={{ left: "38%" }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             />
             {/* Fair marker */}
             <motion.div
-              className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-emerald-500 shadow-sm z-10"
+              className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-emerald-500 z-10"
               initial={{ left: "50%" }}
               animate={{ left: "78%" }}
               transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
@@ -184,10 +184,10 @@ export function LiveAuditOffer({
                 <span
                   className={`
                     block w-2 h-2 rounded-full
-                    ${finding.type === "check" ? "bg-ink-800" : ""}
+                    ${finding.type === "check" ? "bg-coral" : ""}
                     ${finding.type === "found" ? "bg-blue-500" : ""}
-                    ${finding.type === "gap" ? "bg-emerald-500" : ""}
-                    ${finding.type === "risk" ? "bg-amber-400" : ""}
+                    ${finding.type === "gap" ? "bg-coral" : ""}
+                    ${finding.type === "risk" ? "bg-warning-500" : ""}
                   `}
                 />
               </div>
@@ -198,12 +198,12 @@ export function LiveAuditOffer({
                     {finding.label}
                   </span>
                   {finding.value && (
-                    <span className="text-caption font-semibold text-emerald-600 mark-yellow px-1 rounded-sm whitespace-nowrap flex-shrink-0">
+                    <span className="text-caption font-semibold text-coral mark-coral px-1 whitespace-nowrap flex-shrink-0">
                       {finding.value}
                     </span>
                   )}
                   {!finding.value && finding.type === "risk" && (
-                    <span className="text-[10px] font-mono text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded flex-shrink-0">
+                    <span className="text-[10px] font-mono text-warning-600 bg-amber-50 px-1.5 py-0.5 flex-shrink-0">
                       RISK
                     </span>
                   )}
@@ -235,11 +235,11 @@ export function LiveAuditOffer({
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            className="px-4 sm:px-6 py-4 bg-paper-cream border-t border-slate-200"
+            className="px-4 sm:px-6 py-4 bg-panel-alt border-t border-slate-200"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-body-sm font-semibold text-ink-800">
+                <p className="text-body-sm font-semibold text-coral">
                   Evaluation complete
                 </p>
                 <p className="text-caption text-slate-500">
@@ -248,7 +248,7 @@ export function LiveAuditOffer({
               </div>
               <div className="text-right">
                 <p className="text-caption text-slate-500">Total gap</p>
-                <p className="text-heading font-serif font-bold text-emerald-600">
+                <p className="text-heading font-bold text-coral">
                   +${totalGap.toLocaleString()}
                 </p>
               </div>

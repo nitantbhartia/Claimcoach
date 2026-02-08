@@ -11,14 +11,14 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", loading, children, disabled, ...props }, ref) => {
-    const baseStyles = "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+    const baseStyles = "inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
 
     const variants = {
-      primary: "bg-ink-800 text-white hover:bg-ink-900 focus:ring-ink-800 shadow-sm",
-      secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200 focus:ring-slate-500",
-      outline: "border-2 border-ink-800 text-ink-800 hover:bg-ink-50 focus:ring-ink-800",
-      ghost: "text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus:ring-slate-500",
-      danger: "bg-danger-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm",
+      primary: "bg-black text-panel hover:bg-coral hover:text-black focus:ring-coral",
+      secondary: "bg-panel-alt text-black hover:bg-black/10 focus:ring-black/20",
+      outline: "border-2 border-black text-black hover:bg-black hover:text-panel focus:ring-black",
+      ghost: "text-[#4a555e] hover:bg-black/5 hover:text-black focus:ring-black/20",
+      danger: "bg-danger-600 text-white hover:bg-red-700 focus:ring-red-500",
     };
 
     const sizes = {

@@ -27,19 +27,15 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
     "";
 
   return (
-    <div className="min-h-screen bg-surface-50">
-      {/* Top Bar */}
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200">
+    <div className="min-h-screen bg-frame">
+      <header className="bg-panel border-b-[4px] border-frame">
         <div className="flex items-center justify-between h-14 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-          {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="text-body-lg font-semibold">
-              <span className="text-slate-900">Claim</span>
-              <span className="text-ink-800">Coach</span>
+            <span className="text-body-lg font-bold tracking-[-0.03em] text-black">
+              Claim Coach
             </span>
           </Link>
 
-          {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-6">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -53,30 +49,29 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "relative flex items-center gap-1.5 pb-0.5 text-body-sm transition-colors",
                     isActive
-                      ? "text-slate-900 font-medium"
-                      : "text-slate-500 hover:text-slate-700"
+                      ? "text-black font-semibold"
+                      : "text-[#4a555e] hover:text-coral"
                   )}
                 >
                   <Icon className="w-4 h-4" />
                   {item.label}
                   {isActive && (
-                    <span className="absolute -bottom-[17px] left-0 right-0 h-0.5 bg-ink-800 rounded-full" />
+                    <span className="absolute -bottom-[17px] left-0 right-0 h-[4px] bg-coral" />
                   )}
                 </Link>
               );
             })}
           </nav>
 
-          {/* User actions */}
           <div className="flex items-center gap-3">
             {displayName && (
-              <span className="hidden sm:inline text-body-sm text-slate-500 truncate max-w-[160px]">
+              <span className="hidden sm:inline text-body-sm text-[#4a555e] truncate max-w-[160px]">
                 {displayName}
               </span>
             )}
             <button
               onClick={handleLogout}
-              className="flex items-center gap-1.5 text-body-sm text-slate-500 hover:text-slate-700 transition-colors"
+              className="flex items-center gap-1.5 text-body-sm text-[#4a555e] hover:text-coral transition-colors"
             >
               <LogOut className="w-4 h-4" />
               <span className="hidden sm:inline">Log out</span>
@@ -84,8 +79,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        {/* Mobile nav */}
-        <div className="md:hidden flex gap-4 px-4 overflow-x-auto scrollbar-hide border-t border-slate-100">
+        <div className="md:hidden flex gap-4 px-4 overflow-x-auto scrollbar-hide border-t border-black/10">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive =
@@ -98,8 +92,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex items-center gap-1.5 py-2.5 text-body-sm whitespace-nowrap border-b-2 transition-colors",
                   isActive
-                    ? "text-slate-900 font-medium border-ink-800"
-                    : "text-slate-500 border-transparent hover:text-slate-700"
+                    ? "text-black font-semibold border-coral"
+                    : "text-[#4a555e] border-transparent hover:text-coral"
                 )}
               >
                 <Icon className="w-4 h-4" />
@@ -110,7 +104,6 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>

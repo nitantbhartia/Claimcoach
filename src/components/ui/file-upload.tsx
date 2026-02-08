@@ -58,10 +58,10 @@ export function FileUpload({
       <div
         {...getRootProps()}
         className={cn(
-          "border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200",
+          "border-2 border-dashed p-8 text-center cursor-pointer transition-all duration-200",
           isDragActive
-            ? "border-ink-800 bg-ink-50"
-            : "border-slate-300 hover:border-ink-600 hover:bg-slate-50"
+            ? "border-coral bg-coral/10"
+            : "border-slate-300 hover:border-black/40 hover:bg-slate-50"
         )}
       >
         <input {...getInputProps()} />
@@ -77,7 +77,7 @@ export function FileUpload({
           {files.map((file, index) => (
             <li
               key={`${file.name}-${index}`}
-              className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg"
+              className="flex items-center gap-3 p-3 bg-slate-50"
             >
               {file.type.startsWith("image/") ? (
                 <ImageIcon className="w-5 h-5 text-blue-500 flex-shrink-0" />
@@ -88,7 +88,7 @@ export function FileUpload({
               <span className="text-xs text-slate-500">{(file.size / 1024).toFixed(0)} KB</span>
               <button
                 onClick={() => removeFile(index)}
-                className="p-1 rounded hover:bg-slate-200 transition-colors"
+                className="p-1 hover:bg-slate-200 transition-colors"
               >
                 <X className="w-4 h-4 text-slate-400" />
               </button>

@@ -490,10 +490,10 @@ export default function NewClaimPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-heading-lg text-slate-900">
+          <h2 className="text-heading-lg text-black">
             What type of claim do you have?
           </h2>
-          <p className="mt-2 text-body text-slate-500">
+          <p className="mt-2 text-body text-[#4a555e]">
             Select the category that best matches your situation. We are
             currently focused on auto property damage claims.
           </p>
@@ -512,18 +512,18 @@ export default function NewClaimPage() {
                   if (type.enabled) updateField("claim_type", type.key);
                 }}
                 className={
-                  "text-left rounded-lg border p-4 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ink-800 " +
+                  "text-left border p-4 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-coral " +
                   (isSelected
-                    ? "border-slate-200 border-l-4 border-l-ink-800 bg-white shadow-card"
+                    ? "border-black/10 border-l-4 border-l-coral bg-panel"
                     : type.enabled
-                    ? "border-slate-200 bg-white hover:border-slate-300 cursor-pointer"
-                    : "border-slate-100 bg-slate-50 cursor-not-allowed")
+                    ? "border-black/10 bg-panel hover:border-black/20 cursor-pointer"
+                    : "border-black/5 bg-panel-alt cursor-not-allowed")
                 }
               >
                 <h3
                   className={
                     "text-body font-semibold " +
-                    (type.enabled ? "text-slate-900" : "text-slate-400")
+                    (type.enabled ? "text-black" : "text-[#4a555e]/60")
                   }
                 >
                   {type.title}
@@ -531,14 +531,14 @@ export default function NewClaimPage() {
                 <p
                   className={
                     "mt-1 text-body-sm " +
-                    (type.enabled ? "text-slate-500" : "text-slate-300")
+                    (type.enabled ? "text-[#4a555e]" : "text-black/20")
                   }
                 >
                   {type.description}
                 </p>
 
                 {!type.enabled && (
-                  <span className="mt-2 inline-block text-caption text-slate-400 font-medium">
+                  <span className="mt-2 inline-block text-caption text-[#4a555e]/60 font-medium">
                     Coming soon
                   </span>
                 )}
@@ -555,10 +555,10 @@ export default function NewClaimPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-heading-lg text-slate-900">
+          <h2 className="text-heading-lg text-black">
             Tell us about the accident
           </h2>
-          <p className="mt-2 text-body text-slate-500">
+          <p className="mt-2 text-body text-[#4a555e]">
             This helps us understand the context of your claim and prepare the
             best analysis.
           </p>
@@ -589,16 +589,16 @@ export default function NewClaimPage() {
           />
 
           {/* Damage photo analysis */}
-          <div className="rounded-lg border border-dashed border-slate-300 p-4 bg-slate-50">
+          <div className="border border-dashed border-black/20 p-4 bg-panel-alt">
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-lg bg-ink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <ImagePlus className="w-4.5 h-4.5 text-ink-800" />
+              <div className="w-9 h-9 bg-coral/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <ImagePlus className="w-4.5 h-4.5 text-coral" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-body-sm font-medium text-slate-900">
+                <p className="text-body-sm font-medium text-black">
                   Have photos of the damage?
                 </p>
-                <p className="text-caption text-slate-500 mt-0.5">
+                <p className="text-caption text-[#4a555e] mt-0.5">
                   Upload up to 5 photos and our AI will write the damage description for you.
                 </p>
                 <div className="mt-3">
@@ -608,7 +608,7 @@ export default function NewClaimPage() {
                         <CheckCircle2 className="w-4 h-4" />
                         Description generated from {damagePhotos.length} photo{damagePhotos.length !== 1 ? "s" : ""}
                       </div>
-                      <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-caption font-medium text-slate-500 hover:bg-slate-50 cursor-pointer transition-colors">
+                      <label className="inline-flex items-center gap-2 px-3 py-1.5 border border-black/10 bg-panel text-caption font-medium text-[#4a555e] hover:bg-panel-alt cursor-pointer transition-colors">
                         Upload different photos
                         <input
                           type="file"
@@ -625,12 +625,12 @@ export default function NewClaimPage() {
                       </label>
                     </div>
                   ) : damageAnalyzing ? (
-                    <div className="flex items-center gap-2 text-body-sm text-slate-500">
+                    <div className="flex items-center gap-2 text-body-sm text-[#4a555e]">
                       <Loader2 className="w-4 h-4 animate-spin" />
                       Analyzing damage photos...
                     </div>
                   ) : (
-                    <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-body-sm font-medium text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors">
+                    <label className="inline-flex items-center gap-2 px-3 py-1.5 border border-black/10 bg-panel text-body-sm font-medium text-[#4a555e] hover:bg-panel-alt cursor-pointer transition-colors">
                       <ImagePlus className="w-4 h-4" />
                       Upload damage photos
                       <input
@@ -657,11 +657,11 @@ export default function NewClaimPage() {
 
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <label htmlFor="damage_description" className="block text-body-sm font-medium text-slate-700">
+              <label htmlFor="damage_description" className="block text-body-sm font-medium text-[#4a555e]">
                 Describe the damage to your vehicle
               </label>
               {autoFilled.has("damage_description") && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
                   <Sparkles className="w-3 h-3" />
                   AI
                 </span>
@@ -686,26 +686,26 @@ export default function NewClaimPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-heading-lg text-slate-900">
+          <h2 className="text-heading-lg text-black">
             Insurance information
           </h2>
-          <p className="mt-2 text-body text-slate-500">
+          <p className="mt-2 text-body text-[#4a555e]">
             Let us know where you stand with your insurance company so we can
             tailor our guidance.
           </p>
         </div>
 
         {/* Insurance card scan */}
-        <div className="rounded-lg border border-dashed border-slate-300 p-4 bg-slate-50">
+        <div className="border border-dashed border-black/20 p-4 bg-panel-alt">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-lg bg-ink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Camera className="w-4.5 h-4.5 text-ink-800" />
+            <div className="w-9 h-9 bg-coral/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Camera className="w-4.5 h-4.5 text-coral" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-body-sm font-medium text-slate-900">
+              <p className="text-body-sm font-medium text-black">
                 Have your insurance card?
               </p>
-              <p className="text-caption text-slate-500 mt-0.5">
+              <p className="text-caption text-[#4a555e] mt-0.5">
                 Snap a photo and we&apos;ll auto-fill your insurer name, policy number, and vehicle details.
               </p>
               <div className="mt-3">
@@ -715,12 +715,12 @@ export default function NewClaimPage() {
                     Fields populated from your card
                   </div>
                 ) : cardScanning ? (
-                  <div className="flex items-center gap-2 text-body-sm text-slate-500">
+                  <div className="flex items-center gap-2 text-body-sm text-[#4a555e]">
                     <Loader2 className="w-4 h-4 animate-spin" />
                     Reading your insurance card...
                   </div>
                 ) : (
-                  <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-body-sm font-medium text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors">
+                  <label className="inline-flex items-center gap-2 px-3 py-1.5 border border-black/10 bg-panel text-body-sm font-medium text-[#4a555e] hover:bg-panel-alt cursor-pointer transition-colors">
                     <Camera className="w-4 h-4" />
                     Upload card photo
                     <input
@@ -747,7 +747,7 @@ export default function NewClaimPage() {
         <div className="space-y-5">
           {/* Filed with insurer? */}
           <div className="space-y-1">
-            <label className="block text-body-sm font-medium text-slate-700">
+            <label className="block text-body-sm font-medium text-[#4a555e]">
               Have you filed a claim with your insurer?
             </label>
             <div className="flex gap-3 mt-2">
@@ -755,10 +755,10 @@ export default function NewClaimPage() {
                 type="button"
                 onClick={() => updateField("filed_with_insurer", true)}
                 className={
-                  "flex-1 py-2.5 px-4 rounded-lg border text-body-sm font-medium transition-all " +
+                  "flex-1 py-2.5 px-4 border text-body-sm font-medium transition-all " +
                   (formData.filed_with_insurer
-                    ? "border-ink-800 bg-ink-50 text-ink-900"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300")
+                    ? "border-coral bg-coral/5 text-black"
+                    : "border-black/10 bg-panel text-[#4a555e] hover:border-black/20")
                 }
               >
                 Yes, I have
@@ -771,10 +771,10 @@ export default function NewClaimPage() {
                   updateField("claim_number", "");
                 }}
                 className={
-                  "flex-1 py-2.5 px-4 rounded-lg border text-body-sm font-medium transition-all " +
+                  "flex-1 py-2.5 px-4 border text-body-sm font-medium transition-all " +
                   (!formData.filed_with_insurer
-                    ? "border-ink-800 bg-ink-50 text-ink-900"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300")
+                    ? "border-coral bg-coral/5 text-black"
+                    : "border-black/10 bg-panel text-[#4a555e] hover:border-black/20")
                 }
               >
                 Not yet
@@ -784,14 +784,14 @@ export default function NewClaimPage() {
 
           {/* Conditional: insurer name + claim number */}
           {formData.filed_with_insurer && (
-            <div className="space-y-5 pl-4 border-l-2 border-slate-100">
+            <div className="space-y-5 pl-4 border-l-2 border-black/5">
               <div>
                 <div className="flex items-center gap-2 mb-1.5">
-                  <label htmlFor="insurer_name" className="block text-body-sm font-medium text-slate-700">
+                  <label htmlFor="insurer_name" className="block text-body-sm font-medium text-[#4a555e]">
                     Insurance company name
                   </label>
                   {autoFilled.has("insurer_name") && (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
                       <Sparkles className="w-3 h-3" />
                       AI
                     </span>
@@ -807,11 +807,11 @@ export default function NewClaimPage() {
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1.5">
-                  <label htmlFor="claim_number" className="block text-body-sm font-medium text-slate-700">
+                  <label htmlFor="claim_number" className="block text-body-sm font-medium text-[#4a555e]">
                     Claim number (optional)
                   </label>
                   {autoFilled.has("claim_number") && (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
                       <Sparkles className="w-3 h-3" />
                       AI
                     </span>
@@ -830,7 +830,7 @@ export default function NewClaimPage() {
 
           {/* Have you received an offer? */}
           <div className="space-y-1">
-            <label className="block text-body-sm font-medium text-slate-700">
+            <label className="block text-body-sm font-medium text-[#4a555e]">
               Have you received a settlement offer?
             </label>
             <div className="flex gap-3 mt-2">
@@ -838,10 +838,10 @@ export default function NewClaimPage() {
                 type="button"
                 onClick={() => updateField("has_offer", true)}
                 className={
-                  "flex-1 py-2.5 px-4 rounded-lg border text-body-sm font-medium transition-all " +
+                  "flex-1 py-2.5 px-4 border text-body-sm font-medium transition-all " +
                   (formData.has_offer
-                    ? "border-ink-800 bg-ink-50 text-ink-900"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300")
+                    ? "border-coral bg-coral/5 text-black"
+                    : "border-black/10 bg-panel text-[#4a555e] hover:border-black/20")
                 }
               >
                 Yes
@@ -853,10 +853,10 @@ export default function NewClaimPage() {
                   updateField("offer_amount", null);
                 }}
                 className={
-                  "flex-1 py-2.5 px-4 rounded-lg border text-body-sm font-medium transition-all " +
+                  "flex-1 py-2.5 px-4 border text-body-sm font-medium transition-all " +
                   (!formData.has_offer
-                    ? "border-ink-800 bg-ink-50 text-ink-900"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300")
+                    ? "border-coral bg-coral/5 text-black"
+                    : "border-black/10 bg-panel text-[#4a555e] hover:border-black/20")
                 }
               >
                 No
@@ -866,18 +866,18 @@ export default function NewClaimPage() {
 
           {/* Conditional: offer amount + letter scan */}
           {formData.has_offer && (
-            <div className="pl-4 border-l-2 border-slate-100 space-y-4">
+            <div className="pl-4 border-l-2 border-black/5 space-y-4">
               {/* Offer letter scan */}
-              <div className="rounded-lg border border-dashed border-slate-300 p-3 bg-slate-50">
+              <div className="border border-dashed border-black/20 p-3 bg-panel-alt">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-ink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <FileText className="w-4 h-4 text-ink-800" />
+                  <div className="w-8 h-8 bg-coral/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <FileText className="w-4 h-4 text-coral" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-body-sm font-medium text-slate-900">
+                    <p className="text-body-sm font-medium text-black">
                       Have the offer letter?
                     </p>
-                    <p className="text-caption text-slate-500 mt-0.5">
+                    <p className="text-caption text-[#4a555e] mt-0.5">
                       Upload a photo and we&apos;ll extract the amount, adjuster info, and breakdown.
                     </p>
                     <div className="mt-2">
@@ -888,19 +888,19 @@ export default function NewClaimPage() {
                             Offer details extracted
                           </div>
                           {offerDetails && offerDetails.adjuster_name ? (
-                            <p className="text-caption text-slate-500">
+                            <p className="text-caption text-[#4a555e]">
                               Adjuster: {String(offerDetails.adjuster_name)}
                               {offerDetails.adjuster_phone ? ` (${String(offerDetails.adjuster_phone)})` : ""}
                             </p>
                           ) : null}
                         </div>
                       ) : offerScanning ? (
-                        <div className="flex items-center gap-2 text-body-sm text-slate-500">
+                        <div className="flex items-center gap-2 text-body-sm text-[#4a555e]">
                           <Loader2 className="w-4 h-4 animate-spin" />
                           Reading offer letter...
                         </div>
                       ) : (
-                        <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-caption font-medium text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors">
+                        <label className="inline-flex items-center gap-2 px-3 py-1.5 border border-black/10 bg-panel text-caption font-medium text-[#4a555e] hover:bg-panel-alt cursor-pointer transition-colors">
                           <FileText className="w-3.5 h-3.5" />
                           Upload offer letter
                           <input
@@ -926,11 +926,11 @@ export default function NewClaimPage() {
 
               <div>
                 <div className="flex items-center gap-2 mb-1.5">
-                  <label htmlFor="offer_amount" className="block text-body-sm font-medium text-slate-700">
+                  <label htmlFor="offer_amount" className="block text-body-sm font-medium text-[#4a555e]">
                     Settlement offer amount
                   </label>
                   {autoFilled.has("offer_amount") && (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
                       <Sparkles className="w-3 h-3" />
                       AI
                     </span>
@@ -968,7 +968,7 @@ export default function NewClaimPage() {
             onChange={(e) => updateField("state", e.target.value)}
             placeholder="Select a state..."
           />
-          <p className="text-caption text-slate-400 -mt-4">
+          <p className="text-caption text-[#4a555e]/60 -mt-4">
             Insurance laws vary by state. This helps us tailor guidance to your specific rights.
           </p>
         </div>
@@ -981,26 +981,26 @@ export default function NewClaimPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-heading-lg text-slate-900">
+          <h2 className="text-heading-lg text-black">
             Your vehicle details
           </h2>
-          <p className="mt-2 text-body text-slate-500">
+          <p className="mt-2 text-body text-[#4a555e]">
             We need basic vehicle information to look up comparable values and
             assess the fairness of any offer.
           </p>
         </div>
 
         {/* VIN Lookup */}
-        <div className="rounded-lg border border-dashed border-slate-300 p-4 bg-slate-50">
+        <div className="border border-dashed border-black/20 p-4 bg-panel-alt">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-lg bg-ink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Search className="w-4.5 h-4.5 text-ink-800" />
+            <div className="w-9 h-9 bg-coral/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Search className="w-4.5 h-4.5 text-coral" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-body-sm font-medium text-slate-900">
+              <p className="text-body-sm font-medium text-black">
                 Know your VIN?
               </p>
-              <p className="text-caption text-slate-500 mt-0.5">
+              <p className="text-caption text-[#4a555e] mt-0.5">
                 Enter your 17-character VIN and we&apos;ll auto-fill year, make, and model.
               </p>
               <div className="mt-3 flex gap-2">
@@ -1013,13 +1013,13 @@ export default function NewClaimPage() {
                   }}
                   placeholder="e.g., 1HGCV1F34NA012345"
                   maxLength={17}
-                  className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-body-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-ink-800 focus:border-ink-800 font-mono tracking-wide"
+                  className="flex-1 border border-black/10 bg-panel px-3 py-1.5 text-body-sm text-black placeholder:text-[#4a555e]/60 focus:outline-none focus:ring-2 focus:ring-coral focus:border-coral font-mono tracking-wide"
                 />
                 <button
                   type="button"
                   onClick={handleVinLookup}
                   disabled={vinLoading || vinInput.length < 17}
-                  className="px-3 py-1.5 rounded-lg bg-ink-800 text-white text-body-sm font-medium hover:bg-ink-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
+                  className="px-3 py-1.5 bg-black text-white text-body-sm font-medium hover:bg-coral transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
                 >
                   {vinLoading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -1038,7 +1038,7 @@ export default function NewClaimPage() {
                   Found: {vinResult.year} {vinResult.make} {vinResult.model}{vinResult.trim ? ` ${vinResult.trim}` : ""}
                 </div>
               )}
-              <p className="text-caption text-slate-400 mt-2">
+              <p className="text-caption text-[#4a555e]/60 mt-2">
                 Find your VIN on your registration, insurance card, or driver-side door jamb.
               </p>
             </div>
@@ -1047,19 +1047,19 @@ export default function NewClaimPage() {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200" />
+            <div className="w-full border-t border-black/10" />
           </div>
           <div className="relative flex justify-center">
-            <span className="bg-white px-3 text-caption text-slate-400">or enter manually</span>
+            <span className="bg-panel px-3 text-caption text-[#4a555e]/60">or enter manually</span>
           </div>
         </div>
 
         <div className="space-y-5">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <label htmlFor="vehicle_year" className="block text-body-sm font-medium text-slate-700">Year</label>
+              <label htmlFor="vehicle_year" className="block text-body-sm font-medium text-[#4a555e]">Year</label>
               {autoFilled.has("vehicle_year") && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
                   <Sparkles className="w-3 h-3" />
                   AI
                 </span>
@@ -1076,9 +1076,9 @@ export default function NewClaimPage() {
           </div>
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <label htmlFor="vehicle_make" className="block text-body-sm font-medium text-slate-700">Make</label>
+              <label htmlFor="vehicle_make" className="block text-body-sm font-medium text-[#4a555e]">Make</label>
               {autoFilled.has("vehicle_make") && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
                   <Sparkles className="w-3 h-3" />
                   AI
                 </span>
@@ -1094,9 +1094,9 @@ export default function NewClaimPage() {
           </div>
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <label htmlFor="vehicle_model" className="block text-body-sm font-medium text-slate-700">Model</label>
+              <label htmlFor="vehicle_model" className="block text-body-sm font-medium text-[#4a555e]">Model</label>
               {autoFilled.has("vehicle_model") && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-ink-50 text-caption text-ink-800">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
                   <Sparkles className="w-3 h-3" />
                   AI
                 </span>
@@ -1120,10 +1120,10 @@ export default function NewClaimPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-heading-lg text-slate-900">
+          <h2 className="text-heading-lg text-black">
             Upload your insurance policy
           </h2>
-          <p className="mt-2 text-body text-slate-500">
+          <p className="mt-2 text-body text-[#4a555e]">
             If you have a copy of your insurance policy, upload it here so our
             AI can identify your coverages, limits, and any hidden benefits.
             This step is optional -- you can always add it later.
@@ -1139,11 +1139,11 @@ export default function NewClaimPage() {
           hint="PDF up to 20 MB. Your declarations page or full policy document."
         />
 
-        <div className="rounded-lg border border-slate-200 p-4">
-          <p className="text-body-sm font-medium text-slate-900">
+        <div className="border border-black/10 p-4">
+          <p className="text-body-sm font-medium text-black">
             Where do I find my policy?
           </p>
-          <ul className="mt-2 list-disc pl-4 space-y-1 text-body-sm text-slate-500">
+          <ul className="mt-2 list-disc pl-4 space-y-1 text-body-sm text-[#4a555e]">
             <li>
               Check your email for a &quot;Declarations Page&quot; or
               &quot;Policy Documents&quot; email from your insurer.
@@ -1167,10 +1167,10 @@ export default function NewClaimPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-heading-lg text-slate-900">
+          <h2 className="text-heading-lg text-black">
             Review your information
           </h2>
-          <p className="mt-2 text-body text-slate-500">
+          <p className="mt-2 text-body text-[#4a555e]">
             Please confirm everything looks correct before we create your claim.
             You can click &quot;Edit&quot; on any section to go back and make
             changes.
@@ -1288,9 +1288,9 @@ export default function NewClaimPage() {
         </div>
 
         {/* Disclaimer */}
-        <div className="rounded-lg border border-slate-200 p-4">
-          <p className="text-body-sm text-slate-500 leading-relaxed">
-            <span className="font-medium text-slate-700">Disclaimer:</span>{" "}
+        <div className="border border-black/10 p-4">
+          <p className="text-body-sm text-[#4a555e] leading-relaxed">
+            <span className="font-medium text-[#4a555e]">Disclaimer:</span>{" "}
             ClaimCoach provides informational guidance to help you understand
             your insurance claim. It is not legal advice, and we recommend
             consulting an attorney for complex disputes.
@@ -1330,32 +1330,32 @@ export default function NewClaimPage() {
   const progressPercent = ((currentStep - 1) / (TOTAL_STEPS - 1)) * 100;
 
   return (
-    <div className="min-h-screen bg-surface-50 flex flex-col">
+    <div className="min-h-screen bg-frame flex flex-col">
       {/* ------------------------------------------------------------------ */}
       {/*  Header + Progress bar                                              */}
       {/* ------------------------------------------------------------------ */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
+      <header className="bg-panel border-b border-black/10 sticky top-0 z-30">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="font-semibold text-lg">
-            <span className="text-slate-900">Claim</span>
-            <span className="text-ink-800">Coach</span>
+            <span className="text-black">Claim</span>
+            <span className="text-black">Coach</span>
           </Link>
 
-          <span className="text-caption text-slate-400">
+          <span className="text-caption text-[#4a555e]/60">
             Step {currentStep} of {TOTAL_STEPS}
             <span className="hidden sm:inline">
               {" "}&mdash;{" "}
-              <span className="text-slate-600">
+              <span className="text-[#4a555e]">
                 {STEP_LABELS[currentStep - 1]}
               </span>
             </span>
           </span>
         </div>
 
-        {/* Progress bar: h-1 with ink-800 fill */}
-        <div className="h-1 bg-slate-100">
+        {/* Progress bar: h-1 with coral fill */}
+        <div className="h-1 bg-black/10">
           <div
-            className="h-full bg-ink-800 transition-all duration-500 ease-out"
+            className="h-full bg-coral transition-all duration-500 ease-out"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -1366,7 +1366,7 @@ export default function NewClaimPage() {
       {/* ------------------------------------------------------------------ */}
       <main className="flex-1 py-8 sm:py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <Card className="shadow-card">
+          <Card>
             <CardContent className="p-6 sm:p-8">
               {renderCurrentStep()}
             </CardContent>
@@ -1377,7 +1377,7 @@ export default function NewClaimPage() {
       {/* ------------------------------------------------------------------ */}
       {/*  Navigation footer                                                   */}
       {/* ------------------------------------------------------------------ */}
-      <footer className="bg-white border-t border-slate-200 sticky bottom-0 z-30">
+      <footer className="bg-panel border-t border-black/10 sticky bottom-0 z-30">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           {/* Back button */}
           {currentStep > 1 ? (
@@ -1404,7 +1404,7 @@ export default function NewClaimPage() {
             <Button
               onClick={handleSubmit}
               loading={isSubmitting}
-              className="min-w-[180px] bg-ink-800 hover:bg-ink-800"
+              className="min-w-[180px] bg-black hover:bg-black"
             >
               {isSubmitting ? "Creating Claim..." : "Create My Claim"}
               {!isSubmitting && <ChevronRight className="w-4 h-4 ml-1" />}
@@ -1430,13 +1430,13 @@ function SummarySection({
   children: React.ReactNode;
 }) {
   return (
-    <div className="border-b border-slate-100 last:border-b-0 pb-4 last:pb-0">
+    <div className="border-b border-black/5 last:border-b-0 pb-4 last:pb-0">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-body font-semibold text-slate-900">{title}</h3>
+        <h3 className="text-body font-semibold text-black">{title}</h3>
         <button
           type="button"
           onClick={onEdit}
-          className="text-body-sm text-ink-800 hover:text-ink-800 font-medium transition-colors"
+          className="text-body-sm text-coral hover:text-coral font-medium transition-colors"
         >
           Edit
         </button>
@@ -1449,8 +1449,8 @@ function SummarySection({
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-4">
-      <dt className="text-body-sm text-slate-400 sm:w-40 shrink-0">{label}</dt>
-      <dd className="text-body-sm text-slate-900 break-words">{value}</dd>
+      <dt className="text-body-sm text-[#4a555e]/60 sm:w-40 shrink-0">{label}</dt>
+      <dd className="text-body-sm text-black break-words">{value}</dd>
     </div>
   );
 }

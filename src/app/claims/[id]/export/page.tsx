@@ -57,13 +57,13 @@ export default function ExportPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-panel">
       {/* Non-printable header */}
-      <div className="print:hidden sticky top-0 z-40 bg-white border-b border-slate-200 px-4 sm:px-6 py-3">
+      <div className="print:hidden sticky top-0 z-40 bg-panel border-b border-black/10 px-4 sm:px-6 py-3">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link
             href={`/claims/${claimId}`}
-            className="flex items-center gap-1.5 text-body-sm text-slate-500 hover:text-slate-700"
+            className="flex items-center gap-1.5 text-body-sm text-[#4a555e] hover:text-[#4a555e]"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to claim
@@ -86,10 +86,10 @@ export default function ExportPage() {
         {/* Header */}
         <div className="mb-8 print:mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-display-sm font-semibold text-slate-900">
+            <h1 className="text-display-sm font-semibold text-black">
               ClaimCoach Analysis Report
             </h1>
-            <span className="text-body-sm text-slate-400 print:text-slate-600">
+            <span className="text-body-sm text-[#4a555e]/60 print:text-[#4a555e]">
               {new Date().toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
@@ -97,23 +97,23 @@ export default function ExportPage() {
               })}
             </span>
           </div>
-          <div className="border-b-2 border-ink-800 pb-4">
+          <div className="border-b-2 border-frame pb-4">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-body-sm">
               <div>
-                <p className="text-slate-500">Vehicle</p>
-                <p className="font-medium text-slate-900">{data.vehicle}</p>
+                <p className="text-[#4a555e]">Vehicle</p>
+                <p className="font-medium text-black">{data.vehicle}</p>
               </div>
               <div>
-                <p className="text-slate-500">Insurer</p>
-                <p className="font-medium text-slate-900">{data.insurer}</p>
+                <p className="text-[#4a555e]">Insurer</p>
+                <p className="font-medium text-black">{data.insurer}</p>
               </div>
               <div>
-                <p className="text-slate-500">Claim #</p>
-                <p className="font-medium text-slate-900">{data.claimNumber}</p>
+                <p className="text-[#4a555e]">Claim #</p>
+                <p className="font-medium text-black">{data.claimNumber}</p>
               </div>
               <div>
-                <p className="text-slate-500">Date of Loss</p>
-                <p className="font-medium text-slate-900">{data.accidentDate}</p>
+                <p className="text-[#4a555e]">Date of Loss</p>
+                <p className="font-medium text-black">{data.accidentDate}</p>
               </div>
             </div>
           </div>
@@ -121,67 +121,67 @@ export default function ExportPage() {
 
         {/* Fairness Score Summary */}
         <section className="mb-8 print:mb-6">
-          <h2 className="text-heading font-semibold text-slate-900 mb-4 border-b border-slate-200 pb-2">
+          <h2 className="text-heading font-semibold text-black mb-4 border-b border-black/10 pb-2">
             Fairness Assessment
           </h2>
           <div className="grid grid-cols-3 gap-6 mb-4">
-            <div className="text-center p-4 bg-slate-50 rounded-lg print:bg-white print:border print:border-slate-200">
-              <p className="text-caption text-slate-500 mb-1">Their Offer</p>
-              <p className="text-heading-lg font-semibold text-slate-900 font-mono">
+            <div className="text-center p-4 bg-panel-alt print:bg-white print:border print:border-black/10">
+              <p className="text-caption text-[#4a555e] mb-1">Their Offer</p>
+              <p className="text-heading-lg font-semibold text-black font-mono">
                 {formatCurrency(data.offerAmount)}
               </p>
             </div>
-            <div className="text-center p-4 bg-slate-50 rounded-lg print:bg-white print:border print:border-slate-200">
-              <p className="text-caption text-slate-500 mb-1">Fair Value</p>
-              <p className="text-heading-lg font-semibold text-slate-900 font-mono">
+            <div className="text-center p-4 bg-panel-alt print:bg-white print:border print:border-black/10">
+              <p className="text-caption text-[#4a555e] mb-1">Fair Value</p>
+              <p className="text-heading-lg font-semibold text-black font-mono">
                 {formatCurrency(data.fairValue)}
               </p>
             </div>
-            <div className="text-center p-4 bg-danger-50 rounded-lg print:bg-white print:border print:border-slate-200">
-              <p className="text-caption text-slate-500 mb-1">Gap</p>
+            <div className="text-center p-4 bg-danger-50 print:bg-white print:border print:border-black/10">
+              <p className="text-caption text-[#4a555e] mb-1">Gap</p>
               <p className="text-heading-lg font-semibold text-danger-600 font-mono">
                 {formatCurrency(data.gap)}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-full bg-slate-200 rounded-full h-3 print:border print:border-slate-300">
+            <div className="w-full bg-black/10 rounded-full h-3 print:border print:border-black/20">
               <div
                 className="h-3 rounded-full bg-danger-500"
                 style={{ width: `${data.fairnessScore}%` }}
               />
             </div>
-            <span className="text-body-sm font-semibold text-slate-900 flex-shrink-0">
+            <span className="text-body-sm font-semibold text-black flex-shrink-0">
               {data.fairnessScore}/100
             </span>
           </div>
-          <p className="text-body-sm text-slate-600 leading-relaxed">
+          <p className="text-body-sm text-[#4a555e] leading-relaxed">
             {data.recommendation}
           </p>
         </section>
 
         {/* Line Item Breakdown */}
         <section className="mb-8 print:mb-6">
-          <h2 className="text-heading font-semibold text-slate-900 mb-4 border-b border-slate-200 pb-2">
+          <h2 className="text-heading font-semibold text-black mb-4 border-b border-black/10 pb-2">
             Line-Item Breakdown
           </h2>
           <table className="w-full text-body-sm">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th className="text-left py-2 font-medium text-slate-500">Category</th>
-                <th className="text-right py-2 font-medium text-slate-500">Their Amount</th>
-                <th className="text-right py-2 font-medium text-slate-500">Fair Amount</th>
-                <th className="text-right py-2 font-medium text-slate-500">Difference</th>
+              <tr className="border-b border-black/10">
+                <th className="text-left py-2 font-medium text-[#4a555e]">Category</th>
+                <th className="text-right py-2 font-medium text-[#4a555e]">Their Amount</th>
+                <th className="text-right py-2 font-medium text-[#4a555e]">Fair Amount</th>
+                <th className="text-right py-2 font-medium text-[#4a555e]">Difference</th>
               </tr>
             </thead>
             <tbody>
               {data.lineItems.map((item, i) => (
-                <tr key={i} className="border-b border-slate-100">
-                  <td className="py-2.5 text-slate-900">{item.category}</td>
-                  <td className="py-2.5 text-right font-mono text-slate-900">
+                <tr key={i} className="border-b border-black/5">
+                  <td className="py-2.5 text-black">{item.category}</td>
+                  <td className="py-2.5 text-right font-mono text-black">
                     {item.insurer === 0 ? "$0" : formatCurrency(item.insurer)}
                   </td>
-                  <td className="py-2.5 text-right font-mono text-slate-900">
+                  <td className="py-2.5 text-right font-mono text-black">
                     {formatCurrency(item.fair)}
                   </td>
                   <td className="py-2.5 text-right font-mono text-danger-600">
@@ -191,12 +191,12 @@ export default function ExportPage() {
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t-2 border-slate-300 font-semibold">
-                <td className="py-2.5 text-slate-900">Total</td>
-                <td className="py-2.5 text-right font-mono text-slate-900">
+              <tr className="border-t-2 border-black/20 font-semibold">
+                <td className="py-2.5 text-black">Total</td>
+                <td className="py-2.5 text-right font-mono text-black">
                   {formatCurrency(data.offerAmount)}
                 </td>
-                <td className="py-2.5 text-right font-mono text-slate-900">
+                <td className="py-2.5 text-right font-mono text-black">
                   {formatCurrency(data.fairValue)}
                 </td>
                 <td className="py-2.5 text-right font-mono text-danger-600">
@@ -209,14 +209,14 @@ export default function ExportPage() {
 
         {/* Coverage Summary */}
         <section className="mb-8 print:mb-6">
-          <h2 className="text-heading font-semibold text-slate-900 mb-4 border-b border-slate-200 pb-2">
+          <h2 className="text-heading font-semibold text-black mb-4 border-b border-black/10 pb-2">
             Policy Coverage Summary
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2">
             {data.coverages.map((cov, i) => (
-              <div key={i} className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-body-sm text-slate-700">{cov.name}</span>
-                <span className="text-body-sm font-medium text-slate-900">{cov.limit}</span>
+              <div key={i} className="flex justify-between py-1.5 border-b border-black/5">
+                <span className="text-body-sm text-[#4a555e]">{cov.name}</span>
+                <span className="text-body-sm font-medium text-black">{cov.limit}</span>
               </div>
             ))}
           </div>
@@ -224,26 +224,26 @@ export default function ExportPage() {
 
         {/* Hidden Coverages */}
         <section className="mb-8 print:mb-6">
-          <h2 className="text-heading font-semibold text-slate-900 mb-4 border-b border-slate-200 pb-2">
+          <h2 className="text-heading font-semibold text-black mb-4 border-b border-black/10 pb-2">
             Coverages You May Be Missing
           </h2>
           <div className="space-y-2">
             {data.hiddenCoverages.map((cov, i) => (
-              <div key={i} className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-body-sm text-slate-700">{cov.name}</span>
-                <span className="text-body-sm font-medium text-ink-800">{cov.value}</span>
+              <div key={i} className="flex justify-between py-1.5 border-b border-black/5">
+                <span className="text-body-sm text-[#4a555e]">{cov.name}</span>
+                <span className="text-body-sm font-medium text-coral">{cov.value}</span>
               </div>
             ))}
           </div>
         </section>
 
         {/* Footer */}
-        <div className="border-t border-slate-200 pt-4 mt-8">
+        <div className="border-t border-black/10 pt-4 mt-8">
           <div className="flex items-center justify-between">
-            <p className="text-caption text-slate-400">
+            <p className="text-caption text-[#4a555e]/60">
               Generated by ClaimCoach &mdash; claimcoach.app
             </p>
-            <p className="text-caption text-slate-400">
+            <p className="text-caption text-[#4a555e]/60">
               For educational purposes only. Not legal advice.
             </p>
           </div>

@@ -191,16 +191,16 @@ export default function CallScriptPage() {
     <ClaimLayout claimId={claimId}>
       <div className="space-y-6">
         {/* Header */}
-        <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
+        <div className="bg-panel border border-black/10 p-6">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-ink-100 flex items-center justify-center flex-shrink-0">
-              <Phone className="w-5 h-5 text-ink-800" />
+            <div className="w-10 h-10 bg-coral/10 flex items-center justify-center flex-shrink-0">
+              <Phone className="w-5 h-5 text-coral" />
             </div>
             <div>
-              <h1 className="text-heading-lg sm:text-display-sm font-semibold text-slate-900">
+              <h1 className="text-heading-lg sm:text-display-sm font-semibold text-black">
                 Call Script
               </h1>
-              <p className="text-body text-slate-500 mt-1">
+              <p className="text-body text-[#4a555e] mt-1">
                 A step-by-step phone script with exact talking points, objection
                 handlers, and behavioral tips for your adjuster call.
               </p>
@@ -210,12 +210,12 @@ export default function CallScriptPage() {
 
         {/* Generate button */}
         {!script && !isGenerating && (
-          <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
+          <div className="bg-panel border border-black/10 p-6">
             <Button size="lg" onClick={handleGenerate}>
               <Phone className="w-4 h-4 mr-2" />
               Generate Call Script
             </Button>
-            <p className="text-body-sm text-slate-500 mt-2">
+            <p className="text-body-sm text-[#4a555e] mt-2">
               Based on your offer analysis and counter-offer data.
             </p>
           </div>
@@ -223,10 +223,10 @@ export default function CallScriptPage() {
 
         {/* Loading */}
         {isGenerating && (
-          <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
+          <div className="bg-panel border border-black/10 p-6">
             <div className="flex items-center gap-3">
-              <Loader2 className="w-5 h-5 text-ink-800 animate-spin" />
-              <p className="text-body text-slate-600">
+              <Loader2 className="w-5 h-5 text-coral animate-spin" />
+              <p className="text-body text-[#4a555e]">
                 {GENERATION_STEPS[generationStep]}
               </p>
             </div>
@@ -234,7 +234,7 @@ export default function CallScriptPage() {
         )}
 
         {error && !isGenerating && (
-          <div className="bg-white rounded-lg border border-slate-200 shadow-card p-4">
+          <div className="bg-panel border border-black/10 p-4">
             <p className="text-body-sm text-warning-500">{error}</p>
           </div>
         )}
@@ -246,7 +246,7 @@ export default function CallScriptPage() {
             <div className="flex justify-end">
               <button
                 onClick={handleCopyAll}
-                className="inline-flex items-center gap-1.5 text-body-sm font-medium text-ink-800 hover:text-ink-800"
+                className="inline-flex items-center gap-1.5 text-body-sm font-medium text-coral hover:text-coral"
               >
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 {copied ? "Copied" : "Copy full script"}
@@ -254,28 +254,28 @@ export default function CallScriptPage() {
             </div>
 
             {/* Opening */}
-            <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5 sm:p-6">
+            <div className="bg-panel border border-black/10 p-5 sm:p-6">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-caption font-semibold uppercase tracking-wider text-ink-800">
+                <span className="text-caption font-semibold uppercase tracking-wider text-coral">
                   Opening
                 </span>
               </div>
-              <p className="text-body text-slate-700 leading-relaxed italic">
+              <p className="text-body text-[#4a555e] leading-relaxed italic">
                 &ldquo;{script.opening}&rdquo;
               </p>
             </div>
 
             {/* Key Points */}
-            <div className="bg-white rounded-lg border border-slate-200 shadow-card">
-              <div className="px-5 sm:px-6 py-4 border-b border-slate-100">
-                <h2 className="text-heading font-semibold text-slate-900">
+            <div className="bg-panel border border-black/10">
+              <div className="px-5 sm:px-6 py-4 border-b border-black/5">
+                <h2 className="text-heading font-semibold text-black">
                   Key Negotiation Points
                 </h2>
-                <p className="text-body-sm text-slate-500 mt-0.5">
+                <p className="text-body-sm text-[#4a555e] mt-0.5">
                   Tap each point to see objection handlers
                 </p>
               </div>
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-black/5">
                 {script.key_points.map((point, i) => {
                   const expanded = expandedPoints.has(i);
                   return (
@@ -283,52 +283,52 @@ export default function CallScriptPage() {
                       <button
                         type="button"
                         onClick={() => togglePoint(i)}
-                        className="w-full px-5 sm:px-6 py-4 flex items-start justify-between gap-3 text-left hover:bg-slate-50 transition-colors"
+                        className="w-full px-5 sm:px-6 py-4 flex items-start justify-between gap-3 text-left hover:bg-panel-alt transition-colors"
                       >
                         <div className="flex items-start gap-3">
-                          <span className="text-body-sm font-semibold text-ink-800 flex-shrink-0 mt-0.5">
+                          <span className="text-body-sm font-semibold text-coral flex-shrink-0 mt-0.5">
                             {i + 1}.
                           </span>
                           <div>
-                            <p className="text-body font-medium text-slate-900">
+                            <p className="text-body font-medium text-black">
                               {point.topic}
                             </p>
                             {!expanded && (
-                              <p className="text-body-sm text-slate-500 mt-1 line-clamp-2">
+                              <p className="text-body-sm text-[#4a555e] mt-1 line-clamp-2">
                                 {point.what_to_say}
                               </p>
                             )}
                           </div>
                         </div>
                         {expanded ? (
-                          <ChevronUp className="w-4 h-4 text-slate-400 flex-shrink-0 mt-1" />
+                          <ChevronUp className="w-4 h-4 text-[#4a555e]/60 flex-shrink-0 mt-1" />
                         ) : (
-                          <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0 mt-1" />
+                          <ChevronDown className="w-4 h-4 text-[#4a555e]/60 flex-shrink-0 mt-1" />
                         )}
                       </button>
                       {expanded && (
                         <div className="px-5 sm:px-6 pb-5 space-y-4 ml-8">
                           <div>
-                            <p className="text-caption font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                            <p className="text-caption font-semibold uppercase tracking-wider text-[#4a555e]/60 mb-1.5">
                               What to say
                             </p>
-                            <p className="text-body-sm text-slate-700 leading-relaxed">
+                            <p className="text-body-sm text-[#4a555e] leading-relaxed">
                               {point.what_to_say}
                             </p>
                           </div>
-                          <div className="bg-amber-50 border border-amber-100 rounded-lg p-3">
-                            <p className="text-caption font-semibold uppercase tracking-wider text-amber-600 mb-1.5">
+                          <div className="bg-coral/5 border border-coral/20 p-3">
+                            <p className="text-caption font-semibold uppercase tracking-wider text-coral mb-1.5">
                               If they say...
                             </p>
-                            <p className="text-body-sm text-amber-800 leading-relaxed italic">
+                            <p className="text-body-sm text-black leading-relaxed italic">
                               &ldquo;{point.if_they_say}&rdquo;
                             </p>
                           </div>
-                          <div className="bg-ink-50 border border-ink-100 rounded-lg p-3">
-                            <p className="text-caption font-semibold uppercase tracking-wider text-ink-800 mb-1.5">
+                          <div className="bg-ice-50 border border-ice-200 p-3">
+                            <p className="text-caption font-semibold uppercase tracking-wider text-coral mb-1.5">
                               Your response
                             </p>
-                            <p className="text-body-sm text-ink-900 leading-relaxed">
+                            <p className="text-body-sm text-black leading-relaxed">
                               {point.your_response}
                             </p>
                           </div>
@@ -341,27 +341,27 @@ export default function CallScriptPage() {
             </div>
 
             {/* Closing */}
-            <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5 sm:p-6">
+            <div className="bg-panel border border-black/10 p-5 sm:p-6">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-caption font-semibold uppercase tracking-wider text-ink-800">
+                <span className="text-caption font-semibold uppercase tracking-wider text-coral">
                   Closing
                 </span>
               </div>
-              <p className="text-body text-slate-700 leading-relaxed italic">
+              <p className="text-body text-[#4a555e] leading-relaxed italic">
                 &ldquo;{script.closing}&rdquo;
               </p>
             </div>
 
             {/* Dos and Don'ts */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5 sm:p-6">
+              <div className="bg-panel border border-black/10 p-5 sm:p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <ThumbsUp className="w-4 h-4 text-success-600" />
-                  <h3 className="text-heading font-semibold text-slate-900">Do</h3>
+                  <h3 className="text-heading font-semibold text-black">Do</h3>
                 </div>
                 <ul className="space-y-2.5">
                   {script.dos.map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-body-sm text-slate-700">
+                    <li key={i} className="flex items-start gap-2 text-body-sm text-[#4a555e]">
                       <span className="text-success-500 mt-0.5 flex-shrink-0">&bull;</span>
                       {item}
                     </li>
@@ -369,14 +369,14 @@ export default function CallScriptPage() {
                 </ul>
               </div>
 
-              <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5 sm:p-6">
+              <div className="bg-panel border border-black/10 p-5 sm:p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <ThumbsDown className="w-4 h-4 text-danger-600" />
-                  <h3 className="text-heading font-semibold text-slate-900">Don&apos;t</h3>
+                  <h3 className="text-heading font-semibold text-black">Don&apos;t</h3>
                 </div>
                 <ul className="space-y-2.5">
                   {script.donts.map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-body-sm text-slate-700">
+                    <li key={i} className="flex items-start gap-2 text-body-sm text-[#4a555e]">
                       <span className="text-danger-500 mt-0.5 flex-shrink-0">&bull;</span>
                       {item}
                     </li>
@@ -386,28 +386,28 @@ export default function CallScriptPage() {
             </div>
 
             {/* Next steps */}
-            <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5">
-              <p className="text-body-sm font-medium text-slate-500 mb-3">What&apos;s next?</p>
+            <div className="bg-panel border border-black/10 p-5">
+              <p className="text-body-sm font-medium text-[#4a555e] mb-3">What&apos;s next?</p>
               <div className="space-y-2">
                 <Link
                   href={`/claims/${claimId}/counter`}
-                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
+                  className="flex items-center justify-between text-body-sm text-black hover:text-coral transition-colors"
                 >
                   Send a formal counter-offer with your demand letter
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[#4a555e]/60 flex-shrink-0" />
                 </Link>
                 <Link
                   href={`/claims/${claimId}/export`}
-                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
+                  className="flex items-center justify-between text-body-sm text-black hover:text-coral transition-colors"
                 >
                   Export your full analysis report as PDF
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[#4a555e]/60 flex-shrink-0" />
                 </Link>
               </div>
             </div>
 
             {/* Disclaimer */}
-            <p className="text-caption text-slate-400 leading-relaxed">
+            <p className="text-caption text-[#4a555e]/60 leading-relaxed">
               This call script is for educational purposes and does not
               constitute legal advice. Adjust the script to match your specific
               situation and communication style. If the negotiation becomes

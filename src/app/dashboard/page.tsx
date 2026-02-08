@@ -38,7 +38,7 @@ const mockClaims = [
 const statusDot: Record<ClaimStatus, string> = {
   setup: "bg-slate-400",
   documenting: "bg-blue-500",
-  policy_review: "bg-ink-800",
+  policy_review: "bg-black",
   filed: "bg-yellow-500",
   offer_received: "bg-orange-500",
   negotiating: "bg-red-500",
@@ -72,7 +72,7 @@ export default function DashboardPage() {
     <DashboardShell>
       {/* Header */}
       <div className="flex items-center justify-between mb-6 sm:mb-8">
-        <h1 className="text-heading-lg sm:text-display-sm text-slate-900">Your claims</h1>
+        <h1 className="text-heading-lg sm:text-display-sm text-black">Your claims</h1>
         <Link href="/claims/new">
           <Button size="sm" className="gap-1.5">
             <Plus className="w-4 h-4" />
@@ -83,19 +83,19 @@ export default function DashboardPage() {
 
       {/* Claims list */}
       {mockClaims.length > 0 ? (
-        <div className="border border-slate-200 rounded-lg shadow-card overflow-hidden mb-10">
+        <div className="border border-black/10 overflow-hidden mb-10">
           {mockClaims.map((claim, idx) => (
             <Link
               key={claim.id}
               href={`/claims/${claim.id}`}
               className={
-                "group flex items-center gap-4 px-4 py-4 sm:px-6 hover:bg-slate-50 transition-colors" +
-                (idx < mockClaims.length - 1 ? " border-b border-slate-100" : "")
+                "group flex items-center gap-4 px-4 py-4 sm:px-6 hover:bg-panel-alt transition-colors" +
+                (idx < mockClaims.length - 1 ? " border-b border-black/10" : "")
               }
             >
               {/* Vehicle + type */}
               <div className="flex-1 min-w-0">
-                <p className="text-body font-medium text-slate-900 truncate">
+                <p className="text-body font-medium text-black truncate">
                   {claim.vehicle}
                 </p>
                 <div className="flex items-center gap-1.5 sm:hidden mt-0.5">
@@ -103,19 +103,19 @@ export default function DashboardPage() {
                     className={`inline-block w-1.5 h-1.5 rounded-full ${statusDot[claim.status]}`}
                     aria-hidden="true"
                   />
-                  <span className="text-caption text-slate-500 truncate">
+                  <span className="text-caption text-[#4a555e] truncate">
                     {statusLabel[claim.status]} &middot; {claim.insurer}
                   </span>
                 </div>
               </div>
 
               {/* Insurer -- hidden on mobile, shown inline above */}
-              <span className="hidden sm:block text-body-sm text-slate-500 w-28 shrink-0">
+              <span className="hidden sm:block text-body-sm text-[#4a555e] w-28 shrink-0">
                 {claim.insurer}
               </span>
 
               {/* Status */}
-              <span className="hidden sm:flex items-center gap-1.5 text-body-sm text-slate-600 w-36 shrink-0">
+              <span className="hidden sm:flex items-center gap-1.5 text-body-sm text-[#4a555e] w-36 shrink-0">
                 <span
                   className={`inline-block w-1.5 h-1.5 rounded-full ${statusDot[claim.status]}`}
                   aria-hidden="true"
@@ -124,7 +124,7 @@ export default function DashboardPage() {
               </span>
 
               {/* Date */}
-              <span className="hidden md:block text-body-sm text-slate-400 w-24 shrink-0">
+              <span className="hidden md:block text-body-sm text-[#4a555e] w-24 shrink-0">
                 {new Date(claim.date).toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
@@ -132,19 +132,19 @@ export default function DashboardPage() {
               </span>
 
               {/* Offer */}
-              <span className="text-body-sm font-medium text-slate-900 w-20 shrink-0 text-right">
+              <span className="text-body-sm font-medium text-black w-20 shrink-0 text-right">
                 {claim.offer !== null ? formatCurrency(claim.offer) : "\u2014"}
               </span>
 
               {/* Arrow */}
-              <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-slate-500 transition-colors shrink-0" />
+              <ArrowRight className="w-4 h-4 text-[#4a555e] group-hover:text-black transition-colors shrink-0" />
             </Link>
           ))}
         </div>
       ) : (
-        <div className="border border-slate-200 rounded-lg shadow-card p-12 text-center mb-10">
-          <p className="text-heading text-slate-900 mb-2">No claims yet</p>
-          <p className="text-body-sm text-slate-500 mb-6 max-w-md mx-auto">
+        <div className="border border-black/10 p-12 text-center mb-10">
+          <p className="text-heading text-black mb-2">No claims yet</p>
+          <p className="text-body-sm text-[#4a555e] mb-6 max-w-md mx-auto">
             Start your first claim and our AI will analyze your insurance policy,
             evaluate offers, and help you negotiate a fair settlement.
           </p>
@@ -164,7 +164,7 @@ export default function DashboardPage() {
             <Link
               key={action.href}
               href={action.href}
-              className="text-body-sm text-slate-500 hover:text-slate-900 transition-colors py-1"
+              className="text-body-sm text-[#4a555e] hover:text-black transition-colors py-1"
             >
               {action.label} &rarr;
             </Link>

@@ -266,33 +266,33 @@ export default function CounterOfferPage() {
         {/* ----------------------------------------------------------------- */}
         {/* 1. Summary Bar                                                     */}
         {/* ----------------------------------------------------------------- */}
-        <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
-          <h1 className="text-heading-lg sm:text-display-sm font-semibold text-slate-900 mb-4 sm:mb-6">
+        <div className="bg-panel border border-black/10 p-6">
+          <h1 className="text-heading-lg sm:text-display-sm font-semibold text-black mb-4 sm:mb-6">
             Counter-Offer
           </h1>
 
           <div className="flex flex-col sm:flex-row items-center gap-4">
             {/* Their offer */}
             <div className="text-center">
-              <p className="text-caption text-slate-400 mb-1">Their Offer</p>
-              <p className="text-heading-lg font-semibold text-slate-900 font-mono">
+              <p className="text-caption text-[#4a555e]/60 mb-1">Their Offer</p>
+              <p className="text-heading-lg font-semibold text-black font-mono">
                 {formatCurrency(theirOffer)}
               </p>
             </div>
 
-            <ArrowRight className="w-5 h-5 text-slate-300 flex-shrink-0 hidden sm:block" />
+            <ArrowRight className="w-5 h-5 text-black/20 flex-shrink-0 hidden sm:block" />
 
             {/* Your demand */}
             <div className="text-center">
-              <p className="text-caption text-slate-400 mb-1">Your Demand</p>
-              <p className="text-heading-lg font-semibold text-slate-900 font-mono">
+              <p className="text-caption text-[#4a555e]/60 mb-1">Your Demand</p>
+              <p className="text-heading-lg font-semibold text-black font-mono">
                 {formatCurrency(demand)}
               </p>
             </div>
 
             {/* Gap */}
             <div className="sm:ml-auto text-center sm:text-right">
-              <p className="text-caption text-slate-400 mb-1">Gap</p>
+              <p className="text-caption text-[#4a555e]/60 mb-1">Gap</p>
               <p className="text-heading-lg font-semibold text-danger-600 font-mono">
                 {formatCurrency(gap)}
               </p>
@@ -304,11 +304,11 @@ export default function CounterOfferPage() {
         {/* 2. Generate Button / Loading                                       */}
         {/* ----------------------------------------------------------------- */}
         {!counterOffer && !isGenerating && (
-          <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
+          <div className="bg-panel border border-black/10 p-6">
             <Button size="lg" onClick={handleGenerate}>
               Generate Counter-Offer
             </Button>
-            <p className="text-body-sm text-slate-500 mt-2">
+            <p className="text-body-sm text-[#4a555e] mt-2">
               This will generate a demand letter, talking points, and escalation
               plan tailored to your claim.
             </p>
@@ -316,10 +316,10 @@ export default function CounterOfferPage() {
         )}
 
         {isGenerating && (
-          <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
+          <div className="bg-panel border border-black/10 p-6">
             <div className="flex items-center gap-3">
-              <Loader2 className="w-5 h-5 text-ink-800 animate-spin" />
-              <p className="text-body text-slate-600">
+              <Loader2 className="w-5 h-5 text-coral animate-spin" />
+              <p className="text-body text-[#4a555e]">
                 {GENERATION_STEPS[generationStep]}
               </p>
             </div>
@@ -327,7 +327,7 @@ export default function CounterOfferPage() {
         )}
 
         {error && !isGenerating && (
-          <div className="bg-white rounded-lg border border-slate-200 shadow-card p-4">
+          <div className="bg-panel border border-black/10 p-4">
             <p className="text-body-sm text-warning-500">{error}</p>
           </div>
         )}
@@ -340,16 +340,16 @@ export default function CounterOfferPage() {
             {/* -------------------------------------------------------------- */}
             {/* 3. Demand Letter                                                */}
             {/* -------------------------------------------------------------- */}
-            <div className="bg-white rounded-lg border border-slate-200 shadow-card">
-              <div className="px-6 py-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <h2 className="text-heading font-semibold text-slate-900">
+            <div className="bg-panel border border-black/10">
+              <div className="px-6 py-4 border-b border-black/5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <h2 className="text-heading font-semibold text-black">
                   Demand Letter
                 </h2>
                 <div className="flex items-center gap-3">
                   <button
                     type="button"
                     onClick={handleCopy}
-                    className="inline-flex items-center gap-1.5 text-body-sm font-medium text-ink-800 hover:text-ink-800"
+                    className="inline-flex items-center gap-1.5 text-body-sm font-medium text-coral hover:text-coral"
                   >
                     {copied ? (
                       <>
@@ -366,7 +366,7 @@ export default function CounterOfferPage() {
                   <button
                     type="button"
                     onClick={handleDownload}
-                    className="inline-flex items-center gap-1.5 text-body-sm font-medium text-ink-800 hover:text-ink-800"
+                    className="inline-flex items-center gap-1.5 text-body-sm font-medium text-coral hover:text-coral"
                   >
                     <Download className="w-4 h-4" />
                     Download
@@ -374,12 +374,12 @@ export default function CounterOfferPage() {
                 </div>
               </div>
               <div className="p-4 sm:p-6">
-                <pre className="whitespace-pre-wrap break-words font-mono text-caption sm:text-body-sm text-slate-700 leading-relaxed overflow-x-auto">
+                <pre className="whitespace-pre-wrap break-words font-mono text-caption sm:text-body-sm text-black/80 leading-relaxed overflow-x-auto">
                   {counterOffer.demand_letter}
                 </pre>
               </div>
               <div className="px-6 pb-4">
-                <p className="text-caption text-slate-400">
+                <p className="text-caption text-[#4a555e]/60">
                   Replace [Your Name], [Your Address], [Your Phone Number], and
                   [Your Email] with your actual contact information before
                   sending.
@@ -390,23 +390,23 @@ export default function CounterOfferPage() {
             {/* -------------------------------------------------------------- */}
             {/* 4. Talking Points                                               */}
             {/* -------------------------------------------------------------- */}
-            <div className="bg-white rounded-lg border border-slate-200 shadow-card">
-              <div className="px-6 py-4 border-b border-slate-100">
-                <h2 className="text-heading font-semibold text-slate-900">
+            <div className="bg-panel border border-black/10">
+              <div className="px-6 py-4 border-b border-black/5">
+                <h2 className="text-heading font-semibold text-black">
                   Talking Points
                 </h2>
-                <p className="text-body-sm text-slate-500 mt-1">
+                <p className="text-body-sm text-[#4a555e] mt-1">
                   {counterOffer.talking_points.length} points for your call with
                   the adjuster
                 </p>
               </div>
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-black/5">
                 {counterOffer.talking_points.map((point, index) => (
                   <div key={index} className="px-6 py-4 flex gap-4">
-                    <span className="flex-shrink-0 text-body-sm font-semibold text-slate-400 w-6 text-right">
+                    <span className="flex-shrink-0 text-body-sm font-semibold text-[#4a555e]/60 w-6 text-right">
                       {index + 1}.
                     </span>
-                    <p className="text-body-sm text-slate-700 leading-relaxed">
+                    <p className="text-body-sm text-black/80 leading-relaxed">
                       {point}
                     </p>
                   </div>
@@ -417,20 +417,20 @@ export default function CounterOfferPage() {
             {/* -------------------------------------------------------------- */}
             {/* 5. Evidence                                                     */}
             {/* -------------------------------------------------------------- */}
-            <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
-              <h2 className="text-heading font-semibold text-slate-900 mb-3">
+            <div className="bg-panel border border-black/10 p-6">
+              <h2 className="text-heading font-semibold text-black mb-3">
                 Evidence
               </h2>
-              <p className="text-body text-slate-600 leading-relaxed mb-4">
+              <p className="text-body text-[#4a555e] leading-relaxed mb-4">
                 {counterOffer.evidence_summary}
               </p>
               <ul className="space-y-2">
                 {EVIDENCE_ITEMS.map((item, index) => (
                   <li
                     key={index}
-                    className="text-body-sm text-slate-700 flex items-baseline gap-2"
+                    className="text-body-sm text-black/80 flex items-baseline gap-2"
                   >
-                    <span className="text-slate-300">&bull;</span>
+                    <span className="text-black/20">&bull;</span>
                     {item}
                   </li>
                 ))}
@@ -440,13 +440,13 @@ export default function CounterOfferPage() {
             {/* -------------------------------------------------------------- */}
             {/* 6. Escalation Roadmap                                           */}
             {/* -------------------------------------------------------------- */}
-            <div className="bg-white rounded-lg border border-slate-200 shadow-card">
-              <div className="px-6 py-4 border-b border-slate-100">
-                <h2 className="text-heading font-semibold text-slate-900">
+            <div className="bg-panel border border-black/10">
+              <div className="px-6 py-4 border-b border-black/5">
+                <h2 className="text-heading font-semibold text-black">
                   If Negotiation Fails
                 </h2>
               </div>
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-black/5">
                 {counterOffer.escalation_steps.map((step, index) => {
                   const isExpanded = expandedSteps.has(index);
                   return (
@@ -454,29 +454,29 @@ export default function CounterOfferPage() {
                       <button
                         type="button"
                         onClick={() => toggleStep(index)}
-                        className="w-full px-6 py-4 flex items-center justify-between gap-3 text-left hover:bg-slate-50"
+                        className="w-full px-6 py-4 flex items-center justify-between gap-3 text-left hover:bg-panel-alt"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-body-sm font-semibold text-slate-400">
+                          <span className="text-body-sm font-semibold text-[#4a555e]/60">
                             Step {step.step}
                           </span>
-                          <span className="text-body-sm font-medium text-slate-900">
+                          <span className="text-body-sm font-medium text-black">
                             {step.action}
                           </span>
                         </div>
                         {isExpanded ? (
-                          <ChevronUp className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                          <ChevronUp className="w-4 h-4 text-[#4a555e]/60 flex-shrink-0" />
                         ) : (
-                          <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                          <ChevronDown className="w-4 h-4 text-[#4a555e]/60 flex-shrink-0" />
                         )}
                       </button>
                       {isExpanded && (
                         <div className="px-6 pb-4 space-y-3">
-                          <p className="text-body-sm text-slate-600 leading-relaxed">
+                          <p className="text-body-sm text-[#4a555e] leading-relaxed">
                             {step.description}
                           </p>
                           {step.template && (
-                            <pre className="whitespace-pre-wrap break-words text-caption sm:text-body-sm text-slate-500 font-mono leading-relaxed bg-slate-50 rounded-lg border border-slate-100 p-3 sm:p-4 overflow-x-auto">
+                            <pre className="whitespace-pre-wrap break-words text-caption sm:text-body-sm text-[#4a555e] font-mono leading-relaxed bg-panel-alt border border-black/5 p-3 sm:p-4 overflow-x-auto">
                               {step.template}
                             </pre>
                           )}
@@ -491,28 +491,28 @@ export default function CounterOfferPage() {
             {/* -------------------------------------------------------------- */}
             {/* 7. Next steps                                                   */}
             {/* -------------------------------------------------------------- */}
-            <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5">
-              <p className="text-body-sm font-medium text-slate-500 mb-3">What&apos;s next?</p>
+            <div className="bg-panel border border-black/10 p-5">
+              <p className="text-body-sm font-medium text-[#4a555e] mb-3">What&apos;s next?</p>
               <div className="space-y-2">
                 <Link
                   href={`/claims/${claimId}/call-script`}
-                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
+                  className="flex items-center justify-between text-body-sm text-black hover:text-coral transition-colors"
                 >
                   <span className="flex items-center gap-2">
-                    <Phone className="w-3.5 h-3.5 text-slate-400" />
+                    <Phone className="w-3.5 h-3.5 text-[#4a555e]/60" />
                     Prepare a call script to negotiate with the adjuster
                   </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[#4a555e]/60 flex-shrink-0" />
                 </Link>
                 <Link
                   href={`/claims/${claimId}/export`}
-                  className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
+                  className="flex items-center justify-between text-body-sm text-black hover:text-coral transition-colors"
                 >
                   <span className="flex items-center gap-2">
-                    <Download className="w-3.5 h-3.5 text-slate-400" />
+                    <Download className="w-3.5 h-3.5 text-[#4a555e]/60" />
                     Export your full analysis report as PDF
                   </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[#4a555e]/60 flex-shrink-0" />
                 </Link>
               </div>
             </div>
@@ -520,7 +520,7 @@ export default function CounterOfferPage() {
             {/* -------------------------------------------------------------- */}
             {/* 8. Disclaimer                                                   */}
             {/* -------------------------------------------------------------- */}
-            <p className="text-caption text-slate-400 leading-relaxed">
+            <p className="text-caption text-[#4a555e]/60 leading-relaxed">
               This counter-offer package is generated for educational and
               informational purposes only and does not constitute legal advice.
               The demand letter, talking points, and escalation strategies are

@@ -77,7 +77,7 @@ export function Chat({ context, placeholder = "Ask a follow-up question...", cla
       <button
         onClick={() => setIsOpen(true)}
         className={cn(
-          "fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2 rounded-full bg-ink-800 px-4 sm:px-5 py-3 text-white shadow-float hover:bg-ink-900 transition-colors",
+          "fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2 bg-black px-4 sm:px-5 py-3 text-panel hover:bg-coral hover:text-black transition-colors",
           className
         )}
       >
@@ -88,16 +88,16 @@ export function Chat({ context, placeholder = "Ask a follow-up question...", cla
   }
 
   return (
-    <div className={cn("fixed z-50 bg-white border border-slate-200 shadow-float flex flex-col inset-0 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-96 sm:max-w-[calc(100vw-2rem)] sm:rounded-2xl sm:max-h-[32rem]", className)}>
+    <div className={cn("fixed z-50 bg-panel border border-black/10 flex flex-col inset-0 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-96 sm:max-w-[calc(100vw-2rem)] sm:max-h-[32rem]", className)}>
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
         <div className="flex items-center gap-2">
-          <MessageCircle className="w-4 h-4 text-ink-800" />
+          <MessageCircle className="w-4 h-4 text-coral" />
           <span className="text-body-sm font-medium text-slate-900">ClaimCoach AI</span>
         </div>
         <button
           onClick={() => setIsOpen(false)}
-          className="p-1 rounded-lg hover:bg-slate-100 transition-colors"
+          className="p-1 hover:bg-black/5 transition-colors"
         >
           <X className="w-4 h-4 text-slate-400" />
         </button>
@@ -116,17 +116,17 @@ export function Chat({ context, placeholder = "Ask a follow-up question...", cla
           <div
             key={i}
             className={cn(
-              "max-w-[85%] rounded-xl px-3 py-2 text-body-sm",
+              "max-w-[85%] px-3 py-2 text-body-sm",
               msg.role === "user"
-                ? "ml-auto bg-ink-800 text-white"
-                : "mr-auto bg-slate-100 text-slate-800"
+                ? "ml-auto bg-black text-panel"
+                : "mr-auto bg-black/5 text-black"
             )}
           >
             <p className="whitespace-pre-wrap">{msg.content}</p>
           </div>
         ))}
         {isLoading && (
-          <div className="mr-auto flex items-center gap-2 rounded-xl bg-slate-100 px-3 py-2">
+          <div className="mr-auto flex items-center gap-2 bg-black/5 px-3 py-2">
             <Loader2 className="w-3.5 h-3.5 text-slate-400 animate-spin" />
             <span className="text-body-sm text-slate-400">Thinking...</span>
           </div>
@@ -145,7 +145,7 @@ export function Chat({ context, placeholder = "Ask a follow-up question...", cla
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             disabled={isLoading}
-            className="flex-1 rounded-lg border border-slate-200 px-3 py-2 text-body-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-ink-800 focus:border-ink-800 disabled:opacity-50"
+            className="flex-1 border border-black/20 bg-transparent px-3 py-2 text-body-sm text-black placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-coral/20 focus:border-coral disabled:opacity-50"
           />
           <Button
             size="sm"

@@ -208,13 +208,13 @@ export function LiveAudit({
     }, 0);
 
   return (
-    <div className="bg-paper-white min-h-[480px] sm:min-h-[560px] flex flex-col rounded-xl overflow-hidden border border-slate-200 shadow-document">
+    <div className="bg-panel min-h-[480px] sm:min-h-[560px] flex flex-col overflow-hidden border border-slate-200">
       {/* ---- Progress bar ---- */}
       <div className="px-4 sm:px-6 pt-4 pb-3 border-b border-slate-100 bg-white">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-caption font-medium text-ink-800 uppercase tracking-wider">
+            <div className="w-2 h-2 rounded-full bg-coral animate-pulse" />
+            <span className="text-caption font-medium text-coral uppercase tracking-wider">
               {isComplete ? "Analysis Complete" : "Analyzing Policy"}
             </span>
           </div>
@@ -224,7 +224,7 @@ export function LiveAudit({
         </div>
         <div className="w-full bg-slate-100 rounded-full h-1">
           <motion.div
-            className="h-1 rounded-full bg-ink-800"
+            className="h-1 rounded-full bg-coral"
             initial={{ width: "0%" }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.3, ease: "easeOut" }}
@@ -243,7 +243,7 @@ export function LiveAudit({
           {/* Scan-line overlay */}
           <div className="absolute inset-0 pointer-events-none z-10">
             <motion.div
-              className="w-full h-px bg-ink-800/20"
+              className="w-full h-px bg-coral/20"
               animate={{
                 y: [0, docRef.current?.scrollHeight || 400],
               }}
@@ -256,8 +256,8 @@ export function LiveAudit({
           </div>
 
           {/* Top/bottom gradient fade */}
-          <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-paper-white to-transparent z-20 pointer-events-none" />
-          <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-paper-white to-transparent z-20 pointer-events-none" />
+          <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-panel to-transparent z-20 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-panel to-transparent z-20 pointer-events-none" />
 
           {POLICY_LINES.map((line, i) => {
             const isHighlighted = highlightedLines.has(i);
@@ -269,7 +269,7 @@ export function LiveAudit({
                 key={i}
                 className={`
                   text-[11px] sm:text-xs leading-[22px] whitespace-pre transition-all duration-300
-                  ${isHighlighted ? "bg-highlight-yellow/70 -mx-1 px-1 rounded-sm" : ""}
+                  ${isHighlighted ? "bg-coral/20 -mx-1 px-1" : ""}
                   ${isPastCursor ? "text-slate-400" : "text-slate-200"}
                   ${isAtCursor ? "text-slate-600" : ""}
                 `}
@@ -296,10 +296,10 @@ export function LiveAudit({
               style={{ top: `${(finding.lineIndex / POLICY_LINES.length) * 80}%`, left: "40%" }}
             >
               <div className={`
-                px-2 py-1 rounded text-[10px] font-semibold whitespace-nowrap
-                ${finding.type === "hidden" ? "bg-emerald-500 text-white" : ""}
-                ${finding.type === "risk" ? "bg-amber-400 text-ink-800" : ""}
-                ${finding.type === "coverage" ? "bg-ink-800 text-white" : ""}
+                px-2 py-1 text-[10px] font-semibold whitespace-nowrap
+                ${finding.type === "hidden" ? "bg-coral text-white" : ""}
+                ${finding.type === "risk" ? "bg-warning-500 text-black" : ""}
+                ${finding.type === "coverage" ? "bg-coral text-white" : ""}
                 ${finding.type === "gap" ? "bg-danger-500 text-white" : ""}
               `}>
                 {finding.value || finding.label.slice(0, 20)}
@@ -321,7 +321,7 @@ export function LiveAudit({
               key={hiddenValueTotal}
               initial={{ scale: 1.3, color: "#16a34a" }}
               animate={{ scale: 1, color: "#002244" }}
-              className="text-body-sm font-serif font-bold"
+              className="text-body-sm font-bold"
             >
               +${hiddenValueTotal.toLocaleString()}
             </motion.span>
@@ -350,9 +350,9 @@ export function LiveAudit({
                 <span
                   className={`
                     w-1.5 h-1.5 rounded-full flex-shrink-0
-                    ${finding.type === "hidden" ? "bg-emerald-500" : ""}
-                    ${finding.type === "risk" ? "bg-amber-400" : ""}
-                    ${finding.type === "coverage" ? "bg-ink-800" : ""}
+                    ${finding.type === "hidden" ? "bg-coral" : ""}
+                    ${finding.type === "risk" ? "bg-warning-500" : ""}
+                    ${finding.type === "coverage" ? "bg-coral" : ""}
                     ${finding.type === "gap" ? "bg-danger-500" : ""}
                   `}
                 />
@@ -364,7 +364,7 @@ export function LiveAudit({
 
                 {/* Value badge */}
                 {finding.value ? (
-                  <span className="text-emerald-600 font-semibold font-mono flex-shrink-0 mark-yellow px-1 rounded-sm">
+                  <span className="text-coral font-semibold font-mono flex-shrink-0 mark-coral px-1">
                     {finding.value}
                   </span>
                 ) : (
@@ -391,11 +391,11 @@ export function LiveAudit({
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            className="px-4 sm:px-6 py-4 bg-paper-cream border-t border-slate-200"
+            className="px-4 sm:px-6 py-4 bg-panel-alt border-t border-slate-200"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-body-sm font-semibold text-ink-800">
+                <p className="text-body-sm font-semibold text-coral">
                   {discoveredFindings.length} findings identified
                 </p>
                 <p className="text-caption text-slate-500">
@@ -406,7 +406,7 @@ export function LiveAudit({
               {hiddenValueTotal > 0 && (
                 <div className="text-right">
                   <p className="text-caption text-slate-500">Recoverable value</p>
-                  <p className="text-heading font-serif font-bold text-emerald-600">
+                  <p className="text-heading font-bold text-coral">
                     +${hiddenValueTotal.toLocaleString()}
                   </p>
                 </div>

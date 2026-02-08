@@ -39,29 +39,29 @@ export function Paywall({ feature, claimId, children, isPaid = false }: PaywallP
 
   return (
     <div className="relative">
-      <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
+      <div className="absolute inset-0 bg-panel/80 backdrop-blur-sm z-10 flex items-center justify-center">
         <div className="text-center p-8 max-w-md">
-          <div className="w-12 h-12 rounded-full bg-ink-50 flex items-center justify-center mx-auto mb-4">
-            <Lock className="w-5 h-5 text-ink-800" />
+          <div className="w-12 h-12 bg-black/5 flex items-center justify-center mx-auto mb-4">
+            <Lock className="w-5 h-5 text-coral" />
           </div>
-          <h3 className="font-serif text-heading text-ink-800 mb-2">
+          <h3 className="text-heading font-bold text-black mb-2">
             Unlock {feature}
           </h3>
-          <p className="text-body-sm text-slate-500 mb-6">
+          <p className="text-body-sm text-[#4a555e] mb-6">
             Get the full AI-powered toolkit to maximize your settlement.
           </p>
           <div className="space-y-3">
             <Button
               onClick={() => handleCheckout("per_claim")}
               loading={loading}
-              className="w-full bg-ink-800 hover:bg-ink-900"
+              className="w-full"
             >
               Unlock this claim &mdash; $79
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
             <button
               onClick={() => handleCheckout("pro")}
-              className="text-body-sm text-ink-800 hover:text-ink-900 font-medium"
+              className="text-body-sm text-coral hover:text-black font-medium"
             >
               Or go Pro &mdash; $49/mo billed quarterly
             </button>

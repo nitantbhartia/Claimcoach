@@ -24,28 +24,24 @@ export function ClaimLayout({ children, claimId }: ClaimLayoutProps) {
   const basePath = `/claims/${claimId}`;
 
   return (
-    <div className="min-h-screen bg-surface-50">
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200">
-        {/* Top row: back link + claim ID */}
+    <div className="min-h-screen bg-frame">
+      <header className="bg-panel border-b-[4px] border-frame">
         <div className="flex items-center justify-between h-14 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
           <Link
             href="/dashboard"
-            className="flex items-center gap-1.5 text-body-sm text-slate-500 hover:text-slate-700 transition-colors"
+            className="flex items-center gap-1.5 text-body-sm text-[#4a555e] hover:text-coral transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Dashboard
           </Link>
 
-          <span className="text-body-sm font-medium text-slate-900">
-            Claim #{claimId.slice(0, 8)}
+          <span className="font-mono text-body-sm font-bold text-black">
+            Case #{claimId.slice(0, 8)}
           </span>
 
-          {/* Empty spacer to keep claim ID centered */}
           <div className="w-20" />
         </div>
 
-        {/* Tab navigation */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide -mb-px">
             {claimTabs.map((tab) => {
@@ -58,8 +54,8 @@ export function ClaimLayout({ children, claimId }: ClaimLayoutProps) {
                   className={cn(
                     "pb-3 text-body-sm whitespace-nowrap border-b-2 transition-colors",
                     isActive
-                      ? "text-slate-900 font-medium border-ink-800"
-                      : "text-slate-500 border-transparent hover:text-slate-700"
+                      ? "text-black font-semibold border-coral"
+                      : "text-[#4a555e] border-transparent hover:text-coral"
                   )}
                 >
                   {tab.label}
@@ -70,7 +66,6 @@ export function ClaimLayout({ children, claimId }: ClaimLayoutProps) {
         </div>
       </header>
 
-      {/* Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>

@@ -9,7 +9,33 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // "Legal Ink" primary palette
+        // Frame & panel system
+        frame: "#0d0d0d",
+        panel: {
+          DEFAULT: "#dce4e9",
+          alt: "#cdd6dc",
+          dark: "#0d0d0d",
+        },
+        // Accent colors
+        coral: {
+          DEFAULT: "#ff9e80",
+          50: "#fff5f0",
+          100: "#ffe8dd",
+          200: "#ffd4c0",
+          300: "#ffb89e",
+          400: "#ff9e80",
+          500: "#e8845f",
+          600: "#c66a42",
+        },
+        ice: {
+          DEFAULT: "#a8cce0",
+          50: "#eef5fa",
+          100: "#d4e8f2",
+          200: "#a8cce0",
+          300: "#7cb0ce",
+          400: "#5094bc",
+        },
+        // Ink (keep for backwards compat on inner pages during transition)
         ink: {
           50: "#e8edf4",
           100: "#c5d1e3",
@@ -19,55 +45,11 @@ const config: Config = {
           500: "#3f669f",
           600: "#335590",
           700: "#25437d",
-          800: "#002244", // Primary "Legal Ink"
+          800: "#002244",
           900: "#001729",
           950: "#000e1a",
         },
-        // Keep brand for backwards compat (map to ink)
-        brand: {
-          50: "#e8edf4",
-          100: "#c5d1e3",
-          200: "#9fb3d0",
-          300: "#7994bc",
-          400: "#5c7dae",
-          500: "#3f669f",
-          600: "#002244",
-          700: "#001e3d",
-          800: "#001729",
-          900: "#000e1a",
-          950: "#000e1a",
-        },
-        // Paper surfaces
-        paper: {
-          white: "#FAFAFA",
-          warm: "#F9F8F6",
-          cream: "#F5F4F0",
-          muted: "#EDECE8",
-        },
-        // Highlight accents (lawyer markup)
-        highlight: {
-          yellow: "#FDFFB6",
-          "yellow-strong": "#FDE68A",
-          peach: "#FFD7BA",
-          "peach-strong": "#FDBA74",
-        },
         // Semantic
-        accent: {
-          50: "#ecfdf5",
-          100: "#d1fae5",
-          200: "#a7f3d0",
-          300: "#6ee7b7",
-          400: "#34d399",
-          500: "#10b981",
-          600: "#059669",
-        },
-        surface: {
-          0: "#ffffff",
-          50: "#fafaf9",
-          100: "#f5f5f4",
-          200: "#e7e5e4",
-          300: "#d6d3d1",
-        },
         success: {
           50: "#f0fdf4",
           100: "#dcfce7",
@@ -88,92 +70,98 @@ const config: Config = {
         },
       },
       fontFamily: {
-        serif: [
-          "Playfair Display",
-          "Georgia",
-          "Cambria",
-          "Times New Roman",
-          "serif",
-        ],
         sans: [
+          "Helvetica Neue",
+          "Helvetica",
+          "Arial",
           "Inter",
           "-apple-system",
           "BlinkMacSystemFont",
-          "Segoe UI",
           "sans-serif",
         ],
-        mono: ["JetBrains Mono", "SF Mono", "Fira Code", "monospace"],
+        mono: ["Courier New", "Courier", "JetBrains Mono", "monospace"],
       },
       fontSize: {
-        // Serif display sizes
+        // Display sizes
         "display-xl": [
           "4.5rem",
-          { lineHeight: "1.05", letterSpacing: "-0.02em", fontWeight: "700" },
+          { lineHeight: "0.95", letterSpacing: "-0.04em", fontWeight: "700" },
         ],
         display: [
-          "3.5rem",
-          { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700" },
+          "3rem",
+          { lineHeight: "0.95", letterSpacing: "-0.04em", fontWeight: "700" },
         ],
         "display-sm": [
           "2.25rem",
-          { lineHeight: "1.15", letterSpacing: "-0.015em", fontWeight: "600" },
+          { lineHeight: "0.95", letterSpacing: "-0.03em", fontWeight: "700" },
         ],
-        // Sans headings
+        // Score/number display
+        "score-xl": [
+          "5rem",
+          { lineHeight: "0.9", letterSpacing: "-0.05em", fontWeight: "700" },
+        ],
+        score: [
+          "2.5rem",
+          { lineHeight: "0.9", letterSpacing: "-0.04em", fontWeight: "700" },
+        ],
+        // Headings
         "heading-lg": [
           "1.5rem",
-          { lineHeight: "1.3", letterSpacing: "-0.02em", fontWeight: "600" },
+          { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600" },
         ],
         heading: [
-          "1.25rem",
-          { lineHeight: "1.4", letterSpacing: "-0.015em", fontWeight: "600" },
+          "1.125rem",
+          { lineHeight: "1.3", letterSpacing: "-0.02em", fontWeight: "600" },
+        ],
+        // Section labels (uppercase)
+        label: [
+          "0.6875rem",
+          { lineHeight: "1.4", letterSpacing: "0.05em", fontWeight: "700" },
         ],
         // Body
-        "body-lg": ["1.125rem", { lineHeight: "1.7" }],
-        body: ["0.9375rem", { lineHeight: "1.7" }],
-        "body-sm": ["0.8125rem", { lineHeight: "1.6" }],
-        caption: ["0.75rem", { lineHeight: "1.5" }],
+        "body-lg": ["1.0625rem", { lineHeight: "1.4" }],
+        body: ["0.9375rem", { lineHeight: "1.4" }],
+        "body-sm": ["0.8125rem", { lineHeight: "1.4" }],
+        caption: ["0.6875rem", { lineHeight: "1.4" }],
       },
       borderRadius: {
-        "2xl": "1rem",
-        "3xl": "1.25rem",
+        none: "0px",
+        DEFAULT: "0px",
+        sm: "0px",
+        md: "0px",
+        lg: "0px",
+        xl: "0px",
+        "2xl": "0px",
+        "3xl": "0px",
+        full: "9999px",
       },
       boxShadow: {
-        subtle: "0 1px 2px 0 rgb(0 0 0 / 0.03)",
-        card: "0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04)",
-        paper:
-          "0 1px 3px 0 rgb(0 0 0 / 0.06), 0 4px 12px -2px rgb(0 0 0 / 0.04)",
-        elevated:
-          "0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05)",
-        float:
-          "0 10px 25px -5px rgb(0 0 0 / 0.08), 0 4px 10px -6px rgb(0 0 0 / 0.04)",
-        "paper-lg":
-          "0 4px 16px -2px rgb(0 0 0 / 0.08), 0 1px 4px -1px rgb(0 0 0 / 0.04)",
-        document:
-          "0 25px 50px -12px rgb(0 0 0 / 0.12), 0 0 0 1px rgb(0 0 0 / 0.03)",
-        // Sharp, deep shadows for "hover 20px" effect
-        sharp:
-          "0 20px 40px -8px rgb(0 0 0 / 0.18), 0 8px 16px -4px rgb(0 0 0 / 0.08)",
-        "sharp-sm":
-          "0 8px 20px -4px rgb(0 0 0 / 0.14), 0 4px 8px -2px rgb(0 0 0 / 0.06)",
-        // Premium glow for pricing card
-        "premium-glow":
-          "0 0 0 1px rgb(0 34 68 / 0.1), 0 20px 50px -10px rgb(0 34 68 / 0.2), 0 0 60px -15px rgb(0 34 68 / 0.15)",
+        none: "none",
+        subtle: "none",
+        card: "none",
+        paper: "none",
+        elevated: "none",
+        float: "none",
+        "paper-lg": "none",
+        document: "none",
+        sharp: "none",
+        "sharp-sm": "none",
+        "premium-glow": "none",
+      },
+      gap: {
+        frame: "4px",
       },
       animation: {
-        "fade-in": "fadeIn 0.5s ease-out",
-        "slide-up": "slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-        "scale-in": "scaleIn 0.3s ease-out",
+        "fade-in": "fadeIn 0.3s ease-out",
+        "slide-up": "slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+        "scale-in": "scaleIn 0.2s ease-out",
         "scan-line": "scanLine 2.5s ease-in-out infinite",
-        "count-up": "countUp 1.5s cubic-bezier(0.16, 1, 0.3, 1)",
-        "reveal": "reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-        // New: pulsing glow for gap pill
+        "count-up": "countUp 1s cubic-bezier(0.16, 1, 0.3, 1)",
+        reveal: "reveal 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
         "pulse-glow": "pulseGlow 2s ease-in-out infinite",
-        // New: odometer digit blur
-        "odometer": "odometer 0.15s ease-out",
-        // New: bridge fill on scroll
-        "bridge-fill": "bridgeFill 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards",
-        // New: grow card
-        "grow-in": "growIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        odometer: "odometer 0.15s ease-out",
+        "bridge-fill":
+          "bridgeFill 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards",
       },
       keyframes: {
         fadeIn: {
@@ -181,11 +169,11 @@ const config: Config = {
           "100%": { opacity: "1" },
         },
         slideUp: {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "0%": { opacity: "0", transform: "translateY(12px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         scaleIn: {
-          "0%": { opacity: "0", transform: "scale(0.95)" },
+          "0%": { opacity: "0", transform: "scale(0.97)" },
           "100%": { opacity: "1", transform: "scale(1)" },
         },
         scanLine: {
@@ -198,24 +186,30 @@ const config: Config = {
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         reveal: {
-          "0%": { opacity: "0", transform: "translateY(30px)" },
+          "0%": { opacity: "0", transform: "translateY(20px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         pulseGlow: {
-          "0%, 100%": { boxShadow: "0 0 8px 2px rgb(22 163 74 / 0.3)" },
-          "50%": { boxShadow: "0 0 20px 6px rgb(22 163 74 / 0.5)" },
+          "0%, 100%": {
+            boxShadow: "0 0 8px 2px rgb(255 158 128 / 0.3)",
+          },
+          "50%": { boxShadow: "0 0 20px 6px rgb(255 158 128 / 0.5)" },
         },
         odometer: {
-          "0%": { opacity: "0", transform: "translateY(-100%)", filter: "blur(4px)" },
-          "100%": { opacity: "1", transform: "translateY(0)", filter: "blur(0)" },
+          "0%": {
+            opacity: "0",
+            transform: "translateY(-100%)",
+            filter: "blur(4px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+            filter: "blur(0)",
+          },
         },
         bridgeFill: {
           "0%": { width: "0%" },
           "100%": { width: "100%" },
-        },
-        growIn: {
-          "0%": { transform: "scale(0.95)", opacity: "0.5" },
-          "100%": { transform: "scale(1.03)", opacity: "1" },
         },
       },
     },

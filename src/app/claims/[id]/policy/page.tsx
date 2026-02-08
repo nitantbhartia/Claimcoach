@@ -260,15 +260,15 @@ export default function PolicyAnalysisPage() {
       <ClaimLayout claimId={claimId}>
         <div className="space-y-6">
           <div>
-            <h1 className="text-heading-lg text-slate-900">Policy Analysis</h1>
-            <p className="text-body text-slate-500 mt-1">
+            <h1 className="text-heading-lg text-black">Policy Analysis</h1>
+            <p className="text-body text-[#4a555e] mt-1">
               Upload your insurance policy document and our AI will analyze your
               coverages, find hidden benefits, and identify provisions that could
               affect your claim.
             </p>
           </div>
 
-          <div className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
+          <div className="bg-panel border border-black/10 p-6">
             <FileUpload
               onFilesSelected={handleFilesSelected}
               accept={{ "application/pdf": [".pdf"] }}
@@ -279,7 +279,7 @@ export default function PolicyAnalysisPage() {
 
             {policyFile && (
               <div className="mt-4 flex items-center justify-between">
-                <p className="text-body-sm text-slate-500 truncate">
+                <p className="text-body-sm text-[#4a555e] truncate">
                   {policyFile.name} --{" "}
                   {(policyFile.size / 1024).toFixed(0)} KB
                 </p>
@@ -302,8 +302,8 @@ export default function PolicyAnalysisPage() {
       <ClaimLayout claimId={claimId}>
         <div className="space-y-4">
           <div>
-            <h1 className="font-serif text-heading-lg text-ink-800">Policy Analysis</h1>
-            <p className="text-body-sm text-slate-500 mt-1">
+            <h1 className="text-heading-lg text-black">Policy Analysis</h1>
+            <p className="text-body-sm text-[#4a555e] mt-1">
               Our AI is reading your policy document...
             </p>
           </div>
@@ -319,34 +319,34 @@ export default function PolicyAnalysisPage() {
   return (
     <ClaimLayout claimId={claimId}>
       <div className="space-y-6">
-        <h1 className="text-heading-lg text-slate-900">Policy Analysis</h1>
+        <h1 className="text-heading-lg text-black">Policy Analysis</h1>
 
         {/* Summary */}
-        <section className="bg-white rounded-lg border border-slate-200 shadow-card p-6">
-          <h2 className="text-heading text-slate-900 mb-3">Summary</h2>
-          <p className="text-body text-slate-600 leading-relaxed">
+        <section className="bg-panel border border-black/10 p-6">
+          <h2 className="text-heading text-black mb-3">Summary</h2>
+          <p className="text-body text-[#4a555e] leading-relaxed">
             {analysis.summary}
           </p>
         </section>
 
         {/* Coverages */}
-        <section className="bg-white rounded-lg border border-slate-200 shadow-card">
+        <section className="bg-panel border border-black/10">
           <div className="p-6 pb-0">
-            <h2 className="text-heading text-slate-900">Your Coverage</h2>
+            <h2 className="text-heading text-black">Your Coverage</h2>
           </div>
           <div className="mt-4">
             {analysis.coverages.map((coverage, i) => (
               <div
                 key={i}
-                className={`px-6 py-4 ${i !== analysis.coverages.length - 1 ? "border-b border-slate-100" : ""}`}
+                className={`px-6 py-4 ${i !== analysis.coverages.length - 1 ? "border-b border-black/10" : ""}`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-                  <p className="text-body font-medium text-slate-900">
+                  <p className="text-body font-medium text-black">
                     {coverage.name}
                   </p>
-                  <p className="text-body-sm text-slate-500">{coverage.limit}</p>
+                  <p className="text-body-sm text-[#4a555e]">{coverage.limit}</p>
                 </div>
-                <p className="text-body-sm text-slate-600 mt-1 leading-relaxed">
+                <p className="text-body-sm text-[#4a555e] mt-1 leading-relaxed">
                   {coverage.description}
                 </p>
               </div>
@@ -355,9 +355,9 @@ export default function PolicyAnalysisPage() {
         </section>
 
         {/* Hidden coverages */}
-        <section className="bg-white rounded-lg border border-slate-200 shadow-card">
+        <section className="bg-panel border border-black/10">
           <div className="p-6 pb-0">
-            <h2 className="text-heading text-slate-900">
+            <h2 className="text-heading text-black">
               Coverages You Might Be Missing
             </h2>
           </div>
@@ -365,17 +365,17 @@ export default function PolicyAnalysisPage() {
             {analysis.hidden_coverages.map((hidden, i) => (
               <div
                 key={i}
-                className={`px-6 py-4 ${i !== analysis.hidden_coverages.length - 1 ? "border-b border-slate-100" : ""}`}
+                className={`px-6 py-4 ${i !== analysis.hidden_coverages.length - 1 ? "border-b border-black/10" : ""}`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-                  <p className="text-body font-medium text-slate-900">
+                  <p className="text-body font-medium text-black">
                     {hidden.name}
                   </p>
-                  <p className="text-body-sm text-ink-800 font-medium">
+                  <p className="text-body-sm text-black font-medium">
                     {hidden.potential_value}
                   </p>
                 </div>
-                <p className="text-body-sm text-slate-600 mt-1 leading-relaxed">
+                <p className="text-body-sm text-[#4a555e] mt-1 leading-relaxed">
                   {hidden.description}
                 </p>
               </div>
@@ -384,9 +384,9 @@ export default function PolicyAnalysisPage() {
         </section>
 
         {/* Red flags */}
-        <section className="bg-white rounded-lg border border-slate-200 shadow-card">
+        <section className="bg-panel border border-black/10">
           <div className="p-6 pb-0">
-            <h2 className="text-heading text-slate-900">Watch Out For</h2>
+            <h2 className="text-heading text-black">Watch Out For</h2>
           </div>
           <div className="mt-4">
             {analysis.red_flags.map((flag, i) => {
@@ -394,39 +394,39 @@ export default function PolicyAnalysisPage() {
               return (
                 <div
                   key={i}
-                  className={`${i !== analysis.red_flags.length - 1 ? "border-b border-slate-100" : ""}`}
+                  className={`${i !== analysis.red_flags.length - 1 ? "border-b border-black/10" : ""}`}
                 >
                   <button
                     type="button"
                     onClick={() =>
                       setExpandedRedFlags((prev) => toggle(prev, i))
                     }
-                    className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left hover:bg-slate-50 transition-colors"
+                    className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left hover:bg-panel-alt transition-colors"
                   >
-                    <p className="text-body font-medium text-slate-900">
+                    <p className="text-body font-medium text-black">
                       {flag.provision}
                     </p>
                     {expanded ? (
-                      <ChevronUp className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                      <ChevronUp className="w-4 h-4 text-[#4a555e] flex-shrink-0" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                      <ChevronDown className="w-4 h-4 text-[#4a555e] flex-shrink-0" />
                     )}
                   </button>
                   {expanded && (
                     <div className="px-6 pb-5 space-y-3">
                       <div>
-                        <p className="text-body-sm font-medium text-slate-700 mb-1">
+                        <p className="text-body-sm font-medium text-[#4a555e] mb-1">
                           Risk
                         </p>
-                        <p className="text-body-sm text-slate-600 leading-relaxed">
+                        <p className="text-body-sm text-[#4a555e] leading-relaxed">
                           {flag.risk}
                         </p>
                       </div>
                       <div>
-                        <p className="text-body-sm font-medium text-slate-700 mb-1">
+                        <p className="text-body-sm font-medium text-[#4a555e] mb-1">
                           Recommendation
                         </p>
-                        <p className="text-body-sm text-slate-600 leading-relaxed">
+                        <p className="text-body-sm text-[#4a555e] leading-relaxed">
                           {flag.recommendation}
                         </p>
                       </div>
@@ -439,9 +439,9 @@ export default function PolicyAnalysisPage() {
         </section>
 
         {/* Adjuster tactics */}
-        <section className="bg-white rounded-lg border border-slate-200 shadow-card">
+        <section className="bg-panel border border-black/10">
           <div className="p-6 pb-0">
-            <h2 className="text-heading text-slate-900">
+            <h2 className="text-heading text-black">
               Predicted Adjuster Tactics
             </h2>
           </div>
@@ -451,30 +451,30 @@ export default function PolicyAnalysisPage() {
               return (
                 <div
                   key={i}
-                  className={`${i !== analysis.adjuster_tactics.length - 1 ? "border-b border-slate-100" : ""}`}
+                  className={`${i !== analysis.adjuster_tactics.length - 1 ? "border-b border-black/10" : ""}`}
                 >
                   <button
                     type="button"
                     onClick={() =>
                       setExpandedTactics((prev) => toggle(prev, i))
                     }
-                    className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left hover:bg-slate-50 transition-colors"
+                    className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left hover:bg-panel-alt transition-colors"
                   >
-                    <p className="text-body font-medium text-slate-900">
+                    <p className="text-body font-medium text-black">
                       {item.tactic}
                     </p>
                     {expanded ? (
-                      <ChevronUp className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                      <ChevronUp className="w-4 h-4 text-[#4a555e] flex-shrink-0" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                      <ChevronDown className="w-4 h-4 text-[#4a555e] flex-shrink-0" />
                     )}
                   </button>
                   {expanded && (
                     <div className="px-6 pb-5">
-                      <p className="text-body-sm font-medium text-slate-700 mb-1">
+                      <p className="text-body-sm font-medium text-[#4a555e] mb-1">
                         Counter-strategy
                       </p>
-                      <p className="text-body-sm text-slate-600 leading-relaxed">
+                      <p className="text-body-sm text-[#4a555e] leading-relaxed">
                         {item.counter}
                       </p>
                     </div>
@@ -486,28 +486,28 @@ export default function PolicyAnalysisPage() {
         </section>
 
         {/* Next steps */}
-        <div className="bg-white rounded-lg border border-slate-200 shadow-card p-5">
-          <p className="text-body-sm font-medium text-slate-500 mb-3">What&apos;s next?</p>
+        <div className="bg-panel border border-black/10 p-5">
+          <p className="text-body-sm font-medium text-[#4a555e] mb-3">What&apos;s next?</p>
           <div className="space-y-2">
             <Link
               href={`/claims/${claimId}/offer`}
-              className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
+              className="flex items-center justify-between text-body-sm text-black hover:text-black transition-colors"
             >
               Analyze the insurer&apos;s settlement offer
-              <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#4a555e] flex-shrink-0" />
             </Link>
             <Link
               href={`/claims/${claimId}/documents`}
-              className="flex items-center justify-between text-body-sm text-slate-900 hover:text-ink-800 transition-colors"
+              className="flex items-center justify-between text-body-sm text-black hover:text-black transition-colors"
             >
               Upload supporting documentation
-              <ArrowRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#4a555e] flex-shrink-0" />
             </Link>
           </div>
         </div>
 
         {/* Disclaimer */}
-        <p className="text-caption text-slate-400">
+        <p className="text-caption text-[#4a555e]">
           This analysis is educational and does not constitute legal advice.
           Insurance policies are complex legal documents and their
           interpretation can vary by state and specific circumstances. For

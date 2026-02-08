@@ -26,7 +26,7 @@ export function Progress({
   };
 
   const colors = {
-    brand: "bg-ink-800",
+    brand: "bg-coral",
     success: "bg-green-500",
     warning: "bg-yellow-500",
     danger: "bg-red-500",
@@ -39,9 +39,9 @@ export function Progress({
           <span className="text-sm font-medium text-slate-700">{Math.round(percentage)}%</span>
         </div>
       )}
-      <div className={cn("w-full bg-slate-200 rounded-full overflow-hidden", sizes[size])}>
+      <div className={cn("w-full bg-slate-200 overflow-hidden", sizes[size])}>
         <div
-          className={cn("h-full rounded-full transition-all duration-500 ease-out", colors[color])}
+          className={cn("h-full transition-all duration-500 ease-out", colors[color])}
           style={{ width: `${percentage}%` }}
         />
       </div>
