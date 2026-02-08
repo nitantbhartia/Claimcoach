@@ -1,18 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeWithAI } from "@/lib/ai/client";
 import { POLICY_ANALYSIS_PROMPT } from "@/lib/ai/prompts";
+import { requireAuth } from "@/lib/auth";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
+const MAX_POLICY_LENGTH = 200_000;
+
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
+
     const { policyText } = await request.json();
 
     if (!policyText || typeof policyText !== "string") {
       return NextResponse.json(
         { error: "Policy text is required" },
         { status: 400 }
+      );
+    }
+
+    if (policyText.length > MAX_POLICY_LENGTH) {
+      return NextResponse.json(
+        { error: "Policy text too long" },
+        { status: 413 }
       );
     }
 

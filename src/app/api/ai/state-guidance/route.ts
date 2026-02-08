@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAnthropicClient } from "@/lib/ai/client";
+import { requireAuth } from "@/lib/auth";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -43,6 +44,9 @@ Guidelines:
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
+
     const body = await request.json();
     const { state, claimType } = body;
 

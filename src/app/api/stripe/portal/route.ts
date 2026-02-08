@@ -1,16 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe/server";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
   try {
-    const { customerId } = await request.json();
+    const supabase = createServerSupabaseClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Look up the user's Stripe customer ID from their profile (prevents IDOR)
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("stripe_customer_id")
+      .eq("id", user.id)
+      .single();
+
+    const customerId = profile?.stripe_customer_id;
 
     if (!customerId) {
       return NextResponse.json(
-        { error: "Customer ID is required" },
-        { status: 400 }
+        { error: "No billing account found" },
+        { status: 404 }
       );
     }
 

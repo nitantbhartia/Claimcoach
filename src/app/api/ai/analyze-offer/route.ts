@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeWithAI } from "@/lib/ai/client";
 import { OFFER_ANALYSIS_PROMPT } from "@/lib/ai/prompts";
+import { requireAuth } from "@/lib/auth";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
+
     const body = await request.json();
     const { offerAmount, claimType, vehicleInfo, damageDescription, coverageLimits, expenses } = body;
 

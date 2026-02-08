@@ -102,9 +102,38 @@ export async function PATCH(
 
     const body = await request.json();
 
+    // Whitelist allowed fields to prevent mass-assignment attacks
+    const ALLOWED_FIELDS = new Set([
+      "status",
+      "offer_amount",
+      "desired_amount",
+      "fairness_score",
+      "damage_description",
+      "insurer_name",
+      "claim_number",
+      "has_offer",
+      "filed_with_insurer",
+      "policy_uploaded",
+      "policy_summary",
+      "coverage_limits",
+      "hidden_coverages",
+      "vehicle_year",
+      "vehicle_make",
+      "vehicle_model",
+    ]);
+
+    const updates: Record<string, unknown> = {};
+    for (const key of Object.keys(body)) {
+      if (ALLOWED_FIELDS.has(key)) updates[key] = body[key];
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
+    }
+
     const { data, error } = await supabase
       .from("claims")
-      .update(body)
+      .update(updates)
       .eq("id", params.id)
       .select()
       .single();

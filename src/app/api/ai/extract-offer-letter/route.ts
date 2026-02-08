@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAnthropicClient } from "@/lib/ai/client";
+import { requireAuth } from "@/lib/auth";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -39,8 +40,13 @@ const ALLOWED_TYPES = new Set([
   "image/gif",
 ]);
 
+const MAX_IMAGE_SIZE = 20 * 1024 * 1024; // 20MB
+
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
+
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
 
@@ -55,6 +61,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "File must be a JPEG, PNG, WebP, or GIF image" },
         { status: 400 }
+      );
+    }
+
+    if (file.size > MAX_IMAGE_SIZE) {
+      return NextResponse.json(
+        { error: "File too large. Maximum 20MB." },
+        { status: 413 }
       );
     }
 

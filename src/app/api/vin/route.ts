@@ -10,7 +10,8 @@ interface NHTSAResult {
 export async function GET(request: NextRequest) {
   const vin = request.nextUrl.searchParams.get("vin");
 
-  if (!vin || vin.length !== 17) {
+  const VIN_REGEX = /^[A-HJ-NPR-Z0-9]{17}$/i;
+  if (!vin || !VIN_REGEX.test(vin)) {
     return NextResponse.json(
       { error: "A valid 17-character VIN is required" },
       { status: 400 }
@@ -37,7 +38,7 @@ export async function GET(request: NextRequest) {
     const errorCode = results.ErrorCode;
     if (errorCode && errorCode !== "0" && !errorCode.includes("0")) {
       return NextResponse.json(
-        { error: "Could not decode VIN. Please check and try again.", details: results.ErrorText },
+        { error: "Could not decode VIN. Please check and try again." },
         { status: 422 }
       );
     }

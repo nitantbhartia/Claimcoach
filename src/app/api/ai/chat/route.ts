@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAnthropicClient } from "@/lib/ai/client";
+import { requireAuth } from "@/lib/auth";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -24,6 +25,9 @@ Guidelines:
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
+
     const { messages, context } = await request.json() as {
       messages: ChatMessage[];
       context?: string;
@@ -33,6 +37,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Messages array is required" },
         { status: 400 }
+      );
+    }
+
+    if (messages.length > 50) {
+      return NextResponse.json(
+        { error: "Too many messages" },
+        { status: 413 }
       );
     }
 

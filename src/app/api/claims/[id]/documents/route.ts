@@ -17,11 +17,12 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Verify claim ownership
+    // Verify claim ownership explicitly
     const { data: claim } = await supabase
       .from("claims")
-      .select("id")
+      .select("id, user_id")
       .eq("id", params.id)
+      .eq("user_id", user.id)
       .single();
 
     if (!claim) {
@@ -36,8 +37,30 @@ export async function POST(
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Upload to Supabase Storage
-    const filePath = `${user.id}/${params.id}/${Date.now()}-${file.name}`;
+    // Validate file size (50MB max)
+    const MAX_FILE_SIZE = 50 * 1024 * 1024;
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json(
+        { error: "File too large. Maximum 50MB." },
+        { status: 413 }
+      );
+    }
+
+    // Validate file type
+    const ALLOWED_TYPES = new Set([
+      "image/jpeg", "image/png", "image/webp", "image/gif",
+      "application/pdf",
+    ]);
+    if (!ALLOWED_TYPES.has(file.type)) {
+      return NextResponse.json(
+        { error: "File type not allowed. Use JPEG, PNG, WebP, GIF, or PDF." },
+        { status: 400 }
+      );
+    }
+
+    // Sanitize filename: strip path separators and use timestamp prefix
+    const safeName = file.name.replace(/[/\\:*?"<>|]/g, "_").slice(0, 100);
+    const filePath = `${user.id}/${params.id}/${Date.now()}-${safeName}`;
     const { error: uploadError } = await supabase.storage
       .from("claim-documents")
       .upload(filePath, file);

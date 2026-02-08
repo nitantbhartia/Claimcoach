@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireAuth } from "@/lib/auth";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
+const MAX_PDF_SIZE = 50 * 1024 * 1024; // 50MB
+
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
+
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
 
@@ -19,6 +25,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "File must be a PDF" },
         { status: 400 }
+      );
+    }
+
+    if (file.size > MAX_PDF_SIZE) {
+      return NextResponse.json(
+        { error: "File too large. Maximum 50MB." },
+        { status: 413 }
       );
     }
 
