@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured, DEV_USER } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
@@ -9,9 +10,14 @@ export async function POST(
 ) {
   try {
     const supabase = createServerSupabaseClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    let user: { id: string; email?: string } | null = null;
+
+    if (!isSupabaseConfigured()) {
+      user = DEV_USER;
+    } else {
+      const { data } = await supabase.auth.getUser();
+      user = data.user;
+    }
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -68,9 +74,14 @@ export async function DELETE(
 ) {
   try {
     const supabase = createServerSupabaseClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    let user: { id: string; email?: string } | null = null;
+
+    if (!isSupabaseConfigured()) {
+      user = DEV_USER;
+    } else {
+      const { data } = await supabase.auth.getUser();
+      user = data.user;
+    }
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
