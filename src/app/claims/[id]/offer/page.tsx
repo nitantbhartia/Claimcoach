@@ -11,6 +11,7 @@ import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { LiveAuditOffer } from "@/components/ui/live-audit-offer";
+import { ComparableVehicles } from "@/components/ui/comparable-vehicles";
 
 // ---------------------------------------------------------------------------
 // Analysis loading steps
@@ -415,6 +416,17 @@ export default function OfferAnalysisPage() {
                 ))}
               </div>
             </div>
+
+            {/* -------------------------------------------------------------- */}
+            {/* 5b. Comparable Vehicle Listings                                  */}
+            {/* -------------------------------------------------------------- */}
+            <ComparableVehicles
+              vehicleYear={claim?.vehicle_year ?? null}
+              vehicleMake={claim?.vehicle_make ?? null}
+              vehicleModel={claim?.vehicle_model ?? null}
+              state={claim?.state ?? null}
+              offerAmount={analysis ? theirTotal : null}
+            />
 
             {/* -------------------------------------------------------------- */}
             {/* 6. Recommendation                                               */}
