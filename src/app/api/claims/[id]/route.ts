@@ -173,6 +173,8 @@ export async function PATCH(
       "vehicle_make",
       "vehicle_model",
       "state",
+      "final_settlement",
+      "resolved_at",
     ]);
 
     const updates: Record<string, unknown> = {};
