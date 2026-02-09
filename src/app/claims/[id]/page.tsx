@@ -8,6 +8,7 @@ import { ScoreGauge } from "@/components/ui/score-gauge";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 import { ArrowRight, ChevronDown, ChevronUp, Download, Loader2, Phone, Scale } from "lucide-react";
+import { OutcomeReporter } from "@/components/ui/outcome-reporter";
 import type { Claim, ClaimDocument, ClaimStatus, FaultStatus, FinancialImpact, StateGuidance } from "@/types";
 
 // ---------------------------------------------------------------------------
@@ -242,6 +243,32 @@ export default function ClaimOverviewPage() {
             </div>
           </div>
         </div>
+
+        {/* -------------------------------------------------------------- */}
+        {/* 1b. Outcome reporter (resolved or late-stage claims)            */}
+        {/* -------------------------------------------------------------- */}
+        {(claim.status === "resolved" ||
+          claim.status === "negotiating" ||
+          claim.status === "escalating") && (
+          <OutcomeReporter
+            claimId={claimId}
+            offerAmount={claim.offer_amount}
+            finalSettlement={claim.final_settlement}
+            resolvedAt={claim.resolved_at}
+            onUpdate={(settlement, resolved) => {
+              setClaim((prev) =>
+                prev
+                  ? {
+                      ...prev,
+                      final_settlement: settlement,
+                      resolved_at: resolved,
+                      status: "resolved",
+                    }
+                  : prev
+              );
+            }}
+          />
+        )}
 
         {/* -------------------------------------------------------------- */}
         {/* 2. Two-column layout                                            */}
