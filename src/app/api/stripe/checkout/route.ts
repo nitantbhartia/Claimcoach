@@ -1,25 +1,40 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe/server";
+import { stripe, isStripeConfigured } from "@/lib/stripe/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured, DEV_USER } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createServerSupabaseClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
     const { priceType, claimId } = await request.json();
-    const userId = user?.id || "";
-    const userEmail = user?.email || "";
 
     if (!priceType || !["per_claim", "pro"].includes(priceType)) {
       return NextResponse.json(
         { error: "Invalid price type. Must be 'per_claim' or 'pro'." },
         { status: 400 }
       );
+    }
+
+    // If Stripe is not configured, return a message instead of crashing
+    if (!isStripeConfigured()) {
+      return NextResponse.json(
+        { error: "Stripe is not configured. Set STRIPE_SECRET_KEY in your environment." },
+        { status: 503 }
+      );
+    }
+
+    const supabase = createServerSupabaseClient();
+    let userId = "";
+    let userEmail = "";
+
+    if (!isSupabaseConfigured()) {
+      userId = DEV_USER.id;
+      userEmail = DEV_USER.email || "";
+    } else {
+      const { data: { user } } = await supabase.auth.getUser();
+      userId = user?.id || "";
+      userEmail = user?.email || "";
     }
 
     // Use configured app URL to prevent host header poisoning

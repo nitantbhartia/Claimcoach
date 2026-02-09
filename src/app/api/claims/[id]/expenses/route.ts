@@ -23,19 +23,21 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Verify claim ownership explicitly to prevent IDOR
-    const { data: claim } = await supabase
-      .from("claims")
-      .select("id, user_id")
-      .eq("id", params.id)
-      .eq("user_id", user.id)
-      .single();
-
-    if (!claim) {
-      return NextResponse.json({ error: "Claim not found" }, { status: 404 });
-    }
-
     const body = await request.json();
+
+    // Verify claim ownership explicitly to prevent IDOR (skip in dev)
+    if (isSupabaseConfigured()) {
+      const { data: claim } = await supabase
+        .from("claims")
+        .select("id, user_id")
+        .eq("id", params.id)
+        .eq("user_id", user.id)
+        .single();
+
+      if (!claim) {
+        return NextResponse.json({ error: "Claim not found" }, { status: 404 });
+      }
+    }
 
     const { data, error } = await supabase
       .from("financial_impacts")
@@ -52,6 +54,22 @@ export async function POST(
 
     if (error) {
       console.error("Create expense DB error:", error);
+
+      if (!isSupabaseConfigured()) {
+        return NextResponse.json({
+          expense: {
+            id: "dev-exp-" + Math.random().toString(36).substring(2, 10),
+            claim_id: params.id,
+            category: body.category,
+            description: body.description,
+            amount: body.amount,
+            date: body.date,
+            receipt_url: body.receipt_url || null,
+            created_at: new Date().toISOString(),
+          },
+        }, { status: 201 });
+      }
+
       return NextResponse.json(
         { error: "Failed to create expense" },
         { status: 500 }
@@ -61,6 +79,21 @@ export async function POST(
     return NextResponse.json({ expense: data }, { status: 201 });
   } catch (error) {
     console.error("Create expense error:", error);
+
+    if (!isSupabaseConfigured()) {
+      return NextResponse.json({
+        expense: {
+          id: "dev-exp-" + Math.random().toString(36).substring(2, 10),
+          claim_id: params.id,
+          category: "other",
+          description: "expense",
+          amount: 0,
+          date: new Date().toISOString().split("T")[0],
+          created_at: new Date().toISOString(),
+        },
+      }, { status: 201 });
+    }
+
     return NextResponse.json(
       { error: "Failed to create expense" },
       { status: 500 }
@@ -87,16 +120,18 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Verify claim ownership explicitly to prevent IDOR
-    const { data: claim } = await supabase
-      .from("claims")
-      .select("id, user_id")
-      .eq("id", params.id)
-      .eq("user_id", user.id)
-      .single();
+    // Verify claim ownership explicitly to prevent IDOR (skip in dev)
+    if (isSupabaseConfigured()) {
+      const { data: claim } = await supabase
+        .from("claims")
+        .select("id, user_id")
+        .eq("id", params.id)
+        .eq("user_id", user.id)
+        .single();
 
-    if (!claim) {
-      return NextResponse.json({ error: "Claim not found" }, { status: 404 });
+      if (!claim) {
+        return NextResponse.json({ error: "Claim not found" }, { status: 404 });
+      }
     }
 
     const { expenseId } = await request.json();
@@ -109,6 +144,11 @@ export async function DELETE(
 
     if (error) {
       console.error("Delete expense DB error:", error);
+
+      if (!isSupabaseConfigured()) {
+        return NextResponse.json({ success: true });
+      }
+
       return NextResponse.json(
         { error: "Failed to delete expense" },
         { status: 500 }
@@ -118,6 +158,11 @@ export async function DELETE(
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Delete expense error:", error);
+
+    if (!isSupabaseConfigured()) {
+      return NextResponse.json({ success: true });
+    }
+
     return NextResponse.json(
       { error: "Failed to delete expense" },
       { status: 500 }

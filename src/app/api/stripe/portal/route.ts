@@ -1,15 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe/server";
+import { stripe, isStripeConfigured } from "@/lib/stripe/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured, DEV_USER } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
   try {
+    // If Stripe is not configured, return a message instead of crashing
+    if (!isStripeConfigured()) {
+      return NextResponse.json(
+        { error: "Stripe is not configured. Set STRIPE_SECRET_KEY in your environment." },
+        { status: 503 }
+      );
+    }
+
     const supabase = createServerSupabaseClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    let user: { id: string; email?: string } | null = null;
+
+    if (!isSupabaseConfigured()) {
+      user = DEV_USER;
+    } else {
+      const { data } = await supabase.auth.getUser();
+      user = data.user;
+    }
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

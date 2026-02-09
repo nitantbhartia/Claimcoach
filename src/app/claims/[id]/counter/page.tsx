@@ -145,7 +145,7 @@ export default function CounterOfferPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `Counter-Offer-Demand-Letter-${params.id}.txt`;
+    a.download = `Counter-Offer-Demand-Letter-${claimId}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
