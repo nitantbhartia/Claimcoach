@@ -591,8 +591,11 @@ export default function LandingPage() {
           <div className="container-wide py-16 sm:py-24">
             <div className="text-center mb-16">
               <h2 className="font-sans text-display-sm sm:text-display text-slate-900 tracking-[-0.02em]">
-                Dead Simple. Under 5 Minutes.
+                How ClaimCoach Gets You More Money
               </h2>
+              <p className="mt-4 text-body-lg text-slate-500 max-w-2xl mx-auto">
+                Upload your estimate, and our AI finds every dollar your insurer missed — in under 5 minutes.
+              </p>
             </div>
 
             <div className="max-w-4xl mx-auto">
