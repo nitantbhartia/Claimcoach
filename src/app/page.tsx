@@ -289,18 +289,18 @@ function ComparisonDashboard() {
       >
         {/* Base layer: Their Offer */}
         <div className="bg-white overflow-hidden border-2 border-navy-100">
-          <div className="px-6 py-4 border-b border-navy-100 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 bg-danger-500" />
-              <p className="text-label uppercase tracking-[0.05em] text-navy-800/40 font-medium">
+          <div className="px-4 sm:px-6 py-4 border-b border-navy-100 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-2 h-2 bg-danger-500 shrink-0" />
+              <p className="text-label uppercase tracking-[0.05em] text-navy-800/40 font-medium truncate">
                 Their Offer &mdash; 2022 Honda Civic EX
               </p>
             </div>
-            <span className="px-2 py-0.5 text-label font-semibold bg-danger-50 text-danger-600 font-mono">
+            <span className="px-2 py-0.5 text-label font-semibold bg-danger-50 text-danger-600 font-mono shrink-0">
               38/100
             </span>
           </div>
-          <div className="px-6 py-5 space-y-2.5">
+          <div className="px-4 sm:px-6 py-5 space-y-2.5">
             {[
               { label: "Vehicle Base Value", amount: "$4,200" },
               { label: "Loss of Use / Rental", amount: "$0" },
@@ -333,18 +333,18 @@ function ComparisonDashboard() {
             className="bg-white overflow-hidden border-2 border-navy-800"
             style={{ width: containerRef.current?.offsetWidth || "100%", minWidth: "100%" }}
           >
-            <div className="px-6 py-4 border-b border-navy-100 flex items-center justify-between bg-navy-800">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-gold" />
-                <p className="text-label uppercase tracking-[0.05em] text-white/80 font-medium">
+            <div className="px-4 sm:px-6 py-4 border-b border-navy-100 flex items-center justify-between gap-2 bg-navy-800">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-2 h-2 bg-gold shrink-0" />
+                <p className="text-label uppercase tracking-[0.05em] text-white/80 font-medium truncate">
                   ClaimCoach Audit &mdash; 2022 Honda Civic EX
                 </p>
               </div>
-              <span className="px-2 py-0.5 text-label font-semibold bg-gold text-navy-900">
+              <span className="px-2 py-0.5 text-label font-semibold bg-gold text-navy-900 shrink-0">
                 Market-backed
               </span>
             </div>
-            <div className="px-6 py-5 space-y-2.5 bg-white">
+            <div className="px-4 sm:px-6 py-5 space-y-2.5 bg-white">
               {[
                 { label: "Vehicle Base Value", amount: "$6,800" },
                 { label: "Loss of Use / Rental", amount: "$720" },
@@ -1212,7 +1212,7 @@ export default function LandingPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="flex-1 px-4 py-3 bg-navy-50 border border-navy-100 text-navy-800 text-body-sm placeholder:text-navy-800/30 focus:outline-none focus:border-navy-800"
+                    className="flex-1 min-w-0 px-4 py-3 bg-navy-50 border border-navy-100 text-navy-800 text-body-sm placeholder:text-navy-800/30 focus:outline-none focus:border-navy-800"
                   />
                   <button
                     type="submit"

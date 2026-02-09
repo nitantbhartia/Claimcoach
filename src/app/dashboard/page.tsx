@@ -128,7 +128,7 @@ export default function DashboardPage() {
               </span>
 
               {/* Offer */}
-              <span className="text-body-sm font-medium text-black w-20 shrink-0 text-right">
+              <span className="text-body-sm font-medium text-black shrink-0 text-right">
                 {claim.offer_amount !== null ? formatCurrency(claim.offer_amount) : "\u2014"}
               </span>
 

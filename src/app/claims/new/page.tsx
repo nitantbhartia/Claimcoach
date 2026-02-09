@@ -1037,7 +1037,7 @@ export default function NewClaimPage() {
                   }}
                   placeholder="e.g., 1HGCV1F34NA012345"
                   maxLength={17}
-                  className="flex-1 border border-black/10 bg-panel px-3 py-1.5 text-body-sm text-black placeholder:text-[#4a555e]/60 focus:outline-none focus:ring-2 focus:ring-coral focus:border-coral font-mono tracking-wide"
+                  className="flex-1 min-w-0 border border-black/10 bg-panel px-3 py-1.5 text-body-sm text-black placeholder:text-[#4a555e]/60 focus:outline-none focus:ring-2 focus:ring-coral focus:border-coral font-mono"
                 />
                 <button
                   type="button"
@@ -1428,7 +1428,7 @@ export default function NewClaimPage() {
             <Button
               onClick={handleSubmit}
               loading={isSubmitting}
-              className="min-w-[180px] bg-black hover:bg-black"
+              className="sm:min-w-[180px] bg-black hover:bg-black"
             >
               {isSubmitting ? "Creating Claim..." : "Create My Claim"}
               {!isSubmitting && <ChevronRight className="w-4 h-4 ml-1" />}

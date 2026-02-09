@@ -211,20 +211,20 @@ export default function PricingPage() {
             </p>
 
             <div className="mt-10 p-5 bg-white border-2 border-black/10">
-              <div className="flex items-center gap-4 flex-wrap">
-                <div className="flex-1 min-w-[140px]">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div>
                   <p className="text-caption text-[#4a555e] uppercase tracking-wider">Offer</p>
                   <p className="text-heading font-bold text-[#4a555e] line-through decoration-danger-500 decoration-2">$4,200</p>
                 </div>
-                <div className="flex-1 min-w-[140px]">
+                <div>
                   <p className="text-caption text-[#4a555e] uppercase tracking-wider">Fair value</p>
                   <p className="text-heading font-bold text-black">$9,981</p>
                 </div>
-                <div className="flex-1 min-w-[140px]">
+                <div>
                   <p className="text-caption text-[#4a555e] uppercase tracking-wider">Your gain</p>
                   <p className="text-heading font-bold text-coral">+$5,781</p>
                 </div>
-                <div className="flex-1 min-w-[140px]">
+                <div>
                   <p className="text-caption text-[#4a555e] uppercase tracking-wider">ROI</p>
                   <p className="text-heading font-bold text-black">73x</p>
                 </div>
