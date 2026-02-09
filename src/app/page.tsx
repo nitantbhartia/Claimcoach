@@ -105,13 +105,33 @@ function HeroHook() {
   const parsedOffer = parseFloat(offer.replace(/[^0-9.]/g, ""));
   const isValid = !isNaN(parsedOffer) && parsedOffer > 0;
 
-  const fairValue = isValid ? Math.round(parsedOffer * 2.37) : 0;
-  const gap = fairValue - parsedOffer;
-
   function handleReveal() {
     if (!isValid) return;
     setRevealed(true);
   }
+
+  const TYPICALLY_EXCLUDED = [
+    {
+      name: "Diminished value",
+      explanation:
+        "Your car is worth less after an accident, even after repairs. Most adjusters leave this at $0.",
+    },
+    {
+      name: "Loss of use",
+      explanation:
+        "Rental or daily rate while you\u2019re without your car. Owed even if you didn\u2019t rent one.",
+    },
+    {
+      name: "Sales tax on replacement",
+      explanation:
+        "You\u2019ll pay this out of pocket when you buy a replacement vehicle if they don\u2019t include it.",
+    },
+    {
+      name: "Registration & title fees",
+      explanation:
+        "Transfer fees for your replacement vehicle that the offer almost never covers.",
+    },
+  ];
 
   return (
     <div className="max-w-lg mx-auto lg:mx-0">
@@ -126,7 +146,7 @@ function HeroHook() {
                 htmlFor="offer-hook"
                 className="block text-body-sm font-medium text-navy-800 mb-2"
               >
-                Enter the offer your insurance company gave you
+                What did they offer you?
               </label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-mono font-semibold text-navy-800">
@@ -152,7 +172,7 @@ function HeroHook() {
               disabled={!isValid}
               className="w-full py-4 bg-gold text-navy-900 font-semibold hover:bg-gold-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 text-body-lg"
             >
-              See what your car is actually worth
+              Is this fair?
               <ArrowRight className="w-5 h-5" />
             </button>
 
@@ -163,43 +183,49 @@ function HeroHook() {
           </div>
         ) : (
           <div className="space-y-5 animate-fade-in">
-            {/* Their offer */}
-            <div className="p-4 bg-navy-50 border border-navy-100">
-              <p className="text-label uppercase tracking-[0.05em] text-navy-800/40 mb-1">
-                Their offer
-              </p>
-              <p className="text-2xl font-mono font-semibold text-navy-800/40 line-through decoration-danger-500 decoration-2">
-                ${parsedOffer.toLocaleString()}
-              </p>
-            </div>
-
-            {/* Fair value */}
-            <div className="p-4 bg-white border-2 border-navy-800 relative">
-              <div className="absolute -top-3 left-4 px-2 py-0.5 bg-gold text-label font-semibold text-navy-900 uppercase tracking-[0.05em]">
-                Typical fair value
-              </div>
-              <p className="text-3xl sm:text-4xl font-mono font-bold text-navy-800 mt-1">
-                ${fairValue.toLocaleString()}
-              </p>
-              {/* Gap pill */}
-              <div className="flex items-center gap-2 mt-3">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gold/20 text-body-sm font-bold text-navy-900">
-                  <TrendingUp className="w-4 h-4" />
-                  +${gap.toLocaleString()}
+            {/* Contextual header */}
+            <div className="p-4 bg-navy-800">
+              <p className="text-body-sm font-medium text-white leading-relaxed">
+                On offers around{" "}
+                <span className="font-mono font-bold text-gold">
+                  ${parsedOffer.toLocaleString()}
                 </span>
-                <span className="text-caption text-navy-800/40">recoverable</span>
-              </div>
+                , adjusters typically exclude:
+              </p>
             </div>
 
-            <p className="text-body-sm text-navy-800/60 text-center leading-relaxed">
-              Policyholders who counter with evidence recover{" "}
-              <span className="mark-gold font-semibold text-navy-800">70&ndash;85%</span> of fair
-              value. That&apos;s{" "}
-              <span className="font-semibold font-mono text-navy-800">
-                ${Math.round(fairValue * 0.75).toLocaleString()}
-              </span>{" "}
-              in your pocket.
-            </p>
+            {/* Excluded items */}
+            <div className="space-y-3">
+              {TYPICALLY_EXCLUDED.map((item) => (
+                <div
+                  key={item.name}
+                  className="flex gap-3 p-3 bg-navy-50 border border-navy-100"
+                >
+                  <div className="flex-shrink-0 mt-0.5">
+                    <AlertTriangle className="w-4 h-4 text-gold-500" />
+                  </div>
+                  <div>
+                    <p className="text-body-sm font-semibold text-navy-800">
+                      {item.name}
+                    </p>
+                    <p className="text-caption text-navy-800/50 leading-relaxed mt-0.5">
+                      {item.explanation}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Recovery stat */}
+            <div className="p-4 bg-gold/10 border border-gold/30">
+              <p className="text-body-sm text-navy-800 text-center leading-relaxed">
+                Policyholders who counter with evidence recover{" "}
+                <span className="mark-gold font-bold text-navy-800">
+                  70&ndash;85% more
+                </span>
+                .
+              </p>
+            </div>
 
             <Link href="/claims/new" className="block">
               <button className="w-full py-4 bg-gold text-navy-900 font-semibold hover:bg-gold-300 transition-colors flex items-center justify-center gap-2 text-body-lg">
