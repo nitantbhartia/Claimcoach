@@ -183,14 +183,14 @@ export default function ExportPage() {
       </div>
 
       {/* Printable content */}
-      <div className="max-w-3xl mx-auto px-6 py-10 print:px-0 print:py-0 print:max-w-none">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 print:px-0 print:py-0 print:max-w-none">
         {/* Header */}
         <div className="mb-8 print:mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-display-sm font-semibold text-black">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <h1 className="text-heading-lg sm:text-display-sm font-semibold text-black">
               ClaimCoach Analysis Report
             </h1>
-            <span className="text-body-sm text-[#4a555e]/60 print:text-[#4a555e]">
+            <span className="text-body-sm text-[#4a555e]/60 print:text-[#4a555e] flex-shrink-0">
               {new Date().toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",

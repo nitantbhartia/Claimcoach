@@ -35,11 +35,11 @@ export function ClaimLayout({ children, claimId }: ClaimLayoutProps) {
             Dashboard
           </Link>
 
-          <span className="font-mono text-body-sm font-bold text-black">
+          <span className="font-mono text-caption sm:text-body-sm font-bold text-black truncate">
             Case #{claimId.slice(0, 8)}
           </span>
 
-          <div className="w-20" />
+          <div className="w-12 sm:w-20" />
         </div>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -275,7 +275,7 @@ export default function CounterOfferPage() {
             {/* 3. Demand Letter                                                */}
             {/* -------------------------------------------------------------- */}
             <div className="bg-panel border border-black/10">
-              <div className="px-6 py-4 border-b border-black/5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="px-4 sm:px-6 py-4 border-b border-black/5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <h2 className="text-heading font-semibold text-black">
                   Demand Letter
                 </h2>
@@ -312,7 +312,7 @@ export default function CounterOfferPage() {
                   {counterOffer.demand_letter}
                 </pre>
               </div>
-              <div className="px-6 pb-4">
+              <div className="px-4 sm:px-6 pb-4">
                 <p className="text-caption text-[#4a555e]/60">
                   Replace [Your Name], [Your Address], [Your Phone Number], and
                   [Your Email] with your actual contact information before
@@ -325,7 +325,7 @@ export default function CounterOfferPage() {
             {/* 4. Talking Points                                               */}
             {/* -------------------------------------------------------------- */}
             <div className="bg-panel border border-black/10">
-              <div className="px-6 py-4 border-b border-black/5">
+              <div className="px-4 sm:px-6 py-4 border-b border-black/5">
                 <h2 className="text-heading font-semibold text-black">
                   Talking Points
                 </h2>
@@ -336,7 +336,7 @@ export default function CounterOfferPage() {
               </div>
               <div className="divide-y divide-black/5">
                 {counterOffer.talking_points.map((point, index) => (
-                  <div key={index} className="px-6 py-4 flex gap-4">
+                  <div key={index} className="px-4 sm:px-6 py-4 flex gap-4">
                     <span className="flex-shrink-0 text-body-sm font-semibold text-[#4a555e]/60 w-6 text-right">
                       {index + 1}.
                     </span>
@@ -375,7 +375,7 @@ export default function CounterOfferPage() {
             {/* 6. Escalation Roadmap                                           */}
             {/* -------------------------------------------------------------- */}
             <div className="bg-panel border border-black/10">
-              <div className="px-6 py-4 border-b border-black/5">
+              <div className="px-4 sm:px-6 py-4 border-b border-black/5">
                 <h2 className="text-heading font-semibold text-black">
                   If Negotiation Fails
                 </h2>
@@ -388,7 +388,7 @@ export default function CounterOfferPage() {
                       <button
                         type="button"
                         onClick={() => toggleStep(index)}
-                        className="w-full px-6 py-4 flex items-center justify-between gap-3 text-left hover:bg-panel-alt"
+                        className="w-full px-4 sm:px-6 py-4 flex items-center justify-between gap-3 text-left hover:bg-panel-alt"
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-body-sm font-semibold text-[#4a555e]/60">
@@ -405,7 +405,7 @@ export default function CounterOfferPage() {
                         )}
                       </button>
                       {isExpanded && (
-                        <div className="px-6 pb-4 space-y-3">
+                        <div className="px-4 sm:px-6 pb-4 space-y-3">
                           <p className="text-body-sm text-[#4a555e] leading-relaxed">
                             {step.description}
                           </p>

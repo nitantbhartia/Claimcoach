@@ -1032,7 +1032,7 @@ export default function NewClaimPage() {
               <p className="text-caption text-[#4a555e] mt-0.5">
                 Enter your 17-character VIN and we&apos;ll auto-fill year, make, and model.
               </p>
-              <div className="mt-3 flex gap-2">
+              <div className="mt-3 flex flex-col sm:flex-row gap-2">
                 <input
                   type="text"
                   value={vinInput}
@@ -1042,13 +1042,13 @@ export default function NewClaimPage() {
                   }}
                   placeholder="e.g., 1HGCV1F34NA012345"
                   maxLength={17}
-                  className="flex-1 min-w-0 border border-black/10 bg-panel px-3 py-1.5 text-body-sm text-black placeholder:text-[#4a555e]/60 focus:outline-none focus:ring-2 focus:ring-coral focus:border-coral font-mono"
+                  className="flex-1 min-w-0 border border-black/10 bg-panel px-3 py-2 text-body-sm text-black placeholder:text-[#4a555e]/60 focus:outline-none focus:ring-2 focus:ring-coral focus:border-coral font-mono"
                 />
                 <button
                   type="button"
                   onClick={handleVinLookup}
                   disabled={vinLoading || vinInput.length < 17}
-                  className="px-3 py-1.5 bg-black text-white text-body-sm font-medium hover:bg-coral transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
+                  className="px-3 py-2 bg-black text-white text-body-sm font-medium hover:bg-coral transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5 flex-shrink-0"
                 >
                   {vinLoading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />

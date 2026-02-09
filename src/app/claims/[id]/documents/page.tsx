@@ -275,8 +275,8 @@ export default function DocumentsPage() {
                   onClick={() => toggleSection(category)}
                   className="w-full flex items-center justify-between px-5 py-3 hover:bg-panel-alt transition-colors"
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-body-sm font-medium uppercase tracking-wider text-[#4a555e]">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="text-body-sm font-medium uppercase tracking-wider text-[#4a555e] truncate">
                       {CATEGORY_LABELS[category] ?? category}
                     </span>
                     <span className="text-caption text-[#4a555e]">
@@ -408,8 +408,8 @@ export default function DocumentsPage() {
           )}
 
           {/* Add expense form */}
-          <div className="mt-4 space-y-2 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-2">
-            <div className="sm:w-40">
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
               <Select
                 id="expense-category"
                 value={newExpense.category}
@@ -418,7 +418,7 @@ export default function DocumentsPage() {
                 placeholder="Category"
               />
             </div>
-            <div className="sm:flex-1 sm:min-w-[140px]">
+            <div>
               <Input
                 id="expense-description"
                 placeholder="Description"
@@ -426,41 +426,41 @@ export default function DocumentsPage() {
                 onChange={(e) => setNewExpense((prev) => ({ ...prev, description: e.target.value }))}
               />
             </div>
-            <div className="flex gap-2">
-              <div className="flex-1 sm:w-28 sm:flex-initial">
-                <Input
-                  id="expense-amount"
-                  type="number"
-                  placeholder="Amount ($)"
-                  min="0"
-                  step="0.01"
-                  value={newExpense.amount}
-                  onChange={(e) => setNewExpense((prev) => ({ ...prev, amount: e.target.value }))}
-                />
-              </div>
-              <div className="flex-1 sm:w-36 sm:flex-initial">
-                <Input
-                  id="expense-date"
-                  type="date"
-                  value={newExpense.date}
-                  onChange={(e) => setNewExpense((prev) => ({ ...prev, date: e.target.value }))}
-                />
-              </div>
+            <div>
+              <Input
+                id="expense-amount"
+                type="number"
+                placeholder="Amount ($)"
+                min="0"
+                step="0.01"
+                value={newExpense.amount}
+                onChange={(e) => setNewExpense((prev) => ({ ...prev, amount: e.target.value }))}
+              />
             </div>
-            <Button
-              size="sm"
-              onClick={addExpense}
-              disabled={
-                !newExpense.category ||
-                !newExpense.description ||
-                !newExpense.amount ||
-                !newExpense.date
-              }
-              className="w-full sm:w-auto flex-shrink-0"
-            >
-              <Plus className="w-4 h-4 mr-1" />
-              Add
-            </Button>
+            <div>
+              <Input
+                id="expense-date"
+                type="date"
+                value={newExpense.date}
+                onChange={(e) => setNewExpense((prev) => ({ ...prev, date: e.target.value }))}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <Button
+                size="sm"
+                onClick={addExpense}
+                disabled={
+                  !newExpense.category ||
+                  !newExpense.description ||
+                  !newExpense.amount ||
+                  !newExpense.date
+                }
+                className="w-full sm:w-auto"
+              >
+                <Plus className="w-4 h-4 mr-1" />
+                Add
+              </Button>
+            </div>
           </div>
         </div>
 

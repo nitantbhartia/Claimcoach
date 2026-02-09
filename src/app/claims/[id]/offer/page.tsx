@@ -178,7 +178,7 @@ export default function OfferAnalysisPage() {
                   const val = e.target.value.replace(/[^0-9.,]/g, "");
                   setOfferAmount(val);
                 }}
-                className="pl-8 text-body-lg font-semibold"
+                className="pl-7 sm:pl-8 text-body font-semibold"
               />
             </div>
             <Button
@@ -233,7 +233,7 @@ export default function OfferAnalysisPage() {
                   </p>
 
                   {/* Their offer vs Fair value */}
-                  <div className="flex flex-wrap items-baseline gap-6">
+                  <div className="flex flex-wrap items-baseline gap-3 sm:gap-6">
                     <div>
                       <p className="text-caption text-[#4a555e]/60">Their offer</p>
                       <p className="text-heading-lg font-semibold text-black font-mono">
@@ -258,7 +258,7 @@ export default function OfferAnalysisPage() {
             {/* 4. Line Items                                                   */}
             {/* -------------------------------------------------------------- */}
             <div className="bg-panel border border-black/10 overflow-hidden">
-              <div className="px-6 py-4 border-b border-black/5">
+              <div className="px-4 sm:px-6 py-4 border-b border-black/5">
                 <h2 className="text-heading font-semibold text-black">
                   Line-Item Breakdown
                 </h2>
@@ -339,7 +339,7 @@ export default function OfferAnalysisPage() {
               {/* Mobile layout */}
               <div className="md:hidden divide-y divide-black/5">
                 {analysis.line_items.map((item, index) => (
-                  <div key={index} className="px-6 py-4">
+                  <div key={index} className="px-4 sm:px-6 py-4">
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <p className="text-body-sm font-medium text-black">
                         {item.category}
@@ -375,7 +375,7 @@ export default function OfferAnalysisPage() {
                     </p>
                   </div>
                 ))}
-                <div className="px-6 py-4 bg-panel-alt">
+                <div className="px-4 sm:px-6 py-4 bg-panel-alt">
                   <div className="flex items-center justify-between">
                     <span className="text-body-sm font-semibold text-black">
                       Total Gap
@@ -392,7 +392,7 @@ export default function OfferAnalysisPage() {
             {/* 5. Market Data                                                  */}
             {/* -------------------------------------------------------------- */}
             <div className="bg-panel border border-black/10">
-              <div className="px-6 py-4 border-b border-black/5">
+              <div className="px-4 sm:px-6 py-4 border-b border-black/5">
                 <h2 className="text-heading font-semibold text-black">
                   Market Data
                 </h2>

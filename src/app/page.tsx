@@ -149,7 +149,7 @@ function HeroHook() {
                 What did they offer you?
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-mono font-semibold text-navy-800">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl sm:text-2xl font-mono font-semibold text-navy-800">
                   $
                 </span>
                 <input
@@ -162,7 +162,7 @@ function HeroHook() {
                     setOffer(e.target.value.replace(/[^0-9.,]/g, ""));
                     setRevealed(false);
                   }}
-                  className="w-full pl-10 pr-4 py-4 text-3xl sm:text-4xl font-mono font-semibold text-navy-800 bg-navy-50 border-2 border-navy-100 focus:outline-none focus:border-navy-800 transition-all placeholder:text-navy-800/20"
+                  className="w-full pl-10 pr-4 py-3 sm:py-4 text-2xl sm:text-4xl font-mono font-semibold text-navy-800 bg-navy-50 border-2 border-navy-100 focus:outline-none focus:border-navy-800 transition-all placeholder:text-navy-800/20"
                 />
               </div>
             </div>
@@ -739,14 +739,14 @@ export default function LandingPage() {
               ))}
             </div>
 
-            <div className="mt-8 bg-white border-2 border-gold p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <p className="text-body text-navy-800">
+            <div className="mt-8 bg-white border-2 border-gold p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <p className="text-body-sm sm:text-body text-navy-800">
                 <span className="font-semibold">The bottom line:</span> The average auto claim is underpaid by{" "}
                 <span className="font-mono font-bold">$3,000&ndash;$5,000</span>.{" "}
                 <span className="text-navy-800/50">That&apos;s not a rounding error &mdash; it&apos;s a strategy.</span>
               </p>
-              <Link href="/claims/new" className="flex-shrink-0">
-                <button className="px-6 py-3 bg-gold text-navy-900 font-semibold hover:bg-gold-300 transition-colors flex items-center gap-2 text-body-sm whitespace-nowrap">
+              <Link href="/claims/new" className="flex-shrink-0 w-full sm:w-auto">
+                <button className="w-full sm:w-auto px-6 py-3 bg-gold text-navy-900 font-semibold hover:bg-gold-300 transition-colors flex items-center justify-center gap-2 text-body-sm whitespace-nowrap">
                   Check your offer
                   <ArrowRight className="w-4 h-4" />
                 </button>

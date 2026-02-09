@@ -9,7 +9,7 @@ export function Header() {
   const isHome = pathname === "/";
 
   return (
-    <header className="bg-panel px-6 py-4 flex items-center justify-between border-b-[4px] border-frame">
+    <header className="bg-panel px-4 sm:px-6 py-4 flex items-center justify-between border-b-[4px] border-frame">
       <Link href="/" className="flex items-center">
         <span className="text-[20px] font-bold tracking-[-0.03em] text-black">
           Claim Coach

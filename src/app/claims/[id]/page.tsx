@@ -440,12 +440,12 @@ export default function ClaimOverviewPage() {
                   <h3 className="text-body-sm font-semibold text-black mb-3">Deadlines</h3>
                   <div className="space-y-2">
                     {stateGuidance.deadlines.map((d, i) => (
-                      <div key={i} className="flex items-baseline justify-between gap-4">
-                        <div>
+                      <div key={i} className="flex items-baseline justify-between gap-3">
+                        <div className="min-w-0">
                           <p className="text-body-sm font-medium text-black">{d.name}</p>
                           <p className="text-caption text-[#4a555e]">{d.description}</p>
                         </div>
-                        <span className="text-body-sm font-semibold text-black whitespace-nowrap">{d.timeframe}</span>
+                        <span className="text-body-sm font-semibold text-black whitespace-nowrap flex-shrink-0">{d.timeframe}</span>
                       </div>
                     ))}
                   </div>
