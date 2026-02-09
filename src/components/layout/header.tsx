@@ -10,38 +10,16 @@ export function Header() {
 
   if (isHome) {
     return (
-      <header className="bg-cream-100 px-4 sm:px-6 py-4 flex items-center justify-between border-b border-charcoal-100">
+      <header className="bg-surface-100 px-5 py-5 flex items-center justify-between border-b border-primary-border">
         <Link href="/" className="flex items-center">
-          <span className="text-[20px] font-bold tracking-[-0.03em] text-charcoal-900">
-            ClaimCoach
+          <span className="font-display font-bold tracking-[2px] border border-primary px-2 py-1 text-[0.85rem] text-primary uppercase">
+            CLAIMCOACH
           </span>
         </Link>
 
-        <nav className="hidden sm:flex items-center gap-6">
-          <a
-            href="#how-it-works"
-            className="text-body-sm font-medium text-charcoal-500 hover:text-charcoal-900 transition-colors"
-          >
-            How It Works
-          </a>
-          <Link
-            href="/pricing"
-            className="text-body-sm font-medium text-charcoal-500 hover:text-charcoal-900 transition-colors"
-          >
-            Pricing
-          </Link>
-          <Link
-            href="/login"
-            className="text-body-sm font-medium text-charcoal-500 hover:text-charcoal-900 transition-colors"
-          >
-            Sign In
-          </Link>
-          <Link href="/signup">
-            <button className="px-4 py-2 text-body-sm font-semibold text-white bg-brand-500 rounded-lg hover:bg-brand-600 transition-colors">
-              Start Free Audit
-            </button>
-          </Link>
-        </nav>
+        <span className="text-[0.8rem] font-body text-primary-dim">
+          BETA_V.2.0
+        </span>
       </header>
     );
   }
