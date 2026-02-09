@@ -8,19 +8,17 @@ import {
   ArrowRight,
   Shield,
   FileText,
-  Phone,
   CheckCircle2,
   Search,
   Zap,
-  AlertTriangle,
   Lock,
   DollarSign,
   XCircle,
-  Clock,
-  Users,
+  Upload,
+  Star,
+  Gavel,
   ChevronRight,
   BarChart3,
-  Scale,
 } from "lucide-react";
 
 /* -------------------------------------------------------------------------- */
@@ -56,8 +54,6 @@ function useInView(threshold = 0.3) {
 
 function StickyCTA() {
   const [visible, setVisible] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const [offer, setOffer] = useState("");
 
   useEffect(() => {
     function onScroll() {
@@ -74,185 +70,250 @@ function StickyCTA() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden">
-      {expanded ? (
-        <div className="bg-navy-900 border-t border-navy-800 px-4 py-4 animate-slide-up">
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-lg font-mono font-semibold text-white/40">
-                $
-              </span>
-              <input
-                type="text"
-                inputMode="numeric"
-                placeholder="0.00"
-                value={offer}
-                onChange={(e) =>
-                  setOffer(e.target.value.replace(/[^0-9.,]/g, ""))
-                }
-                className="w-full pl-8 pr-3 py-3 text-lg font-mono font-semibold text-white bg-navy-800 border border-navy-200/20 focus:outline-none focus:border-gold placeholder:text-white/20"
-              />
-            </div>
-            <Link href="/claims/new" className="flex-shrink-0">
-              <button className="h-full px-5 bg-gold text-navy-900 font-semibold hover:bg-gold-300 transition-colors text-body-sm">
-                Analyze
-                <ArrowRight className="w-4 h-4 ml-1 inline" />
-              </button>
-            </Link>
-          </div>
-          <button
-            onClick={() => setExpanded(false)}
-            className="w-full text-center text-caption text-white/30 mt-2"
-          >
-            Close
-          </button>
-        </div>
-      ) : (
-        <button
-          onClick={() => setExpanded(true)}
-          className="w-full bg-gold text-navy-900 font-semibold py-4 flex items-center justify-center gap-2 text-body"
-        >
-          Analyze Your Offer — Free
+      <Link href="/claims/new">
+        <button className="w-full bg-emerald-600 text-white font-semibold py-4 flex items-center justify-center gap-2 text-body shadow-elevated">
+          Start Free Audit
           <ChevronRight className="w-4 h-4" />
         </button>
-      )}
+      </Link>
     </div>
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/* Hero Offer Form                                                            */
+/* Hero Floating Card Form                                                    */
 /* -------------------------------------------------------------------------- */
 
-function HeroOfferForm() {
+function HeroOfferCard() {
   const [offer, setOffer] = useState("");
 
   const parsedOffer = parseFloat(offer.replace(/[^0-9.]/g, ""));
   const isValid = !isNaN(parsedOffer) && parsedOffer > 0;
 
   return (
-    <div className="max-w-md mx-auto lg:mx-0">
-      <label
-        htmlFor="hero-offer"
-        className="block text-body-sm font-medium text-white/70 mb-3"
-      >
-        Enter your settlement offer amount
-      </label>
-      <div className="relative mb-3">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl sm:text-3xl font-mono font-semibold text-white/30">
+    <div className="bg-white border border-slate-200 shadow-float rounded-xl p-6 sm:p-8 max-w-md mx-auto lg:mx-0">
+      <p className="text-body-sm font-semibold text-slate-800 mb-4">
+        Check your offer fairness for free
+      </p>
+      <div className="relative mb-4">
+        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl sm:text-2xl font-mono font-semibold text-slate-300">
           $
         </span>
         <input
           id="hero-offer"
           type="text"
           inputMode="numeric"
-          placeholder="0.00"
+          placeholder="Enter settlement amount"
           value={offer}
           onChange={(e) => setOffer(e.target.value.replace(/[^0-9.,]/g, ""))}
-          className="w-full pl-12 pr-4 py-4 sm:py-5 text-2xl sm:text-4xl font-mono font-semibold text-white bg-navy-800 border-2 border-navy-200/20 focus:outline-none focus:border-gold transition-all placeholder:text-white/15"
+          className="w-full pl-10 pr-4 py-3 sm:py-4 text-xl sm:text-2xl font-mono font-semibold text-slate-900 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald focus:ring-2 focus:ring-emerald/20 transition-all placeholder:text-slate-300 placeholder:text-base placeholder:font-sans placeholder:font-normal"
         />
       </div>
       <Link href="/claims/new">
         <button
           disabled={!isValid}
-          className="w-full py-4 bg-gold text-navy-900 font-bold hover:bg-gold-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 text-body-lg"
+          className="w-full py-3.5 bg-emerald-600 text-white font-semibold hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 text-body-lg shadow-card rounded-lg"
         >
-          Analyze My Offer — Free
+          Analyze My Offer
           <ArrowRight className="w-5 h-5" />
         </button>
       </Link>
-      <p className="mt-3 flex items-center justify-center gap-2 text-caption text-white/30">
+      <p className="mt-3 flex items-center justify-center gap-2 text-caption text-slate-400">
         <Lock className="w-3 h-3" />
-        No credit card required. See your full breakdown instantly.
+        Bank-level security. No credit card required.
       </p>
     </div>
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/* Analysis Preview (visual element for hero)                                 */
+/* Audit Report Preview (right side of hero)                                  */
 /* -------------------------------------------------------------------------- */
 
-function AnalysisPreview() {
+function AuditReportPreview() {
   const { ref, inView } = useInView(0.2);
 
   return (
-    <div ref={ref} className="max-w-md mx-auto lg:mx-0">
+    <div ref={ref} className="max-w-sm mx-auto lg:ml-auto lg:mr-0">
       <div
-        className={`bg-navy-800 border border-white/10 overflow-hidden transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+        className={`bg-white border border-slate-200 shadow-float rounded-xl overflow-hidden transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       >
-        {/* Header */}
-        <div className="px-5 py-3 border-b border-white/10 flex items-center justify-between">
+        {/* Report header */}
+        <div className="bg-slate-800 px-5 py-3 rounded-t-xl flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-gold" />
-            <span className="text-caption font-semibold text-white/60 uppercase tracking-wider">
-              ClaimCoach Analysis
+            <BarChart3 className="w-4 h-4 text-emerald-400" />
+            <span className="text-caption font-semibold text-white/80 uppercase tracking-wider">
+              ClaimCoach Audit Report
             </span>
           </div>
-          <span className="px-2 py-0.5 text-caption font-semibold bg-danger-500/20 text-danger-500">
-            6 items missing
-          </span>
         </div>
 
-        {/* Line items */}
-        <div className="px-5 py-4 space-y-2.5">
+        {/* Score */}
+        <div className="px-5 py-5 text-center border-b border-slate-100">
+          <p className="text-caption text-slate-400 uppercase tracking-wider mb-1">
+            Additional recovery found
+          </p>
+          <p
+            className={`text-score font-mono font-bold text-emerald-600 transition-all duration-1000 ${inView ? "opacity-100" : "opacity-0"}`}
+          >
+            +$4,700
+          </p>
+        </div>
+
+        {/* Line items found */}
+        <div className="px-5 py-4 space-y-3">
           {[
-            {
-              label: "Sales tax on replacement",
-              amount: "+$1,840",
-              status: "missing",
-            },
-            {
-              label: "Title & registration fees",
-              amount: "+$385",
-              status: "missing",
-            },
-            {
-              label: "Comparable vehicle adjustment",
-              amount: "+$1,200",
-              status: "missing",
-            },
-            {
-              label: "Dealer documentation fees",
-              amount: "+$499",
-              status: "missing",
-            },
-            {
-              label: "Loss of use (12 days)",
-              amount: "+$540",
-              status: "missing",
-            },
-            {
-              label: "Aftermarket upgrades",
-              amount: "+$750",
-              status: "missing",
-            },
+            { label: "Overhead & Profit (20%)", amount: "+$2,500" },
+            { label: "Code upgrade (electrical)", amount: "+$1,350" },
+            { label: "Labor tax omission", amount: "+$850" },
           ].map((item, i) => (
             <div
               key={item.label}
-              className={`flex items-center justify-between py-1.5 transition-all duration-500 ${inView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`}
-              style={{ transitionDelay: `${300 + i * 100}ms` }}
+              className={`flex items-center justify-between transition-all duration-500 ${inView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`}
+              style={{ transitionDelay: `${500 + i * 150}ms` }}
             >
               <div className="flex items-center gap-2">
-                <XCircle className="w-3.5 h-3.5 text-danger-500" />
-                <span className="text-body-sm text-white/50">{item.label}</span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <span className="text-body-sm text-slate-600">
+                  {item.label}
+                </span>
               </div>
-              <span className="text-body-sm font-mono font-semibold text-success-500">
+              <span className="text-body-sm font-mono font-semibold text-emerald-600">
                 {item.amount}
               </span>
             </div>
           ))}
         </div>
 
-        {/* Total */}
-        <div className="px-5 py-3 border-t border-white/10 bg-success-500/10 flex items-center justify-between">
-          <span className="text-body-sm font-semibold text-white">
-            Additional amount owed
+        {/* Footer */}
+        <div className="px-5 py-3 bg-emerald-50 border-t border-emerald-100 flex items-center justify-between">
+          <span className="text-body-sm font-semibold text-slate-700">
+            Your new claim total
           </span>
-          <span className="text-heading font-mono font-bold text-success-500">
-            +$5,214
+          <span className="text-heading font-mono font-bold text-emerald-700">
+            $17,200
           </span>
         </div>
       </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Receipt comparison (Before / After)                                        */
+/* -------------------------------------------------------------------------- */
+
+function ReceiptComparison() {
+  const { ref, inView } = useInView(0.2);
+
+  const theirItems = [
+    { label: "Structure repair", amount: "$8,400" },
+    { label: "Contents & personal property", amount: "$2,800" },
+    { label: "Additional living expenses", amount: "$1,300" },
+  ];
+
+  const ourItems = [
+    { label: "Structure repair", amount: "$8,400" },
+    { label: "Contents & personal property", amount: "$2,800" },
+    { label: "Additional living expenses", amount: "$1,300" },
+    { label: "Overhead & Profit (+20%)", amount: "+$2,500", added: true },
+    { label: "Code upgrade (electrical)", amount: "+$1,350", added: true },
+    { label: "Debris removal", amount: "+$850", added: true },
+  ];
+
+  return (
+    <div ref={ref} className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      {/* Their Offer */}
+      <div
+        className={`bg-white border border-slate-200 shadow-card rounded-xl overflow-hidden transition-all duration-600 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+      >
+        <div className="bg-slate-100 px-5 py-3 flex items-center gap-2 rounded-t-xl">
+          <div className="w-2 h-2 rounded-full bg-danger-500" />
+          <span className="text-label uppercase tracking-[0.05em] text-slate-500 font-bold">
+            Their Offer
+          </span>
+        </div>
+        <div className="px-5 py-4 space-y-3">
+          {theirItems.map((item) => (
+            <div key={item.label} className="flex justify-between">
+              <span className="text-body-sm text-slate-500">{item.label}</span>
+              <span className="text-body-sm font-mono text-slate-500">
+                {item.amount}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="px-5 py-3 border-t border-slate-100 flex justify-between">
+          <span className="text-body-sm font-semibold text-slate-600">
+            Total
+          </span>
+          <span className="text-heading font-mono font-bold text-slate-500 line-through decoration-danger-500 decoration-2">
+            $12,500
+          </span>
+        </div>
+      </div>
+
+      {/* ClaimCoach Audit */}
+      <div
+        className={`bg-white border-2 border-emerald-600 shadow-card rounded-xl overflow-hidden transition-all duration-600 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+        style={{ transitionDelay: "200ms" }}
+      >
+        <div className="bg-emerald-50 px-5 py-3 flex items-center gap-2 rounded-t-xl">
+          <div className="w-2 h-2 rounded-full bg-emerald-600" />
+          <span className="text-label uppercase tracking-[0.05em] text-emerald-700 font-bold">
+            The ClaimCoach Audit
+          </span>
+        </div>
+        <div className="px-5 py-4 space-y-3">
+          {ourItems.map((item, i) => (
+            <div
+              key={item.label}
+              className={`flex justify-between ${item.added ? "bg-emerald-50 -mx-2 px-2 py-1" : ""}`}
+            >
+              <div className="flex items-center gap-2">
+                {item.added && (
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                )}
+                <span
+                  className={`text-body-sm ${item.added ? "text-emerald-700 font-medium" : "text-slate-600"}`}
+                >
+                  {item.label}
+                </span>
+              </div>
+              <span
+                className={`text-body-sm font-mono ${item.added ? "font-semibold text-emerald-600" : "text-slate-600"}`}
+              >
+                {item.amount}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="px-5 py-3 border-t border-emerald-100 bg-emerald-50 flex justify-between">
+          <span className="text-body-sm font-semibold text-emerald-700">
+            New Total
+          </span>
+          <span className="text-heading font-mono font-bold text-emerald-700">
+            $17,200
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Five Stars component                                                       */
+/* -------------------------------------------------------------------------- */
+
+function FiveStars() {
+  return (
+    <div className="flex gap-0.5">
+      {[...Array(5)].map((_, i) => (
+        <Star
+          key={i}
+          className="w-4 h-4 fill-gold text-gold"
+        />
+      ))}
     </div>
   );
 }
@@ -265,17 +326,17 @@ const FAQ_ITEMS = [
   {
     question: "Is this legal?",
     answer:
-      "Yes, you have every right to dispute your settlement offer. This is standard practice. Insurance companies expect pushback from informed policyholders — ClaimCoach simply gives you the documentation to back it up.",
+      "Yes, you have every right to dispute your settlement offer. This is standard practice. Insurance companies expect pushback from informed policyholders \u2014 ClaimCoach simply gives you the documentation to back it up.",
   },
   {
     question: "Will this actually work?",
     answer:
-      "Insurance companies respond to documented, itemized disputes backed by market data and state regulations. We give you exactly that — a professional counter-offer with specific dollar amounts and citations they can\u2019t ignore.",
+      "Insurance companies respond to documented, itemized disputes backed by market data and state regulations. We give you exactly that \u2014 a professional counter-offer with specific dollar amounts and citations they can\u2019t ignore.",
   },
   {
     question: "How much does it cost?",
     answer:
-      "Free to analyze your offer and see your full breakdown. The complete toolkit — including counter-offer letter, call script, and escalation playbook — is $79 per claim. That\u2019s a 44x return on the average recovery of $3,500+.",
+      "Free to analyze your offer and see your full breakdown. The complete toolkit \u2014 including counter-offer letter, call script, and escalation playbook \u2014 is $79 per claim. That\u2019s a 44x return on the average recovery of $3,500+.",
   },
   {
     question: "What if I already accepted the offer?",
@@ -312,75 +373,41 @@ const FAQ_JSON_LD = {
 };
 
 /* -------------------------------------------------------------------------- */
-/* Missing line items data                                                    */
-/* -------------------------------------------------------------------------- */
-
-const MISSING_LINE_ITEMS = [
-  {
-    name: "Sales tax on replacement vehicle",
-    range: "$800–$3,000+",
-    detail:
-      "You\u2019ll pay this when you buy your replacement car. Most offers leave it at $0.",
-  },
-  {
-    name: "Title, registration & transfer fees",
-    range: "$200–$500",
-    detail:
-      "Transfer costs for your replacement vehicle that the offer almost never includes.",
-  },
-  {
-    name: "Comparable vehicle adjustments",
-    range: "$500–$2,000",
-    detail:
-      "Your car gets compared to lower-trim, higher-mileage models. The difference is money out of your pocket.",
-  },
-  {
-    name: "Dealer fees & documentation charges",
-    range: "$300–$800",
-    detail:
-      "Dealer doc fees, advertising fees, and other costs you\u2019ll actually pay when buying a replacement.",
-  },
-  {
-    name: "Aftermarket upgrades & modifications",
-    range: "Varies",
-    detail:
-      "Tinted windows, upgraded audio, custom wheels — anything you added that increased the value.",
-  },
-  {
-    name: "Loss of use / rental car gap",
-    range: "$200–$1,500",
-    detail:
-      "Daily rate while you\u2019re without transportation. Owed even if you didn\u2019t rent a car.",
-  },
-];
-
-/* -------------------------------------------------------------------------- */
 /* Testimonials data                                                          */
 /* -------------------------------------------------------------------------- */
 
 const TESTIMONIALS = [
   {
+    headline: "They offered $8k. ClaimCoach found $5,200 more.",
     quote:
-      "They offered me $8,200 for my 2019 Civic. ClaimCoach found $2,800 in missing line items. I settled for $10,900.",
-    name: "M.K.",
+      "I didn\u2019t know I could claim for debris removal until the audit showed me. The letter they generated got me a supplemental check in two weeks.",
+    name: "Sarah J.",
     state: "Texas",
-    recovered: 2700,
+    recovered: 5200,
   },
   {
+    headline: "My adjuster folded immediately.",
     quote:
-      "I didn\u2019t even know I could dispute a total loss offer. ClaimCoach walked me through everything.",
-    name: "J.R.",
+      "Once I sent the letter with the specific line items, they cut a supplemental check in 48 hours. No pushback at all.",
+    name: "Mike T.",
     state: "Florida",
-    recovered: 3200,
+    recovered: 3800,
   },
   {
+    headline: "Found $2,500 in code upgrades they skipped.",
     quote:
-      "Got an extra $1,600 just from the sales tax and registration fees they left off.",
-    name: "A.P.",
+      "The electrical panel had to be brought to current code. Insurance ignored it completely. ClaimCoach caught it immediately.",
+    name: "Lisa M.",
     state: "California",
-    recovered: 1600,
+    recovered: 2500,
   },
 ];
+
+/* -------------------------------------------------------------------------- */
+/* Carrier names for social proof                                             */
+/* -------------------------------------------------------------------------- */
+
+const CARRIERS = ["State Farm", "Allstate", "Liberty Mutual", "GEICO", "Farmers"];
 
 /* -------------------------------------------------------------------------- */
 /* Main page                                                                  */
@@ -388,7 +415,7 @@ const TESTIMONIALS = [
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-navy-900">
+    <div className="flex flex-col min-h-screen bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD) }}
@@ -400,203 +427,108 @@ export default function LandingPage() {
         {/* ================================================================ */}
         {/* SECTION 1: HERO                                                  */}
         {/* ================================================================ */}
-        <section
-          id="hero-section"
-          className="relative overflow-hidden bg-navy-900"
-        >
-          {/* Subtle grid background */}
-          <div
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)",
-              backgroundSize: "60px 60px",
-            }}
-          />
-
-          <div className="relative container-wide py-16 sm:py-24 lg:py-32">
+        <section id="hero-section" className="bg-white">
+          <div className="container-wide py-14 sm:py-20 lg:py-28">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              {/* Left: Copy + Form */}
+              {/* Left: Copy */}
               <div>
-                <h1 className="font-serif text-display sm:text-display-xl text-white leading-[1.05] tracking-[-0.02em]">
+                <h1 className="font-sans text-display sm:text-display-xl text-slate-900 leading-[1.08] tracking-tight">
                   Your insurance company&apos;s first offer is a{" "}
-                  <span className="relative inline-block">
-                    negotiation tactic
-                    <span className="absolute -bottom-1 left-0 right-0 h-3 bg-danger-500/30 -z-10" />
-                  </span>
-                  .
+                  <span className="text-emerald-600">negotiation tactic</span>.
                 </h1>
 
-                <p className="mt-6 text-body-lg text-white/50 max-w-lg leading-relaxed">
-                  ClaimCoach analyzes your settlement offer in under 5 minutes
-                  and shows you every line item they&apos;re hoping you
-                  won&apos;t notice — so you can fight back with the numbers.
+                <p className="mt-6 text-body-lg text-slate-500 max-w-lg leading-relaxed">
+                  85% of policyholders accept the initial payout and leave
+                  thousands on the table. We analyze your offer for missing line
+                  items in under 5 minutes.
                 </p>
 
-                {/* Social proof badges */}
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 text-white text-body-sm font-medium">
-                    <Users className="w-3.5 h-3.5 text-gold" />
-                    2,400+ policyholders helped
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 text-white text-body-sm font-medium">
-                    <DollarSign className="w-3.5 h-3.5 text-success-500" />
-                    Avg $3,500+ recovered
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 text-white text-body-sm font-medium">
-                    <Zap className="w-3.5 h-3.5 text-gold" />
-                    Results in under 5 min
-                  </span>
-                </div>
-
-                {/* Offer input form */}
+                {/* Desktop form */}
                 <div className="mt-10">
-                  <HeroOfferForm />
+                  <HeroOfferCard />
                 </div>
               </div>
 
-              {/* Right: Analysis preview */}
+              {/* Right: Audit Report preview */}
               <div className="hidden lg:block">
-                <AnalysisPreview />
+                <AuditReportPreview />
               </div>
             </div>
           </div>
         </section>
 
         {/* ================================================================ */}
-        {/* SECTION 2: THE PROBLEM (Reframe)                                */}
+        {/* SECTION 2: SOCIAL PROOF BAR                                      */}
         {/* ================================================================ */}
-        <section className="bg-navy-800 border-t border-white/5">
+        <section className="bg-slate-50 border-y border-slate-200">
+          <div className="container-wide py-5 sm:py-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+              <p className="text-label uppercase tracking-[0.05em] text-slate-400 font-bold whitespace-nowrap">
+                We audit claims from major carriers including
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-8">
+                {CARRIERS.map((carrier) => (
+                  <span
+                    key={carrier}
+                    className="text-body-sm font-semibold text-slate-300 uppercase tracking-wider"
+                  >
+                    {carrier}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ================================================================ */}
+        {/* SECTION 3: THE RECEIPT (Visual Hook)                             */}
+        {/* ================================================================ */}
+        <section className="bg-white">
           <div className="container-wide py-16 sm:py-24">
             <div className="text-center mb-14">
-              <p className="text-label uppercase tracking-[0.05em] text-white/30 font-medium mb-3">
-                The reality
-              </p>
-              <h2 className="font-serif text-display-sm sm:text-display text-white tracking-[-0.02em] max-w-2xl mx-auto">
-                The deck is stacked against you.
+              <h2 className="font-sans text-display-sm sm:text-display text-slate-900 tracking-[-0.02em]">
+                The &ldquo;Hidden&rdquo; Money They Don&apos;t Tell You About
               </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
-              {/* Their side */}
-              <div className="bg-danger-500/5 border border-danger-500/20 p-6 sm:p-8">
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-2 h-2 bg-danger-500" />
-                  <h3 className="text-label uppercase tracking-[0.05em] text-danger-500 font-bold">
-                    Their side
-                  </h3>
-                </div>
-                <ul className="space-y-4">
-                  {[
-                    "Adjusters handle 500+ claims per year",
-                    "They use proprietary tools (like CCC ONE) that consistently undervalue",
-                    "They\u2019re incentivized to close claims fast and cheap",
-                    "They know most people won\u2019t push back",
-                  ].map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-3 text-body-sm text-white/60"
-                    >
-                      <XCircle className="w-4 h-4 text-danger-500 flex-shrink-0 mt-0.5" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Your side */}
-              <div className="bg-white/5 border border-white/10 p-6 sm:p-8">
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-2 h-2 bg-white/40" />
-                  <h3 className="text-label uppercase tracking-[0.05em] text-white/40 font-bold">
-                    Your side
-                  </h3>
-                </div>
-                <ul className="space-y-4">
-                  {[
-                    "This is your first (maybe only) total loss claim",
-                    "You have days to respond, not months",
-                    "You don\u2019t know what line items should be on the offer",
-                    "You don\u2019t know your state\u2019s specific regulations",
-                  ].map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-3 text-body-sm text-white/60"
-                    >
-                      <AlertTriangle className="w-4 h-4 text-white/30 flex-shrink-0 mt-0.5" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Bridge line */}
-            <div className="mt-8 max-w-4xl mx-auto text-center">
-              <p className="text-body-lg text-white/70 leading-relaxed">
-                <span className="text-gold font-semibold">ClaimCoach</span>{" "}
-                gives you the same analysis a public adjuster would — powered by
-                AI, delivered in minutes, not weeks.
+              <p className="mt-4 text-body-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+                Adjusters use software designed to minimize payouts. We use the
+                same data to find the line items they &ldquo;forgot.&rdquo;
               </p>
             </div>
-          </div>
-        </section>
 
-        {/* ================================================================ */}
-        {/* SECTION 3: HOW IT WORKS                                          */}
-        {/* ================================================================ */}
-        <section
-          id="how-it-works"
-          className="bg-navy-900 border-t border-white/5"
-        >
-          <div className="container-wide py-16 sm:py-24">
-            <div className="text-center mb-16">
-              <p className="text-label uppercase tracking-[0.05em] text-white/30 font-medium mb-3">
-                Three steps
-              </p>
-              <h2 className="font-serif text-display-sm sm:text-display text-white tracking-[-0.02em]">
-                Dead simple. Under 5 minutes.
-              </h2>
-            </div>
+            <ReceiptComparison />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Receipt-style callouts */}
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
               {[
                 {
-                  num: "01",
-                  icon: <Zap className="w-6 h-6" />,
-                  title: "Enter your offer",
-                  desc: "Tell us what they offered and your vehicle details. Takes 60 seconds.",
+                  label: "Overhead & Profit",
+                  value: "+20%",
+                  note: "Often skipped",
                 },
                 {
-                  num: "02",
-                  icon: <Search className="w-6 h-6" />,
-                  title: "Get your analysis",
-                  desc: "Our AI compares your offer against market data, state regulations, and common missing line items.",
+                  label: "Code Upgrades",
+                  value: "+$2,500",
+                  note: "Legally required",
                 },
                 {
-                  num: "03",
-                  icon: <FileText className="w-6 h-6" />,
-                  title: "Fight back with proof",
-                  desc: "Get a detailed breakdown you can send directly to your adjuster with specific dollar amounts for each missing item.",
+                  label: "Labor Tax",
+                  value: "+$850",
+                  note: "Frequently missed",
                 },
-              ].map((step) => (
+              ].map((item) => (
                 <div
-                  key={step.num}
-                  className="relative bg-navy-800 border border-white/10 p-6 sm:p-8 hover:border-gold/30 transition-colors group"
+                  key={item.label}
+                  className="flex items-start gap-3 p-4 bg-emerald-50 border border-emerald-100 rounded-lg"
                 >
-                  <span className="text-5xl font-bold text-white/[0.03] absolute top-4 right-6 font-mono select-none">
-                    {step.num}
-                  </span>
-                  <div className="relative">
-                    <div className="w-12 h-12 bg-gold/10 text-gold flex items-center justify-center mb-5 group-hover:bg-gold/20 transition-colors">
-                      {step.icon}
-                    </div>
-                    <h3 className="text-heading-lg text-white font-semibold">
-                      {step.title}
-                    </h3>
-                    <p className="mt-3 text-body text-white/40 leading-relaxed">
-                      {step.desc}
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-body-sm font-semibold text-slate-800">
+                      {item.label}:{" "}
+                      <span className="font-mono text-emerald-600">
+                        {item.value}
+                      </span>
                     </p>
+                    <p className="text-caption text-slate-400">{item.note}</p>
                   </div>
                 </div>
               ))}
@@ -605,42 +537,157 @@ export default function LandingPage() {
         </section>
 
         {/* ================================================================ */}
-        {/* SECTION 4: WHAT WE FIND (The "Aha" Moment)                      */}
+        {/* SECTION 4: THE STACKED DECK (The Problem)                       */}
         {/* ================================================================ */}
-        <WhatWeFind />
-
-        {/* ================================================================ */}
-        {/* SECTION 5: SOCIAL PROOF & TESTIMONIALS                           */}
-        {/* ================================================================ */}
-        <section className="bg-navy-900 border-t border-white/5">
+        <section className="bg-slate-50 border-y border-slate-200">
           <div className="container-wide py-16 sm:py-24">
             <div className="text-center mb-14">
-              <p className="text-label uppercase tracking-[0.05em] text-white/30 font-medium mb-3">
-                Results
-              </p>
-              <h2 className="font-serif text-display-sm sm:text-display text-white tracking-[-0.02em]">
-                Real people. Real money recovered.
+              <h2 className="font-sans text-display-sm sm:text-display text-slate-900 tracking-[-0.02em]">
+                Why It&apos;s Hard to Fight Alone
               </h2>
             </div>
 
-            {/* Testimonial cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              {[
+                {
+                  icon: <Shield className="w-7 h-7" />,
+                  title: 'The "Take It or Leave It" Trap',
+                  desc: "They pressure you to sign quickly, claiming the file will close. It\u2019s a bluff. You have more time \u2014 and more leverage \u2014 than they want you to think.",
+                },
+                {
+                  icon: <FileText className="w-7 h-7" />,
+                  title: "Confusing Paperwork",
+                  desc: "Their estimates are 30+ pages of codes (Xactimate) designed to be unreadable. If you can\u2019t understand it, you can\u2019t challenge it.",
+                },
+                {
+                  icon: <Gavel className="w-7 h-7" />,
+                  title: 'The "Policy Limit" Lie',
+                  desc: 'They say "that\u2019s the max we can pay" without mentioning supplemental coverage, code upgrades, or overhead & profit \u2014 all items you\u2019re entitled to.',
+                },
+              ].map((card) => (
+                <div
+                  key={card.title}
+                  className="bg-white border border-slate-200 shadow-card rounded-xl p-6 sm:p-8 hover:shadow-elevated transition-shadow"
+                >
+                  <div className="w-12 h-12 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center mb-5">
+                    {card.icon}
+                  </div>
+                  <h3 className="text-heading-lg text-slate-900 font-semibold">
+                    {card.title}
+                  </h3>
+                  <p className="mt-3 text-body text-slate-500 leading-relaxed">
+                    {card.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ================================================================ */}
+        {/* SECTION 5: HOW IT WORKS                                          */}
+        {/* ================================================================ */}
+        <section id="how-it-works" className="bg-white">
+          <div className="container-wide py-16 sm:py-24">
+            <div className="text-center mb-16">
+              <h2 className="font-sans text-display-sm sm:text-display text-slate-900 tracking-[-0.02em]">
+                Dead Simple. Under 5 Minutes.
+              </h2>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              {/* Timeline */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-0 relative">
+                {/* Dotted line connector (desktop) */}
+                <div className="hidden md:block absolute top-8 left-[16.66%] right-[16.66%] h-[2px] border-t-2 border-dashed border-slate-200 z-0" />
+
+                {[
+                  {
+                    num: "1",
+                    icon: <Upload className="w-6 h-6" />,
+                    title: "Upload Your Estimate",
+                    desc: "Drag and drop your PDF or take photos of your insurer\u2019s paperwork.",
+                  },
+                  {
+                    num: "2",
+                    icon: <Search className="w-6 h-6" />,
+                    title: "We Scan for Errors",
+                    desc: "Our AI checks your claim against local construction rates and 150+ common omissions.",
+                  },
+                  {
+                    num: "3",
+                    icon: <FileText className="w-6 h-6" />,
+                    title: "You Get a Negotiation Letter",
+                    desc: "Receive a generated, data-backed letter citing the exact codes to demand more money.",
+                  },
+                ].map((step) => (
+                  <div key={step.num} className="relative text-center px-4 py-6">
+                    {/* Step circle */}
+                    <div className="relative z-10 w-16 h-16 bg-emerald-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-card">
+                      {step.icon}
+                    </div>
+                    <h3 className="text-heading text-slate-900 font-semibold">
+                      {step.title}
+                    </h3>
+                    <p className="mt-2 text-body-sm text-slate-500 leading-relaxed max-w-xs mx-auto">
+                      {step.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div className="mt-12 text-center">
+                <Link href="/claims/new">
+                  <button className="px-8 py-3.5 bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors shadow-card rounded-lg flex items-center gap-2 mx-auto text-body-lg">
+                    Start Free Audit
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ================================================================ */}
+        {/* SECTION 6: TESTIMONIALS                                          */}
+        {/* ================================================================ */}
+        <section className="bg-slate-50 border-y border-slate-200">
+          <div className="container-wide py-16 sm:py-24">
+            <div className="text-center mb-14">
+              <h2 className="font-sans text-display-sm sm:text-display text-slate-900 tracking-[-0.02em]">
+                Real Money Recovered.
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
               {TESTIMONIALS.map((t) => (
                 <div
                   key={t.name}
-                  className="bg-navy-800 border border-white/10 p-6 sm:p-8 flex flex-col"
+                  className="bg-white border border-slate-200 shadow-card rounded-xl p-6 sm:p-8 flex flex-col hover:shadow-elevated transition-shadow"
                 >
-                  <p className="text-body text-white/70 leading-relaxed flex-1">
+                  {/* Stars */}
+                  <FiveStars />
+
+                  {/* Headline */}
+                  <p className="mt-4 text-heading text-slate-900 font-semibold">
+                    &ldquo;{t.headline}&rdquo;
+                  </p>
+
+                  {/* Quote */}
+                  <p className="mt-3 text-body-sm text-slate-500 leading-relaxed flex-1">
                     &ldquo;{t.quote}&rdquo;
                   </p>
-                  <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+
+                  {/* Attribution */}
+                  <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
                     <div>
-                      <p className="text-body-sm font-semibold text-white">
+                      <p className="text-body-sm font-semibold text-slate-700">
                         {t.name}
                       </p>
-                      <p className="text-caption text-white/30">{t.state}</p>
+                      <p className="text-caption text-slate-400">{t.state}</p>
                     </div>
-                    <span className="text-body-sm font-mono font-bold text-success-500">
+                    <span className="text-body font-mono font-bold text-emerald-600">
                       +${t.recovered.toLocaleString()}
                     </span>
                   </div>
@@ -648,30 +695,21 @@ export default function LandingPage() {
               ))}
             </div>
 
-            {/* Stats bar */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Stats row */}
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
               {[
-                {
-                  value: "$2.1M+",
-                  label: "Total recovered for users",
-                },
-                {
-                  value: "$3,500+",
-                  label: "Average increase per claim",
-                },
-                {
-                  value: "85%",
-                  label: "Of offers have missing line items",
-                },
+                { value: "$2.1M+", label: "Total recovered for users" },
+                { value: "$3,500+", label: "Average increase per claim" },
+                { value: "85%", label: "Of offers have missing line items" },
               ].map((stat) => (
                 <div
                   key={stat.label}
-                  className="bg-white/5 border border-white/10 p-5 text-center"
+                  className="bg-white border border-slate-200 shadow-subtle rounded-xl p-5 text-center"
                 >
-                  <p className="text-display-sm font-mono font-bold text-gold">
+                  <p className="text-display-sm font-mono font-bold text-emerald-600">
                     {stat.value}
                   </p>
-                  <p className="text-body-sm text-white/40 mt-1">
+                  <p className="text-body-sm text-slate-400 mt-1">
                     {stat.label}
                   </p>
                 </div>
@@ -681,16 +719,13 @@ export default function LandingPage() {
         </section>
 
         {/* ================================================================ */}
-        {/* SECTION 6: FAQ / OBJECTION HANDLING                              */}
+        {/* FAQ                                                               */}
         {/* ================================================================ */}
-        <section className="bg-navy-800 border-t border-white/5">
+        <section className="bg-white">
           <div className="container-narrow py-16 sm:py-24">
             <div className="text-center mb-14">
-              <p className="text-label uppercase tracking-[0.05em] text-white/30 font-medium mb-3">
-                Questions
-              </p>
-              <h2 className="font-serif text-display-sm sm:text-display text-white tracking-[-0.02em]">
-                Yeah, but&hellip;
+              <h2 className="font-sans text-display-sm sm:text-display text-slate-900 tracking-[-0.02em]">
+                Frequently Asked Questions
               </h2>
             </div>
 
@@ -698,18 +733,18 @@ export default function LandingPage() {
               {FAQ_ITEMS.map((item) => (
                 <details
                   key={item.question}
-                  className="group bg-white/5 border border-white/10 overflow-hidden"
+                  className="group bg-slate-50 border border-slate-200 rounded-xl overflow-hidden"
                 >
                   <summary className="flex items-center justify-between cursor-pointer list-none px-6 py-5">
-                    <span className="text-heading text-white font-medium pr-4">
+                    <span className="text-heading text-slate-800 font-medium pr-4">
                       {item.question}
                     </span>
-                    <span className="text-white/30 group-open:rotate-45 transition-transform duration-200 flex-shrink-0 text-xl leading-none">
+                    <span className="text-slate-400 group-open:rotate-45 transition-transform duration-200 flex-shrink-0 text-xl leading-none">
                       +
                     </span>
                   </summary>
                   <div className="px-6 pb-5 pt-0">
-                    <p className="text-body text-white/50 leading-relaxed">
+                    <p className="text-body text-slate-500 leading-relaxed">
                       {item.answer}
                     </p>
                   </div>
@@ -720,24 +755,29 @@ export default function LandingPage() {
         </section>
 
         {/* ================================================================ */}
-        {/* SECTION 7: FINAL CTA                                             */}
+        {/* FINAL CTA (Dark Navy)                                            */}
         {/* ================================================================ */}
-        <section className="bg-navy-900 border-t border-white/5">
-          <div className="container-wide py-16 sm:py-24 lg:py-32">
+        <section className="bg-navy-800">
+          <div className="container-wide py-16 sm:py-24 lg:py-28">
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="font-serif text-display-sm sm:text-display text-white tracking-[-0.02em]">
-                Every day you wait, you&apos;re closer to accepting less than
-                you&apos;re owed.
+              <h2 className="font-sans text-display-sm sm:text-display text-white tracking-[-0.02em]">
+                Stop guessing. Start recovering.
               </h2>
-              <p className="mt-5 text-body-lg text-white/50 max-w-lg mx-auto">
-                Enter your offer amount and see what they left out. It takes 5
-                minutes and it&apos;s free.
+              <p className="mt-5 text-body-lg text-white/60 max-w-lg mx-auto">
+                See how much more you are owed today.
               </p>
-            </div>
 
-            {/* Repeat offer form */}
-            <div className="mt-12 max-w-md mx-auto">
-              <HeroOfferForm />
+              <div className="mt-10">
+                <Link href="/claims/new">
+                  <button className="px-10 py-4 bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors shadow-elevated rounded-lg flex items-center gap-2 mx-auto text-body-lg">
+                    Start Free Audit
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                </Link>
+                <p className="mt-4 text-caption text-white/30">
+                  Free analysis. No credit card. Results in under 5 minutes.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -745,70 +785,5 @@ export default function LandingPage() {
 
       <Footer />
     </div>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/* Section 4: What We Find (extracted for readability)                        */
-/* -------------------------------------------------------------------------- */
-
-function WhatWeFind() {
-  const { ref, inView } = useInView(0.15);
-
-  return (
-    <section ref={ref} className="bg-navy-800 border-t border-white/5">
-      <div className="container-wide py-16 sm:py-24">
-        <div className="text-center mb-14">
-          <p className="text-label uppercase tracking-[0.05em] text-white/30 font-medium mb-3">
-            What we catch
-          </p>
-          <h2 className="font-serif text-display-sm sm:text-display text-white tracking-[-0.02em]">
-            Line items adjusters hope you&apos;ll miss.
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-          {MISSING_LINE_ITEMS.map((item, i) => (
-            <div
-              key={item.name}
-              className={`bg-white/5 border border-white/10 p-6 transition-all duration-500 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-              style={{ transitionDelay: `${i * 100}ms` }}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-body-sm font-semibold text-white">
-                  {item.name}
-                </span>
-              </div>
-              <p className="text-heading font-mono font-bold text-success-500 mb-2">
-                {item.range}
-              </p>
-              <p className="text-caption text-white/40 leading-relaxed">
-                {item.detail}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* Callout box */}
-        <div className="mt-10 max-w-3xl mx-auto">
-          <div className="bg-gold/10 border border-gold/30 p-6 sm:p-8 text-center">
-            <p className="text-body-lg text-white leading-relaxed">
-              Most people are owed{" "}
-              <span className="font-mono font-bold text-gold">
-                $1,500–$4,000+
-              </span>{" "}
-              more than their first offer. The insurance company is counting on
-              you not knowing this.
-            </p>
-            <Link href="/claims/new" className="inline-block mt-6">
-              <button className="px-8 py-3 bg-gold text-navy-900 font-bold hover:bg-gold-300 transition-colors flex items-center gap-2 text-body">
-                See what they left out of your offer
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
   );
 }
