@@ -182,6 +182,14 @@ export default function ClaimOverviewPage() {
         {/* 1. Status bar                                                   */}
         {/* -------------------------------------------------------------- */}
         <div className="bg-panel border border-black/10 px-5 py-4">
+          {/* Progress bar */}
+          <div className="w-full h-1.5 bg-black/5 mb-4 overflow-hidden">
+            <div
+              className="h-full bg-coral transition-all duration-700 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-4">
               {/* Status */}

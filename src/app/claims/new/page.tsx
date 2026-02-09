@@ -1397,7 +1397,9 @@ export default function NewClaimPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <Card>
             <CardContent className="p-6 sm:p-8">
-              {renderCurrentStep()}
+              <div key={currentStep} className="animate-fade-in">
+                {renderCurrentStep()}
+              </div>
             </CardContent>
           </Card>
         </div>
