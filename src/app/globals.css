@@ -2,11 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;450;500;600;700;800&display=swap');
 
 @layer base {
   html {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
@@ -20,7 +19,6 @@
     @apply bg-coral text-black;
   }
 
-  /* Sharp scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
   }
@@ -40,6 +38,13 @@
 
   .container-wide {
     @apply max-w-6xl mx-auto px-5 sm:px-6;
+  }
+
+  /* Landing page container — narrow single-column like the design */
+  .container-landing {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
 
   .section-gap {
@@ -117,5 +122,62 @@
   .odometer-digit {
     display: inline-block;
     font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Landing page brutalist styles (light mode) ---- */
+
+  /* Noise grain overlay */
+  .noise-overlay::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* Forensic input with floating label */
+  .forensic-input {
+    width: 100%;
+    background: transparent;
+    border: 1px solid #CCCCCC;
+    border-radius: 0;
+    color: #111111;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.5rem;
+    padding: 20px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .forensic-input:focus {
+    border-color: #111111;
+    background: rgba(0,0,0,0.02);
+  }
+
+  .forensic-input::placeholder {
+    color: #BBBBBB;
+  }
+
+  /* Receipt row with dotted separator */
+  .receipt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+    border-bottom: 1px dotted #CCCCCC;
+    padding-bottom: 4px;
+  }
+
+  /* Accordion details for landing */
+  .landing-accordion summary::-webkit-details-marker {
+    display: none;
+  }
+  .landing-accordion summary {
+    list-style: none;
   }
 }

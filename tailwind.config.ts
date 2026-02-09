@@ -16,7 +16,6 @@ const config: Config = {
           alt: "#cdd6dc",
           dark: "#0d0d0d",
         },
-        // Accent colors (inner pages)
         coral: {
           DEFAULT: "#ff9e80",
           50: "#fff5f0",
@@ -48,7 +47,24 @@ const config: Config = {
           900: "#001729",
           950: "#000e1a",
         },
-        // Landing page palette
+        // Landing page — brutalist light palette
+        surface: {
+          DEFAULT: "#F5F5F0",
+          50: "#FAFAF7",
+          100: "#F5F5F0",
+          200: "#EBEBE5",
+          300: "#D4D4CE",
+        },
+        primary: {
+          DEFAULT: "#111111",
+          dim: "#6B6B6B",
+          muted: "#999999",
+          border: "#CCCCCC",
+          "border-light": "#E0E0E0",
+        },
+        accent: {
+          DEFAULT: "#000000",
+        },
         brand: {
           DEFAULT: "#1B7A4A",
           50: "#F0F9F4",
@@ -73,31 +89,6 @@ const config: Config = {
           800: "#1F2A3A",
           900: "#1A2332",
           950: "#111827",
-        },
-        amber: {
-          DEFAULT: "#C8952E",
-          50: "#FDF8EF",
-          100: "#F9ECCC",
-          200: "#F0D994",
-          300: "#E4C05A",
-          400: "#D4A73A",
-          500: "#C8952E",
-          600: "#A67824",
-        },
-        cream: {
-          DEFAULT: "#FAFAF7",
-          50: "#FDFDFB",
-          100: "#FAFAF7",
-          200: "#F5F5F0",
-        },
-        warmred: {
-          DEFAULT: "#C0392B",
-          50: "#FEF5F4",
-          100: "#FADBD8",
-          200: "#F1948A",
-          300: "#E74C3C",
-          400: "#C0392B",
-          500: "#A93226",
         },
         navy: {
           DEFAULT: "#1E293B",
@@ -145,7 +136,6 @@ const config: Config = {
           800: "#1E293B",
           900: "#0F172A",
         },
-        // Semantic
         success: {
           50: "#f0fdf4",
           100: "#dcfce7",
@@ -166,6 +156,16 @@ const config: Config = {
         },
       },
       fontFamily: {
+        display: [
+          "Oswald",
+          "Arial Narrow",
+          "sans-serif",
+        ],
+        body: [
+          "Space Mono",
+          "Courier New",
+          "monospace",
+        ],
         sans: [
           "Inter",
           "-apple-system",
@@ -182,23 +182,21 @@ const config: Config = {
           "Times",
           "serif",
         ],
-        mono: ["Courier New", "Courier", "JetBrains Mono", "monospace"],
+        mono: ["Space Mono", "Courier New", "Courier", "JetBrains Mono", "monospace"],
       },
       fontSize: {
-        // Display sizes
         "display-xl": [
-          "3.25rem",
-          { lineHeight: "1.08", letterSpacing: "-0.025em", fontWeight: "700" },
+          "2.8rem",
+          { lineHeight: "1.1", letterSpacing: "0.02em", fontWeight: "500" },
         ],
         display: [
-          "2.5rem",
-          { lineHeight: "1.1", letterSpacing: "-0.025em", fontWeight: "700" },
+          "1.8rem",
+          { lineHeight: "1.1", letterSpacing: "0.02em", fontWeight: "500" },
         ],
         "display-sm": [
-          "2rem",
-          { lineHeight: "1.15", letterSpacing: "-0.02em", fontWeight: "700" },
+          "1.2rem",
+          { lineHeight: "1.1", letterSpacing: "0.02em", fontWeight: "500" },
         ],
-        // Score/number display
         "score-xl": [
           "5rem",
           { lineHeight: "0.9", letterSpacing: "-0.05em", fontWeight: "700" },
@@ -207,30 +205,30 @@ const config: Config = {
           "2.5rem",
           { lineHeight: "0.9", letterSpacing: "-0.04em", fontWeight: "700" },
         ],
-        // Stat numbers
         stat: [
           "2.75rem",
           { lineHeight: "1", letterSpacing: "-0.03em", fontWeight: "700" },
         ],
-        // Headings
         "heading-lg": [
-          "1.375rem",
-          { lineHeight: "1.3", letterSpacing: "-0.015em", fontWeight: "600" },
+          "1.5rem",
+          { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600" },
         ],
         heading: [
           "1.125rem",
           { lineHeight: "1.3", letterSpacing: "-0.01em", fontWeight: "600" },
         ],
-        // Section labels (uppercase)
         label: [
           "0.6875rem",
           { lineHeight: "1.4", letterSpacing: "0.05em", fontWeight: "700" },
         ],
-        // Body
-        "body-lg": ["1.0625rem", { lineHeight: "1.6" }],
-        body: ["0.9375rem", { lineHeight: "1.6" }],
+        "body-lg": ["1.0625rem", { lineHeight: "1.5" }],
+        body: ["0.875rem", { lineHeight: "1.5" }],
         "body-sm": ["0.8125rem", { lineHeight: "1.5" }],
         caption: ["0.6875rem", { lineHeight: "1.4" }],
+        "step-num": [
+          "2rem",
+          { lineHeight: "1", fontWeight: "500" },
+        ],
       },
       borderRadius: {
         none: "0px",
