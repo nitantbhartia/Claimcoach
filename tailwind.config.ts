@@ -9,14 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Frame & panel system
+        // Frame & panel system (inner pages)
         frame: "#0d0d0d",
         panel: {
           DEFAULT: "#dce4e9",
           alt: "#cdd6dc",
           dark: "#0d0d0d",
         },
-        // Accent colors
+        // Accent colors (inner pages)
         coral: {
           DEFAULT: "#ff9e80",
           50: "#fff5f0",
@@ -35,7 +35,6 @@ const config: Config = {
           300: "#7cb0ce",
           400: "#5094bc",
         },
-        // Ink (keep for backwards compat on inner pages during transition)
         ink: {
           50: "#e8edf4",
           100: "#c5d1e3",
@@ -49,7 +48,57 @@ const config: Config = {
           900: "#001729",
           950: "#000e1a",
         },
-        // Warm marketing palette (landing page)
+        // Landing page palette
+        brand: {
+          DEFAULT: "#1B7A4A",
+          50: "#F0F9F4",
+          100: "#D1F0DF",
+          200: "#A3E1BF",
+          300: "#5FC993",
+          400: "#2EAD6E",
+          500: "#1B7A4A",
+          600: "#15623B",
+          700: "#104A2D",
+        },
+        charcoal: {
+          DEFAULT: "#1A2332",
+          50: "#F6F7F9",
+          100: "#ECEEF2",
+          200: "#D5DAE2",
+          300: "#B0B9C8",
+          400: "#8492A6",
+          500: "#5F6D82",
+          600: "#4A5568",
+          700: "#374151",
+          800: "#1F2A3A",
+          900: "#1A2332",
+          950: "#111827",
+        },
+        amber: {
+          DEFAULT: "#C8952E",
+          50: "#FDF8EF",
+          100: "#F9ECCC",
+          200: "#F0D994",
+          300: "#E4C05A",
+          400: "#D4A73A",
+          500: "#C8952E",
+          600: "#A67824",
+        },
+        cream: {
+          DEFAULT: "#FAFAF7",
+          50: "#FDFDFB",
+          100: "#FAFAF7",
+          200: "#F5F5F0",
+        },
+        warmred: {
+          DEFAULT: "#C0392B",
+          50: "#FEF5F4",
+          100: "#FADBD8",
+          200: "#F1948A",
+          300: "#E74C3C",
+          400: "#C0392B",
+          500: "#A93226",
+        },
         navy: {
           DEFAULT: "#1E293B",
           50: "#F8FAFC",
@@ -118,12 +167,12 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
-          "Helvetica Neue",
-          "Helvetica",
-          "Arial",
           "Inter",
           "-apple-system",
           "BlinkMacSystemFont",
+          "Helvetica Neue",
+          "Helvetica",
+          "Arial",
           "sans-serif",
         ],
         serif: [
@@ -138,16 +187,16 @@ const config: Config = {
       fontSize: {
         // Display sizes
         "display-xl": [
-          "4.5rem",
-          { lineHeight: "0.95", letterSpacing: "-0.04em", fontWeight: "700" },
+          "3.25rem",
+          { lineHeight: "1.08", letterSpacing: "-0.025em", fontWeight: "700" },
         ],
         display: [
-          "3rem",
-          { lineHeight: "0.95", letterSpacing: "-0.04em", fontWeight: "700" },
+          "2.5rem",
+          { lineHeight: "1.1", letterSpacing: "-0.025em", fontWeight: "700" },
         ],
         "display-sm": [
-          "2.25rem",
-          { lineHeight: "0.95", letterSpacing: "-0.03em", fontWeight: "700" },
+          "2rem",
+          { lineHeight: "1.15", letterSpacing: "-0.02em", fontWeight: "700" },
         ],
         // Score/number display
         "score-xl": [
@@ -158,14 +207,19 @@ const config: Config = {
           "2.5rem",
           { lineHeight: "0.9", letterSpacing: "-0.04em", fontWeight: "700" },
         ],
+        // Stat numbers
+        stat: [
+          "2.75rem",
+          { lineHeight: "1", letterSpacing: "-0.03em", fontWeight: "700" },
+        ],
         // Headings
         "heading-lg": [
-          "1.5rem",
-          { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600" },
+          "1.375rem",
+          { lineHeight: "1.3", letterSpacing: "-0.015em", fontWeight: "600" },
         ],
         heading: [
           "1.125rem",
-          { lineHeight: "1.3", letterSpacing: "-0.02em", fontWeight: "600" },
+          { lineHeight: "1.3", letterSpacing: "-0.01em", fontWeight: "600" },
         ],
         // Section labels (uppercase)
         label: [
@@ -173,9 +227,9 @@ const config: Config = {
           { lineHeight: "1.4", letterSpacing: "0.05em", fontWeight: "700" },
         ],
         // Body
-        "body-lg": ["1.0625rem", { lineHeight: "1.4" }],
-        body: ["0.9375rem", { lineHeight: "1.4" }],
-        "body-sm": ["0.8125rem", { lineHeight: "1.4" }],
+        "body-lg": ["1.0625rem", { lineHeight: "1.6" }],
+        body: ["0.9375rem", { lineHeight: "1.6" }],
+        "body-sm": ["0.8125rem", { lineHeight: "1.5" }],
         caption: ["0.6875rem", { lineHeight: "1.4" }],
       },
       borderRadius: {
@@ -191,11 +245,11 @@ const config: Config = {
       },
       boxShadow: {
         none: "none",
-        subtle: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        card: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-        paper: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-        elevated: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-        float: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+        subtle: "0 1px 2px 0 rgb(0 0 0 / 0.04)",
+        card: "0 1px 3px 0 rgb(0 0 0 / 0.08)",
+        paper: "0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05)",
+        elevated: "0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04)",
+        float: "0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.04)",
         "paper-lg": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
         document: "none",
         sharp: "none",

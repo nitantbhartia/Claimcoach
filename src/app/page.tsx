@@ -4,22 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import {
-  ArrowRight,
-  Shield,
-  FileText,
-  CheckCircle2,
-  Search,
-  Zap,
-  Lock,
-  DollarSign,
-  XCircle,
-  Upload,
-  Star,
-  Gavel,
-  ChevronRight,
-  BarChart3,
-} from "lucide-react";
 
 /* -------------------------------------------------------------------------- */
 /* useInView -- lightweight IntersectionObserver hook                          */
@@ -71,9 +55,8 @@ function StickyCTA() {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden">
       <Link href="/claims/new">
-        <button className="w-full bg-emerald-600 text-white font-semibold py-4 flex items-center justify-center gap-2 text-body shadow-elevated">
-          Start Free Audit
-          <ChevronRight className="w-4 h-4" />
+        <button className="w-full bg-brand-500 text-white font-semibold py-4 flex items-center justify-center gap-2 text-body shadow-elevated">
+          Start Free Audit &rarr;
         </button>
       </Link>
     </div>
@@ -81,7 +64,7 @@ function StickyCTA() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Hero Floating Card Form                                                    */
+/* Hero Offer Input                                                           */
 /* -------------------------------------------------------------------------- */
 
 function HeroOfferCard() {
@@ -91,12 +74,12 @@ function HeroOfferCard() {
   const isValid = !isNaN(parsedOffer) && parsedOffer > 0;
 
   return (
-    <div className="bg-white border border-slate-200 shadow-float rounded-xl p-6 sm:p-8 max-w-md mx-auto lg:mx-0">
-      <p className="text-body-sm font-semibold text-slate-800 mb-4">
+    <div className="bg-white border border-charcoal-200 shadow-elevated rounded-xl p-6 sm:p-8 max-w-md mx-auto lg:mx-0">
+      <p className="text-body font-semibold text-charcoal-900 mb-4">
         Check your offer fairness for free
       </p>
       <div className="relative mb-4">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl sm:text-2xl font-mono font-semibold text-slate-300">
+        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl sm:text-3xl font-mono font-semibold text-charcoal-300">
           $
         </span>
         <input
@@ -106,21 +89,19 @@ function HeroOfferCard() {
           placeholder="Enter settlement amount"
           value={offer}
           onChange={(e) => setOffer(e.target.value.replace(/[^0-9.,]/g, ""))}
-          className="w-full pl-10 pr-4 py-3 sm:py-4 text-xl sm:text-2xl font-mono font-semibold text-slate-900 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-emerald focus:ring-2 focus:ring-emerald/20 transition-all placeholder:text-slate-300 placeholder:text-base placeholder:font-sans placeholder:font-normal"
+          className="w-full pl-11 pr-4 py-4 sm:py-5 text-2xl sm:text-3xl font-mono font-semibold text-charcoal-900 bg-cream-100 border-2 border-charcoal-200 rounded-lg focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all placeholder:text-charcoal-300 placeholder:text-base placeholder:font-sans placeholder:font-normal shadow-subtle"
         />
       </div>
       <Link href="/claims/new">
         <button
           disabled={!isValid}
-          className="w-full py-3.5 bg-emerald-600 text-white font-semibold hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 text-body-lg shadow-card rounded-lg"
+          className="w-full py-4 bg-brand-500 text-white font-semibold text-body-lg hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors rounded-lg"
         >
-          Analyze My Offer
-          <ArrowRight className="w-5 h-5" />
+          Analyze My Offer &rarr;
         </button>
       </Link>
-      <p className="mt-3 flex items-center justify-center gap-2 text-caption text-slate-400">
-        <Lock className="w-3 h-3" />
-        Bank-level security. No credit card required.
+      <p className="mt-3 text-center text-caption text-charcoal-400">
+        Bank-level encryption. No credit card required.
       </p>
     </div>
   );
@@ -136,25 +117,22 @@ function AuditReportPreview() {
   return (
     <div ref={ref} className="max-w-sm mx-auto lg:ml-auto lg:mr-0">
       <div
-        className={`bg-white border border-slate-200 shadow-float rounded-xl overflow-hidden transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+        className={`bg-white border border-charcoal-200 shadow-float rounded-xl overflow-hidden transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       >
         {/* Report header */}
-        <div className="bg-slate-800 px-5 py-3 rounded-t-xl flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-emerald-400" />
-            <span className="text-caption font-semibold text-white/80 uppercase tracking-wider">
-              ClaimCoach Audit Report
-            </span>
-          </div>
+        <div className="bg-charcoal-900 px-5 py-3 rounded-t-xl">
+          <span className="text-caption font-semibold text-white/70 uppercase tracking-wider">
+            ClaimCoach Audit Report
+          </span>
         </div>
 
         {/* Score */}
-        <div className="px-5 py-5 text-center border-b border-slate-100">
-          <p className="text-caption text-slate-400 uppercase tracking-wider mb-1">
+        <div className="px-5 py-5 text-center border-b border-charcoal-100">
+          <p className="text-caption text-charcoal-400 uppercase tracking-wider mb-1">
             Additional recovery found
           </p>
           <p
-            className={`text-score font-mono font-bold text-emerald-600 transition-all duration-1000 ${inView ? "opacity-100" : "opacity-0"}`}
+            className={`text-score font-mono font-bold text-brand-500 transition-all duration-1000 ${inView ? "opacity-100" : "opacity-0"}`}
           >
             +$4,700
           </p>
@@ -173,12 +151,12 @@ function AuditReportPreview() {
               style={{ transitionDelay: `${500 + i * 150}ms` }}
             >
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span className="text-body-sm text-slate-600">
+                <span className="text-brand-500 font-bold text-body-sm">+</span>
+                <span className="text-body-sm text-charcoal-600">
                   {item.label}
                 </span>
               </div>
-              <span className="text-body-sm font-mono font-semibold text-emerald-600">
+              <span className="text-body-sm font-mono font-semibold text-brand-500">
                 {item.amount}
               </span>
             </div>
@@ -186,11 +164,11 @@ function AuditReportPreview() {
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 bg-emerald-50 border-t border-emerald-100 flex items-center justify-between">
-          <span className="text-body-sm font-semibold text-slate-700">
+        <div className="px-5 py-3 bg-brand-50 border-t border-brand-100 flex items-center justify-between">
+          <span className="text-body-sm font-semibold text-charcoal-700">
             Your new claim total
           </span>
-          <span className="text-heading font-mono font-bold text-emerald-700">
+          <span className="text-heading font-mono font-bold text-brand-600">
             $17,200
           </span>
         </div>
@@ -225,29 +203,28 @@ function ReceiptComparison() {
     <div ref={ref} className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
       {/* Their Offer */}
       <div
-        className={`bg-white border border-slate-200 shadow-card rounded-xl overflow-hidden transition-all duration-600 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+        className={`bg-white border border-charcoal-200 shadow-card rounded-xl overflow-hidden transition-all duration-600 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
       >
-        <div className="bg-slate-100 px-5 py-3 flex items-center gap-2 rounded-t-xl">
-          <div className="w-2 h-2 rounded-full bg-danger-500" />
-          <span className="text-label uppercase tracking-[0.05em] text-slate-500 font-bold">
+        <div className="bg-charcoal-50 px-5 py-3 rounded-t-xl">
+          <span className="text-label uppercase tracking-[0.05em] text-charcoal-400 font-bold">
             Their Offer
           </span>
         </div>
         <div className="px-5 py-4 space-y-3">
           {theirItems.map((item) => (
             <div key={item.label} className="flex justify-between">
-              <span className="text-body-sm text-slate-500">{item.label}</span>
-              <span className="text-body-sm font-mono text-slate-500">
+              <span className="text-body-sm text-charcoal-500">{item.label}</span>
+              <span className="text-body-sm font-mono text-charcoal-500">
                 {item.amount}
               </span>
             </div>
           ))}
         </div>
-        <div className="px-5 py-3 border-t border-slate-100 flex justify-between">
-          <span className="text-body-sm font-semibold text-slate-600">
+        <div className="px-5 py-3 border-t border-charcoal-100 flex justify-between">
+          <span className="text-body-sm font-semibold text-charcoal-600">
             Total
           </span>
-          <span className="text-heading font-mono font-bold text-slate-500 line-through decoration-danger-500 decoration-2">
+          <span className="text-heading font-mono font-bold text-warmred-400 line-through decoration-warmred-400 decoration-2">
             $12,500
           </span>
         </div>
@@ -255,12 +232,11 @@ function ReceiptComparison() {
 
       {/* ClaimCoach Audit */}
       <div
-        className={`bg-white border-2 border-emerald-600 shadow-card rounded-xl overflow-hidden transition-all duration-600 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+        className={`bg-white border-2 border-brand-500 shadow-card rounded-xl overflow-hidden transition-all duration-600 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
         style={{ transitionDelay: "200ms" }}
       >
-        <div className="bg-emerald-50 px-5 py-3 flex items-center gap-2 rounded-t-xl">
-          <div className="w-2 h-2 rounded-full bg-emerald-600" />
-          <span className="text-label uppercase tracking-[0.05em] text-emerald-700 font-bold">
+        <div className="bg-brand-50 px-5 py-3 rounded-t-xl">
+          <span className="text-label uppercase tracking-[0.05em] text-brand-600 font-bold">
             The ClaimCoach Audit
           </span>
         </div>
@@ -268,52 +244,35 @@ function ReceiptComparison() {
           {ourItems.map((item, i) => (
             <div
               key={item.label}
-              className={`flex justify-between ${item.added ? "bg-emerald-50 -mx-2 px-2 py-1" : ""}`}
+              className={`flex justify-between ${item.added ? "bg-brand-50 -mx-2 px-2 py-1 rounded-md" : ""}`}
             >
               <div className="flex items-center gap-2">
                 {item.added && (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="text-brand-500 font-bold text-body-sm">+</span>
                 )}
                 <span
-                  className={`text-body-sm ${item.added ? "text-emerald-700 font-medium" : "text-slate-600"}`}
+                  className={`text-body-sm ${item.added ? "text-brand-700 font-medium" : "text-charcoal-600"}`}
                 >
                   {item.label}
                 </span>
               </div>
               <span
-                className={`text-body-sm font-mono ${item.added ? "font-semibold text-emerald-600" : "text-slate-600"}`}
+                className={`text-body-sm font-mono ${item.added ? "font-semibold text-brand-500" : "text-charcoal-600"}`}
               >
                 {item.amount}
               </span>
             </div>
           ))}
         </div>
-        <div className="px-5 py-3 border-t border-emerald-100 bg-emerald-50 flex justify-between">
-          <span className="text-body-sm font-semibold text-emerald-700">
+        <div className="px-5 py-3 border-t border-brand-100 bg-brand-50 flex justify-between">
+          <span className="text-body-sm font-semibold text-brand-700">
             New Total
           </span>
-          <span className="text-heading font-mono font-bold text-emerald-700">
+          <span className="text-heading font-mono font-bold text-brand-700">
             $17,200
           </span>
         </div>
       </div>
-    </div>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/* Five Stars component                                                       */
-/* -------------------------------------------------------------------------- */
-
-function FiveStars() {
-  return (
-    <div className="flex gap-0.5">
-      {[...Array(5)].map((_, i) => (
-        <Star
-          key={i}
-          className="w-4 h-4 fill-gold text-gold"
-        />
-      ))}
     </div>
   );
 }
@@ -383,7 +342,9 @@ const TESTIMONIALS = [
       "I didn\u2019t know I could claim for debris removal until the audit showed me. The letter they generated got me a supplemental check in two weeks.",
     name: "Sarah J.",
     state: "Texas",
+    vehicle: "2019 Toyota Camry",
     recovered: 5200,
+    initials: "SJ",
   },
   {
     headline: "My adjuster folded immediately.",
@@ -391,7 +352,9 @@ const TESTIMONIALS = [
       "Once I sent the letter with the specific line items, they cut a supplemental check in 48 hours. No pushback at all.",
     name: "Mike T.",
     state: "Florida",
+    vehicle: "2021 Honda Accord",
     recovered: 3800,
+    initials: "MT",
   },
   {
     headline: "Found $2,500 in code upgrades they skipped.",
@@ -399,7 +362,9 @@ const TESTIMONIALS = [
       "The electrical panel had to be brought to current code. Insurance ignored it completely. ClaimCoach caught it immediately.",
     name: "Lisa M.",
     state: "California",
+    vehicle: "2018 Ford F-150",
     recovered: 2500,
+    initials: "LM",
   },
 ];
 
@@ -415,7 +380,7 @@ const CARRIERS = ["State Farm", "Allstate", "Liberty Mutual", "GEICO", "Farmers"
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-cream-100">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD) }}
@@ -427,21 +392,28 @@ export default function LandingPage() {
         {/* ================================================================ */}
         {/* SECTION 1: HERO                                                  */}
         {/* ================================================================ */}
-        <section id="hero-section" className="bg-white">
+        <section id="hero-section" className="bg-cream-100">
           <div className="container-wide py-14 sm:py-20 lg:py-28">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               {/* Left: Copy */}
               <div>
-                <h1 className="font-sans text-display sm:text-display-xl text-slate-900 leading-[1.08] tracking-tight">
+                <h1 className="font-sans text-display sm:text-display-xl text-charcoal-900 leading-[1.08] tracking-tight">
                   Your insurance company&apos;s first offer is a{" "}
-                  <span className="text-emerald-600">negotiation tactic</span>.
+                  <span className="text-brand-500">negotiation tactic</span>.
                 </h1>
 
-                <p className="mt-6 text-body-lg text-slate-500 max-w-lg leading-relaxed">
+                <p className="mt-6 text-body-lg text-charcoal-500 max-w-lg leading-relaxed">
                   85% of policyholders accept the initial payout and leave
                   thousands on the table. We analyze your offer for missing line
                   items in under 5 minutes.
                 </p>
+
+                {/* Trust badges - text only */}
+                <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-body-sm text-charcoal-400">
+                  <span>&#10003; 2,400+ policyholders</span>
+                  <span>&#10003; Results in 5 min</span>
+                  <span>&#10003; Documents encrypted</span>
+                </div>
 
                 {/* Desktop form */}
                 <div className="mt-10">
@@ -460,17 +432,17 @@ export default function LandingPage() {
         {/* ================================================================ */}
         {/* SECTION 2: SOCIAL PROOF BAR                                      */}
         {/* ================================================================ */}
-        <section className="bg-slate-50 border-y border-slate-200">
+        <section className="bg-white border-y border-charcoal-100">
           <div className="container-wide py-5 sm:py-6">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
-              <p className="text-label uppercase tracking-[0.05em] text-slate-400 font-bold whitespace-nowrap">
+              <p className="text-label uppercase tracking-[0.05em] text-charcoal-400 font-bold whitespace-nowrap">
                 We audit claims from major carriers including
               </p>
               <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-8">
                 {CARRIERS.map((carrier) => (
                   <span
                     key={carrier}
-                    className="text-body-sm font-semibold text-slate-300 uppercase tracking-wider"
+                    className="text-body-sm font-semibold text-charcoal-300 uppercase tracking-wider"
                   >
                     {carrier}
                   </span>
@@ -485,11 +457,11 @@ export default function LandingPage() {
         {/* ================================================================ */}
         <section className="bg-white">
           <div className="container-wide py-16 sm:py-24">
-            <div className="text-center mb-14">
-              <h2 className="font-sans text-display-sm sm:text-display text-slate-900 tracking-[-0.02em]">
+            <div className="max-w-2xl mb-14">
+              <h2 className="font-sans text-display-sm sm:text-display text-charcoal-900 tracking-[-0.02em]">
                 The &ldquo;Hidden&rdquo; Money They Don&apos;t Tell You About
               </h2>
-              <p className="mt-4 text-body-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+              <p className="mt-4 text-body-lg text-charcoal-500 leading-relaxed">
                 Adjusters use software designed to minimize payouts. We use the
                 same data to find the line items they &ldquo;forgot.&rdquo;
               </p>
@@ -497,39 +469,69 @@ export default function LandingPage() {
 
             <ReceiptComparison />
 
-            {/* Receipt-style callouts */}
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+            {/* Receipt-style callouts — data-driven bars instead of icons */}
+            <div className="mt-14 max-w-3xl mx-auto space-y-4">
               {[
                 {
                   label: "Overhead & Profit",
-                  value: "+20%",
-                  note: "Often skipped",
+                  included: "$0",
+                  owed: "+$2,500 (20%)",
+                  note: "Often skipped by adjusters",
+                  pct: 100,
                 },
                 {
                   label: "Code Upgrades",
-                  value: "+$2,500",
-                  note: "Legally required",
+                  included: "$0",
+                  owed: "+$2,500",
+                  note: "Legally required in most states",
+                  pct: 100,
                 },
                 {
                   label: "Labor Tax",
-                  value: "+$850",
-                  note: "Frequently missed",
+                  included: "$0",
+                  owed: "+$850",
+                  note: "Frequently omitted from estimates",
+                  pct: 34,
                 },
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="flex items-start gap-3 p-4 bg-emerald-50 border border-emerald-100 rounded-lg"
+                  className="bg-cream-100 border border-charcoal-100 rounded-lg p-5"
                 >
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-body-sm font-semibold text-slate-800">
-                      {item.label}:{" "}
-                      <span className="font-mono text-emerald-600">
-                        {item.value}
-                      </span>
-                    </p>
-                    <p className="text-caption text-slate-400">{item.note}</p>
+                  <div className="flex items-baseline justify-between mb-3">
+                    <h4 className="text-heading text-charcoal-900 font-semibold">
+                      {item.label}
+                    </h4>
+                    <span className="text-body font-mono font-bold text-brand-500">
+                      {item.owed}
+                    </span>
                   </div>
+                  {/* Mini comparison bar */}
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="flex-1 h-2 bg-charcoal-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-warmred-200 rounded-full"
+                        style={{ width: "0%" }}
+                      />
+                    </div>
+                    <span className="text-caption font-mono text-warmred-400 w-20 text-right">
+                      Included: {item.included}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 h-2 bg-charcoal-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-brand-400 rounded-full"
+                        style={{ width: `${item.pct}%` }}
+                      />
+                    </div>
+                    <span className="text-caption font-mono text-brand-500 w-20 text-right">
+                      Owed: {item.owed.replace(/ \(.+\)/, "")}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-caption text-charcoal-400">
+                    {item.note}
+                  </p>
                 </div>
               ))}
             </div>
@@ -539,43 +541,37 @@ export default function LandingPage() {
         {/* ================================================================ */}
         {/* SECTION 4: THE STACKED DECK (The Problem)                       */}
         {/* ================================================================ */}
-        <section className="bg-slate-50 border-y border-slate-200">
+        <section className="bg-cream-100">
           <div className="container-wide py-16 sm:py-24">
-            <div className="text-center mb-14">
-              <h2 className="font-sans text-display-sm sm:text-display text-slate-900 tracking-[-0.02em]">
+            <div className="max-w-2xl mb-14">
+              <h2 className="font-sans text-display-sm sm:text-display text-charcoal-900 tracking-[-0.02em]">
                 Why It&apos;s Hard to Fight Alone
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div className="max-w-3xl space-y-0">
               {[
                 {
-                  icon: <Shield className="w-7 h-7" />,
-                  title: 'The "Take It or Leave It" Trap',
+                  title: "The \u201CTake It or Leave It\u201D Trap",
                   desc: "They pressure you to sign quickly, claiming the file will close. It\u2019s a bluff. You have more time \u2014 and more leverage \u2014 than they want you to think.",
                 },
                 {
-                  icon: <FileText className="w-7 h-7" />,
                   title: "Confusing Paperwork",
                   desc: "Their estimates are 30+ pages of codes (Xactimate) designed to be unreadable. If you can\u2019t understand it, you can\u2019t challenge it.",
                 },
                 {
-                  icon: <Gavel className="w-7 h-7" />,
-                  title: 'The "Policy Limit" Lie',
-                  desc: 'They say "that\u2019s the max we can pay" without mentioning supplemental coverage, code upgrades, or overhead & profit \u2014 all items you\u2019re entitled to.',
+                  title: "The \u201CPolicy Limit\u201D Lie",
+                  desc: "They say \u201Cthat\u2019s the max we can pay\u201D without mentioning supplemental coverage, code upgrades, or overhead & profit \u2014 all items you\u2019re entitled to.",
                 },
-              ].map((card) => (
+              ].map((card, i) => (
                 <div
                   key={card.title}
-                  className="bg-white border border-slate-200 shadow-card rounded-xl p-6 sm:p-8 hover:shadow-elevated transition-shadow"
+                  className="py-8 border-b border-charcoal-200 last:border-b-0"
                 >
-                  <div className="w-12 h-12 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center mb-5">
-                    {card.icon}
-                  </div>
-                  <h3 className="text-heading-lg text-slate-900 font-semibold">
+                  <h3 className="text-heading-lg text-charcoal-900 font-semibold mb-3">
                     {card.title}
                   </h3>
-                  <p className="mt-3 text-body text-slate-500 leading-relaxed">
+                  <p className="text-body text-charcoal-500 leading-relaxed max-w-2xl">
                     {card.desc}
                   </p>
                 </div>
@@ -589,50 +585,43 @@ export default function LandingPage() {
         {/* ================================================================ */}
         <section id="how-it-works" className="bg-white">
           <div className="container-wide py-16 sm:py-24">
-            <div className="text-center mb-16">
-              <h2 className="font-sans text-display-sm sm:text-display text-slate-900 tracking-[-0.02em]">
+            <div className="max-w-2xl mb-16">
+              <h2 className="font-sans text-display-sm sm:text-display text-charcoal-900 tracking-[-0.02em]">
                 How ClaimCoach Gets You More Money
               </h2>
-              <p className="mt-4 text-body-lg text-slate-500 max-w-2xl mx-auto">
+              <p className="mt-4 text-body-lg text-charcoal-500">
                 Upload your estimate, and our AI finds every dollar your insurer missed — in under 5 minutes.
               </p>
             </div>
 
-            <div className="max-w-4xl mx-auto">
-              {/* Timeline */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-0 relative">
-                {/* Dotted line connector (desktop) */}
-                <div className="hidden md:block absolute top-8 left-[16.66%] right-[16.66%] h-[2px] border-t-2 border-dashed border-slate-200 z-0" />
-
+            <div className="max-w-4xl">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
                 {[
                   {
                     num: "1",
-                    icon: <Upload className="w-6 h-6" />,
                     title: "Upload Your Estimate",
                     desc: "Drag and drop your PDF or take photos of your insurer\u2019s paperwork.",
                   },
                   {
                     num: "2",
-                    icon: <Search className="w-6 h-6" />,
                     title: "We Scan for Errors",
                     desc: "Our AI checks your claim against local construction rates and 150+ common omissions.",
                   },
                   {
                     num: "3",
-                    icon: <FileText className="w-6 h-6" />,
                     title: "You Get a Negotiation Letter",
                     desc: "Receive a generated, data-backed letter citing the exact codes to demand more money.",
                   },
                 ].map((step) => (
-                  <div key={step.num} className="relative text-center px-4 py-6">
-                    {/* Step circle */}
-                    <div className="relative z-10 w-16 h-16 bg-emerald-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-card">
-                      {step.icon}
-                    </div>
-                    <h3 className="text-heading text-slate-900 font-semibold">
+                  <div key={step.num} className="relative">
+                    {/* Large step number */}
+                    <span className="block text-stat font-bold text-brand-500 mb-4 font-mono">
+                      {step.num}
+                    </span>
+                    <h3 className="text-heading-lg text-charcoal-900 font-semibold mb-2">
                       {step.title}
                     </h3>
-                    <p className="mt-2 text-body-sm text-slate-500 leading-relaxed max-w-xs mx-auto">
+                    <p className="text-body text-charcoal-500 leading-relaxed">
                       {step.desc}
                     </p>
                   </div>
@@ -640,11 +629,10 @@ export default function LandingPage() {
               </div>
 
               {/* CTA */}
-              <div className="mt-12 text-center">
+              <div className="mt-14">
                 <Link href="/claims/new">
-                  <button className="px-8 py-3.5 bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors shadow-card rounded-lg flex items-center gap-2 mx-auto text-body-lg">
-                    Start Free Audit
-                    <ArrowRight className="w-5 h-5" />
+                  <button className="px-8 py-4 bg-brand-500 text-white font-semibold hover:bg-brand-600 transition-colors rounded-lg text-body-lg">
+                    Start Free Audit &rarr;
                   </button>
                 </Link>
               </div>
@@ -655,64 +643,66 @@ export default function LandingPage() {
         {/* ================================================================ */}
         {/* SECTION 6: TESTIMONIALS                                          */}
         {/* ================================================================ */}
-        <section className="bg-slate-50 border-y border-slate-200">
+        <section className="bg-cream-100">
           <div className="container-wide py-16 sm:py-24">
-            <div className="text-center mb-14">
-              <h2 className="font-sans text-display-sm sm:text-display text-slate-900 tracking-[-0.02em]">
+            <div className="max-w-2xl mb-14">
+              <h2 className="font-sans text-display-sm sm:text-display text-charcoal-900 tracking-[-0.02em]">
                 Real Money Recovered.
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
               {TESTIMONIALS.map((t) => (
                 <div
                   key={t.name}
-                  className="bg-white border border-slate-200 shadow-card rounded-xl p-6 sm:p-8 flex flex-col hover:shadow-elevated transition-shadow"
+                  className="bg-white border border-charcoal-100 shadow-card rounded-xl p-6 sm:p-8 flex flex-col"
                 >
-                  {/* Stars */}
-                  <FiveStars />
+                  {/* Dollar recovered callout */}
+                  <span className="inline-block text-heading-lg font-mono font-bold text-brand-500 mb-4">
+                    +${t.recovered.toLocaleString()} recovered
+                  </span>
 
-                  {/* Headline */}
-                  <p className="mt-4 text-heading text-slate-900 font-semibold">
-                    &ldquo;{t.headline}&rdquo;
-                  </p>
+                  {/* Large decorative quote mark */}
+                  <span className="text-[3rem] leading-none text-charcoal-200 font-serif -mb-4">
+                    &ldquo;
+                  </span>
 
                   {/* Quote */}
-                  <p className="mt-3 text-body-sm text-slate-500 leading-relaxed flex-1">
-                    &ldquo;{t.quote}&rdquo;
+                  <p className="text-body text-charcoal-600 leading-relaxed flex-1">
+                    {t.quote}
                   </p>
 
                   {/* Attribution */}
-                  <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                    <div>
-                      <p className="text-body-sm font-semibold text-slate-700">
-                        {t.name}
-                      </p>
-                      <p className="text-caption text-slate-400">{t.state}</p>
+                  <div className="mt-6 pt-4 border-t border-charcoal-100 flex items-center gap-3">
+                    {/* Initials circle */}
+                    <div className="w-10 h-10 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center text-body-sm font-bold flex-shrink-0">
+                      {t.initials}
                     </div>
-                    <span className="text-body font-mono font-bold text-emerald-600">
-                      +${t.recovered.toLocaleString()}
-                    </span>
+                    <div>
+                      <p className="text-body-sm font-semibold text-charcoal-800">
+                        {t.name}, {t.state}
+                      </p>
+                      <p className="text-caption text-charcoal-400">
+                        {t.vehicle}
+                      </p>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Stats row */}
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+            <div className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl">
               {[
                 { value: "$2.1M+", label: "Total recovered for users" },
                 { value: "$3,500+", label: "Average increase per claim" },
                 { value: "85%", label: "Of offers have missing line items" },
               ].map((stat) => (
-                <div
-                  key={stat.label}
-                  className="bg-white border border-slate-200 shadow-subtle rounded-xl p-5 text-center"
-                >
-                  <p className="text-display-sm font-mono font-bold text-emerald-600">
+                <div key={stat.label} className="text-center sm:text-left">
+                  <p className="text-stat font-mono font-bold text-brand-500">
                     {stat.value}
                   </p>
-                  <p className="text-body-sm text-slate-400 mt-1">
+                  <p className="text-body-sm text-charcoal-400 mt-1">
                     {stat.label}
                   </p>
                 </div>
@@ -727,27 +717,27 @@ export default function LandingPage() {
         <section className="bg-white">
           <div className="container-narrow py-16 sm:py-24">
             <div className="text-center mb-14">
-              <h2 className="font-sans text-display-sm sm:text-display text-slate-900 tracking-[-0.02em]">
+              <h2 className="font-sans text-display-sm sm:text-display text-charcoal-900 tracking-[-0.02em]">
                 Frequently Asked Questions
               </h2>
             </div>
 
-            <div className="space-y-3">
-              {FAQ_ITEMS.map((item) => (
+            <div className="space-y-0">
+              {FAQ_ITEMS.map((item, i) => (
                 <details
                   key={item.question}
-                  className="group bg-slate-50 border border-slate-200 rounded-xl overflow-hidden"
+                  className="group border-b border-charcoal-200 first:border-t"
                 >
-                  <summary className="flex items-center justify-between cursor-pointer list-none px-6 py-5">
-                    <span className="text-heading text-slate-800 font-medium pr-4">
+                  <summary className="flex items-center justify-between cursor-pointer list-none py-6">
+                    <span className="text-heading text-charcoal-800 font-semibold pr-4">
                       {item.question}
                     </span>
-                    <span className="text-slate-400 group-open:rotate-45 transition-transform duration-200 flex-shrink-0 text-xl leading-none">
+                    <span className="text-charcoal-400 group-open:rotate-45 transition-transform duration-200 flex-shrink-0 text-xl leading-none font-light">
                       +
                     </span>
                   </summary>
-                  <div className="px-6 pb-5 pt-0">
-                    <p className="text-body text-slate-500 leading-relaxed">
+                  <div className="pb-6 pt-0">
+                    <p className="text-body text-charcoal-500 leading-relaxed">
                       {item.answer}
                     </p>
                   </div>
@@ -758,23 +748,22 @@ export default function LandingPage() {
         </section>
 
         {/* ================================================================ */}
-        {/* FINAL CTA (Dark Navy)                                            */}
+        {/* FINAL CTA                                                        */}
         {/* ================================================================ */}
-        <section className="bg-navy-800">
+        <section className="bg-charcoal-900">
           <div className="container-wide py-16 sm:py-24 lg:py-28">
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="font-sans text-display-sm sm:text-display text-white tracking-[-0.02em]">
                 Stop guessing. Start recovering.
               </h2>
-              <p className="mt-5 text-body-lg text-white/60 max-w-lg mx-auto">
+              <p className="mt-5 text-body-lg text-white/50 max-w-lg mx-auto">
                 See how much more you are owed today.
               </p>
 
               <div className="mt-10">
                 <Link href="/claims/new">
-                  <button className="px-10 py-4 bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors shadow-elevated rounded-lg flex items-center gap-2 mx-auto text-body-lg">
-                    Start Free Audit
-                    <ArrowRight className="w-5 h-5" />
+                  <button className="px-10 py-4 bg-brand-500 text-white font-semibold hover:bg-brand-600 transition-colors rounded-lg text-body-lg">
+                    Start Free Audit &rarr;
                   </button>
                 </Link>
                 <p className="mt-4 text-caption text-white/30">

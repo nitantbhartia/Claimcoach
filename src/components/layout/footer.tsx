@@ -9,7 +9,7 @@ export function Footer() {
 
   if (isHome) {
     return (
-      <footer className="bg-navy-900 border-t border-white/5">
+      <footer className="bg-charcoal-950 border-t border-white/5">
         <div className="container-wide py-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <Link href="/" className="flex items-center">
