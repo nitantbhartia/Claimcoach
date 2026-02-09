@@ -59,6 +59,9 @@ create table public.claims (
   claim_number text,
   has_offer boolean not null default false,
 
+  -- Location
+  state text,
+
   -- Vehicle info (auto claims)
   vehicle_year text,
   vehicle_make text,

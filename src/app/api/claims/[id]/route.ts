@@ -32,6 +32,26 @@ export async function GET(
       .single();
 
     if (claimError || !claim) {
+      // In dev mode, return a placeholder claim so the UI renders
+      if (!isSupabaseConfigured()) {
+        const now = new Date().toISOString();
+        return NextResponse.json({
+          claim: {
+            id: params.id,
+            user_id: user.id,
+            claim_type: "auto",
+            status: "documenting",
+            created_at: now,
+            updated_at: now,
+          },
+          documents: [],
+          expenses: [],
+          policyAnalysis: null,
+          offerAnalysis: null,
+          counterOffer: null,
+          subscription: "free",
+        });
+      }
       return NextResponse.json({ error: "Claim not found" }, { status: 404 });
     }
 
@@ -86,6 +106,26 @@ export async function GET(
     });
   } catch (error) {
     console.error("Fetch claim error:", error);
+
+    if (!isSupabaseConfigured()) {
+      const now = new Date().toISOString();
+      return NextResponse.json({
+        claim: {
+          id: params.id,
+          claim_type: "auto",
+          status: "documenting",
+          created_at: now,
+          updated_at: now,
+        },
+        documents: [],
+        expenses: [],
+        policyAnalysis: null,
+        offerAnalysis: null,
+        counterOffer: null,
+        subscription: "free",
+      });
+    }
+
     return NextResponse.json(
       { error: "Failed to fetch claim" },
       { status: 500 }

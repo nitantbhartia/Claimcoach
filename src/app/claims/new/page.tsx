@@ -154,6 +154,7 @@ export default function NewClaimPage() {
 
   /* ---- Form errors per step ---- */
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState("");
 
   /* ---- Onboarding form data ---- */
   const [formData, setFormData] = useState<OnboardingData>({
@@ -472,6 +473,7 @@ export default function NewClaimPage() {
 
   async function handleSubmit() {
     setIsSubmitting(true);
+    setSubmitError("");
 
     try {
       const res = await fetch("/api/claims", {
@@ -500,7 +502,10 @@ export default function NewClaimPage() {
       }
 
       router.push(`/claims/${claimId}`);
-    } catch {
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setSubmitError(message);
       setIsSubmitting(false);
     }
   }
@@ -1402,6 +1407,11 @@ export default function NewClaimPage() {
       {/*  Navigation footer                                                   */}
       {/* ------------------------------------------------------------------ */}
       <footer className="bg-panel border-t border-black/10 sticky bottom-0 z-30">
+        {submitError && (
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-3">
+            <p className="text-body-sm text-danger-600">{submitError}</p>
+          </div>
+        )}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           {/* Back button */}
           {currentStep > 1 ? (
