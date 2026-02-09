@@ -202,24 +202,35 @@ export default function ClaimOverviewPage() {
             </div>
 
             <div className="flex items-center gap-2">
-              <Link href={`/claims/${claimId}/call-script`}>
-                <Button size="sm" variant="outline">
-                  <Phone className="w-3.5 h-3.5 mr-1.5" />
-                  Call Script
-                </Button>
-              </Link>
+              {claim.offer_amount != null && (
+                <Link href={`/claims/${claimId}/call-script`}>
+                  <Button size="sm" variant="outline">
+                    <Phone className="w-3.5 h-3.5 mr-1.5" />
+                    Call Script
+                  </Button>
+                </Link>
+              )}
               <Link href={`/claims/${claimId}/export`}>
                 <Button size="sm" variant="outline">
                   <Download className="w-3.5 h-3.5 mr-1.5" />
                   Export PDF
                 </Button>
               </Link>
-              <Link href={`/claims/${claimId}/offer`}>
-                <Button size="sm">
-                  Review offer
-                  <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
-                </Button>
-              </Link>
+              {claim.offer_amount != null ? (
+                <Link href={`/claims/${claimId}/counter`}>
+                  <Button size="sm">
+                    Build counter-offer
+                    <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                  </Button>
+                </Link>
+              ) : (
+                <Link href={`/claims/${claimId}/offer`}>
+                  <Button size="sm">
+                    Review offer
+                    <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -321,24 +332,6 @@ export default function ClaimOverviewPage() {
               <ul className="space-y-2.5">
                 <li>
                   <Link
-                    href={`/claims/${claimId}/offer`}
-                    className="flex items-center justify-between text-body-sm text-black hover:text-black transition-colors"
-                  >
-                    Review the insurer&apos;s offer in detail
-                    <ArrowRight className="w-3.5 h-3.5 text-[#4a555e] flex-shrink-0" />
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href={`/claims/${claimId}/counter`}
-                    className="flex items-center justify-between text-body-sm text-black hover:text-black transition-colors"
-                  >
-                    Build a counter-offer with evidence
-                    <ArrowRight className="w-3.5 h-3.5 text-[#4a555e] flex-shrink-0" />
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     href={`/claims/${claimId}/documents`}
                     className="flex items-center justify-between text-body-sm text-black hover:text-black transition-colors"
                   >
@@ -346,6 +339,47 @@ export default function ClaimOverviewPage() {
                     <ArrowRight className="w-3.5 h-3.5 text-[#4a555e] flex-shrink-0" />
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    href={`/claims/${claimId}/policy`}
+                    className="flex items-center justify-between text-body-sm text-black hover:text-black transition-colors"
+                  >
+                    Analyze your insurance policy
+                    <ArrowRight className="w-3.5 h-3.5 text-[#4a555e] flex-shrink-0" />
+                  </Link>
+                </li>
+                {claim.offer_amount == null ? (
+                  <li>
+                    <Link
+                      href={`/claims/${claimId}/offer`}
+                      className="flex items-center justify-between text-body-sm text-black hover:text-black transition-colors"
+                    >
+                      Review the insurer&apos;s offer
+                      <ArrowRight className="w-3.5 h-3.5 text-[#4a555e] flex-shrink-0" />
+                    </Link>
+                  </li>
+                ) : (
+                  <>
+                    <li>
+                      <Link
+                        href={`/claims/${claimId}/counter`}
+                        className="flex items-center justify-between text-body-sm text-black hover:text-black transition-colors"
+                      >
+                        Build a counter-offer with evidence
+                        <ArrowRight className="w-3.5 h-3.5 text-[#4a555e] flex-shrink-0" />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href={`/claims/${claimId}/call-script`}
+                        className="flex items-center justify-between text-body-sm text-black hover:text-black transition-colors"
+                      >
+                        Prepare a call script for the adjuster
+                        <ArrowRight className="w-3.5 h-3.5 text-[#4a555e] flex-shrink-0" />
+                      </Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>

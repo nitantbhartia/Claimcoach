@@ -220,13 +220,32 @@ export default function CounterOfferPage() {
         {/* ----------------------------------------------------------------- */}
         {!counterOffer && !isGenerating && (
           <div className="bg-panel border border-black/10 p-6">
-            <Button size="lg" onClick={handleGenerate}>
-              Generate Counter-Offer
-            </Button>
-            <p className="text-body-sm text-[#4a555e] mt-2">
-              This will generate a demand letter, talking points, and escalation
-              plan tailored to your claim.
-            </p>
+            {claim && !claim.offer_amount ? (
+              <>
+                <p className="text-body font-medium text-black mb-1">
+                  Offer amount required
+                </p>
+                <p className="text-body-sm text-[#4a555e] mb-4">
+                  You need to analyze an offer before generating a counter-offer.
+                </p>
+                <Link href={`/claims/${claimId}/offer`}>
+                  <Button size="lg" variant="outline">
+                    <ArrowRight className="w-4 h-4 mr-2" />
+                    Review Offer First
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Button size="lg" onClick={handleGenerate}>
+                  Generate Counter-Offer
+                </Button>
+                <p className="text-body-sm text-[#4a555e] mt-2">
+                  This will generate a demand letter, talking points, and escalation
+                  plan tailored to your claim.
+                </p>
+              </>
+            )}
           </div>
         )}
 

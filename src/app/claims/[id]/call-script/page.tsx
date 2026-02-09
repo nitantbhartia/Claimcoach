@@ -205,13 +205,52 @@ export default function CallScriptPage() {
         {/* Generate button */}
         {!script && !isGenerating && (
           <div className="bg-panel border border-black/10 p-6">
-            <Button size="lg" onClick={handleGenerate}>
-              <Phone className="w-4 h-4 mr-2" />
-              Generate Call Script
-            </Button>
-            <p className="text-body-sm text-[#4a555e] mt-2">
-              Based on your offer analysis and counter-offer data.
-            </p>
+            {claim && !claim.offer_amount ? (
+              <>
+                <p className="text-body font-medium text-black mb-1">
+                  Offer analysis required
+                </p>
+                <p className="text-body-sm text-[#4a555e] mb-4">
+                  You need to review an offer before generating a call script.
+                </p>
+                <Link href={`/claims/${claimId}/offer`}>
+                  <Button size="lg" variant="outline">
+                    <ArrowRight className="w-4 h-4 mr-2" />
+                    Review Offer First
+                  </Button>
+                </Link>
+              </>
+            ) : claim && !counterOffer ? (
+              <>
+                <p className="text-body font-medium text-black mb-1">
+                  Counter-offer recommended
+                </p>
+                <p className="text-body-sm text-[#4a555e] mb-4">
+                  Generate a counter-offer first for a more effective call script, or proceed anyway.
+                </p>
+                <div className="flex items-center gap-3">
+                  <Button size="lg" onClick={handleGenerate}>
+                    <Phone className="w-4 h-4 mr-2" />
+                    Generate Anyway
+                  </Button>
+                  <Link href={`/claims/${claimId}/counter`}>
+                    <Button size="lg" variant="outline">
+                      Build Counter-Offer
+                    </Button>
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <Button size="lg" onClick={handleGenerate}>
+                  <Phone className="w-4 h-4 mr-2" />
+                  Generate Call Script
+                </Button>
+                <p className="text-body-sm text-[#4a555e] mt-2">
+                  Based on your offer analysis and counter-offer data.
+                </p>
+              </>
+            )}
           </div>
         )}
 
