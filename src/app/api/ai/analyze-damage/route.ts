@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAnthropicClient } from "@/lib/ai/client";
+import { getAnthropicClient, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
 
 export const runtime = "nodejs";
@@ -34,6 +34,16 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const files = formData.getAll("files") as File[];
+
+    if (!isAIConfigured()) {
+      return NextResponse.json({
+        description:
+          `[Dev mode] Visible damage to ${files.length} area(s) of the vehicle. ` +
+          "The rear bumper shows a deep dent with paint transfer and cracking. " +
+          "The driver-side quarter panel is creased with misalignment at the wheel arch. " +
+          "Structural damage is possible based on panel gap distortion.",
+      });
+    }
 
     if (!files || files.length === 0) {
       return NextResponse.json(
@@ -108,7 +118,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Damage analysis error:", error);
     return NextResponse.json(
-      { error: "Failed to analyze damage photos" },
+      { error: getAIErrorMessage(error) },
       { status: 500 }
     );
   }

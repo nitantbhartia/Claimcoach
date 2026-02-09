@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeDocumentWithVision } from "@/lib/ai/client";
+import { analyzeDocumentWithVision, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
 import { extractJSON } from "@/lib/ai/sanitize";
 
@@ -45,6 +45,27 @@ export async function POST(request: NextRequest) {
   try {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
+
+    if (!isAIConfigured()) {
+      return NextResponse.json({
+        extracted: {
+          insurer_name: "[Dev] Sample Insurance Co.",
+          policy_number: "POL-2024-DEV-001",
+          group_number: null,
+          insured_name: "John Doe",
+          effective_date: "2024-01-01",
+          expiration_date: "2025-01-01",
+          vehicle_year: "2022",
+          vehicle_make: "Honda",
+          vehicle_model: "Civic EX",
+          vehicle_vin: null,
+          agent_name: null,
+          agent_phone: "(555) 987-6543",
+          coverage_type: "Comprehensive & Collision",
+          claim_phone: "(800) 555-0199",
+        },
+      });
+    }
 
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
@@ -97,7 +118,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Insurance card extraction error:", error);
     return NextResponse.json(
-      { error: "Failed to extract information from insurance card" },
+      { error: getAIErrorMessage(error) },
       { status: 500 }
     );
   }

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeWithAI } from "@/lib/ai/client";
+import { analyzeWithAI, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { OFFER_ANALYSIS_PROMPT } from "@/lib/ai/prompts";
 import { requireAuth } from "@/lib/auth";
 import { sanitizeField, extractJSON } from "@/lib/ai/sanitize";
@@ -11,6 +11,28 @@ export async function POST(request: NextRequest) {
   try {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
+
+    if (!isAIConfigured()) {
+      return NextResponse.json({
+        analysis: {
+          fairness_score: 38,
+          fair_value_estimate: 9981,
+          line_items: [
+            { name: "Vehicle Base Value", their_amount: 4200, fair_amount: 6800 },
+            { name: "Loss of Use / Rental", their_amount: 0, fair_amount: 720 },
+            { name: "Diminished Value", their_amount: 0, fair_amount: 1800 },
+            { name: "Sales Tax on Replacement", their_amount: 0, fair_amount: 476 },
+            { name: "Registration / Title", their_amount: 0, fair_amount: 185 },
+          ],
+          summary: "[Dev mode] Sample offer analysis. Configure ANTHROPIC_API_KEY for real analysis.",
+          recommendations: [
+            "Request comparable vehicle listings to challenge base value",
+            "File diminished value claim",
+            "Include sales tax and registration fees in demand",
+          ],
+        },
+      });
+    }
 
     const body = await request.json();
     const { offerAmount, claimType, vehicleInfo, damageDescription, coverageLimits, expenses } = body;
@@ -50,7 +72,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Offer analysis error:", error);
     return NextResponse.json(
-      { error: "Failed to analyze offer. Please try again." },
+      { error: getAIErrorMessage(error) },
       { status: 500 }
     );
   }

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeWithAI } from "@/lib/ai/client";
+import { analyzeWithAI, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { POLICY_ANALYSIS_PROMPT } from "@/lib/ai/prompts";
 import { requireAuth } from "@/lib/auth";
 import { extractJSON } from "@/lib/ai/sanitize";
@@ -13,6 +13,22 @@ export async function POST(request: NextRequest) {
   try {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
+
+    if (!isAIConfigured()) {
+      return NextResponse.json({
+        analysis: {
+          summary: "[Dev mode] Sample policy analysis. Configure ANTHROPIC_API_KEY for real analysis.",
+          coverages: [
+            { name: "Collision", limit: "$50,000", deductible: "$500" },
+            { name: "Comprehensive", limit: "$50,000", deductible: "$250" },
+            { name: "Rental Reimbursement", limit: "$30/day, 30 days", deductible: "$0" },
+          ],
+          hidden_coverages: ["Diminished Value (must request)", "OEM Parts Endorsement"],
+          exclusions: ["Wear and tear", "Mechanical breakdown"],
+          recommendations: ["File diminished value claim", "Request OEM parts for repairs"],
+        },
+      });
+    }
 
     const { policyText } = await request.json();
 
@@ -50,7 +66,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Policy analysis error:", error);
     return NextResponse.json(
-      { error: "Failed to analyze policy. Please try again." },
+      { error: getAIErrorMessage(error) },
       { status: 500 }
     );
   }

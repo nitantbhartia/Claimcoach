@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAnthropicClient } from "@/lib/ai/client";
+import { getAnthropicClient, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
 import { extractJSON } from "@/lib/ai/sanitize";
 
@@ -47,6 +47,28 @@ export async function POST(request: NextRequest) {
   try {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
+
+    if (!isAIConfigured()) {
+      return NextResponse.json({
+        extracted: {
+          offer_amount: 4200,
+          insurer_name: "[Dev] Sample Insurance Co.",
+          claim_number: "CLM-2024-DEV-001",
+          adjuster_name: "Jane Smith",
+          adjuster_phone: "(555) 123-4567",
+          adjuster_email: null,
+          offer_date: "2024-01-15",
+          vehicle_description: "2022 Honda Civic EX",
+          deductible: 500,
+          offer_breakdown: [
+            { item: "Actual Cash Value", amount: 4700 },
+            { item: "Less Deductible", amount: -500 },
+          ],
+          response_deadline: "30 days from date of letter",
+          key_terms: ["Salvage title required if accepted", "Payment within 5 business days"],
+        },
+      });
+    }
 
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
@@ -120,7 +142,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Offer extraction error:", error);
     return NextResponse.json(
-      { error: "Failed to extract offer details" },
+      { error: getAIErrorMessage(error) },
       { status: 500 }
     );
   }

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeWithAI } from "@/lib/ai/client";
+import { analyzeWithAI, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { COUNTER_OFFER_PROMPT } from "@/lib/ai/prompts";
 import { requireAuth } from "@/lib/auth";
 import { sanitizeField, extractJSON } from "@/lib/ai/sanitize";
@@ -11,6 +11,23 @@ export async function POST(request: NextRequest) {
   try {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
+
+    if (!isAIConfigured()) {
+      return NextResponse.json({
+        counterOffer: {
+          demand_amount: 9981,
+          letter: "[Dev mode] Sample counter-offer letter. Configure ANTHROPIC_API_KEY for real generation.",
+          line_items: [
+            { name: "Vehicle Base Value", amount: 6800 },
+            { name: "Loss of Use", amount: 720 },
+            { name: "Diminished Value", amount: 1800 },
+            { name: "Sales Tax", amount: 476 },
+            { name: "Registration & Title", amount: 185 },
+          ],
+          strategy_notes: "Counter with documented market comparables and state-specific entitlements.",
+        },
+      });
+    }
 
     const body = await request.json();
     const {
@@ -61,7 +78,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Counter-offer generation error:", error);
     return NextResponse.json(
-      { error: "Failed to generate counter-offer. Please try again." },
+      { error: getAIErrorMessage(error) },
       { status: 500 }
     );
   }

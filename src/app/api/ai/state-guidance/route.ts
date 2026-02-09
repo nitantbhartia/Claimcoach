@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAnthropicClient } from "@/lib/ai/client";
+import { getAnthropicClient, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
 import { validateState, sanitizeField, extractJSON } from "@/lib/ai/sanitize";
 
@@ -48,6 +48,20 @@ export async function POST(request: NextRequest) {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
 
+    if (!isAIConfigured()) {
+      return NextResponse.json({
+        guidance: {
+          state_name: "[Dev mode]",
+          state_code: "XX",
+          key_laws: [{ name: "Sample Statute", summary: "Dev placeholder", how_it_helps: "Configure ANTHROPIC_API_KEY for real guidance." }],
+          deadlines: [{ name: "Statute of Limitations", timeframe: "2 years", description: "Sample deadline" }],
+          consumer_rights: ["Right to choose your own repair shop", "Right to a written explanation of settlement"],
+          doi_info: { name: "Sample DOI", website: "https://example.com", complaint_url: "https://example.com/complaint", phone: "(800) 555-0100" },
+          bad_faith_notes: "[Dev mode] Configure ANTHROPIC_API_KEY for real state-specific guidance.",
+        },
+      });
+    }
+
     const body = await request.json();
     const { state, claimType } = body;
 
@@ -92,6 +106,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ guidance });
   } catch (error) {
     console.error("State guidance error:", error);
-    return NextResponse.json({ error: "Failed to generate state guidance" }, { status: 500 });
+    return NextResponse.json({ error: getAIErrorMessage(error) }, { status: 500 });
   }
 }

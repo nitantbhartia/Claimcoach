@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAnthropicClient } from "@/lib/ai/client";
+import { getAnthropicClient, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
 import { sanitizeField, extractJSON } from "@/lib/ai/sanitize";
 
@@ -38,6 +38,20 @@ export async function POST(request: NextRequest) {
   try {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
+
+    if (!isAIConfigured()) {
+      return NextResponse.json({
+        script: {
+          opening: "[Dev mode] Sample call script. Configure ANTHROPIC_API_KEY for real generation.",
+          key_points: [
+            { topic: "Vehicle Valuation", what_to_say: "I have comparable listings showing higher values.", if_they_say: "Our valuation is based on market data.", your_response: "I have 3 comparable vehicles within 10 miles that support a higher value." },
+          ],
+          closing: "I expect a revised offer within 5 business days. If not, I will file a complaint with the DOI.",
+          dos: ["Stay calm and professional", "Reference specific evidence", "Take notes"],
+          donts: ["Don't accept on the spot", "Don't get emotional", "Don't threaten litigation"],
+        },
+      });
+    }
 
     const body = await request.json();
     const { offerAmount, demandAmount, vehicleInfo, insurerName, lineItems, state } = body;
@@ -81,6 +95,6 @@ Create a complete call script with opening, key negotiation points with objectio
     return NextResponse.json({ script });
   } catch (error) {
     console.error("Call script generation error:", error);
-    return NextResponse.json({ error: "Failed to generate call script" }, { status: 500 });
+    return NextResponse.json({ error: getAIErrorMessage(error) }, { status: 500 });
   }
 }

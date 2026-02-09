@@ -2,6 +2,10 @@ import Anthropic from "@anthropic-ai/sdk";
 
 let anthropicClient: Anthropic | null = null;
 
+export function isAIConfigured(): boolean {
+  return Boolean(process.env.ANTHROPIC_API_KEY);
+}
+
 export function getAnthropicClient(): Anthropic {
   if (!anthropicClient) {
     anthropicClient = new Anthropic({
@@ -9,6 +13,31 @@ export function getAnthropicClient(): Anthropic {
     });
   }
   return anthropicClient;
+}
+
+/**
+ * Extract a user-facing error message from Anthropic SDK errors.
+ */
+export function getAIErrorMessage(error: unknown): string {
+  if (error instanceof Anthropic.AuthenticationError) {
+    return "Invalid Anthropic API key. Check ANTHROPIC_API_KEY in your environment.";
+  }
+  if (error instanceof Anthropic.PermissionDeniedError) {
+    return "Anthropic API key does not have permission for this request.";
+  }
+  if (error instanceof Anthropic.RateLimitError) {
+    return "Anthropic API rate limit reached. Please try again in a moment.";
+  }
+  if (error instanceof Anthropic.APIConnectionError) {
+    return "Could not connect to Anthropic API. Check your network connection.";
+  }
+  if (error instanceof Anthropic.APIError) {
+    return `Anthropic API error: ${error.message}`;
+  }
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return "An unexpected error occurred";
 }
 
 export async function analyzeWithAI(

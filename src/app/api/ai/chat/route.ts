@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAnthropicClient } from "@/lib/ai/client";
+import { getAnthropicClient, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
 import { sanitizeContext } from "@/lib/ai/sanitize";
 
@@ -28,6 +28,12 @@ export async function POST(request: NextRequest) {
   try {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
+
+    if (!isAIConfigured()) {
+      return NextResponse.json({
+        reply: "[Dev mode] AI chat is not available without ANTHROPIC_API_KEY configured. Set it in your .env.local file and restart the dev server.",
+      });
+    }
 
     const { messages, context } = await request.json() as {
       messages: ChatMessage[];
@@ -74,7 +80,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Chat error:", error);
     return NextResponse.json(
-      { error: "Failed to generate response" },
+      { error: getAIErrorMessage(error) },
       { status: 500 }
     );
   }
