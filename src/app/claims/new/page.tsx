@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -115,6 +115,18 @@ const stepVariants = {
 /* -------------------------------------------------------------------------- */
 
 export default function NewClaimPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-frame flex items-center justify-center">
+        <Loader2 className="w-6 h-6 animate-spin text-[#4a555e]" />
+      </div>
+    }>
+      <NewClaimPageInner />
+    </Suspense>
+  );
+}
+
+function NewClaimPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1);
