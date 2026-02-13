@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { motion, useInView } from "framer-motion";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 
@@ -25,6 +26,11 @@ const FAQ_ITEMS = [
     answer:
       "We charge a flat fee for the report generation. We do not take a percentage of your settlement. We are a tool, not a law firm.",
   },
+  {
+    question: "HOW LONG DOES IT TAKE?",
+    answer:
+      "Our AI completes a full forensic analysis in under 5 minutes. You can send a counter-offer the same day you receive your settlement letter.",
+  },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -43,6 +49,136 @@ const FAQ_JSON_LD = {
     },
   })),
 };
+
+/* -------------------------------------------------------------------------- */
+/* Animated counter component                                                  */
+/* -------------------------------------------------------------------------- */
+
+function AnimatedCounter({
+  target,
+  prefix = "",
+  suffix = "",
+  duration = 2000,
+}: {
+  target: number;
+  prefix?: string;
+  suffix?: string;
+  duration?: number;
+}) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    if (!inView) return;
+
+    let startTime: number | null = null;
+    let animationFrame: number;
+
+    function animate(currentTime: number) {
+      if (!startTime) startTime = currentTime;
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(eased * target));
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    }
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [inView, target, duration]);
+
+  return (
+    <span ref={ref} className="block text-primary font-bold tabular-nums">
+      {prefix}
+      {count.toLocaleString()}
+      {suffix}
+    </span>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Scroll-reveal section wrapper                                               */
+/* -------------------------------------------------------------------------- */
+
+function RevealSection({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Instant offer preview                                                       */
+/* -------------------------------------------------------------------------- */
+
+function OfferPreview({ offerAmount }: { offerAmount: number }) {
+  // Simulated breakdown based on typical recovery patterns
+  const salesTax = Math.round(offerAmount * 0.068);
+  const titleReg = Math.round(150 + Math.random() * 200);
+  const valAdj = Math.round(offerAmount * 0.08);
+  const condAdj = Math.round(offerAmount * 0.04);
+  const total = salesTax + titleReg + valAdj + condAdj;
+
+  const items = [
+    { label: "Unpaid Sales Tax", amount: salesTax },
+    { label: "Title & Reg Fees", amount: titleReg },
+    { label: "Valuation Adjustment", amount: valAdj },
+    { label: "Condition Rating", amount: condAdj },
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      className="border border-primary-border p-5 mt-5 overflow-hidden"
+    >
+      <p className="text-[0.75rem] text-primary-dim uppercase tracking-widest mb-4">
+        Estimated Missing Value
+      </p>
+      {items.map((item) => (
+        <div key={item.label} className="receipt-row">
+          <span className="text-[0.9rem] text-primary-dim">{item.label}</span>
+          <span className="font-body text-primary font-bold">
+            +${item.amount.toLocaleString()}
+          </span>
+        </div>
+      ))}
+      <div className="flex justify-between items-baseline mt-4 pt-3 border-t border-primary">
+        <span className="font-display uppercase text-display-sm text-primary">
+          Potential Recovery
+        </span>
+        <span className="font-display uppercase text-display-sm text-primary">
+          ${total.toLocaleString()}
+        </span>
+      </div>
+      <p className="text-[0.7rem] text-primary-muted text-center mt-3">
+        *Preliminary estimate. Full forensic audit may find additional items.
+      </p>
+    </motion.div>
+  );
+}
 
 /* -------------------------------------------------------------------------- */
 /* Sticky Mobile CTA                                                          */
@@ -65,7 +201,12 @@ function StickyCTA() {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-surface-100 border-t border-primary-border flex items-center px-5 py-3 gap-3">
+    <motion.div
+      initial={{ y: 100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="fixed bottom-0 left-0 right-0 z-50 bg-surface-100 border-t border-primary-border flex items-center px-5 py-3 gap-3"
+    >
       <div className="flex-1 font-display text-[0.9rem] uppercase text-primary">
         Recover Your Money
       </div>
@@ -74,7 +215,7 @@ function StickyCTA() {
           Start Audit
         </button>
       </Link>
-    </div>
+    </motion.div>
   );
 }
 
@@ -86,6 +227,7 @@ export default function LandingPage() {
   const [offer, setOffer] = useState("");
   const parsedOffer = parseFloat(offer.replace(/[^0-9.]/g, ""));
   const isValid = !isNaN(parsedOffer) && parsedOffer > 0;
+  const showPreview = isValid && parsedOffer >= 1000;
 
   return (
     <div className="noise-overlay min-h-screen bg-surface-100 text-primary font-body text-body pb-20">
@@ -101,15 +243,30 @@ export default function LandingPage() {
         {/* SECTION 1: HERO                                                  */}
         {/* ================================================================ */}
         <section id="hero-section" className="container-landing pt-10 pb-16">
-          <h1 className="font-display uppercase text-display-xl text-primary border-l-2 border-primary pl-4 mb-6">
+          <motion.h1
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="font-display uppercase text-display-xl text-primary border-l-2 border-primary pl-4 mb-6"
+          >
             Your insurance company&apos;s first offer is a negotiation tactic.
-          </h1>
-          <p className="text-primary-dim mb-8">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-primary-dim mb-8"
+          >
             They rely on you being tired, desperate, and uninformed. We built the weapon to fight back.
-          </p>
+          </motion.p>
 
           {/* Offer input */}
-          <div className="relative my-8">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="relative my-8"
+          >
             <label className="absolute -top-2.5 left-3 bg-surface-100 px-2 text-[0.8rem] text-primary-dim uppercase tracking-widest">
               Enter Total Loss Offer
             </label>
@@ -121,9 +278,9 @@ export default function LandingPage() {
               onChange={(e) => setOffer(e.target.value.replace(/[^0-9.,]/g, ""))}
               className="forensic-input"
             />
-          </div>
+          </motion.div>
 
-          <Link href="/claims/new">
+          <Link href={isValid ? `/claims/new?offer=${parsedOffer}` : "/claims/new"}>
             <button
               disabled={!isValid}
               className="w-full py-[18px] bg-primary text-surface-100 font-display uppercase font-bold text-[1.1rem] tracking-wide disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] transition-transform"
@@ -132,14 +289,54 @@ export default function LandingPage() {
             </button>
           </Link>
 
-          {/* Proof bar */}
+          {/* Instant preview when offer entered */}
+          {showPreview ? (
+            <OfferPreview offerAmount={parsedOffer} />
+          ) : (
+            /* Blurred preview when no offer */
+            <div className="relative border border-dashed border-primary-border p-5 mt-5 overflow-hidden">
+              <div className="absolute inset-0 flex items-center justify-center bg-surface-100/40 z-10">
+                <div className="border border-primary px-5 py-2.5 font-display uppercase bg-surface-100 text-primary text-[0.9rem]">
+                  Enter Offer to Preview
+                </div>
+              </div>
+              <div className="blur-[5px] opacity-60 select-none">
+                <div className="receipt-row">
+                  <span className="text-[0.9rem] text-primary-dim">Base Value Adjustment</span>
+                  <span className="font-body text-primary font-bold">+$1,240.00</span>
+                </div>
+                <div className="receipt-row">
+                  <span className="text-[0.9rem] text-primary-dim">Missing Sales Tax</span>
+                  <span className="font-body text-primary font-bold">+$845.20</span>
+                </div>
+                <div className="receipt-row">
+                  <span className="text-[0.9rem] text-primary-dim">Title &amp; Reg Fees</span>
+                  <span className="font-body text-primary font-bold">+$215.00</span>
+                </div>
+                <div className="receipt-row">
+                  <span className="text-[0.9rem] text-primary-dim">Condition Rating</span>
+                  <span className="font-body text-primary font-bold">+$600.00</span>
+                </div>
+                <h3 className="font-display uppercase text-display-sm text-right mt-5 text-primary">
+                  POTENTIAL RECOVERY: $2,900.20
+                </h3>
+              </div>
+            </div>
+          )}
+          {!showPreview && (
+            <p className="text-[0.7rem] text-primary-muted text-center mt-2.5">
+              *Sample output based on real user data.
+            </p>
+          )}
+
+          {/* Proof bar with animated counters */}
           <div className="flex gap-4 text-[0.75rem] text-primary-dim border-t border-b border-primary-border-light py-2.5 mt-8 mb-8">
             <div>
-              <span className="block text-primary font-bold">2,400+</span>
+              <AnimatedCounter target={2400} suffix="+" />
               CLAIMS AUDITED
             </div>
             <div>
-              <span className="block text-primary font-bold">$3,200</span>
+              <AnimatedCounter target={3200} prefix="$" />
               AVG. RECOVERY
             </div>
             <div>
@@ -147,39 +344,6 @@ export default function LandingPage() {
               ANALYSIS TIME
             </div>
           </div>
-
-          {/* Blurred preview */}
-          <div className="relative border border-dashed border-primary-border p-5 mt-5 overflow-hidden">
-            <div className="absolute inset-0 flex items-center justify-center bg-surface-100/40 z-10">
-              <div className="border border-primary px-5 py-2.5 font-display uppercase bg-surface-100 text-primary text-[0.9rem]">
-                Analysis Locked
-              </div>
-            </div>
-            <div className="blur-[5px] opacity-60 select-none">
-              <div className="receipt-row">
-                <span className="text-[0.9rem] text-primary-dim">Base Value Adjustment</span>
-                <span className="font-body text-primary font-bold">+$1,240.00</span>
-              </div>
-              <div className="receipt-row">
-                <span className="text-[0.9rem] text-primary-dim">Missing Sales Tax</span>
-                <span className="font-body text-primary font-bold">+$845.20</span>
-              </div>
-              <div className="receipt-row">
-                <span className="text-[0.9rem] text-primary-dim">Title &amp; Reg Fees</span>
-                <span className="font-body text-primary font-bold">+$215.00</span>
-              </div>
-              <div className="receipt-row">
-                <span className="text-[0.9rem] text-primary-dim">Condition Rating</span>
-                <span className="font-body text-primary font-bold">+$600.00</span>
-              </div>
-              <h3 className="font-display uppercase text-display-sm text-right mt-5 text-primary">
-                POTENTIAL RECOVERY: $2,900.20
-              </h3>
-            </div>
-          </div>
-          <p className="text-[0.7rem] text-primary-muted text-center mt-2.5">
-            *Sample output based on real user data.
-          </p>
         </section>
 
         {/* ================================================================ */}
@@ -187,55 +351,61 @@ export default function LandingPage() {
         {/* ================================================================ */}
         <section className="border-b border-primary-border">
           <div className="container-landing py-16">
-            <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-4">
-              The Deck Is Stacked
-            </h2>
-            <p className="text-primary-dim mb-6">
-              Insurance adjusters use proprietary software (CCC, Mitchell) specifically designed to minimize payouts. You are bringing a knife to a drone fight.
-            </p>
+            <RevealSection>
+              <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-4">
+                The Deck Is Stacked
+              </h2>
+              <p className="text-primary-dim mb-6">
+                Insurance adjusters use proprietary software (CCC, Mitchell) specifically designed to minimize payouts. You are bringing a knife to a drone fight.
+              </p>
+            </RevealSection>
 
             <div className="grid gap-5">
               {/* The Adjuster card */}
-              <div className="border border-primary-border p-5" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0) 100%)" }}>
-                <div className="font-display text-[1.2rem] border-b border-primary-border pb-2.5 mb-4 flex justify-between">
-                  <span>THE ADJUSTER</span>
-                  <span className="text-primary-muted">OPFOR</span>
+              <RevealSection delay={0.1}>
+                <div className="border border-primary-border p-5" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0) 100%)" }}>
+                  <div className="font-display text-[1.2rem] border-b border-primary-border pb-2.5 mb-4 flex justify-between">
+                    <span>THE ADJUSTER</span>
+                    <span className="text-primary-muted">OPFOR</span>
+                  </div>
+                  <ul className="list-none p-0 space-y-2.5">
+                    {[
+                      "Access to millions of low-ball comps",
+                      "Proprietary algorithmic devaluation",
+                      "Incentivized to underpay by 15-20%",
+                      "Counts on your financial desperation",
+                    ].map((item) => (
+                      <li key={item} className="pl-5 relative text-primary-dim">
+                        <span className="absolute left-0 text-primary-muted">x</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="list-none p-0 space-y-2.5">
-                  {[
-                    "Access to millions of low-ball comps",
-                    "Proprietary algorithmic devaluation",
-                    "Incentivized to underpay by 15-20%",
-                    "Counts on your financial desperation",
-                  ].map((item) => (
-                    <li key={item} className="pl-5 relative text-primary-dim">
-                      <span className="absolute left-0 text-primary-muted">x</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              </RevealSection>
 
               {/* You + ClaimCoach card */}
-              <div className="border-2 border-primary p-5" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0) 100%)" }}>
-                <div className="font-display text-[1.2rem] border-b-2 border-primary pb-2.5 mb-4 flex justify-between">
-                  <span>YOU + CLAIMCOACH</span>
-                  <span>ALLY</span>
+              <RevealSection delay={0.2}>
+                <div className="border-2 border-primary p-5" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0) 100%)" }}>
+                  <div className="font-display text-[1.2rem] border-b-2 border-primary pb-2.5 mb-4 flex justify-between">
+                    <span>YOU + CLAIMCOACH</span>
+                    <span>ALLY</span>
+                  </div>
+                  <ul className="list-none p-0 space-y-2.5">
+                    {[
+                      "Full forensic audit of the settlement",
+                      "Identification of missing line items",
+                      "Generate legalistic demand letters",
+                      "Data-backed leverage to force fair payouts",
+                    ].map((item) => (
+                      <li key={item} className="pl-5 relative text-primary">
+                        <span className="absolute left-0 text-primary font-bold">&check;</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="list-none p-0 space-y-2.5">
-                  {[
-                    "Full forensic audit of the settlement",
-                    "Identification of missing line items",
-                    "Generate legalistic demand letters",
-                    "Data-backed leverage to force fair payouts",
-                  ].map((item) => (
-                    <li key={item} className="pl-5 relative text-primary">
-                      <span className="absolute left-0 text-primary font-bold">&check;</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              </RevealSection>
             </div>
           </div>
         </section>
@@ -245,30 +415,38 @@ export default function LandingPage() {
         {/* ================================================================ */}
         <section className="border-b border-primary-border">
           <div className="container-landing py-16">
-            <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-8">
-              Protocol
-            </h2>
+            <RevealSection>
+              <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-8">
+                Protocol
+              </h2>
+            </RevealSection>
 
             {/* Step I */}
-            <div className="mb-8 pl-5 border-l border-primary-border">
-              <div className="font-display text-step-num text-primary-border leading-none mb-2.5">I</div>
-              <h3 className="font-display uppercase text-display-sm mb-2">Upload &amp; Input</h3>
-              <p className="text-primary-dim">Enter your settlement offer and vehicle details. Our system ingests the data securely.</p>
-            </div>
+            <RevealSection delay={0.1}>
+              <div className="mb-8 pl-5 border-l border-primary-border">
+                <div className="font-display text-step-num text-primary-border leading-none mb-2.5">I</div>
+                <h3 className="font-display uppercase text-display-sm mb-2">Upload &amp; Input</h3>
+                <p className="text-primary-dim">Enter your settlement offer and vehicle details. Our system ingests the data securely.</p>
+              </div>
+            </RevealSection>
 
             {/* Step II */}
-            <div className="mb-8 pl-5 border-l border-primary-border">
-              <div className="font-display text-step-num text-primary-border leading-none mb-2.5">II</div>
-              <h3 className="font-display uppercase text-display-sm mb-2">Forensic Scan</h3>
-              <p className="text-primary-dim">AI cross-references your offer against state laws, real market data, and 2,000+ past claims to find discrepancies.</p>
-            </div>
+            <RevealSection delay={0.2}>
+              <div className="mb-8 pl-5 border-l border-primary-border">
+                <div className="font-display text-step-num text-primary-border leading-none mb-2.5">II</div>
+                <h3 className="font-display uppercase text-display-sm mb-2">Forensic Scan</h3>
+                <p className="text-primary-dim">AI cross-references your offer against state laws, real market data, and 2,000+ past claims to find discrepancies.</p>
+              </div>
+            </RevealSection>
 
             {/* Step III — highlighted */}
-            <div className="mb-8 pl-5 border-l-2 border-primary">
-              <div className="font-display text-step-num text-primary leading-none mb-2.5">III</div>
-              <h3 className="font-display uppercase text-display-sm text-primary mb-2">Counter-Attack</h3>
-              <p className="text-primary">Receive a generated negotiation packet citing specific statutes and missing values. You send it. They pay.</p>
-            </div>
+            <RevealSection delay={0.3}>
+              <div className="mb-8 pl-5 border-l-2 border-primary">
+                <div className="font-display text-step-num text-primary leading-none mb-2.5">III</div>
+                <h3 className="font-display uppercase text-display-sm text-primary mb-2">Counter-Attack</h3>
+                <p className="text-primary">Receive a generated negotiation packet citing specific statutes and missing values. You send it. They pay.</p>
+              </div>
+            </RevealSection>
           </div>
         </section>
 
@@ -277,40 +455,44 @@ export default function LandingPage() {
         {/* ================================================================ */}
         <section className="border-b border-primary-border">
           <div className="container-landing py-16">
-            <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-4">
-              Missing Capital
-            </h2>
-            <p className="text-primary-dim">
-              Most consumers leave{" "}
-              <strong className="text-primary bg-primary/10 px-1">$1,500 – $4,000</strong>{" "}
-              on the table because they don&apos;t know what to ask for.
-            </p>
-
-            <div className="mt-8 border border-primary-border-light p-5">
-              <div className="receipt-row">
-                <span className="text-[0.9rem] text-primary-dim">UNPAID SALES TAX</span>
-                <span className="font-body text-primary font-bold">$800 – $3,000</span>
-              </div>
-              <p className="text-[0.75rem] text-primary-dim mb-5">
-                Legally required in 34 states, often &ldquo;accidentally&rdquo; omitted.
+            <RevealSection>
+              <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-4">
+                Missing Capital
+              </h2>
+              <p className="text-primary-dim">
+                Most consumers leave{" "}
+                <strong className="text-primary bg-primary/10 px-1">$1,500 – $4,000</strong>{" "}
+                on the table because they don&apos;t know what to ask for.
               </p>
+            </RevealSection>
 
-              <div className="receipt-row">
-                <span className="text-[0.9rem] text-primary-dim">TITLE &amp; REGISTRATION</span>
-                <span className="font-body text-primary font-bold">$200 – $500</span>
-              </div>
-              <p className="text-[0.75rem] text-primary-dim mb-5">
-                Transfer fees required to replace your vehicle.
-              </p>
+            <RevealSection delay={0.1}>
+              <div className="mt-8 border border-primary-border-light p-5">
+                <div className="receipt-row">
+                  <span className="text-[0.9rem] text-primary-dim">UNPAID SALES TAX</span>
+                  <span className="font-body text-primary font-bold">$800 – $3,000</span>
+                </div>
+                <p className="text-[0.75rem] text-primary-dim mb-5">
+                  Legally required in 34 states, often &ldquo;accidentally&rdquo; omitted.
+                </p>
 
-              <div className="receipt-row">
-                <span className="text-[0.9rem] text-primary-dim">VALUATION ADJUSTMENT</span>
-                <span className="font-body text-primary font-bold">$500 – $2,000</span>
+                <div className="receipt-row">
+                  <span className="text-[0.9rem] text-primary-dim">TITLE &amp; REGISTRATION</span>
+                  <span className="font-body text-primary font-bold">$200 – $500</span>
+                </div>
+                <p className="text-[0.75rem] text-primary-dim mb-5">
+                  Transfer fees required to replace your vehicle.
+                </p>
+
+                <div className="receipt-row">
+                  <span className="text-[0.9rem] text-primary-dim">VALUATION ADJUSTMENT</span>
+                  <span className="font-body text-primary font-bold">$500 – $2,000</span>
+                </div>
+                <p className="text-[0.75rem] text-primary-dim mb-0">
+                  Correcting the condition rating of your car vs. the comps.
+                </p>
               </div>
-              <p className="text-[0.75rem] text-primary-dim mb-0">
-                Correcting the condition rating of your car vs. the comps.
-              </p>
-            </div>
+            </RevealSection>
           </div>
         </section>
 
@@ -319,50 +501,94 @@ export default function LandingPage() {
         {/* ================================================================ */}
         <section className="border-b border-primary-border">
           <div className="container-landing py-16">
-            <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-8">
-              Case Files
-            </h2>
+            <RevealSection>
+              <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-8">
+                Case Files
+              </h2>
+            </RevealSection>
 
-            <div className="mb-8">
-              <p className="italic border-l-2 border-primary-border pl-4 text-primary/80">
-                &ldquo;They offered $14k. ClaimCoach found they used comps from 200 miles away. I sent the generated letter and got a check for $17.5k three days later.&rdquo;
-              </p>
-              <div className="font-body text-[0.8rem] uppercase text-primary-muted mt-3">
-                — Michael R. <span className="text-primary font-bold">(Recovered +$3,500)</span> / TX
+            <RevealSection delay={0.1}>
+              <div className="mb-8">
+                <p className="italic border-l-2 border-primary-border pl-4 text-primary/80">
+                  &ldquo;They offered $14k. ClaimCoach found they used comps from 200 miles away. I sent the generated letter and got a check for $17.5k three days later.&rdquo;
+                </p>
+                <div className="font-body text-[0.8rem] uppercase text-primary-muted mt-3">
+                  — Michael R. <span className="text-primary font-bold">(Recovered +$3,500)</span> / TX
+                </div>
               </div>
-            </div>
+            </RevealSection>
 
-            <div className="mb-8">
-              <p className="italic border-l-2 border-primary-border pl-4 text-primary/80">
-                &ldquo;I didn&apos;t even know I was owed sales tax. That alone was $1,200. This tool is lethal.&rdquo;
-              </p>
-              <div className="font-body text-[0.8rem] uppercase text-primary-muted mt-3">
-                — Sarah J. <span className="text-primary font-bold">(Recovered +$1,200)</span> / FL
+            <RevealSection delay={0.2}>
+              <div className="mb-8">
+                <p className="italic border-l-2 border-primary-border pl-4 text-primary/80">
+                  &ldquo;I didn&apos;t even know I was owed sales tax. That alone was $1,200. This tool is lethal.&rdquo;
+                </p>
+                <div className="font-body text-[0.8rem] uppercase text-primary-muted mt-3">
+                  — Sarah J. <span className="text-primary font-bold">(Recovered +$1,200)</span> / FL
+                </div>
               </div>
-            </div>
+            </RevealSection>
+
+            <RevealSection delay={0.3}>
+              <div className="mb-0">
+                <p className="italic border-l-2 border-primary-border pl-4 text-primary/80">
+                  &ldquo;Progressive low-balled me by $2,800. I used the counter-offer letter word for word. They folded in 48 hours.&rdquo;
+                </p>
+                <div className="font-body text-[0.8rem] uppercase text-primary-muted mt-3">
+                  — David K. <span className="text-primary font-bold">(Recovered +$2,800)</span> / OH
+                </div>
+              </div>
+            </RevealSection>
           </div>
         </section>
 
         {/* ================================================================ */}
-        {/* SECTION 6: FAQ                                                   */}
+        {/* SECTION 6: FREE ESTIMATE CTA                                     */}
+        {/* ================================================================ */}
+        <section className="border-b border-primary-border">
+          <div className="container-landing py-16">
+            <RevealSection>
+              <div className="border-2 border-primary p-6 text-center">
+                <h2 className="font-display uppercase text-display mb-3">
+                  Not sure yet?
+                </h2>
+                <p className="text-primary-dim mb-5">
+                  Get a free vehicle value estimate — no account needed. See if your offer is in the right ballpark.
+                </p>
+                <Link href="/estimate">
+                  <button className="bg-primary text-surface-100 font-display uppercase font-bold text-[1rem] tracking-wide px-8 py-3 active:scale-[0.98] transition-transform">
+                    Free Estimate
+                  </button>
+                </Link>
+              </div>
+            </RevealSection>
+          </div>
+        </section>
+
+        {/* ================================================================ */}
+        {/* SECTION 7: FAQ                                                   */}
         {/* ================================================================ */}
         <section className="mb-16">
           <div className="container-landing py-16">
-            <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-4">
-              Intelligence / FAQ
-            </h2>
+            <RevealSection>
+              <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-4">
+                Intelligence / FAQ
+              </h2>
+            </RevealSection>
 
             <div>
-              {FAQ_ITEMS.map((item) => (
-                <details key={item.question} className="landing-accordion border-b border-primary-border group">
-                  <summary className="w-full text-left py-5 font-display text-[1.1rem] cursor-pointer flex justify-between items-center text-primary">
-                    <span>{item.question}</span>
-                    <span className="text-primary-dim group-open:rotate-45 transition-transform duration-200">+</span>
-                  </summary>
-                  <div className="pb-5 text-primary-dim text-[0.9rem]">
-                    {item.answer}
-                  </div>
-                </details>
+              {FAQ_ITEMS.map((item, i) => (
+                <RevealSection key={item.question} delay={i * 0.05}>
+                  <details className="landing-accordion border-b border-primary-border group">
+                    <summary className="w-full text-left py-5 font-display text-[1.1rem] cursor-pointer flex justify-between items-center text-primary">
+                      <span>{item.question}</span>
+                      <span className="text-primary-dim group-open:rotate-45 transition-transform duration-200">+</span>
+                    </summary>
+                    <div className="pb-5 text-primary-dim text-[0.9rem]">
+                      {item.answer}
+                    </div>
+                  </details>
+                </RevealSection>
               ))}
             </div>
           </div>
