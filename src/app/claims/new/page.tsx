@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, ArrowLeft, ChevronRight, Search, Loader2, Camera, CheckCircle2, ImagePlus, FileText, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, ArrowLeft, ChevronRight, Search, Loader2, Camera, CheckCircle2, ImagePlus, FileText, Sparkles, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,15 +17,20 @@ import type { OnboardingData } from "@/types";
 /*  Constants                                                                  */
 /* -------------------------------------------------------------------------- */
 
-const TOTAL_STEPS = 6;
+const TOTAL_STEPS = 4;
 
 const STEP_LABELS = [
-  "Claim Type",
-  "Accident Details",
-  "Insurance Info",
-  "Vehicle Info",
-  "Policy Upload",
+  "Accident & Damage",
+  "Insurance & Offer",
+  "Vehicle Details",
   "Review & Submit",
+];
+
+const STEP_ICONS = [
+  "01",
+  "02",
+  "03",
+  "04",
 ];
 
 const FAULT_OPTIONS = [
@@ -63,37 +69,6 @@ const US_STATES = [
   { value: "DC", label: "Washington D.C." },
 ];
 
-const CLAIM_TYPES = [
-  {
-    key: "auto" as const,
-    title: "Auto Property Damage",
-    description:
-      "Collision, comprehensive, and total loss claims. Get fair value for your vehicle.",
-    enabled: true,
-  },
-  {
-    key: "home" as const,
-    title: "Homeowner",
-    description:
-      "Storm, fire, water damage, and other covered property losses.",
-    enabled: false,
-  },
-  {
-    key: "health" as const,
-    title: "Health",
-    description:
-      "Medical claim denials, out-of-network disputes, and billing errors.",
-    enabled: false,
-  },
-  {
-    key: "renters" as const,
-    title: "Renter&apos;s",
-    description:
-      "Personal property theft, liability, and additional living expense claims.",
-    enabled: false,
-  },
-];
-
 /* -------------------------------------------------------------------------- */
 /*  Helper: format fault status for display                                    */
 /* -------------------------------------------------------------------------- */
@@ -117,12 +92,33 @@ function formatCurrency(amount: number): string {
 }
 
 /* -------------------------------------------------------------------------- */
+/*  Step transition variants                                                   */
+/* -------------------------------------------------------------------------- */
+
+const stepVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 40 : -40,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? 40 : -40,
+    opacity: 0,
+  }),
+};
+
+/* -------------------------------------------------------------------------- */
 /*  Page Component                                                             */
 /* -------------------------------------------------------------------------- */
 
 export default function NewClaimPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1);
+  const [direction, setDirection] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [policyFiles, setPolicyFiles] = useState<File[]>([]);
 
@@ -173,13 +169,27 @@ export default function NewClaimPage() {
     state: "",
   });
 
+  /* ---- Pre-fill offer from URL params ---- */
+  useEffect(() => {
+    const offerParam = searchParams.get("offer");
+    if (offerParam) {
+      const amount = parseFloat(offerParam);
+      if (!isNaN(amount) && amount > 0) {
+        setFormData((prev) => ({
+          ...prev,
+          has_offer: true,
+          offer_amount: amount,
+        }));
+      }
+    }
+  }, [searchParams]);
+
   /* ---- Generic field updater ---- */
   function updateField<K extends keyof OnboardingData>(
     key: K,
     value: OnboardingData[K]
   ) {
     setFormData((prev) => ({ ...prev, [key]: value }));
-    // Clear the error for this field when the user changes it
     if (errors[key as string]) {
       setErrors((prev) => {
         const next = { ...prev };
@@ -265,7 +275,6 @@ export default function NewClaimPage() {
       const ext = data.extracted;
       setOfferDetails(ext);
 
-      // Auto-fill offer fields
       if (ext.offer_amount && typeof ext.offer_amount === "number") {
         autoFillField("offer_amount", ext.offer_amount);
         autoFillField("has_offer", true);
@@ -355,7 +364,6 @@ export default function NewClaimPage() {
 
       const ext = data.extracted;
 
-      // Auto-fill fields from extracted data
       if (ext.insurer_name && !formData.insurer_name) {
         autoFillField("insurer_name", ext.insurer_name);
       }
@@ -372,7 +380,6 @@ export default function NewClaimPage() {
         autoFillField("vehicle_model", ext.vehicle_model);
       }
 
-      // If card shows they have insurance, mark as filed
       if (ext.insurer_name) {
         autoFillField("filed_with_insurer", true);
       }
@@ -394,10 +401,7 @@ export default function NewClaimPage() {
 
     switch (step) {
       case 1:
-        // Claim type is pre-selected as "auto", always valid
-        break;
-
-      case 2:
+        // Accident & Damage
         if (!formData.accident_date) {
           newErrors.accident_date = "Please enter the date of the accident.";
         }
@@ -407,7 +411,8 @@ export default function NewClaimPage() {
         }
         break;
 
-      case 3:
+      case 2:
+        // Insurance & Offer
         if (formData.filed_with_insurer && !formData.insurer_name.trim()) {
           newErrors.insurer_name = "Please enter your insurance company name.";
         }
@@ -422,7 +427,8 @@ export default function NewClaimPage() {
         }
         break;
 
-      case 4:
+      case 3:
+        // Vehicle Details
         if (!formData.vehicle_year.trim()) {
           newErrors.vehicle_year = "Please enter the vehicle year.";
         } else if (
@@ -440,12 +446,8 @@ export default function NewClaimPage() {
         }
         break;
 
-      case 5:
-        // Policy upload is optional
-        break;
-
-      case 6:
-        // Summary step -- nothing to validate
+      case 4:
+        // Review — nothing to validate
         break;
     }
 
@@ -459,12 +461,28 @@ export default function NewClaimPage() {
 
   function handleNext() {
     if (!validateStep(currentStep)) return;
+    setDirection(1);
     setCurrentStep((s) => Math.min(s + 1, TOTAL_STEPS));
   }
 
   function handleBack() {
     setErrors({});
+    setDirection(-1);
     setCurrentStep((s) => Math.max(s - 1, 1));
+  }
+
+  function goToStep(step: number) {
+    if (step < currentStep) {
+      setDirection(-1);
+      setErrors({});
+      setCurrentStep(step);
+    } else if (step > currentStep) {
+      // Only allow jumping forward if current step is valid
+      if (validateStep(currentStep)) {
+        setDirection(1);
+        setCurrentStep(step);
+      }
+    }
   }
 
   /* ------------------------------------------------------------------------ */
@@ -514,73 +532,8 @@ export default function NewClaimPage() {
   /*  Step Renderers                                                           */
   /* ------------------------------------------------------------------------ */
 
-  /* ---- Step 1: Claim Type ---- */
-  function renderClaimType() {
-    return (
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-heading-lg text-black">
-            What type of claim do you have?
-          </h2>
-          <p className="mt-2 text-body text-[#4a555e]">
-            Select the category that best matches your situation. We are
-            currently focused on auto property damage claims.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {CLAIM_TYPES.map((type) => {
-            const isSelected =
-              type.enabled && formData.claim_type === type.key;
-            return (
-              <button
-                key={type.key}
-                type="button"
-                disabled={!type.enabled}
-                onClick={() => {
-                  if (type.enabled) updateField("claim_type", type.key);
-                }}
-                className={
-                  "text-left border p-4 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-coral " +
-                  (isSelected
-                    ? "border-black/10 border-l-4 border-l-coral bg-panel"
-                    : type.enabled
-                    ? "border-black/10 bg-panel hover:border-black/20 cursor-pointer"
-                    : "border-black/5 bg-panel-alt cursor-not-allowed")
-                }
-              >
-                <h3
-                  className={
-                    "text-body font-semibold " +
-                    (type.enabled ? "text-black" : "text-[#4a555e]/60")
-                  }
-                >
-                  {type.title}
-                </h3>
-                <p
-                  className={
-                    "mt-1 text-body-sm " +
-                    (type.enabled ? "text-[#4a555e]" : "text-black/20")
-                  }
-                >
-                  {type.description}
-                </p>
-
-                {!type.enabled && (
-                  <span className="mt-2 inline-block text-caption text-[#4a555e]/60 font-medium">
-                    Coming soon
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    );
-  }
-
-  /* ---- Step 2: Accident Details ---- */
-  function renderAccidentDetails() {
+  /* ---- Step 1: Accident & Damage ---- */
+  function renderAccidentDamage() {
     return (
       <div className="space-y-6">
         <div>
@@ -588,33 +541,43 @@ export default function NewClaimPage() {
             Tell us about the accident
           </h2>
           <p className="mt-2 text-body text-[#4a555e]">
-            This helps us understand the context of your claim and prepare the
-            best analysis.
+            This helps us understand the context and prepare the best analysis for your auto claim.
           </p>
         </div>
 
         <div className="space-y-5">
-          <Input
-            id="accident_date"
-            label="When did the accident happen?"
-            type="date"
-            value={formData.accident_date}
-            onChange={(e) => updateField("accident_date", e.target.value)}
-            error={errors.accident_date}
-            max={new Date().toISOString().split("T")[0]}
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              id="accident_date"
+              label="When did the accident happen?"
+              type="date"
+              value={formData.accident_date}
+              onChange={(e) => updateField("accident_date", e.target.value)}
+              error={errors.accident_date}
+              max={new Date().toISOString().split("T")[0]}
+            />
+
+            <Select
+              id="fault_status"
+              label="Who was at fault?"
+              options={FAULT_OPTIONS}
+              value={formData.fault_status}
+              onChange={(e) =>
+                updateField(
+                  "fault_status",
+                  e.target.value as OnboardingData["fault_status"]
+                )
+              }
+            />
+          </div>
 
           <Select
-            id="fault_status"
-            label="Who was at fault?"
-            options={FAULT_OPTIONS}
-            value={formData.fault_status}
-            onChange={(e) =>
-              updateField(
-                "fault_status",
-                e.target.value as OnboardingData["fault_status"]
-              )
-            }
+            id="state"
+            label="What state did the accident occur in?"
+            options={US_STATES}
+            value={formData.state}
+            onChange={(e) => updateField("state", e.target.value)}
+            placeholder="Select a state..."
           />
 
           {/* Damage photo analysis */}
@@ -710,13 +673,13 @@ export default function NewClaimPage() {
     );
   }
 
-  /* ---- Step 3: Insurance Info ---- */
-  function renderInsuranceInfo() {
+  /* ---- Step 2: Insurance & Offer ---- */
+  function renderInsuranceOffer() {
     return (
       <div className="space-y-6">
         <div>
           <h2 className="text-heading-lg text-black">
-            Insurance information
+            Insurance & settlement offer
           </h2>
           <p className="mt-2 text-body text-[#4a555e]">
             Let us know where you stand with your insurance company so we can
@@ -812,50 +775,58 @@ export default function NewClaimPage() {
           </div>
 
           {/* Conditional: insurer name + claim number */}
-          {formData.filed_with_insurer && (
-            <div className="space-y-5 pl-4 border-l-2 border-black/5">
-              <div>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <label htmlFor="insurer_name" className="block text-body-sm font-medium text-[#4a555e]">
-                    Insurance company name
-                  </label>
-                  {autoFilled.has("insurer_name") && (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
-                      <Sparkles className="w-3 h-3" />
-                      AI
-                    </span>
-                  )}
+          <AnimatePresence>
+            {formData.filed_with_insurer && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-5 pl-4 border-l-2 border-black/5 overflow-hidden"
+              >
+                <div>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <label htmlFor="insurer_name" className="block text-body-sm font-medium text-[#4a555e]">
+                      Insurance company name
+                    </label>
+                    {autoFilled.has("insurer_name") && (
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
+                        <Sparkles className="w-3 h-3" />
+                        AI
+                      </span>
+                    )}
+                  </div>
+                  <Input
+                    id="insurer_name"
+                    placeholder="e.g., State Farm, GEICO, Progressive"
+                    value={formData.insurer_name}
+                    onChange={(e) => updateField("insurer_name", e.target.value)}
+                    error={errors.insurer_name}
+                  />
                 </div>
-                <Input
-                  id="insurer_name"
-                  placeholder="e.g., State Farm, GEICO, Progressive"
-                  value={formData.insurer_name}
-                  onChange={(e) => updateField("insurer_name", e.target.value)}
-                  error={errors.insurer_name}
-                />
-              </div>
-              <div>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <label htmlFor="claim_number" className="block text-body-sm font-medium text-[#4a555e]">
-                    Claim number (optional)
-                  </label>
-                  {autoFilled.has("claim_number") && (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
-                      <Sparkles className="w-3 h-3" />
-                      AI
-                    </span>
-                  )}
+                <div>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <label htmlFor="claim_number" className="block text-body-sm font-medium text-[#4a555e]">
+                      Claim number (optional)
+                    </label>
+                    {autoFilled.has("claim_number") && (
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
+                        <Sparkles className="w-3 h-3" />
+                        AI
+                      </span>
+                    )}
+                  </div>
+                  <Input
+                    id="claim_number"
+                    placeholder="e.g., CLM-2024-123456"
+                    value={formData.claim_number}
+                    onChange={(e) => updateField("claim_number", e.target.value)}
+                    hint="You can find this on any correspondence from your insurer."
+                  />
                 </div>
-                <Input
-                  id="claim_number"
-                  placeholder="e.g., CLM-2024-123456"
-                  value={formData.claim_number}
-                  onChange={(e) => updateField("claim_number", e.target.value)}
-                  hint="You can find this on any correspondence from your insurer."
-                />
-              </div>
-            </div>
-          )}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Have you received an offer? */}
           <div className="space-y-1">
@@ -894,119 +865,114 @@ export default function NewClaimPage() {
           </div>
 
           {/* Conditional: offer amount + letter scan */}
-          {formData.has_offer && (
-            <div className="pl-4 border-l-2 border-black/5 space-y-4">
-              {/* Offer letter scan */}
-              <div className="border border-dashed border-black/20 p-3 bg-panel-alt">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-coral/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <FileText className="w-4 h-4 text-coral" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-body-sm font-medium text-black">
-                      Have the offer letter?
-                    </p>
-                    <p className="text-caption text-[#4a555e] mt-0.5">
-                      Upload a photo and we&apos;ll extract the amount, adjuster info, and breakdown.
-                    </p>
-                    <div className="mt-2">
-                      {offerScanned ? (
-                        <div className="space-y-1.5">
-                          <div className="flex items-center gap-2 text-body-sm text-success-600">
-                            <CheckCircle2 className="w-4 h-4" />
-                            Offer details extracted
+          <AnimatePresence>
+            {formData.has_offer && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className="pl-4 border-l-2 border-black/5 space-y-4 overflow-hidden"
+              >
+                {/* Offer letter scan */}
+                <div className="border border-dashed border-black/20 p-3 bg-panel-alt">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-coral/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <FileText className="w-4 h-4 text-coral" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-body-sm font-medium text-black">
+                        Have the offer letter?
+                      </p>
+                      <p className="text-caption text-[#4a555e] mt-0.5">
+                        Upload a photo and we&apos;ll extract the amount, adjuster info, and breakdown.
+                      </p>
+                      <div className="mt-2">
+                        {offerScanned ? (
+                          <div className="space-y-1.5">
+                            <div className="flex items-center gap-2 text-body-sm text-success-600">
+                              <CheckCircle2 className="w-4 h-4" />
+                              Offer details extracted
+                            </div>
+                            {offerDetails && offerDetails.adjuster_name ? (
+                              <p className="text-caption text-[#4a555e]">
+                                Adjuster: {String(offerDetails.adjuster_name)}
+                                {offerDetails.adjuster_phone ? ` (${String(offerDetails.adjuster_phone)})` : ""}
+                              </p>
+                            ) : null}
                           </div>
-                          {offerDetails && offerDetails.adjuster_name ? (
-                            <p className="text-caption text-[#4a555e]">
-                              Adjuster: {String(offerDetails.adjuster_name)}
-                              {offerDetails.adjuster_phone ? ` (${String(offerDetails.adjuster_phone)})` : ""}
-                            </p>
-                          ) : null}
-                        </div>
-                      ) : offerScanning ? (
-                        <div className="flex items-center gap-2 text-body-sm text-[#4a555e]">
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          Reading offer letter...
-                        </div>
-                      ) : (
-                        <label className="inline-flex items-center gap-2 px-3 py-1.5 border border-black/10 bg-panel text-caption font-medium text-[#4a555e] hover:bg-panel-alt cursor-pointer transition-colors">
-                          <FileText className="w-3.5 h-3.5" />
-                          Upload offer letter
-                          <input
-                            type="file"
-                            accept="image/jpeg,image/png,image/webp"
-                            className="hidden"
-                            onChange={(e) => {
-                              const files = e.target.files;
-                              if (files && files.length > 0) {
-                                handleOfferLetterScan(Array.from(files));
-                              }
-                            }}
-                          />
-                        </label>
-                      )}
-                      {offerError && (
-                        <p className="text-caption text-danger-600 mt-1">{offerError}</p>
-                      )}
+                        ) : offerScanning ? (
+                          <div className="flex items-center gap-2 text-body-sm text-[#4a555e]">
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            Reading offer letter...
+                          </div>
+                        ) : (
+                          <label className="inline-flex items-center gap-2 px-3 py-1.5 border border-black/10 bg-panel text-caption font-medium text-[#4a555e] hover:bg-panel-alt cursor-pointer transition-colors">
+                            <FileText className="w-3.5 h-3.5" />
+                            Upload offer letter
+                            <input
+                              type="file"
+                              accept="image/jpeg,image/png,image/webp"
+                              className="hidden"
+                              onChange={(e) => {
+                                const files = e.target.files;
+                                if (files && files.length > 0) {
+                                  handleOfferLetterScan(Array.from(files));
+                                }
+                              }}
+                            />
+                          </label>
+                        )}
+                        {offerError && (
+                          <p className="text-caption text-danger-600 mt-1">{offerError}</p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <label htmlFor="offer_amount" className="block text-body-sm font-medium text-[#4a555e]">
-                    Settlement offer amount
-                  </label>
-                  {autoFilled.has("offer_amount") && (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
-                      <Sparkles className="w-3 h-3" />
-                      AI
-                    </span>
-                  )}
+                <div>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <label htmlFor="offer_amount" className="block text-body-sm font-medium text-[#4a555e]">
+                      Settlement offer amount
+                    </label>
+                    {autoFilled.has("offer_amount") && (
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
+                        <Sparkles className="w-3 h-3" />
+                        AI
+                      </span>
+                    )}
+                  </div>
+                  <Input
+                    id="offer_amount"
+                    type="number"
+                    placeholder="e.g., 4500"
+                    value={
+                      formData.offer_amount !== null
+                        ? String(formData.offer_amount)
+                        : ""
+                    }
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      updateField(
+                        "offer_amount",
+                        val === "" ? null : parseFloat(val)
+                      );
+                    }}
+                    error={errors.offer_amount}
+                    hint="Enter the dollar amount your insurer offered."
+                  />
                 </div>
-                <Input
-                  id="offer_amount"
-                  type="number"
-                  placeholder="e.g., 4500"
-                  value={
-                    formData.offer_amount !== null
-                      ? String(formData.offer_amount)
-                      : ""
-                  }
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    updateField(
-                      "offer_amount",
-                      val === "" ? null : parseFloat(val)
-                    );
-                  }}
-                  error={errors.offer_amount}
-                  hint="Enter the dollar amount your insurer offered."
-                />
-              </div>
-            </div>
-          )}
-
-          {/* State selection */}
-          <Select
-            id="state"
-            label="What state did the accident occur in?"
-            options={US_STATES}
-            value={formData.state}
-            onChange={(e) => updateField("state", e.target.value)}
-            placeholder="Select a state..."
-          />
-          <p className="text-caption text-[#4a555e]/60 -mt-4">
-            Insurance laws vary by state. This helps us tailor guidance to your specific rights.
-          </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     );
   }
 
-  /* ---- Step 4: Vehicle Info ---- */
-  function renderVehicleInfo() {
+  /* ---- Step 3: Vehicle Details (+ optional policy upload) ---- */
+  function renderVehicleDetails() {
     return (
       <div className="space-y-6">
         <div>
@@ -1084,114 +1050,92 @@ export default function NewClaimPage() {
         </div>
 
         <div className="space-y-5">
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <label htmlFor="vehicle_year" className="block text-body-sm font-medium text-[#4a555e]">Year</label>
-              {autoFilled.has("vehicle_year") && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
-                  <Sparkles className="w-3 h-3" />
-                  AI
-                </span>
-              )}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1.5">
+                <label htmlFor="vehicle_year" className="block text-body-sm font-medium text-[#4a555e]">Year</label>
+                {autoFilled.has("vehicle_year") && (
+                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
+                    <Sparkles className="w-3 h-3" />
+                    AI
+                  </span>
+                )}
+              </div>
+              <Input
+                id="vehicle_year"
+                placeholder="e.g., 2021"
+                value={formData.vehicle_year}
+                onChange={(e) => updateField("vehicle_year", e.target.value)}
+                error={errors.vehicle_year}
+                maxLength={4}
+              />
             </div>
-            <Input
-              id="vehicle_year"
-              placeholder="e.g., 2021"
-              value={formData.vehicle_year}
-              onChange={(e) => updateField("vehicle_year", e.target.value)}
-              error={errors.vehicle_year}
-              maxLength={4}
-            />
-          </div>
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <label htmlFor="vehicle_make" className="block text-body-sm font-medium text-[#4a555e]">Make</label>
-              {autoFilled.has("vehicle_make") && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
-                  <Sparkles className="w-3 h-3" />
-                  AI
-                </span>
-              )}
+            <div>
+              <div className="flex items-center gap-2 mb-1.5">
+                <label htmlFor="vehicle_make" className="block text-body-sm font-medium text-[#4a555e]">Make</label>
+                {autoFilled.has("vehicle_make") && (
+                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
+                    <Sparkles className="w-3 h-3" />
+                    AI
+                  </span>
+                )}
+              </div>
+              <Input
+                id="vehicle_make"
+                placeholder="e.g., Toyota"
+                value={formData.vehicle_make}
+                onChange={(e) => updateField("vehicle_make", e.target.value)}
+                error={errors.vehicle_make}
+              />
             </div>
-            <Input
-              id="vehicle_make"
-              placeholder="e.g., Toyota"
-              value={formData.vehicle_make}
-              onChange={(e) => updateField("vehicle_make", e.target.value)}
-              error={errors.vehicle_make}
-            />
-          </div>
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <label htmlFor="vehicle_model" className="block text-body-sm font-medium text-[#4a555e]">Model</label>
-              {autoFilled.has("vehicle_model") && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
-                  <Sparkles className="w-3 h-3" />
-                  AI
-                </span>
-              )}
+            <div>
+              <div className="flex items-center gap-2 mb-1.5">
+                <label htmlFor="vehicle_model" className="block text-body-sm font-medium text-[#4a555e]">Model</label>
+                {autoFilled.has("vehicle_model") && (
+                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/5 text-caption text-coral">
+                    <Sparkles className="w-3 h-3" />
+                    AI
+                  </span>
+                )}
+              </div>
+              <Input
+                id="vehicle_model"
+                placeholder="e.g., Camry SE"
+                value={formData.vehicle_model}
+                onChange={(e) => updateField("vehicle_model", e.target.value)}
+                error={errors.vehicle_model}
+              />
             </div>
-            <Input
-              id="vehicle_model"
-              placeholder="e.g., Camry SE"
-              value={formData.vehicle_model}
-              onChange={(e) => updateField("vehicle_model", e.target.value)}
-              error={errors.vehicle_model}
-            />
           </div>
+        </div>
+
+        {/* Optional policy upload inline */}
+        <div className="border-t border-black/10 pt-6 mt-6">
+          <div className="flex items-start gap-3 mb-4">
+            <Shield className="w-5 h-5 text-[#4a555e] flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-body-sm font-medium text-black">
+                Upload your insurance policy (optional)
+              </p>
+              <p className="text-caption text-[#4a555e] mt-0.5">
+                Our AI will identify coverages, limits, and hidden benefits. You can add this later.
+              </p>
+            </div>
+          </div>
+          <FileUpload
+            label="Insurance policy document"
+            onFilesSelected={(files) => setPolicyFiles(files)}
+            accept={{ "application/pdf": [".pdf"] }}
+            maxFiles={1}
+            maxSize={20 * 1024 * 1024}
+            hint="PDF up to 20 MB. Your declarations page or full policy document."
+          />
         </div>
       </div>
     );
   }
 
-  /* ---- Step 5: Policy Upload ---- */
-  function renderPolicyUpload() {
-    return (
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-heading-lg text-black">
-            Upload your insurance policy
-          </h2>
-          <p className="mt-2 text-body text-[#4a555e]">
-            If you have a copy of your insurance policy, upload it here so our
-            AI can identify your coverages, limits, and any hidden benefits.
-            This step is optional -- you can always add it later.
-          </p>
-        </div>
-
-        <FileUpload
-          label="Insurance policy document"
-          onFilesSelected={(files) => setPolicyFiles(files)}
-          accept={{ "application/pdf": [".pdf"] }}
-          maxFiles={1}
-          maxSize={20 * 1024 * 1024}
-          hint="PDF up to 20 MB. Your declarations page or full policy document."
-        />
-
-        <div className="border border-black/10 p-4">
-          <p className="text-body-sm font-medium text-black">
-            Where do I find my policy?
-          </p>
-          <ul className="mt-2 list-disc pl-4 space-y-1 text-body-sm text-[#4a555e]">
-            <li>
-              Check your email for a &quot;Declarations Page&quot; or
-              &quot;Policy Documents&quot; email from your insurer.
-            </li>
-            <li>
-              Log in to your insurer&apos;s website or app and look for
-              &quot;My Policy&quot; or &quot;Documents.&quot;
-            </li>
-            <li>
-              Call your agent and ask them to email you a copy of your full
-              policy.
-            </li>
-          </ul>
-        </div>
-      </div>
-    );
-  }
-
-  /* ---- Step 6: Summary ---- */
+  /* ---- Step 4: Summary ---- */
   function renderSummary() {
     return (
       <div className="space-y-6">
@@ -1201,24 +1145,14 @@ export default function NewClaimPage() {
           </h2>
           <p className="mt-2 text-body text-[#4a555e]">
             Please confirm everything looks correct before we create your claim.
-            You can click &quot;Edit&quot; on any section to go back and make
-            changes.
           </p>
         </div>
 
         <div className="space-y-5">
-          {/* Claim Type */}
-          <SummarySection
-            title="Claim Type"
-            onEdit={() => setCurrentStep(1)}
-          >
-            <SummaryRow label="Type" value="Auto Property Damage" />
-          </SummarySection>
-
           {/* Accident Details */}
           <SummarySection
-            title="Accident Details"
-            onEdit={() => setCurrentStep(2)}
+            title="Accident & Damage"
+            onEdit={() => goToStep(1)}
           >
             <SummaryRow
               label="Date"
@@ -1238,6 +1172,12 @@ export default function NewClaimPage() {
               label="Fault status"
               value={faultLabel(formData.fault_status)}
             />
+            {formData.state && (
+              <SummaryRow
+                label="State"
+                value={US_STATES.find((s) => s.value === formData.state)?.label || formData.state}
+              />
+            )}
             <SummaryRow
               label="Damage"
               value={formData.damage_description || "--"}
@@ -1246,8 +1186,8 @@ export default function NewClaimPage() {
 
           {/* Insurance Info */}
           <SummarySection
-            title="Insurance Information"
-            onEdit={() => setCurrentStep(3)}
+            title="Insurance & Offer"
+            onEdit={() => goToStep(2)}
           >
             <SummaryRow
               label="Filed with insurer"
@@ -1265,12 +1205,6 @@ export default function NewClaimPage() {
                 />
               </>
             )}
-            {formData.state && (
-              <SummaryRow
-                label="State"
-                value={US_STATES.find((s) => s.value === formData.state)?.label || formData.state}
-              />
-            )}
             <SummaryRow
               label="Offer received"
               value={formData.has_offer ? "Yes" : "No"}
@@ -1285,8 +1219,8 @@ export default function NewClaimPage() {
 
           {/* Vehicle Info */}
           <SummarySection
-            title="Vehicle Information"
-            onEdit={() => setCurrentStep(4)}
+            title="Vehicle & Policy"
+            onEdit={() => goToStep(3)}
           >
             <SummaryRow
               label="Vehicle"
@@ -1298,13 +1232,6 @@ export default function NewClaimPage() {
                   : "--"
               }
             />
-          </SummarySection>
-
-          {/* Policy Upload */}
-          <SummarySection
-            title="Policy Document"
-            onEdit={() => setCurrentStep(5)}
-          >
             <SummaryRow
               label="Policy uploaded"
               value={
@@ -1336,16 +1263,12 @@ export default function NewClaimPage() {
   function renderCurrentStep() {
     switch (currentStep) {
       case 1:
-        return renderClaimType();
+        return renderAccidentDamage();
       case 2:
-        return renderAccidentDetails();
+        return renderInsuranceOffer();
       case 3:
-        return renderInsuranceInfo();
+        return renderVehicleDetails();
       case 4:
-        return renderVehicleInfo();
-      case 5:
-        return renderPolicyUpload();
-      case 6:
         return renderSummary();
       default:
         return null;
@@ -1361,7 +1284,7 @@ export default function NewClaimPage() {
   return (
     <div className="min-h-screen bg-frame flex flex-col">
       {/* ------------------------------------------------------------------ */}
-      {/*  Header + Progress bar                                              */}
+      {/*  Header + Step Indicator                                            */}
       {/* ------------------------------------------------------------------ */}
       <header className="bg-panel border-b border-black/10 sticky top-0 z-30">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
@@ -1370,22 +1293,53 @@ export default function NewClaimPage() {
             <span className="text-black">Coach</span>
           </Link>
 
-          <span className="text-caption text-[#4a555e]/60">
+          <span className="text-caption text-[#4a555e]/60 sm:hidden">
             Step {currentStep} of {TOTAL_STEPS}
-            <span className="hidden sm:inline">
-              {" "}&mdash;{" "}
-              <span className="text-[#4a555e]">
-                {STEP_LABELS[currentStep - 1]}
-              </span>
-            </span>
           </span>
         </div>
 
-        {/* Progress bar: h-1 with coral fill */}
-        <div className="h-1 bg-black/10">
-          <div
-            className="h-full bg-coral transition-all duration-500 ease-out"
-            style={{ width: `${progressPercent}%` }}
+        {/* Visual step indicator (desktop) */}
+        <div className="hidden sm:block max-w-3xl mx-auto px-4 sm:px-6 pb-4">
+          <div className="flex items-center gap-1">
+            {STEP_LABELS.map((label, idx) => {
+              const stepNum = idx + 1;
+              const isActive = stepNum === currentStep;
+              const isCompleted = stepNum < currentStep;
+
+              return (
+                <button
+                  key={label}
+                  type="button"
+                  onClick={() => goToStep(stepNum)}
+                  className={
+                    "flex items-center gap-2 px-3 py-1.5 text-caption font-medium transition-all " +
+                    (isActive
+                      ? "bg-black text-white"
+                      : isCompleted
+                      ? "bg-coral/10 text-coral hover:bg-coral/20 cursor-pointer"
+                      : "bg-black/5 text-[#4a555e]/50 cursor-default")
+                  }
+                >
+                  <span className="font-mono text-[0.6rem]">
+                    {isCompleted ? (
+                      <CheckCircle2 className="w-3 h-3" />
+                    ) : (
+                      STEP_ICONS[idx]
+                    )}
+                  </span>
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Progress bar (mobile) */}
+        <div className="sm:hidden h-1 bg-black/10">
+          <motion.div
+            className="h-full bg-coral"
+            animate={{ width: `${progressPercent}%` }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
           />
         </div>
       </header>
@@ -1397,9 +1351,19 @@ export default function NewClaimPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <Card>
             <CardContent className="p-6 sm:p-8">
-              <div key={currentStep} className="animate-fade-in">
-                {renderCurrentStep()}
-              </div>
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={currentStep}
+                  custom={direction}
+                  variants={stepVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {renderCurrentStep()}
+                </motion.div>
+              </AnimatePresence>
             </CardContent>
           </Card>
         </div>
