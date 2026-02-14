@@ -1,46 +1,94 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { isSupabaseConfigured, DEV_USER } from "@/lib/auth";
+import { requireAuth, isSupabaseConfigured } from "@/lib/auth";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
-function generateDevId(): string {
-  return "dev-" + Math.random().toString(36).substring(2, 10);
+const VALID_CLAIM_TYPES = new Set(["auto", "property", "health", "other"]);
+const VALID_FAULT_STATUSES = new Set(["at_fault", "not_at_fault", "partial", "unknown"]);
+const MAX_STRING_LENGTH = 500;
+
+function sanitizeString(val: unknown, maxLen = MAX_STRING_LENGTH): string | null {
+  if (val == null || typeof val !== "string") return null;
+  return val.trim().slice(0, maxLen) || null;
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
 
-    const supabase = createServerSupabaseClient();
-    let user: { id: string; email?: string } | null = null;
+    const rl = checkRateLimit(`${auth.user.id}:create-claim`, RATE_LIMITS.write.limit, RATE_LIMITS.write.windowMs);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: `Rate limit exceeded. Try again in ${rl.resetIn}s.` },
+        { status: 429, headers: { "Retry-After": String(rl.resetIn) } }
+      );
+    }
 
     if (!isSupabaseConfigured()) {
-      user = DEV_USER;
-    } else {
-      const { data } = await supabase.auth.getUser();
-      user = data.user;
+      return NextResponse.json(
+        { error: "Database is not configured." },
+        { status: 503 }
+      );
     }
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const body = await request.json();
+
+    // Validate claim_type
+    const claimType = typeof body.claim_type === "string" ? body.claim_type : "auto";
+    if (!VALID_CLAIM_TYPES.has(claimType)) {
+      return NextResponse.json(
+        { error: `Invalid claim type. Must be one of: ${Array.from(VALID_CLAIM_TYPES).join(", ")}` },
+        { status: 400 }
+      );
     }
+
+    // Validate fault_status
+    const faultStatus = typeof body.fault_status === "string" ? body.fault_status : "unknown";
+    if (!VALID_FAULT_STATUSES.has(faultStatus)) {
+      return NextResponse.json(
+        { error: `Invalid fault status. Must be one of: ${Array.from(VALID_FAULT_STATUSES).join(", ")}` },
+        { status: 400 }
+      );
+    }
+
+    // Validate offer_amount if provided
+    const offerAmount = body.offer_amount != null ? Number(body.offer_amount) : null;
+    if (offerAmount != null && (isNaN(offerAmount) || offerAmount < 0 || offerAmount > 10_000_000)) {
+      return NextResponse.json(
+        { error: "Offer amount must be a number between 0 and 10,000,000" },
+        { status: 400 }
+      );
+    }
+
+    // Validate accident_date if provided
+    const accidentDate = sanitizeString(body.accident_date, 10);
+    if (accidentDate && !/^\d{4}-\d{2}-\d{2}$/.test(accidentDate)) {
+      return NextResponse.json(
+        { error: "Accident date must be in YYYY-MM-DD format" },
+        { status: 400 }
+      );
+    }
+
+    const supabase = createServerSupabaseClient();
 
     const claimRow = {
-      user_id: user.id,
-      claim_type: body.claim_type || "auto",
-      accident_date: body.accident_date || null,
-      fault_status: body.fault_status || "unknown",
-      filed_with_insurer: body.filed_with_insurer ?? false,
-      insurer_name: body.insurer_name || null,
-      claim_number: body.claim_number || null,
-      has_offer: body.has_offer ?? false,
-      offer_amount: body.offer_amount ?? null,
-      vehicle_year: body.vehicle_year || null,
-      vehicle_make: body.vehicle_make || null,
-      vehicle_model: body.vehicle_model || null,
-      damage_description: body.damage_description || null,
-      state: body.state || null,
+      user_id: auth.user.id,
+      claim_type: claimType,
+      accident_date: accidentDate,
+      fault_status: faultStatus,
+      filed_with_insurer: Boolean(body.filed_with_insurer),
+      insurer_name: sanitizeString(body.insurer_name, 200),
+      claim_number: sanitizeString(body.claim_number, 100),
+      has_offer: Boolean(body.has_offer),
+      offer_amount: offerAmount,
+      vehicle_year: sanitizeString(body.vehicle_year, 4),
+      vehicle_make: sanitizeString(body.vehicle_make, 50),
+      vehicle_model: sanitizeString(body.vehicle_model, 50),
+      damage_description: sanitizeString(body.damage_description, 2000),
+      state: sanitizeString(body.state, 2),
       status: body.has_offer ? "offer_received" : "documenting",
     };
 
@@ -52,42 +100,12 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error("Create claim DB error:", error);
-
-      // If the DB operation fails in dev mode, return a mock claim
-      // so the user can continue testing the UI flow
-      if (!isSupabaseConfigured()) {
-        const now = new Date().toISOString();
-        return NextResponse.json({
-          claim: {
-            id: generateDevId(),
-            ...claimRow,
-            created_at: now,
-            updated_at: now,
-          },
-        }, { status: 201 });
-      }
-
       return NextResponse.json({ error: "Failed to create claim" }, { status: 500 });
     }
 
     return NextResponse.json({ claim: data }, { status: 201 });
   } catch (error) {
     console.error("Create claim error:", error);
-
-    // If Supabase is not configured, still allow claim creation with mock data
-    if (!isSupabaseConfigured()) {
-      const now = new Date().toISOString();
-      return NextResponse.json({
-        claim: {
-          id: generateDevId(),
-          claim_type: "auto",
-          status: "documenting",
-          created_at: now,
-          updated_at: now,
-        },
-      }, { status: 201 });
-    }
-
     return NextResponse.json(
       { error: "Failed to create claim" },
       { status: 500 }
@@ -97,46 +115,33 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    const supabase = createServerSupabaseClient();
-    let user: { id: string; email?: string } | null = null;
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
 
     if (!isSupabaseConfigured()) {
-      user = DEV_USER;
-    } else {
-      const { data } = await supabase.auth.getUser();
-      user = data.user;
+      return NextResponse.json(
+        { error: "Database is not configured." },
+        { status: 503 }
+      );
     }
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const supabase = createServerSupabaseClient();
 
     // Explicit user_id filter as defense-in-depth (supplements RLS)
     const { data, error } = await supabase
       .from("claims")
       .select("*")
-      .eq("user_id", user.id)
+      .eq("user_id", auth.user.id)
       .order("updated_at", { ascending: false });
 
     if (error) {
       console.error("List claims DB error:", error);
-
-      // Return empty list in dev mode so dashboard still renders
-      if (!isSupabaseConfigured()) {
-        return NextResponse.json({ claims: [] });
-      }
-
       return NextResponse.json({ error: "Failed to fetch claims" }, { status: 500 });
     }
 
     return NextResponse.json({ claims: data ?? [] });
   } catch (error) {
     console.error("List claims error:", error);
-
-    if (!isSupabaseConfigured()) {
-      return NextResponse.json({ claims: [] });
-    }
-
     return NextResponse.json(
       { error: "Failed to fetch claims" },
       { status: 500 }

@@ -3,6 +3,7 @@ import { analyzeWithAI, isAIConfigured, getAIErrorMessage } from "@/lib/ai/clien
 import { POLICY_ANALYSIS_PROMPT } from "@/lib/ai/prompts";
 import { requireAuth } from "@/lib/auth";
 import { extractJSON } from "@/lib/ai/sanitize";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -14,20 +15,19 @@ export async function POST(request: NextRequest) {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
 
+    const rl = checkRateLimit(`${auth.user.id}:analyze-policy`, RATE_LIMITS.ai.limit, RATE_LIMITS.ai.windowMs);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: `Rate limit exceeded. Try again in ${rl.resetIn}s.` },
+        { status: 429, headers: { "Retry-After": String(rl.resetIn) } }
+      );
+    }
+
     if (!isAIConfigured()) {
-      return NextResponse.json({
-        analysis: {
-          summary: "[Dev mode] Sample policy analysis. Configure ANTHROPIC_API_KEY for real analysis.",
-          coverages: [
-            { name: "Collision", limit: "$50,000", deductible: "$500" },
-            { name: "Comprehensive", limit: "$50,000", deductible: "$250" },
-            { name: "Rental Reimbursement", limit: "$30/day, 30 days", deductible: "$0" },
-          ],
-          hidden_coverages: ["Diminished Value (must request)", "OEM Parts Endorsement"],
-          exclusions: ["Wear and tear", "Mechanical breakdown"],
-          recommendations: ["File diminished value claim", "Request OEM parts for repairs"],
-        },
-      });
+      return NextResponse.json(
+        { error: "AI analysis is not available. Please try again later." },
+        { status: 503 }
+      );
     }
 
     const { policyText } = await request.json();

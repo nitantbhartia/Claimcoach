@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAnthropicClient, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
 import { sanitizeContext } from "@/lib/ai/sanitize";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -29,10 +30,19 @@ export async function POST(request: NextRequest) {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
 
+    const rl = checkRateLimit(`${auth.user.id}:chat`, RATE_LIMITS.chat.limit, RATE_LIMITS.chat.windowMs);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: `Rate limit exceeded. Try again in ${rl.resetIn}s.` },
+        { status: 429, headers: { "Retry-After": String(rl.resetIn) } }
+      );
+    }
+
     if (!isAIConfigured()) {
-      return NextResponse.json({
-        reply: "[Dev mode] AI chat is not available without ANTHROPIC_API_KEY configured. Set it in your .env.local file and restart the dev server.",
-      });
+      return NextResponse.json(
+        { error: "AI chat is not available. Please try again later." },
+        { status: 503 }
+      );
     }
 
     const { messages, context } = await request.json() as {

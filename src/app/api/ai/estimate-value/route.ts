@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeWithAI, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { sanitizeField, extractJSON } from "@/lib/ai/sanitize";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -33,26 +34,6 @@ Respond ONLY with JSON:
   "notes": "<any caveats about the estimate>"
 }`;
 
-// Dev fallback
-function devEstimate(year: string, make: string, model: string) {
-  const baseYear = parseInt(year) || 2020;
-  const age = new Date().getFullYear() - baseYear;
-  const base = Math.max(8000, 30000 - age * 2500);
-  return {
-    low_estimate: Math.round(base * 0.85),
-    mid_estimate: base,
-    high_estimate: Math.round(base * 1.15),
-    adjustments: [
-      { factor: "mileage", label: "Mileage adjustment", impact: -800, explanation: "Average mileage for age" },
-      { factor: "condition", label: "Condition adjustment", impact: 0, explanation: "Assumed good condition" },
-      { factor: "location", label: "Regional market", impact: 200, explanation: "Average regional pricing" },
-    ],
-    base_value: base + 600,
-    sources_referenced: ["KBB", "NADA", "Edmunds"],
-    confidence: "medium",
-    notes: `[Dev mode] Estimate for ${year} ${make} ${model}. Configure ANTHROPIC_API_KEY for real valuations.`,
-  };
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -66,8 +47,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const rl = checkRateLimit(`estimate-value:${request.headers.get("x-forwarded-for") || "anon"}`, RATE_LIMITS.ai.limit, RATE_LIMITS.ai.windowMs);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: `Rate limit exceeded. Try again in ${rl.resetIn}s.` },
+        { status: 429, headers: { "Retry-After": String(rl.resetIn) } }
+      );
+    }
+
     if (!isAIConfigured()) {
-      return NextResponse.json(devEstimate(vehicleYear, vehicleMake, vehicleModel));
+      return NextResponse.json(
+        { error: "AI valuation is not available. Please try again later." },
+        { status: 503 }
+      );
     }
 
     const vehicleInfo = sanitizeField(`${vehicleYear} ${vehicleMake} ${vehicleModel}`, 200);

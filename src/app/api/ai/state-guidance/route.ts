@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAnthropicClient, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
 import { validateState, sanitizeField, extractJSON } from "@/lib/ai/sanitize";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -48,18 +49,19 @@ export async function POST(request: NextRequest) {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
 
+    const rl = checkRateLimit(`${auth.user.id}:state-guidance`, RATE_LIMITS.ai.limit, RATE_LIMITS.ai.windowMs);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: `Rate limit exceeded. Try again in ${rl.resetIn}s.` },
+        { status: 429, headers: { "Retry-After": String(rl.resetIn) } }
+      );
+    }
+
     if (!isAIConfigured()) {
-      return NextResponse.json({
-        guidance: {
-          state_name: "[Dev mode]",
-          state_code: "XX",
-          key_laws: [{ name: "Sample Statute", summary: "Dev placeholder", how_it_helps: "Configure ANTHROPIC_API_KEY for real guidance." }],
-          deadlines: [{ name: "Statute of Limitations", timeframe: "2 years", description: "Sample deadline" }],
-          consumer_rights: ["Right to choose your own repair shop", "Right to a written explanation of settlement"],
-          doi_info: { name: "Sample DOI", website: "https://example.com", complaint_url: "https://example.com/complaint", phone: "(800) 555-0100" },
-          bad_faith_notes: "[Dev mode] Configure ANTHROPIC_API_KEY for real state-specific guidance.",
-        },
-      });
+      return NextResponse.json(
+        { error: "AI guidance is not available. Please try again later." },
+        { status: 503 }
+      );
     }
 
     const body = await request.json();

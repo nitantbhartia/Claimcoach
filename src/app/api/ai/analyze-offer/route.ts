@@ -3,6 +3,7 @@ import { analyzeWithAI, isAIConfigured, getAIErrorMessage } from "@/lib/ai/clien
 import { OFFER_ANALYSIS_PROMPT } from "@/lib/ai/prompts";
 import { requireAuth } from "@/lib/auth";
 import { sanitizeField, extractJSON } from "@/lib/ai/sanitize";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -12,26 +13,19 @@ export async function POST(request: NextRequest) {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
 
+    const rl = checkRateLimit(`${auth.user.id}:analyze-offer`, RATE_LIMITS.ai.limit, RATE_LIMITS.ai.windowMs);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: `Rate limit exceeded. Try again in ${rl.resetIn}s.` },
+        { status: 429, headers: { "Retry-After": String(rl.resetIn) } }
+      );
+    }
+
     if (!isAIConfigured()) {
-      return NextResponse.json({
-        analysis: {
-          fairness_score: 38,
-          fair_value_estimate: 9981,
-          line_items: [
-            { name: "Vehicle Base Value", their_amount: 4200, fair_amount: 6800 },
-            { name: "Loss of Use / Rental", their_amount: 0, fair_amount: 720 },
-            { name: "Diminished Value", their_amount: 0, fair_amount: 1800 },
-            { name: "Sales Tax on Replacement", their_amount: 0, fair_amount: 476 },
-            { name: "Registration / Title", their_amount: 0, fair_amount: 185 },
-          ],
-          summary: "[Dev mode] Sample offer analysis. Configure ANTHROPIC_API_KEY for real analysis.",
-          recommendations: [
-            "Request comparable vehicle listings to challenge base value",
-            "File diminished value claim",
-            "Include sales tax and registration fees in demand",
-          ],
-        },
-      });
+      return NextResponse.json(
+        { error: "AI analysis is not available. Please try again later." },
+        { status: 503 }
+      );
     }
 
     const body = await request.json();

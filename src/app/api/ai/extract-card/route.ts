@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { analyzeDocumentWithVision, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
 import { extractJSON } from "@/lib/ai/sanitize";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -46,25 +47,19 @@ export async function POST(request: NextRequest) {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
 
+    const rl = checkRateLimit(`${auth.user.id}:extract-card`, RATE_LIMITS.ai.limit, RATE_LIMITS.ai.windowMs);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: `Rate limit exceeded. Try again in ${rl.resetIn}s.` },
+        { status: 429, headers: { "Retry-After": String(rl.resetIn) } }
+      );
+    }
+
     if (!isAIConfigured()) {
-      return NextResponse.json({
-        extracted: {
-          insurer_name: "[Dev] Sample Insurance Co.",
-          policy_number: "POL-2024-DEV-001",
-          group_number: null,
-          insured_name: "John Doe",
-          effective_date: "2024-01-01",
-          expiration_date: "2025-01-01",
-          vehicle_year: "2022",
-          vehicle_make: "Honda",
-          vehicle_model: "Civic EX",
-          vehicle_vin: null,
-          agent_name: null,
-          agent_phone: "(555) 987-6543",
-          coverage_type: "Comprehensive & Collision",
-          claim_phone: "(800) 555-0199",
-        },
-      });
+      return NextResponse.json(
+        { error: "AI extraction is not available. Please try again later." },
+        { status: 503 }
+      );
     }
 
     const formData = await request.formData();

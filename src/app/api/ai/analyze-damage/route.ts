@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAnthropicClient, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -32,17 +33,22 @@ export async function POST(request: NextRequest) {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
 
+    const rl = checkRateLimit(`${auth.user.id}:analyze-damage`, RATE_LIMITS.ai.limit, RATE_LIMITS.ai.windowMs);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: `Rate limit exceeded. Try again in ${rl.resetIn}s.` },
+        { status: 429, headers: { "Retry-After": String(rl.resetIn) } }
+      );
+    }
+
     const formData = await request.formData();
     const files = formData.getAll("files") as File[];
 
     if (!isAIConfigured()) {
-      return NextResponse.json({
-        description:
-          `[Dev mode] Visible damage to ${files.length} area(s) of the vehicle. ` +
-          "The rear bumper shows a deep dent with paint transfer and cracking. " +
-          "The driver-side quarter panel is creased with misalignment at the wheel arch. " +
-          "Structural damage is possible based on panel gap distortion.",
-      });
+      return NextResponse.json(
+        { error: "AI analysis is not available. Please try again later." },
+        { status: 503 }
+      );
     }
 
     if (!files || files.length === 0) {

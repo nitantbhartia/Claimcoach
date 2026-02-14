@@ -1,52 +1,66 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { isSupabaseConfigured, DEV_USER } from "@/lib/auth";
+import { requireAuth, isSupabaseConfigured } from "@/lib/auth";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
+
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+const ALLOWED_TYPES = new Set([
+  "image/jpeg", "image/png", "image/webp", "image/gif",
+  "application/pdf",
+]);
+const VALID_CATEGORIES = new Set([
+  "insurance_card", "offer_letter", "policy", "damage_photo",
+  "repair_estimate", "receipt", "correspondence", "other",
+]);
 
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createServerSupabaseClient();
-    let user: { id: string; email?: string } | null = null;
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
+
+    const rl = checkRateLimit(`${auth.user.id}:upload-doc`, RATE_LIMITS.write.limit, RATE_LIMITS.write.windowMs);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: `Rate limit exceeded. Try again in ${rl.resetIn}s.` },
+        { status: 429, headers: { "Retry-After": String(rl.resetIn) } }
+      );
+    }
 
     if (!isSupabaseConfigured()) {
-      user = DEV_USER;
-    } else {
-      const { data } = await supabase.auth.getUser();
-      user = data.user;
+      return NextResponse.json(
+        { error: "Database is not configured." },
+        { status: 503 }
+      );
     }
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const supabase = createServerSupabaseClient();
 
-    // Verify claim ownership explicitly (skip in dev when DB may not exist)
-    if (isSupabaseConfigured()) {
-      const { data: claim } = await supabase
-        .from("claims")
-        .select("id, user_id")
-        .eq("id", params.id)
-        .eq("user_id", user.id)
-        .single();
+    // Verify claim ownership explicitly
+    const { data: claim } = await supabase
+      .from("claims")
+      .select("id, user_id")
+      .eq("id", params.id)
+      .eq("user_id", auth.user.id)
+      .single();
 
-      if (!claim) {
-        return NextResponse.json({ error: "Claim not found" }, { status: 404 });
-      }
+    if (!claim) {
+      return NextResponse.json({ error: "Claim not found" }, { status: 404 });
     }
 
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
-    const category = formData.get("category") as string || "other";
+    const rawCategory = formData.get("category") as string || "other";
+    const category = VALID_CATEGORIES.has(rawCategory) ? rawCategory : "other";
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Validate file size (50MB max)
-    const MAX_FILE_SIZE = 50 * 1024 * 1024;
     if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
         { error: "File too large. Maximum 50MB." },
@@ -54,11 +68,6 @@ export async function POST(
       );
     }
 
-    // Validate file type
-    const ALLOWED_TYPES = new Set([
-      "image/jpeg", "image/png", "image/webp", "image/gif",
-      "application/pdf",
-    ]);
     if (!ALLOWED_TYPES.has(file.type)) {
       return NextResponse.json(
         { error: "File type not allowed. Use JPEG, PNG, WebP, GIF, or PDF." },
@@ -68,30 +77,13 @@ export async function POST(
 
     // Sanitize filename: strip path separators and use timestamp prefix
     const safeName = file.name.replace(/[/\\:*?"<>|]/g, "_").slice(0, 100);
-    const filePath = `${user.id}/${params.id}/${Date.now()}-${safeName}`;
+    const filePath = `${auth.user.id}/${params.id}/${Date.now()}-${safeName}`;
     const { error: uploadError } = await supabase.storage
       .from("claim-documents")
       .upload(filePath, file);
 
     if (uploadError) {
       console.error("Upload storage error:", uploadError);
-
-      // In dev mode, return a mock document so the UI can continue
-      if (!isSupabaseConfigured()) {
-        return NextResponse.json({
-          document: {
-            id: "dev-doc-" + Math.random().toString(36).substring(2, 10),
-            claim_id: params.id,
-            category,
-            file_name: file.name,
-            file_url: `/dev-uploads/${safeName}`,
-            file_type: file.type,
-            file_size: file.size,
-            created_at: new Date().toISOString(),
-          },
-        }, { status: 201 });
-      }
-
       return NextResponse.json(
         { error: "Failed to upload file" },
         { status: 500 }
@@ -119,44 +111,12 @@ export async function POST(
 
     if (docError) {
       console.error("Create document record error:", docError);
-
-      if (!isSupabaseConfigured()) {
-        return NextResponse.json({
-          document: {
-            id: "dev-doc-" + Math.random().toString(36).substring(2, 10),
-            claim_id: params.id,
-            category,
-            file_name: file.name,
-            file_url: urlData.publicUrl,
-            file_type: file.type,
-            file_size: file.size,
-            created_at: new Date().toISOString(),
-          },
-        }, { status: 201 });
-      }
-
       return NextResponse.json({ error: "Failed to save document record" }, { status: 500 });
     }
 
     return NextResponse.json({ document: doc }, { status: 201 });
   } catch (error) {
     console.error("Upload document error:", error);
-
-    if (!isSupabaseConfigured()) {
-      return NextResponse.json({
-        document: {
-          id: "dev-doc-" + Math.random().toString(36).substring(2, 10),
-          claim_id: params.id,
-          category: "other",
-          file_name: "uploaded-file",
-          file_url: "/dev-uploads/file",
-          file_type: "application/octet-stream",
-          file_size: 0,
-          created_at: new Date().toISOString(),
-        },
-      }, { status: 201 });
-    }
-
     return NextResponse.json(
       { error: "Failed to upload document" },
       { status: 500 }
@@ -169,35 +129,35 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createServerSupabaseClient();
-    let user: { id: string; email?: string } | null = null;
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
 
     if (!isSupabaseConfigured()) {
-      user = DEV_USER;
-    } else {
-      const { data } = await supabase.auth.getUser();
-      user = data.user;
+      return NextResponse.json(
+        { error: "Database is not configured." },
+        { status: 503 }
+      );
     }
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const supabase = createServerSupabaseClient();
 
-    // Verify claim ownership for DELETE too (skip in dev)
-    if (isSupabaseConfigured()) {
-      const { data: claim } = await supabase
-        .from("claims")
-        .select("id, user_id")
-        .eq("id", params.id)
-        .eq("user_id", user.id)
-        .single();
+    // Verify claim ownership for DELETE too
+    const { data: claim } = await supabase
+      .from("claims")
+      .select("id, user_id")
+      .eq("id", params.id)
+      .eq("user_id", auth.user.id)
+      .single();
 
-      if (!claim) {
-        return NextResponse.json({ error: "Claim not found" }, { status: 404 });
-      }
+    if (!claim) {
+      return NextResponse.json({ error: "Claim not found" }, { status: 404 });
     }
 
     const { documentId } = await request.json();
+
+    if (!documentId || typeof documentId !== "string") {
+      return NextResponse.json({ error: "documentId is required" }, { status: 400 });
+    }
 
     const { error } = await supabase
       .from("claim_documents")
@@ -207,22 +167,12 @@ export async function DELETE(
 
     if (error) {
       console.error("Delete document error:", error);
-
-      if (!isSupabaseConfigured()) {
-        return NextResponse.json({ success: true });
-      }
-
       return NextResponse.json({ error: "Failed to delete document" }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Delete document error:", error);
-
-    if (!isSupabaseConfigured()) {
-      return NextResponse.json({ success: true });
-    }
-
     return NextResponse.json(
       { error: "Failed to delete document" },
       { status: 500 }

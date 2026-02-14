@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAnthropicClient, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
 import { extractJSON } from "@/lib/ai/sanitize";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -48,26 +49,19 @@ export async function POST(request: NextRequest) {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
 
+    const rl = checkRateLimit(`${auth.user.id}:extract-offer-letter`, RATE_LIMITS.ai.limit, RATE_LIMITS.ai.windowMs);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: `Rate limit exceeded. Try again in ${rl.resetIn}s.` },
+        { status: 429, headers: { "Retry-After": String(rl.resetIn) } }
+      );
+    }
+
     if (!isAIConfigured()) {
-      return NextResponse.json({
-        extracted: {
-          offer_amount: 4200,
-          insurer_name: "[Dev] Sample Insurance Co.",
-          claim_number: "CLM-2024-DEV-001",
-          adjuster_name: "Jane Smith",
-          adjuster_phone: "(555) 123-4567",
-          adjuster_email: null,
-          offer_date: "2024-01-15",
-          vehicle_description: "2022 Honda Civic EX",
-          deductible: 500,
-          offer_breakdown: [
-            { item: "Actual Cash Value", amount: 4700 },
-            { item: "Less Deductible", amount: -500 },
-          ],
-          response_deadline: "30 days from date of letter",
-          key_terms: ["Salvage title required if accepted", "Payment within 5 business days"],
-        },
-      });
+      return NextResponse.json(
+        { error: "AI extraction is not available. Please try again later." },
+        { status: 503 }
+      );
     }
 
     const formData = await request.formData();

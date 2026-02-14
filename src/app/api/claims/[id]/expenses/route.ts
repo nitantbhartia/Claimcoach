@@ -1,42 +1,87 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { isSupabaseConfigured, DEV_USER } from "@/lib/auth";
+import { requireAuth, isSupabaseConfigured } from "@/lib/auth";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
+
+const VALID_CATEGORIES = new Set([
+  "rental",
+  "towing",
+  "medical",
+  "repair",
+  "transportation",
+  "lost_wages",
+  "storage",
+  "other",
+]);
 
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createServerSupabaseClient();
-    let user: { id: string; email?: string } | null = null;
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
 
-    if (!isSupabaseConfigured()) {
-      user = DEV_USER;
-    } else {
-      const { data } = await supabase.auth.getUser();
-      user = data.user;
+    const rl = checkRateLimit(`${auth.user.id}:create-expense`, RATE_LIMITS.write.limit, RATE_LIMITS.write.windowMs);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: `Rate limit exceeded. Try again in ${rl.resetIn}s.` },
+        { status: 429, headers: { "Retry-After": String(rl.resetIn) } }
+      );
     }
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!isSupabaseConfigured()) {
+      return NextResponse.json(
+        { error: "Database is not configured." },
+        { status: 503 }
+      );
     }
 
     const body = await request.json();
+    const supabase = createServerSupabaseClient();
 
-    // Verify claim ownership explicitly to prevent IDOR (skip in dev)
-    if (isSupabaseConfigured()) {
-      const { data: claim } = await supabase
-        .from("claims")
-        .select("id, user_id")
-        .eq("id", params.id)
-        .eq("user_id", user.id)
-        .single();
+    // Validate required fields
+    if (!body.category || !VALID_CATEGORIES.has(body.category)) {
+      return NextResponse.json(
+        { error: `Invalid category. Must be one of: ${Array.from(VALID_CATEGORIES).join(", ")}` },
+        { status: 400 }
+      );
+    }
 
-      if (!claim) {
-        return NextResponse.json({ error: "Claim not found" }, { status: 404 });
-      }
+    if (!body.description || typeof body.description !== "string" || body.description.trim().length === 0) {
+      return NextResponse.json(
+        { error: "Description is required" },
+        { status: 400 }
+      );
+    }
+
+    const amount = Number(body.amount);
+    if (isNaN(amount) || amount < 0 || amount > 10_000_000) {
+      return NextResponse.json(
+        { error: "Amount must be a number between 0 and 10,000,000" },
+        { status: 400 }
+      );
+    }
+
+    if (body.date && !/^\d{4}-\d{2}-\d{2}$/.test(body.date)) {
+      return NextResponse.json(
+        { error: "Date must be in YYYY-MM-DD format" },
+        { status: 400 }
+      );
+    }
+
+    // Verify claim ownership explicitly to prevent IDOR
+    const { data: claim } = await supabase
+      .from("claims")
+      .select("id, user_id")
+      .eq("id", params.id)
+      .eq("user_id", auth.user.id)
+      .single();
+
+    if (!claim) {
+      return NextResponse.json({ error: "Claim not found" }, { status: 404 });
     }
 
     const { data, error } = await supabase
@@ -44,32 +89,16 @@ export async function POST(
       .insert({
         claim_id: params.id,
         category: body.category,
-        description: body.description,
-        amount: body.amount,
-        date: body.date,
-        receipt_url: body.receipt_url || null,
+        description: body.description.trim().slice(0, 500),
+        amount,
+        date: body.date || null,
+        receipt_url: typeof body.receipt_url === "string" ? body.receipt_url.slice(0, 2000) : null,
       })
       .select()
       .single();
 
     if (error) {
       console.error("Create expense DB error:", error);
-
-      if (!isSupabaseConfigured()) {
-        return NextResponse.json({
-          expense: {
-            id: "dev-exp-" + Math.random().toString(36).substring(2, 10),
-            claim_id: params.id,
-            category: body.category,
-            description: body.description,
-            amount: body.amount,
-            date: body.date,
-            receipt_url: body.receipt_url || null,
-            created_at: new Date().toISOString(),
-          },
-        }, { status: 201 });
-      }
-
       return NextResponse.json(
         { error: "Failed to create expense" },
         { status: 500 }
@@ -79,21 +108,6 @@ export async function POST(
     return NextResponse.json({ expense: data }, { status: 201 });
   } catch (error) {
     console.error("Create expense error:", error);
-
-    if (!isSupabaseConfigured()) {
-      return NextResponse.json({
-        expense: {
-          id: "dev-exp-" + Math.random().toString(36).substring(2, 10),
-          claim_id: params.id,
-          category: "other",
-          description: "expense",
-          amount: 0,
-          date: new Date().toISOString().split("T")[0],
-          created_at: new Date().toISOString(),
-        },
-      }, { status: 201 });
-    }
-
     return NextResponse.json(
       { error: "Failed to create expense" },
       { status: 500 }
@@ -106,35 +120,35 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createServerSupabaseClient();
-    let user: { id: string; email?: string } | null = null;
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
 
     if (!isSupabaseConfigured()) {
-      user = DEV_USER;
-    } else {
-      const { data } = await supabase.auth.getUser();
-      user = data.user;
+      return NextResponse.json(
+        { error: "Database is not configured." },
+        { status: 503 }
+      );
     }
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const supabase = createServerSupabaseClient();
 
-    // Verify claim ownership explicitly to prevent IDOR (skip in dev)
-    if (isSupabaseConfigured()) {
-      const { data: claim } = await supabase
-        .from("claims")
-        .select("id, user_id")
-        .eq("id", params.id)
-        .eq("user_id", user.id)
-        .single();
+    // Verify claim ownership explicitly to prevent IDOR
+    const { data: claim } = await supabase
+      .from("claims")
+      .select("id, user_id")
+      .eq("id", params.id)
+      .eq("user_id", auth.user.id)
+      .single();
 
-      if (!claim) {
-        return NextResponse.json({ error: "Claim not found" }, { status: 404 });
-      }
+    if (!claim) {
+      return NextResponse.json({ error: "Claim not found" }, { status: 404 });
     }
 
     const { expenseId } = await request.json();
+
+    if (!expenseId || typeof expenseId !== "string") {
+      return NextResponse.json({ error: "expenseId is required" }, { status: 400 });
+    }
 
     const { error } = await supabase
       .from("financial_impacts")
@@ -144,11 +158,6 @@ export async function DELETE(
 
     if (error) {
       console.error("Delete expense DB error:", error);
-
-      if (!isSupabaseConfigured()) {
-        return NextResponse.json({ success: true });
-      }
-
       return NextResponse.json(
         { error: "Failed to delete expense" },
         { status: 500 }
@@ -158,11 +167,6 @@ export async function DELETE(
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Delete expense error:", error);
-
-    if (!isSupabaseConfigured()) {
-      return NextResponse.json({ success: true });
-    }
-
     return NextResponse.json(
       { error: "Failed to delete expense" },
       { status: 500 }

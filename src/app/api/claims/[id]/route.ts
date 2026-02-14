@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { isSupabaseConfigured, DEV_USER } from "@/lib/auth";
+import { requireAuth, isSupabaseConfigured } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
@@ -9,49 +9,27 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createServerSupabaseClient();
-    let user: { id: string; email?: string } | null = null;
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
 
     if (!isSupabaseConfigured()) {
-      user = DEV_USER;
-    } else {
-      const { data } = await supabase.auth.getUser();
-      user = data.user;
+      return NextResponse.json(
+        { error: "Database is not configured." },
+        { status: 503 }
+      );
     }
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const supabase = createServerSupabaseClient();
 
     // Fetch claim with explicit user_id filter (defense-in-depth, supplements RLS)
     const { data: claim, error: claimError } = await supabase
       .from("claims")
       .select("*")
       .eq("id", params.id)
-      .eq("user_id", user.id)
+      .eq("user_id", auth.user.id)
       .single();
 
     if (claimError || !claim) {
-      // In dev mode, return a placeholder claim so the UI renders
-      if (!isSupabaseConfigured()) {
-        const now = new Date().toISOString();
-        return NextResponse.json({
-          claim: {
-            id: params.id,
-            user_id: user.id,
-            claim_type: "auto",
-            status: "documenting",
-            created_at: now,
-            updated_at: now,
-          },
-          documents: [],
-          expenses: [],
-          policyAnalysis: null,
-          offerAnalysis: null,
-          counterOffer: null,
-          subscription: "free",
-        });
-      }
       return NextResponse.json({ error: "Claim not found" }, { status: 404 });
     }
 
@@ -92,7 +70,7 @@ export async function GET(
     const { data: profile } = await supabase
       .from("profiles")
       .select("subscription_tier, stripe_customer_id")
-      .eq("id", user.id)
+      .eq("id", auth.user.id)
       .single();
 
     return NextResponse.json({
@@ -106,26 +84,6 @@ export async function GET(
     });
   } catch (error) {
     console.error("Fetch claim error:", error);
-
-    if (!isSupabaseConfigured()) {
-      const now = new Date().toISOString();
-      return NextResponse.json({
-        claim: {
-          id: params.id,
-          claim_type: "auto",
-          status: "documenting",
-          created_at: now,
-          updated_at: now,
-        },
-        documents: [],
-        expenses: [],
-        policyAnalysis: null,
-        offerAnalysis: null,
-        counterOffer: null,
-        subscription: "free",
-      });
-    }
-
     return NextResponse.json(
       { error: "Failed to fetch claim" },
       { status: 500 }
@@ -138,20 +96,17 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createServerSupabaseClient();
-    let user: { id: string; email?: string } | null = null;
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
 
     if (!isSupabaseConfigured()) {
-      user = DEV_USER;
-    } else {
-      const { data } = await supabase.auth.getUser();
-      user = data.user;
+      return NextResponse.json(
+        { error: "Database is not configured." },
+        { status: 503 }
+      );
     }
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
+    const supabase = createServerSupabaseClient();
     const body = await request.json();
 
     // Whitelist allowed fields to prevent mass-assignment attacks
@@ -191,7 +146,7 @@ export async function PATCH(
       .from("claims")
       .update(updates)
       .eq("id", params.id)
-      .eq("user_id", user.id)
+      .eq("user_id", auth.user.id)
       .select()
       .single();
 
