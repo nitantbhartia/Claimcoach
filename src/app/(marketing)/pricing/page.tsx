@@ -1,22 +1,56 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Pricing",
-  description:
-    "ClaimCoach pricing: free basic analysis, $79 per claim for the full AI toolkit, or $49/mo Pro for unlimited claims. No hidden fees.",
-  alternates: { canonical: "/pricing" },
-  openGraph: {
-    title: "ClaimCoach Pricing — Plans Starting at $0",
-    description:
-      "Free basic analysis, $79/claim full toolkit, or $49/mo Pro. AI-powered insurance claim negotiation tools.",
-    url: "https://claimcoach.app/pricing",
-  },
-};
+function PricingButton({
+  priceType,
+  variant = "primary",
+  children,
+}: {
+  priceType: "per_claim" | "pro";
+  variant?: "primary" | "outline";
+  children: React.ReactNode;
+}) {
+  const [loading, setLoading] = useState(false);
+
+  async function handleClick() {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceType }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        window.location.href = "/signup";
+      }
+    } catch {
+      window.location.href = "/signup";
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <Button
+      variant={variant}
+      size="md"
+      className="w-full"
+      loading={loading}
+      onClick={handleClick}
+    >
+      {children}
+    </Button>
+  );
+}
 
 export default function PricingPage() {
   return (
@@ -109,15 +143,10 @@ export default function PricingPage() {
                 </div>
 
                 <div className="mt-10">
-                  <Link href="/signup">
-                    <Button
-                      size="md"
-                      className="w-full"
-                    >
-                      Get Started
-                      <ArrowRight className="ml-2 w-4 h-4" />
-                    </Button>
-                  </Link>
+                  <PricingButton priceType="per_claim">
+                    Get Started
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </PricingButton>
                 </div>
               </div>
 
@@ -148,11 +177,9 @@ export default function PricingPage() {
                 </div>
 
                 <div className="mt-10">
-                  <Link href="/signup">
-                    <Button variant="outline" size="md" className="w-full">
-                      Go Pro
-                    </Button>
-                  </Link>
+                  <PricingButton priceType="pro" variant="outline">
+                    Go Pro
+                  </PricingButton>
                 </div>
                 <p className="text-caption text-[#4a555e] text-center mt-3">
                   For agents, attorneys &amp; public adjusters
