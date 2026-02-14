@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth/context";
 import { RouteProgressBar } from "@/components/ui/route-progress";
+import { Analytics } from "@/components/analytics";
 
 const SITE_URL = "https://claimcoach.app";
 const SITE_NAME = "ClaimCoach";
@@ -120,6 +121,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <RouteProgressBar />
+        <Analytics />
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
