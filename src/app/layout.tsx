@@ -18,11 +18,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "ClaimCoach — Fight Your Lowball Total Loss Offer",
+    default: "ClaimCoach — Check Your Total Loss Offer",
     template: "%s | ClaimCoach",
   },
   description:
-    "Insurance adjusters handle 500+ claims a year. You handle one. ClaimCoach analyzes your total loss offer and finds the line items they\u2019re hoping you\u2019ll miss.",
+    "ClaimCoach helps you review your total loss offer, estimate common missing line items, and take the next step with confidence.",
   keywords: [
     "insurance claim help",
     "insurance negotiation",
@@ -47,9 +47,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "ClaimCoach — Fight Your Lowball Total Loss Offer",
+    title: "ClaimCoach — Check Your Total Loss Offer",
     description:
-      "Insurance adjusters handle 500+ claims a year. You handle one. ClaimCoach analyzes your total loss offer and finds the line items they\u2019re hoping you\u2019ll miss.",
+      "Review your total loss offer with a clear, data-informed estimate of common missing line items and next steps.",
     url: SITE_URL,
     siteName: SITE_NAME,
     locale: "en_US",
@@ -57,9 +57,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ClaimCoach — Fight Your Lowball Total Loss Offer",
+    title: "ClaimCoach — Check Your Total Loss Offer",
     description:
-      "Insurance adjusters handle 500+ claims a year. You handle one. ClaimCoach finds the line items they\u2019re hoping you\u2019ll miss.",
+      "Check your total loss offer, estimate common missing amounts, and get structured next steps.",
     creator: "@claimcoach",
   },
   robots: {

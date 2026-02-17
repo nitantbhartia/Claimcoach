@@ -184,6 +184,19 @@ function NewClaimPageInner() {
   /* ---- Pre-fill offer from URL params ---- */
   useEffect(() => {
     const offerParam = searchParams.get("offer");
+    const stateParam = searchParams.get("state");
+
+    if (stateParam) {
+      const normalizedState = stateParam.toUpperCase();
+      const isValidState = US_STATES.some((entry) => entry.value === normalizedState);
+      if (isValidState) {
+        setFormData((prev) => ({
+          ...prev,
+          state: normalizedState,
+        }));
+      }
+    }
+
     if (offerParam) {
       const amount = parseFloat(offerParam);
       if (!isNaN(amount) && amount > 0) {

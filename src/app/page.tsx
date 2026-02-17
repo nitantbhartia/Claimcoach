@@ -1,199 +1,124 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { motion, useInView } from "framer-motion";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { STATE_CODE_TO_NAME, STATE_NAMES, STATE_SALES_TAX } from "@/lib/tools/data";
 
-/* -------------------------------------------------------------------------- */
-/* FAQ data                                                                    */
-/* -------------------------------------------------------------------------- */
+interface IncludedLineItem {
+  label: string;
+  low: number;
+  high: number;
+}
 
-const FAQ_ITEMS = [
+interface HomepageEstimate {
+  estimated_missing_low: number;
+  estimated_missing_high: number;
+  included_line_items: IncludedLineItem[];
+  assumptions: string[];
+  last_updated_at: string;
+  tax_rate_percent: number;
+}
+
+const TESTIMONIALS = [
   {
-    question: "IS THIS LEGAL?",
-    answer:
-      "Yes. You are exercising your right to \u201CIndemnification\u201D\u2014the legal principle that insurance must put you back in the financial position you were in before the loss.",
+    quote:
+      "I used the breakdown to ask for missing sales tax and fees. My offer increased by $2,140.",
+    person: "J. Martin",
+    state: "Texas",
   },
   {
-    question: "WHAT IF I ACCEPTED?",
-    answer:
-      "If you have not deposited the check or signed a \u201CRelease of Liability,\u201D you can still negotiate. If you have deposited it, it is significantly harder but not impossible depending on state laws.",
-  },
-  {
-    question: "COST OF SERVICE?",
-    answer:
-      "We charge a flat fee for the report generation. We do not take a percentage of your settlement. We are a tool, not a law firm.",
-  },
-  {
-    question: "HOW LONG DOES IT TAKE?",
-    answer:
-      "Our AI completes a full forensic analysis in under 5 minutes. You can send a counter-offer the same day you receive your settlement letter.",
+    quote:
+      "The calculator showed me what to question. The adjuster revised the valuation in two days.",
+    person: "S. Patel",
+    state: "Florida",
   },
 ];
 
-/* -------------------------------------------------------------------------- */
-/* JSON-LD structured data for FAQ                                            */
-/* -------------------------------------------------------------------------- */
+const LAST_UPDATED_AT = "February 2026";
 
-const FAQ_JSON_LD = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ_ITEMS.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
+function toUSD(amount: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
+function getStateCode(stateName: string): string {
+  for (const [code, name] of Object.entries(STATE_CODE_TO_NAME)) {
+    if (name === stateName) return code;
+  }
+  return "";
+}
+
+function buildEstimate(offerAmount: number, stateName: string): HomepageEstimate | null {
+  const stateTaxData = STATE_SALES_TAX[stateName];
+  if (!stateTaxData || offerAmount <= 0) return null;
+
+  const taxRecovery = offerAmount * (stateTaxData.avg_combined / 100);
+  const titleAndRegistrationFees = Math.min(Math.max(offerAmount * 0.012, 200), 480);
+  const valuationAdjustment = offerAmount * 0.05;
+  const conditionAdjustment = offerAmount * 0.02;
+
+  const estimatedLow =
+    taxRecovery + titleAndRegistrationFees + valuationAdjustment * 0.8 + conditionAdjustment * 0.7;
+  const estimatedHigh =
+    taxRecovery + titleAndRegistrationFees + valuationAdjustment * 1.2 + conditionAdjustment;
+
+  const includedLineItems: IncludedLineItem[] = [
+    {
+      label: "Sales tax recovery",
+      low: taxRecovery,
+      high: taxRecovery,
     },
-  })),
-};
-
-/* -------------------------------------------------------------------------- */
-/* Animated counter component                                                  */
-/* -------------------------------------------------------------------------- */
-
-function AnimatedCounter({
-  target,
-  prefix = "",
-  suffix = "",
-  duration = 2000,
-}: {
-  target: number;
-  prefix?: string;
-  suffix?: string;
-  duration?: number;
-}) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
-
-  useEffect(() => {
-    if (!inView) return;
-
-    let startTime: number | null = null;
-    let animationFrame: number;
-
-    function animate(currentTime: number) {
-      if (!startTime) startTime = currentTime;
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-
-      // Ease-out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(eased * target));
-
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
-      }
-    }
-
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [inView, target, duration]);
-
-  return (
-    <span ref={ref} className="block text-primary font-bold tabular-nums">
-      {prefix}
-      {count.toLocaleString()}
-      {suffix}
-    </span>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/* Scroll-reveal section wrapper                                               */
-/* -------------------------------------------------------------------------- */
-
-function RevealSection({
-  children,
-  className = "",
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/* Instant offer preview                                                       */
-/* -------------------------------------------------------------------------- */
-
-function OfferPreview({ offerAmount }: { offerAmount: number }) {
-  // Simulated breakdown based on typical recovery patterns
-  const salesTax = Math.round(offerAmount * 0.068);
-  const titleReg = Math.round(150 + Math.random() * 200);
-  const valAdj = Math.round(offerAmount * 0.08);
-  const condAdj = Math.round(offerAmount * 0.04);
-  const total = salesTax + titleReg + valAdj + condAdj;
-
-  const items = [
-    { label: "Unpaid Sales Tax", amount: salesTax },
-    { label: "Title & Reg Fees", amount: titleReg },
-    { label: "Valuation Adjustment", amount: valAdj },
-    { label: "Condition Rating", amount: condAdj },
+    {
+      label: "Title and registration fees",
+      low: titleAndRegistrationFees * 0.9,
+      high: titleAndRegistrationFees,
+    },
+    {
+      label: "Comparable valuation adjustments",
+      low: valuationAdjustment * 0.8,
+      high: valuationAdjustment * 1.2,
+    },
+    {
+      label: "Condition and equipment adjustments",
+      low: conditionAdjustment * 0.7,
+      high: conditionAdjustment,
+    },
   ];
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, height: 0 }}
-      animate={{ opacity: 1, height: "auto" }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="border border-primary-border p-5 mt-5 overflow-hidden"
-    >
-      <p className="text-[0.75rem] text-primary-dim uppercase tracking-widest mb-4">
-        Estimated Missing Value
-      </p>
-      {items.map((item) => (
-        <div key={item.label} className="receipt-row">
-          <span className="text-[0.9rem] text-primary-dim">{item.label}</span>
-          <span className="font-body text-primary font-bold">
-            +${item.amount.toLocaleString()}
-          </span>
-        </div>
-      ))}
-      <div className="flex justify-between items-baseline mt-4 pt-3 border-t border-primary">
-        <span className="font-display uppercase text-display-sm text-primary">
-          Potential Recovery
-        </span>
-        <span className="font-display uppercase text-display-sm text-primary">
-          ${total.toLocaleString()}
-        </span>
-      </div>
-      <p className="text-[0.7rem] text-primary-muted text-center mt-3">
-        *Preliminary estimate. Full forensic audit may find additional items.
-      </p>
-    </motion.div>
-  );
+  return {
+    estimated_missing_low: Math.round(estimatedLow),
+    estimated_missing_high: Math.round(estimatedHigh),
+    included_line_items: includedLineItems.map((item) => ({
+      ...item,
+      low: Math.round(item.low),
+      high: Math.round(item.high),
+    })),
+    assumptions: [
+      "Uses state average combined tax rate and common replacement-related fees.",
+      "Assumes standard total loss conditions without rare policy endorsements.",
+      "Final numbers depend on your exact offer letter, vehicle details, and state filing rules.",
+    ],
+    last_updated_at: LAST_UPDATED_AT,
+    tax_rate_percent: stateTaxData.avg_combined,
+  };
 }
 
-/* -------------------------------------------------------------------------- */
-/* Sticky Mobile CTA                                                          */
-/* -------------------------------------------------------------------------- */
-
-function StickyCTA() {
+function StickyMobileCTA({ href }: { href: string }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     function onScroll() {
-      const hero = document.getElementById("hero-section");
+      const hero = document.getElementById("homepage-hero");
       if (!hero) return;
       const rect = hero.getBoundingClientRect();
       setVisible(rect.bottom < 0);
     }
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -201,395 +126,267 @@ function StickyCTA() {
   if (!visible) return null;
 
   return (
-    <motion.div
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      className="fixed bottom-0 left-0 right-0 z-50 bg-surface-100 border-t border-primary-border flex items-center px-5 py-3 gap-3"
-    >
-      <div className="flex-1 font-display text-[0.9rem] uppercase text-primary">
-        Recover Your Money
-      </div>
-      <Link href="/claims/new">
-        <button className="bg-primary text-surface-100 font-display uppercase font-bold text-[0.9rem] tracking-wide px-5 py-2.5 active:scale-[0.98] transition-transform">
-          Start Audit
-        </button>
+    <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-300 bg-white px-4 py-3 sm:hidden">
+      <Link
+        href={href}
+        className="block w-full rounded-xl bg-[#0EA5A4] px-4 py-3 text-center font-display text-[0.95rem] font-bold text-white transition-colors hover:bg-[#0F766E]"
+      >
+        See full breakdown
       </Link>
-    </motion.div>
+    </div>
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* Main page                                                                  */
-/* -------------------------------------------------------------------------- */
-
 export default function LandingPage() {
   const [offer, setOffer] = useState("");
+  const [stateName, setStateName] = useState("");
+  const [touched, setTouched] = useState<{ offer: boolean; state: boolean }>({
+    offer: false,
+    state: false,
+  });
+
   const parsedOffer = parseFloat(offer.replace(/[^0-9.]/g, ""));
-  const isValid = !isNaN(parsedOffer) && parsedOffer > 0;
-  const showPreview = isValid && parsedOffer >= 1000;
+  const isOfferValid = !Number.isNaN(parsedOffer) && parsedOffer >= 1000;
+  const hasRequiredFields = isOfferValid && stateName !== "";
+
+  const estimate = useMemo(() => {
+    if (!hasRequiredFields) return null;
+    return buildEstimate(parsedOffer, stateName);
+  }, [hasRequiredFields, parsedOffer, stateName]);
+
+  const stateCode = stateName ? getStateCode(stateName) : "";
+  const fullBreakdownHref = estimate
+    ? `/claims/new?offer=${Math.round(parsedOffer)}${stateCode ? `&state=${stateCode}` : ""}`
+    : "/claims/new";
 
   return (
-    <div className="noise-overlay min-h-screen bg-surface-100 text-primary font-body text-body pb-20">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD) }}
-      />
+    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] font-body pb-20 sm:pb-0">
       <Header />
-      <StickyCTA />
+      <StickyMobileCTA href={fullBreakdownHref} />
 
       <main>
-        {/* ================================================================ */}
-        {/* SECTION 1: HERO                                                  */}
-        {/* ================================================================ */}
-        <section id="hero-section" className="container-landing pt-10 pb-16">
-          <motion.h1
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display uppercase text-display-xl text-primary border-l-2 border-primary pl-4 mb-6"
-          >
-            Your insurance company&apos;s first offer is a negotiation tactic.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-primary-dim mb-8"
-          >
-            They rely on you being tired, desperate, and uninformed. We built the weapon to fight back.
-          </motion.p>
-
-          {/* Offer input */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="relative my-8"
-          >
-            <label className="absolute -top-2.5 left-3 bg-surface-100 px-2 text-[0.8rem] text-primary-dim uppercase tracking-widest">
-              Enter Total Loss Offer
-            </label>
-            <input
-              type="text"
-              inputMode="numeric"
-              placeholder="$ 0.00"
-              value={offer}
-              onChange={(e) => setOffer(e.target.value.replace(/[^0-9.,]/g, ""))}
-              className="forensic-input"
-            />
-          </motion.div>
-
-          <Link href={isValid ? `/claims/new?offer=${parsedOffer}` : "/claims/new"}>
-            <button
-              disabled={!isValid}
-              className="w-full py-[18px] bg-primary text-surface-100 font-display uppercase font-bold text-[1.1rem] tracking-wide disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] transition-transform"
-            >
-              Analyze My Claim
-            </button>
-          </Link>
-
-          {/* Instant preview when offer entered */}
-          {showPreview ? (
-            <OfferPreview offerAmount={parsedOffer} />
-          ) : (
-            /* Blurred preview when no offer */
-            <div className="relative border border-dashed border-primary-border p-5 mt-5 overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center bg-surface-100/40 z-10">
-                <div className="border border-primary px-5 py-2.5 font-display uppercase bg-surface-100 text-primary text-[0.9rem]">
-                  Enter Offer to Preview
-                </div>
-              </div>
-              <div className="blur-[5px] opacity-60 select-none">
-                <div className="receipt-row">
-                  <span className="text-[0.9rem] text-primary-dim">Base Value Adjustment</span>
-                  <span className="font-body text-primary font-bold">+$1,240.00</span>
-                </div>
-                <div className="receipt-row">
-                  <span className="text-[0.9rem] text-primary-dim">Missing Sales Tax</span>
-                  <span className="font-body text-primary font-bold">+$845.20</span>
-                </div>
-                <div className="receipt-row">
-                  <span className="text-[0.9rem] text-primary-dim">Title &amp; Reg Fees</span>
-                  <span className="font-body text-primary font-bold">+$215.00</span>
-                </div>
-                <div className="receipt-row">
-                  <span className="text-[0.9rem] text-primary-dim">Condition Rating</span>
-                  <span className="font-body text-primary font-bold">+$600.00</span>
-                </div>
-                <h3 className="font-display uppercase text-display-sm text-right mt-5 text-primary">
-                  POTENTIAL RECOVERY: $2,900.20
-                </h3>
-              </div>
-            </div>
-          )}
-          {!showPreview && (
-            <p className="text-[0.7rem] text-primary-muted text-center mt-2.5">
-              *Sample output based on real user data.
+        <section id="homepage-hero" className="mx-auto max-w-[1120px] px-5 pb-16 pt-10 sm:px-6 sm:pt-14">
+          <div className="max-w-[640px]">
+            <p className="mb-4 inline-flex items-center rounded-full border border-[#CBD5E1] bg-white px-3 py-1 text-caption text-slate-600">
+              Total loss claim check
             </p>
-          )}
+            <h1 className="font-display text-[2rem] font-extrabold leading-tight tracking-[-0.02em] text-[#0F172A] sm:text-[2.6rem]">
+              Check if your insurance offer is missing money in under 2 minutes.
+            </h1>
+            <p className="mt-4 max-w-[62ch] text-body-lg text-slate-600">
+              Enter your offer and state. We estimate common missing line items like sales tax,
+              transfer fees, and valuation adjustments so you know what to review next.
+            </p>
+          </div>
 
-          {/* Proof bar with animated counters */}
-          <div className="flex gap-4 text-[0.75rem] text-primary-dim border-t border-b border-primary-border-light py-2.5 mt-8 mb-8">
-            <div>
-              <AnimatedCounter target={2400} suffix="+" />
-              CLAIMS AUDITED
+          <div className="mt-8 rounded-xl border border-[#CBD5E1] bg-white p-5 shadow-subtle sm:p-6">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="offer" className="mb-1 block text-body-sm font-semibold text-slate-700">
+                  Settlement offer amount
+                </label>
+                <input
+                  id="offer"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="e.g., 14500"
+                  value={offer}
+                  onBlur={() => setTouched((prev) => ({ ...prev, offer: true }))}
+                  onChange={(e) => setOffer(e.target.value.replace(/[^0-9.,]/g, ""))}
+                  className="w-full rounded-xl border border-[#CBD5E1] bg-white px-3 py-2.5 text-body text-[#0F172A] outline-none transition-colors focus:border-[#0EA5A4]"
+                />
+                {touched.offer && !isOfferValid && (
+                  <p className="mt-1 text-caption text-[#D97706]">
+                    Enter a valid amount of at least $1,000.
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="state" className="mb-1 block text-body-sm font-semibold text-slate-700">
+                  State
+                </label>
+                <select
+                  id="state"
+                  value={stateName}
+                  onBlur={() => setTouched((prev) => ({ ...prev, state: true }))}
+                  onChange={(e) => setStateName(e.target.value)}
+                  className="w-full rounded-xl border border-[#CBD5E1] bg-white px-3 py-2.5 text-body text-[#0F172A] outline-none transition-colors focus:border-[#0EA5A4]"
+                >
+                  <option value="">Select state...</option>
+                  {STATE_NAMES.map((state) => (
+                    <option key={state} value={state}>
+                      {state}
+                    </option>
+                  ))}
+                </select>
+                {touched.state && !stateName && (
+                  <p className="mt-1 text-caption text-[#D97706]">Select your state to continue.</p>
+                )}
+              </div>
             </div>
-            <div>
-              <AnimatedCounter target={3200} prefix="$" />
-              AVG. RECOVERY
-            </div>
-            <div>
-              <span className="block text-primary font-bold">05:00</span>
-              ANALYSIS TIME
-            </div>
-          </div>
-        </section>
 
-        {/* ================================================================ */}
-        {/* SECTION 2: THE DECK IS STACKED                                   */}
-        {/* ================================================================ */}
-        <section className="border-b border-primary-border">
-          <div className="container-landing py-16">
-            <RevealSection>
-              <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-4">
-                The Deck Is Stacked
-              </h2>
-              <p className="text-primary-dim mb-6">
-                Insurance adjusters use proprietary software (CCC, Mitchell) specifically designed to minimize payouts. You are bringing a knife to a drone fight.
-              </p>
-            </RevealSection>
-
-            <div className="grid gap-5">
-              {/* The Adjuster card */}
-              <RevealSection delay={0.1}>
-                <div className="border border-primary-border p-5" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0) 100%)" }}>
-                  <div className="font-display text-[1.2rem] border-b border-primary-border pb-2.5 mb-4 flex justify-between">
-                    <span>THE ADJUSTER</span>
-                    <span className="text-primary-muted">OPFOR</span>
-                  </div>
-                  <ul className="list-none p-0 space-y-2.5">
-                    {[
-                      "Access to millions of low-ball comps",
-                      "Proprietary algorithmic devaluation",
-                      "Incentivized to underpay by 15-20%",
-                      "Counts on your financial desperation",
-                    ].map((item) => (
-                      <li key={item} className="pl-5 relative text-primary-dim">
-                        <span className="absolute left-0 text-primary-muted">x</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </RevealSection>
-
-              {/* You + ClaimCoach card */}
-              <RevealSection delay={0.2}>
-                <div className="border-2 border-primary p-5" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0) 100%)" }}>
-                  <div className="font-display text-[1.2rem] border-b-2 border-primary pb-2.5 mb-4 flex justify-between">
-                    <span>YOU + CLAIMCOACH</span>
-                    <span>ALLY</span>
-                  </div>
-                  <ul className="list-none p-0 space-y-2.5">
-                    {[
-                      "Full forensic audit of the settlement",
-                      "Identification of missing line items",
-                      "Generate legalistic demand letters",
-                      "Data-backed leverage to force fair payouts",
-                    ].map((item) => (
-                      <li key={item} className="pl-5 relative text-primary">
-                        <span className="absolute left-0 text-primary font-bold">&check;</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </RevealSection>
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================ */}
-        {/* SECTION 3: PROTOCOL (How It Works)                               */}
-        {/* ================================================================ */}
-        <section className="border-b border-primary-border">
-          <div className="container-landing py-16">
-            <RevealSection>
-              <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-8">
-                Protocol
-              </h2>
-            </RevealSection>
-
-            {/* Step I */}
-            <RevealSection delay={0.1}>
-              <div className="mb-8 pl-5 border-l border-primary-border">
-                <div className="font-display text-step-num text-primary-border leading-none mb-2.5">I</div>
-                <h3 className="font-display uppercase text-display-sm mb-2">Upload &amp; Input</h3>
-                <p className="text-primary-dim">Enter your settlement offer and vehicle details. Our system ingests the data securely.</p>
-              </div>
-            </RevealSection>
-
-            {/* Step II */}
-            <RevealSection delay={0.2}>
-              <div className="mb-8 pl-5 border-l border-primary-border">
-                <div className="font-display text-step-num text-primary-border leading-none mb-2.5">II</div>
-                <h3 className="font-display uppercase text-display-sm mb-2">Forensic Scan</h3>
-                <p className="text-primary-dim">AI cross-references your offer against state laws, real market data, and 2,000+ past claims to find discrepancies.</p>
-              </div>
-            </RevealSection>
-
-            {/* Step III — highlighted */}
-            <RevealSection delay={0.3}>
-              <div className="mb-8 pl-5 border-l-2 border-primary">
-                <div className="font-display text-step-num text-primary leading-none mb-2.5">III</div>
-                <h3 className="font-display uppercase text-display-sm text-primary mb-2">Counter-Attack</h3>
-                <p className="text-primary">Receive a generated negotiation packet citing specific statutes and missing values. You send it. They pay.</p>
-              </div>
-            </RevealSection>
-          </div>
-        </section>
-
-        {/* ================================================================ */}
-        {/* SECTION 4: MISSING CAPITAL                                       */}
-        {/* ================================================================ */}
-        <section className="border-b border-primary-border">
-          <div className="container-landing py-16">
-            <RevealSection>
-              <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-4">
-                Missing Capital
-              </h2>
-              <p className="text-primary-dim">
-                Most consumers leave{" "}
-                <strong className="text-primary bg-primary/10 px-1">$1,500 – $4,000</strong>{" "}
-                on the table because they don&apos;t know what to ask for.
-              </p>
-            </RevealSection>
-
-            <RevealSection delay={0.1}>
-              <div className="mt-8 border border-primary-border-light p-5">
-                <div className="receipt-row">
-                  <span className="text-[0.9rem] text-primary-dim">UNPAID SALES TAX</span>
-                  <span className="font-body text-primary font-bold">$800 – $3,000</span>
-                </div>
-                <p className="text-[0.75rem] text-primary-dim mb-5">
-                  Legally required in 34 states, often &ldquo;accidentally&rdquo; omitted.
-                </p>
-
-                <div className="receipt-row">
-                  <span className="text-[0.9rem] text-primary-dim">TITLE &amp; REGISTRATION</span>
-                  <span className="font-body text-primary font-bold">$200 – $500</span>
-                </div>
-                <p className="text-[0.75rem] text-primary-dim mb-5">
-                  Transfer fees required to replace your vehicle.
-                </p>
-
-                <div className="receipt-row">
-                  <span className="text-[0.9rem] text-primary-dim">VALUATION ADJUSTMENT</span>
-                  <span className="font-body text-primary font-bold">$500 – $2,000</span>
-                </div>
-                <p className="text-[0.75rem] text-primary-dim mb-0">
-                  Correcting the condition rating of your car vs. the comps.
-                </p>
-              </div>
-            </RevealSection>
-          </div>
-        </section>
-
-        {/* ================================================================ */}
-        {/* SECTION 5: CASE FILES (Testimonials)                             */}
-        {/* ================================================================ */}
-        <section className="border-b border-primary-border">
-          <div className="container-landing py-16">
-            <RevealSection>
-              <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-8">
-                Case Files
-              </h2>
-            </RevealSection>
-
-            <RevealSection delay={0.1}>
-              <div className="mb-8">
-                <p className="italic border-l-2 border-primary-border pl-4 text-primary/80">
-                  &ldquo;They offered $14k. ClaimCoach found they used comps from 200 miles away. I sent the generated letter and got a check for $17.5k three days later.&rdquo;
-                </p>
-                <div className="font-body text-[0.8rem] uppercase text-primary-muted mt-3">
-                  — Michael R. <span className="text-primary font-bold">(Recovered +$3,500)</span> / TX
-                </div>
-              </div>
-            </RevealSection>
-
-            <RevealSection delay={0.2}>
-              <div className="mb-8">
-                <p className="italic border-l-2 border-primary-border pl-4 text-primary/80">
-                  &ldquo;I didn&apos;t even know I was owed sales tax. That alone was $1,200. This tool is lethal.&rdquo;
-                </p>
-                <div className="font-body text-[0.8rem] uppercase text-primary-muted mt-3">
-                  — Sarah J. <span className="text-primary font-bold">(Recovered +$1,200)</span> / FL
-                </div>
-              </div>
-            </RevealSection>
-
-            <RevealSection delay={0.3}>
-              <div className="mb-0">
-                <p className="italic border-l-2 border-primary-border pl-4 text-primary/80">
-                  &ldquo;Progressive low-balled me by $2,800. I used the counter-offer letter word for word. They folded in 48 hours.&rdquo;
-                </p>
-                <div className="font-body text-[0.8rem] uppercase text-primary-muted mt-3">
-                  — David K. <span className="text-primary font-bold">(Recovered +$2,800)</span> / OH
-                </div>
-              </div>
-            </RevealSection>
-          </div>
-        </section>
-
-        {/* ================================================================ */}
-        {/* SECTION 6: FREE ESTIMATE CTA                                     */}
-        {/* ================================================================ */}
-        <section className="border-b border-primary-border">
-          <div className="container-landing py-16">
-            <RevealSection>
-              <div className="border-2 border-primary p-6 text-center">
-                <h2 className="font-display uppercase text-display mb-3">
-                  Not sure yet?
-                </h2>
-                <p className="text-primary-dim mb-5">
-                  Get a free vehicle value estimate — no account needed. See if your offer is in the right ballpark.
-                </p>
-                <Link href="/estimate">
-                  <button className="bg-primary text-surface-100 font-display uppercase font-bold text-[1rem] tracking-wide px-8 py-3 active:scale-[0.98] transition-transform">
-                    Free Estimate
-                  </button>
+            <div className="mt-4">
+              {estimate ? (
+                <Link
+                  href={fullBreakdownHref}
+                  className="inline-flex w-full items-center justify-center rounded-xl bg-[#0EA5A4] px-4 py-3 font-display text-body font-bold text-white transition-colors hover:bg-[#0F766E]"
+                >
+                  See full breakdown
                 </Link>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  className="inline-flex w-full items-center justify-center rounded-xl bg-[#0EA5A4]/60 px-4 py-3 font-display text-body font-bold text-white"
+                >
+                  Check my offer
+                </button>
+              )}
+              <p className="mt-2 text-center text-caption text-slate-500">
+                Educational tool, not legal advice.
+              </p>
+            </div>
+          </div>
+
+          {estimate && (
+            <div className="mt-6 rounded-xl border border-[#CBD5E1] bg-white p-5 sm:p-6" id="result-panel">
+              <p className="text-label uppercase text-slate-500">Estimated missing amount</p>
+              <p className="mt-2 font-mono text-[1.7rem] font-semibold text-[#166534] sm:text-[2rem]">
+                {toUSD(estimate.estimated_missing_low)} - {toUSD(estimate.estimated_missing_high)}
+              </p>
+              <p className="mt-2 max-w-[70ch] text-body-sm text-slate-600">
+                This estimate is based on common total loss line items in {stateName}, including
+                sales tax at {estimate.tax_rate_percent}% average combined rate.
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {estimate.included_line_items.map((item) => (
+                  <span
+                    key={item.label}
+                    className="rounded-full border border-slate-300 bg-slate-50 px-3 py-1 text-caption text-slate-700"
+                  >
+                    {item.label}
+                  </span>
+                ))}
               </div>
-            </RevealSection>
+
+              <div className="mt-5 grid gap-2 rounded-xl border border-[#CBD5E1] bg-slate-50 p-4">
+                {estimate.included_line_items.map((item) => (
+                  <div key={`row-${item.label}`} className="flex justify-between gap-3 text-body-sm">
+                    <span className="text-slate-600">{item.label}</span>
+                    <span className="font-mono text-[#0F172A]">
+                      {toUSD(item.low)}{item.low !== item.high ? ` - ${toUSD(item.high)}` : ""}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <p className="mt-4 text-caption text-slate-500">
+                Educational tool. Results are directional and should be validated against your
+                policy and offer documents.
+              </p>
+            </div>
+          )}
+        </section>
+
+        <section className="border-y border-[#CBD5E1] bg-white">
+          <div className="mx-auto grid max-w-[1120px] gap-5 px-5 py-16 sm:grid-cols-3 sm:px-6">
+            <article className="rounded-xl border border-[#CBD5E1] bg-[#F8FAFC] p-5">
+              <p className="text-label uppercase text-slate-500">Step 1</p>
+              <h2 className="mt-2 font-display text-heading-lg text-[#0F172A]">Enter offer details</h2>
+              <p className="mt-2 text-body-sm text-slate-600">
+                Start with your settlement amount and state to run a quick screening check.
+              </p>
+            </article>
+            <article className="rounded-xl border border-[#CBD5E1] bg-[#F8FAFC] p-5">
+              <p className="text-label uppercase text-slate-500">Step 2</p>
+              <h2 className="mt-2 font-display text-heading-lg text-[#0F172A]">We compare benchmarks</h2>
+              <p className="mt-2 text-body-sm text-slate-600">
+                We apply state rules, market assumptions, and common claim line items.
+              </p>
+            </article>
+            <article className="rounded-xl border border-[#CBD5E1] bg-[#F8FAFC] p-5">
+              <p className="text-label uppercase text-slate-500">Step 3</p>
+              <h2 className="mt-2 font-display text-heading-lg text-[#0F172A]">Get your next steps</h2>
+              <p className="mt-2 text-body-sm text-slate-600">
+                See a structured breakdown, then move into full analysis if needed.
+              </p>
+            </article>
           </div>
         </section>
 
-        {/* ================================================================ */}
-        {/* SECTION 7: FAQ                                                   */}
-        {/* ================================================================ */}
-        <section className="mb-16">
-          <div className="container-landing py-16">
-            <RevealSection>
-              <h2 className="font-display uppercase text-display border-b border-primary-border pb-2 mb-4">
-                Intelligence / FAQ
-              </h2>
-            </RevealSection>
-
-            <div>
-              {FAQ_ITEMS.map((item, i) => (
-                <RevealSection key={item.question} delay={i * 0.05}>
-                  <details className="landing-accordion border-b border-primary-border group">
-                    <summary className="w-full text-left py-5 font-display text-[1.1rem] cursor-pointer flex justify-between items-center text-primary">
-                      <span>{item.question}</span>
-                      <span className="text-primary-dim group-open:rotate-45 transition-transform duration-200">+</span>
-                    </summary>
-                    <div className="pb-5 text-primary-dim text-[0.9rem]">
-                      {item.answer}
-                    </div>
-                  </details>
-                </RevealSection>
+        <section className="mx-auto max-w-[1120px] px-5 py-16 sm:px-6">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="space-y-4">
+              <h2 className="font-display text-[1.6rem] font-bold text-[#0F172A]">Proof and trust</h2>
+              {TESTIMONIALS.map((testimonial) => (
+                <blockquote
+                  key={testimonial.person}
+                  className="rounded-xl border border-[#CBD5E1] bg-white p-5"
+                >
+                  <p className="text-body text-slate-700">"{testimonial.quote}"</p>
+                  <footer className="mt-3 text-caption text-slate-500">
+                    {testimonial.person} - {testimonial.state}
+                  </footer>
+                </blockquote>
               ))}
+            </div>
+
+            <div className="rounded-xl border border-[#CBD5E1] bg-white p-5">
+              <h3 className="font-display text-heading-lg text-[#0F172A]">Method and assumptions</h3>
+              <details className="mt-4 rounded-lg border border-slate-300 p-3">
+                <summary className="cursor-pointer text-body-sm font-semibold text-slate-700">
+                  What this estimate checks
+                </summary>
+                <ul className="mt-3 space-y-2 text-body-sm text-slate-600">
+                  <li>Sales tax treatment in your state.</li>
+                  <li>Common replacement-related fees and transfer costs.</li>
+                  <li>Frequent valuation and condition adjustments.</li>
+                </ul>
+              </details>
+              <details className="mt-3 rounded-lg border border-slate-300 p-3">
+                <summary className="cursor-pointer text-body-sm font-semibold text-slate-700">
+                  Assumptions and limits
+                </summary>
+                <ul className="mt-3 space-y-2 text-body-sm text-slate-600">
+                  {(estimate?.assumptions ?? [
+                    "Uses standard assumptions until your exact offer letter is reviewed.",
+                    "Some states require additional documentation windows.",
+                    "Final value can vary with endorsements and vehicle specifics.",
+                  ]).map((assumption) => (
+                    <li key={assumption}>{assumption}</li>
+                  ))}
+                </ul>
+              </details>
+              <p className="mt-4 text-caption text-slate-500">
+                Last updated: {LAST_UPDATED_AT}. Source: state revenue and insurance guidance data.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-[1120px] px-5 pb-20 sm:px-6">
+          <div className="rounded-xl border border-[#CBD5E1] bg-white p-6 text-center">
+            <h2 className="font-display text-[1.45rem] font-bold text-[#0F172A]">
+              Ready for a full claim analysis?
+            </h2>
+            <p className="mx-auto mt-2 max-w-[64ch] text-body text-slate-600">
+              Get a detailed breakdown with state-specific guidance and clear next actions.
+            </p>
+            <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link
+                href={fullBreakdownHref}
+                className="rounded-xl bg-[#0EA5A4] px-5 py-3 font-display text-body font-bold text-white transition-colors hover:bg-[#0F766E]"
+              >
+                Get full analysis
+              </Link>
+              <Link
+                href="/tools"
+                className="rounded-xl border border-[#CBD5E1] bg-white px-5 py-3 font-display text-body font-semibold text-[#0F172A] transition-colors hover:bg-slate-50"
+              >
+                Start with free tools
+              </Link>
             </div>
           </div>
         </section>

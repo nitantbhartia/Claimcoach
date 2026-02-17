@@ -157,14 +157,14 @@ const config: Config = {
       },
       fontFamily: {
         display: [
-          "Oswald",
-          "Arial Narrow",
+          "Manrope",
+          "Inter",
           "sans-serif",
         ],
         body: [
-          "Space Mono",
-          "Courier New",
-          "monospace",
+          "Source Sans 3",
+          "Inter",
+          "sans-serif",
         ],
         sans: [
           "Inter",
@@ -182,7 +182,7 @@ const config: Config = {
           "Times",
           "serif",
         ],
-        mono: ["Space Mono", "Courier New", "Courier", "JetBrains Mono", "monospace"],
+        mono: ["IBM Plex Mono", "JetBrains Mono", "Courier New", "monospace"],
       },
       fontSize: {
         "display-xl": [
