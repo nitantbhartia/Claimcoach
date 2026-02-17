@@ -325,7 +325,9 @@ export default function LandingPage() {
                   key={testimonial.person}
                   className="rounded-xl border border-[#CBD5E1] bg-white p-5"
                 >
-                  <p className="text-body text-slate-700">"{testimonial.quote}"</p>
+                  <p className="text-body text-slate-700">
+                    &ldquo;{testimonial.quote}&rdquo;
+                  </p>
                   <footer className="mt-3 text-caption text-slate-500">
                     {testimonial.person} - {testimonial.state}
                   </footer>
