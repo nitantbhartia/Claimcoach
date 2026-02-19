@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth";
+import { checkAIRateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -10,6 +11,14 @@ export async function POST(request: NextRequest) {
   try {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
+
+    const rl = checkAIRateLimit(auth.user.id);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait a moment before making another request." },
+        { status: 429, headers: { "Retry-After": String(Math.ceil(rl.resetInMs / 1000)) } }
+      );
+    }
 
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
