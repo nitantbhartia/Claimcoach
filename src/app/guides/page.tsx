@@ -5,10 +5,24 @@ import { GuideCard } from "@/components/guides/guide-card";
 import { listGuides } from "@/lib/guides/registry";
 
 export const metadata: Metadata = {
-  title: "Total Loss Insurance Guides",
+  title: "Total Loss Insurance Guides — ClaimCoach",
   description:
     "Free guides on total loss settlements, insurance negotiation, counter-offer letters, and sales tax recovery. Learn how to fight lowball offers and get a fair payout.",
+  keywords: [
+    "total loss insurance guide",
+    "insurance claim guide",
+    "how to negotiate insurance settlement",
+    "total loss settlement tips",
+    "insurance counter offer guide",
+    "car insurance claim help",
+  ],
   alternates: { canonical: "/guides" },
+  openGraph: {
+    title: "Total Loss Insurance Guides — ClaimCoach",
+    description:
+      "Free expert guides on total loss settlements, insurance negotiation, counter-offer letters, and state-specific rules.",
+    url: "https://claimcoach.app/guides",
+  },
 };
 
 export default function GuidesIndexPage() {

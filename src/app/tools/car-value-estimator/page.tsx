@@ -4,15 +4,24 @@ import { Footer } from "@/components/layout/footer";
 import { CarValueEstimator } from "@/components/tools/car-value-estimator";
 
 export const metadata: Metadata = {
-  title: "What's My Car Worth? — ClaimCoach",
+  title: "What's My Car Worth? Free Estimator — ClaimCoach",
   description:
-    "Get an independent AI estimate of your vehicle's fair market value. Compare to your insurer's offer to see if you're being shortchanged.",
+    "Get an independent AI estimate of your vehicle's fair market value. Compare to your insurer's offer to see if you're being shortchanged on your total loss claim.",
   keywords: [
     "what is my totaled car worth",
     "car value after total loss",
     "actual cash value calculator",
     "total loss vehicle value",
+    "car value estimator free",
+    "how much is my totaled car worth",
   ],
+  alternates: { canonical: "/tools/car-value-estimator" },
+  openGraph: {
+    title: "What's My Car Worth? Free Estimator — ClaimCoach",
+    description:
+      "Get an independent AI estimate of your vehicle's actual cash value. See if your insurer's total loss offer is fair.",
+    url: "https://claimcoach.app/tools/car-value-estimator",
+  },
 };
 
 export default function CarValueEstimatorPage() {

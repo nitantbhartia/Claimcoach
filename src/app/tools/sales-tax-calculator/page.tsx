@@ -6,13 +6,22 @@ import { SalesTaxCalculator } from "@/components/tools/sales-tax-calculator";
 export const metadata: Metadata = {
   title: "Sales Tax Recovery Calculator — ClaimCoach",
   description:
-    "Calculate how much sales tax your insurer owes you on a replacement vehicle. Free calculator for total loss claims with state-specific rates.",
+    "Calculate how much sales tax your insurer owes you on a replacement vehicle. Free calculator for total loss claims with state-specific rates for all 50 states.",
   keywords: [
     "auto insurance sales tax calculator",
     "replacement vehicle sales tax insurance",
     "total loss sales tax owed",
     "do I get sales tax on totaled car",
+    "insurance sales tax reimbursement",
+    "total loss sales tax by state",
   ],
+  alternates: { canonical: "/tools/sales-tax-calculator" },
+  openGraph: {
+    title: "Sales Tax Recovery Calculator — ClaimCoach",
+    description:
+      "Calculate exactly how much sales tax your insurer owes you on a total loss claim. Free, state-specific calculator.",
+    url: "https://claimcoach.app/tools/sales-tax-calculator",
+  },
 };
 
 export default function SalesTaxCalculatorPage() {

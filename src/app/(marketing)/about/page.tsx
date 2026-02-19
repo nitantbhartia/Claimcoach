@@ -14,12 +14,20 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "How ClaimCoach Works — AI-Powered Insurance Claim Help",
   description:
-    "ClaimCoach levels the playing field between you and your insurance company. Learn how our AI-powered tools help policyholders get the settlements they deserve.",
+    "ClaimCoach levels the playing field between you and your insurance company. Learn how our AI-powered tools help policyholders document, analyze, and negotiate fair settlements.",
+  keywords: [
+    "how ClaimCoach works",
+    "insurance claim help",
+    "AI insurance negotiation",
+    "fight lowball insurance offer",
+    "insurance settlement help",
+    "total loss claim process",
+  ],
   alternates: { canonical: "/about" },
   openGraph: {
-    title: "About ClaimCoach",
+    title: "How ClaimCoach Works — AI-Powered Insurance Claim Help",
     description:
       "Learn how ClaimCoach uses AI to help policyholders fight lowball insurance settlements and get fair compensation.",
     url: "https://claimcoach.app/about",

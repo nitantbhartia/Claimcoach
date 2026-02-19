@@ -1,8 +1,33 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+
+export const metadata: Metadata = {
+  title: "ClaimCoach — Check Your Total Loss Offer",
+  description:
+    "Don't leave thousands on the table. ClaimCoach uses AI and real-time market data to verify if your total loss insurance settlement is fair — and generates a professional counter-offer if it's not.",
+  keywords: [
+    "total loss offer checker",
+    "insurance settlement fair",
+    "insurance lowball offer",
+    "total loss negotiation",
+    "counter offer insurance claim",
+    "insurance claim AI",
+    "car accident settlement amount",
+    "insurance underpayment",
+    "fight insurance offer",
+    "total loss car value",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "ClaimCoach — Check Your Total Loss Offer",
+    description:
+      "Don't leave thousands on the table. ClaimCoach uses AI and real-time market data to verify if your total loss settlement is fair.",
+    url: "https://claimcoach.app",
+    type: "website",
+  },
+};
 
 export default function LandingPage() {
   return (

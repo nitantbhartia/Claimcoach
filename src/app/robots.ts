@@ -6,7 +6,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/dashboard", "/claims/"],
+        disallow: [
+          "/api/",
+          "/dashboard",
+          "/claims/",
+          "/auth/",
+        ],
       },
     ],
     sitemap: "https://claimcoach.app/sitemap.xml",

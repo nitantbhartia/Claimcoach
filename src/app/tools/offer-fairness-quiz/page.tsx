@@ -6,13 +6,22 @@ import { FairnessQuiz } from "@/components/tools/fairness-quiz";
 export const metadata: Metadata = {
   title: "Is My Insurance Offer Fair? — ClaimCoach",
   description:
-    "Take our 5-question quiz to score your insurance settlement offer. Find out if you're being lowballed and how much more you could recover.",
+    "Take our 5-question quiz to score your insurance settlement offer. Find out if you're being lowballed and how much more you could recover on your total loss claim.",
   keywords: [
     "is my insurance offer fair",
     "is my total loss settlement fair",
     "am I getting lowballed by insurance",
     "total loss offer too low",
+    "insurance fairness score",
+    "lowball offer quiz",
   ],
+  alternates: { canonical: "/tools/offer-fairness-quiz" },
+  openGraph: {
+    title: "Is My Insurance Offer Fair? — ClaimCoach",
+    description:
+      "5-question quiz that scores your total loss settlement offer and shows exactly where you're being shortchanged.",
+    url: "https://claimcoach.app/tools/offer-fairness-quiz",
+  },
 };
 
 export default function FairnessQuizPage() {

@@ -5,9 +5,23 @@ import { Footer } from "@/components/layout/footer";
 import { Calculator, ClipboardCheck, HelpCircle, Car } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Free Insurance Tools — ClaimCoach",
+  title: "Free Insurance Claim Tools — ClaimCoach",
   description:
-    "Free interactive tools to help you get a fair settlement on your total loss insurance claim. Sales tax calculator, settlement checklist, fairness quiz, and more.",
+    "Free interactive tools to help you get a fair settlement on your total loss insurance claim. Sales tax calculator, settlement checklist, fairness quiz, and car value estimator.",
+  keywords: [
+    "free insurance claim tools",
+    "total loss calculator",
+    "insurance settlement checker",
+    "car value estimator free",
+    "insurance fairness quiz",
+  ],
+  alternates: { canonical: "/tools" },
+  openGraph: {
+    title: "Free Insurance Claim Tools — ClaimCoach",
+    description:
+      "Free interactive calculators and checklists to help you get a fair total loss settlement. No account required.",
+    url: "https://claimcoach.app/tools",
+  },
 };
 
 const TOOLS = [
