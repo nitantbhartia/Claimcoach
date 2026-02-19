@@ -9,11 +9,12 @@ export function Footer() {
 
   if (isHome) {
     return (
-      <footer className="bg-[#5A9B82]">
-        <div className="max-w-[1000px] mx-auto px-6 py-8">
+      <footer className="bg-[#F2F0E4]">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <Link href="/" className="flex items-center">
-              <span className="text-[14px] font-bold tracking-[-0.01em] text-black/70">
+            <Link href="/" className="flex items-center gap-2.5">
+              <span className="w-2.5 h-2.5 bg-black rounded-full inline-block" />
+              <span className="text-[14px] font-bold tracking-[-0.02em] text-black/70">
                 ClaimCoach
               </span>
             </Link>
