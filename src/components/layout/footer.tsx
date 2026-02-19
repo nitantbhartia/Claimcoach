@@ -9,56 +9,56 @@ export function Footer() {
 
   if (isHome) {
     return (
-      <footer className="bg-surface-200 border-t border-primary-border">
-        <div className="container-landing py-8">
+      <footer className="bg-[#5A9B82]">
+        <div className="max-w-[1000px] mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <Link href="/" className="flex items-center">
-              <span className="font-display font-bold tracking-[2px] text-[0.85rem] text-primary uppercase">
-                CLAIMCOACH
+              <span className="text-[14px] font-bold tracking-[-0.01em] text-black/70">
+                ClaimCoach
               </span>
             </Link>
 
             <nav className="flex flex-wrap items-center gap-x-5 gap-y-2">
               <Link
                 href="/guides"
-                className="text-[0.75rem] font-body text-primary-dim hover:text-primary transition-colors uppercase"
+                className="text-[12px] font-semibold text-black/40 hover:text-black/70 transition-colors"
               >
                 Guides
               </Link>
               <Link
                 href="/pricing"
-                className="text-[0.75rem] font-body text-primary-dim hover:text-primary transition-colors uppercase"
+                className="text-[12px] font-semibold text-black/40 hover:text-black/70 transition-colors"
               >
                 Pricing
               </Link>
               <Link
                 href="/login"
-                className="text-[0.75rem] font-body text-primary-dim hover:text-primary transition-colors uppercase"
+                className="text-[12px] font-semibold text-black/40 hover:text-black/70 transition-colors"
               >
                 Log In
               </Link>
               <Link
                 href="/privacy"
-                className="text-[0.75rem] font-body text-primary-dim hover:text-primary transition-colors uppercase"
+                className="text-[12px] font-semibold text-black/40 hover:text-black/70 transition-colors"
               >
                 Privacy
               </Link>
               <Link
                 href="/terms"
-                className="text-[0.75rem] font-body text-primary-dim hover:text-primary transition-colors uppercase"
+                className="text-[12px] font-semibold text-black/40 hover:text-black/70 transition-colors"
               >
                 Terms
               </Link>
             </nav>
           </div>
 
-          <div className="border-t border-primary-border-light my-5" />
+          <div className="border-t border-black/10 my-5" />
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <p className="text-[0.7rem] font-body text-primary-muted">
+            <p className="text-[11px] text-black/30 font-medium">
               &copy; {new Date().getFullYear()} ClaimCoach. All rights reserved.
             </p>
-            <p className="text-[0.7rem] font-body text-primary-muted">
+            <p className="text-[11px] text-black/30 font-medium">
               Educational tool. Not legal advice.
             </p>
           </div>

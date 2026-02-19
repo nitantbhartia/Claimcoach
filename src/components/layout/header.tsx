@@ -14,40 +14,38 @@ export function Header() {
   if (isHome) {
     return (
       <>
-        <header className="bg-surface-100 px-5 py-5 flex items-center justify-between border-b border-primary-border">
+        <header className="bg-transparent px-5 py-5 flex items-center justify-between">
           <Link href="/" className="flex items-center">
-            <span className="font-display font-bold tracking-[2px] border border-primary px-2 py-1 text-[0.85rem] text-primary uppercase">
-              CLAIMCOACH
+            <span className="text-[15px] font-bold tracking-[-0.01em] text-black/80">
+              ClaimCoach
             </span>
           </Link>
 
           <div className="flex items-center gap-4">
-            <span className="text-[0.8rem] font-body text-primary-dim hidden sm:block">
-              BETA_V.2.0
-            </span>
-            <nav className="hidden sm:flex items-center gap-4">
+            <nav className="hidden sm:flex items-center gap-5">
               <Link
                 href="/estimate"
-                className="text-[0.8rem] font-body text-primary-dim hover:text-primary transition-colors"
+                className="text-[13px] font-semibold text-black/50 hover:text-black/80 transition-colors"
               >
-                FREE ESTIMATE
+                Estimate
               </Link>
               <Link
                 href="/guides"
-                className="text-[0.8rem] font-body text-primary-dim hover:text-primary transition-colors"
+                className="text-[13px] font-semibold text-black/50 hover:text-black/80 transition-colors"
               >
-                GUIDES
+                Guides
               </Link>
               <Link
                 href="/pricing"
-                className="text-[0.8rem] font-body text-primary-dim hover:text-primary transition-colors"
+                className="text-[13px] font-semibold text-black/50 hover:text-black/80 transition-colors"
               >
-                PRICING
+                Pricing
               </Link>
-              <Link href="/login">
-                <span className="text-[0.8rem] font-body text-primary border border-primary px-3 py-1 hover:bg-primary hover:text-surface-100 transition-colors">
-                  LOG IN
-                </span>
+              <Link
+                href="/login"
+                className="text-[13px] font-semibold text-black/80 bg-black/10 hover:bg-black/15 rounded-full px-4 py-1.5 transition-colors"
+              >
+                Log In
               </Link>
             </nav>
 
@@ -57,9 +55,9 @@ export function Header() {
               className="sm:hidden flex flex-col gap-1.5 p-1"
               aria-label="Toggle menu"
             >
-              <span className={`block w-5 h-[1.5px] bg-primary transition-transform duration-200 ${mobileOpen ? "rotate-45 translate-y-[4.5px]" : ""}`} />
-              <span className={`block w-5 h-[1.5px] bg-primary transition-opacity duration-200 ${mobileOpen ? "opacity-0" : ""}`} />
-              <span className={`block w-5 h-[1.5px] bg-primary transition-transform duration-200 ${mobileOpen ? "-rotate-45 -translate-y-[4.5px]" : ""}`} />
+              <span className={`block w-5 h-[1.5px] bg-black transition-transform duration-200 ${mobileOpen ? "rotate-45 translate-y-[4.5px]" : ""}`} />
+              <span className={`block w-5 h-[1.5px] bg-black transition-opacity duration-200 ${mobileOpen ? "opacity-0" : ""}`} />
+              <span className={`block w-5 h-[1.5px] bg-black transition-transform duration-200 ${mobileOpen ? "-rotate-45 -translate-y-[4.5px]" : ""}`} />
             </button>
           </div>
         </header>
@@ -72,43 +70,43 @@ export function Header() {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="sm:hidden bg-surface-100 border-b border-primary-border overflow-hidden"
+              className="sm:hidden bg-[#6CB096] overflow-hidden"
             >
               <div className="px-5 py-4 space-y-3">
                 <Link
                   href="/estimate"
                   onClick={() => setMobileOpen(false)}
-                  className="block text-[0.9rem] font-body text-primary-dim hover:text-primary py-2 border-b border-primary-border-light"
+                  className="block text-[14px] font-semibold text-black/60 hover:text-black py-2 border-b border-black/10"
                 >
-                  FREE ESTIMATE
+                  Estimate
                 </Link>
                 <Link
                   href="/about"
                   onClick={() => setMobileOpen(false)}
-                  className="block text-[0.9rem] font-body text-primary-dim hover:text-primary py-2 border-b border-primary-border-light"
+                  className="block text-[14px] font-semibold text-black/60 hover:text-black py-2 border-b border-black/10"
                 >
-                  HOW IT WORKS
+                  How It Works
                 </Link>
                 <Link
                   href="/guides"
                   onClick={() => setMobileOpen(false)}
-                  className="block text-[0.9rem] font-body text-primary-dim hover:text-primary py-2 border-b border-primary-border-light"
+                  className="block text-[14px] font-semibold text-black/60 hover:text-black py-2 border-b border-black/10"
                 >
-                  GUIDES
+                  Guides
                 </Link>
                 <Link
                   href="/pricing"
                   onClick={() => setMobileOpen(false)}
-                  className="block text-[0.9rem] font-body text-primary-dim hover:text-primary py-2 border-b border-primary-border-light"
+                  className="block text-[14px] font-semibold text-black/60 hover:text-black py-2 border-b border-black/10"
                 >
-                  PRICING
+                  Pricing
                 </Link>
                 <Link
                   href="/login"
                   onClick={() => setMobileOpen(false)}
-                  className="block text-[0.9rem] font-body text-primary py-2"
+                  className="block text-[14px] font-semibold text-black/80 py-2"
                 >
-                  LOG IN
+                  Log In
                 </Link>
               </div>
             </motion.nav>
