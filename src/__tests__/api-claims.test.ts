@@ -1,6 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // ---------------------------------------------------------------------------
+// Stub Supabase env vars so isSupabaseConfigured() returns true, enabling
+// the auth mock to control authentication in all tests.
+// ---------------------------------------------------------------------------
+
+vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://test.supabase.co");
+vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "test-anon-key");
+
+// ---------------------------------------------------------------------------
 // Mock Supabase before importing routes
 // ---------------------------------------------------------------------------
 

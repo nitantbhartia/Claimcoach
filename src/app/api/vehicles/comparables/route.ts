@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeWithAI, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { requireAuth } from "@/lib/auth";
-import { sanitizeField, extractJSON } from "@/lib/ai/sanitize";
+import { sanitizeField, validateState, extractJSON } from "@/lib/ai/sanitize";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -67,8 +67,20 @@ export async function POST(request: NextRequest) {
     }
 
     const vehicleInfo = sanitizeField(`${vehicleYear} ${vehicleMake} ${vehicleModel}`, 200);
-    const safeState = sanitizeField(state || "Unknown", 50);
     const safeMileage = sanitizeField(mileage ? String(mileage) : "Unknown", 20);
+
+    // Validate state code against the known US state list to prevent prompt injection
+    let safeState = "Unknown";
+    if (state) {
+      const validatedState = validateState(state);
+      if (!validatedState) {
+        return NextResponse.json(
+          { error: "Invalid US state code" },
+          { status: 400 }
+        );
+      }
+      safeState = validatedState;
+    }
 
     const prompt = COMPARABLES_PROMPT
       .replace("{vehicleInfo}", vehicleInfo)

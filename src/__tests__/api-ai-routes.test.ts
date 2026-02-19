@@ -2,6 +2,14 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 
 // ---------------------------------------------------------------------------
+// Stub Supabase env vars so isSupabaseConfigured() returns true, enabling
+// the auth mock to control authentication in all tests.
+// ---------------------------------------------------------------------------
+
+vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://test.supabase.co");
+vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "test-anon-key");
+
+// ---------------------------------------------------------------------------
 // Mocks
 // ---------------------------------------------------------------------------
 
@@ -25,6 +33,8 @@ vi.mock("@/lib/ai/client", () => ({
   }),
   analyzeWithAI: vi.fn().mockResolvedValue('{"fairness_score": 65, "summary": "test", "line_items": [], "total_gap": 1000, "comparable_data": [], "recommendation": "negotiate"}'),
   analyzeDocumentWithVision: vi.fn().mockResolvedValue('{"insurer_name": "State Farm", "policy_number": "P12345"}'),
+  getAIErrorMessage: (e: unknown) => String(e),
+  isAIConfigured: vi.fn().mockReturnValue(true),
 }));
 
 // Import routes AFTER mocks

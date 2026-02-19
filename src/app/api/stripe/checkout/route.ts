@@ -37,13 +37,40 @@ export async function POST(request: NextRequest) {
       userEmail = user?.email || "";
     }
 
-    // Use configured app URL to prevent host header poisoning
-    const origin = process.env.NEXT_PUBLIC_APP_URL || request.headers.get("origin");
+    // Use configured app URL; fall back to Origin header only in development.
+    // Validate the origin format to prevent open-redirect via host-header injection.
+    const configuredUrl = process.env.NEXT_PUBLIC_APP_URL;
+    const originHeader = request.headers.get("origin");
+    const origin = configuredUrl || originHeader;
+
     if (!origin) {
       return NextResponse.json(
         { error: "App URL not configured" },
         { status: 500 }
       );
+    }
+
+    // When no explicit app URL is configured, validate the Origin header so
+    // an attacker cannot inject an arbitrary redirect target.
+    if (!configuredUrl) {
+      let parsedOrigin: URL;
+      try {
+        parsedOrigin = new URL(origin);
+      } catch {
+        return NextResponse.json(
+          { error: "Invalid request origin" },
+          { status: 400 }
+        );
+      }
+      const isAllowed =
+        parsedOrigin.protocol === "https:" ||
+        (parsedOrigin.protocol === "http:" && parsedOrigin.hostname === "localhost");
+      if (!isAllowed) {
+        return NextResponse.json(
+          { error: "Invalid request origin" },
+          { status: 400 }
+        );
+      }
     }
 
     // Look up or create customer
