@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CarValueEstimator } from "@/components/tools/car-value-estimator";
+import { FairnessQuiz } from "@/components/tools/fairness-quiz";
 import { KeyTakeaway } from "@/components/guides/key-takeaway";
 import { CTABox } from "@/components/guides/cta-box";
 import { CaseStudy } from "@/components/guides/case-study";
@@ -54,6 +55,11 @@ export const headings = [
     id: "dv-vs-total-loss",
     text: "Diminished Value vs. Total Loss: Key Differences",
     level: 2,
+  },
+  {
+    id: "near-total-loss-dv",
+    text: "DV Claims on Near-Total-Loss Vehicles",
+    level: 3,
   },
   {
     id: "check-your-vehicle-value",
@@ -491,6 +497,36 @@ export default function DiminishedValueClaim() {
           ["Timeline", "File after repairs are complete", "File immediately after total loss declaration"],
         ]}
       />
+
+      <h3 id="near-total-loss-dv">
+        DV Claims on Near-Total-Loss Vehicles
+      </h3>
+
+      <p>
+        Vehicles that came close to the total loss threshold &mdash; where
+        repair costs were 65&ndash;78% of ACV &mdash; typically carry the
+        highest DV loss percentages. This is because significant structural
+        or airbag damage is required to generate that level of repair cost,
+        and that type of damage is the most stigmatizing on a vehicle
+        history report.
+      </p>
+
+      <p>
+        If your vehicle was nearly totaled rather than actually totaled, you
+        are in the &ldquo;best&rdquo; position for a DV claim &mdash; the car is
+        worth keeping, but its history now shows major damage. The DV
+        recovery on a $35,000 vehicle with $24,000 in repairs and frame
+        work can easily exceed $6,000.
+      </p>
+
+      <p>
+        If your vehicle was instead declared a total loss, check whether
+        the total loss settlement offer is fair before accepting it &mdash;
+        you cannot file a DV claim on a totaled vehicle, but you can
+        negotiate the ACV:
+      </p>
+
+      <FairnessQuiz mode="mini" />
 
       <h3 id="check-your-vehicle-value">
         Check Your Vehicle&apos;s Pre- and Post-Repair Value

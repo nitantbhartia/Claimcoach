@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CarValueEstimator } from "@/components/tools/car-value-estimator";
+import { SettlementChecklist } from "@/components/tools/settlement-checklist";
 import { KeyTakeaway } from "@/components/guides/key-takeaway";
 import { CTABox } from "@/components/guides/cta-box";
 import { CaseStudy } from "@/components/guides/case-study";
@@ -34,6 +35,16 @@ export const headings = [
     id: "when-to-invoke-the-appraisal-clause",
     text: "When to Invoke the Appraisal Clause (and When Not To)",
     level: 2,
+  },
+  {
+    id: "red-flags-in-valuation-report",
+    text: "Red Flags in Your Valuation Report",
+    level: 3,
+  },
+  {
+    id: "verify-line-items-before-appraisal",
+    text: "Verify All Line Items Before Invoking",
+    level: 3,
   },
   {
     id: "real-appraisal-case-studies",
@@ -357,6 +368,71 @@ export default function AppraisalClauseInsurance() {
         </li>
       </ul>
 
+      <h3 id="red-flags-in-valuation-report">
+        Red Flags in Your Valuation Report
+      </h3>
+
+      <p>
+        Before invoking the appraisal clause, request the full valuation
+        report from your adjuster and look for these specific issues that
+        appraisers are most effective at correcting:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Wrong trim level</strong> &mdash; comparables listed as
+          base or lower trim when your vehicle was a higher specification
+          (e.g., Sport S vs. Sport Touring, XLT vs. Lariat)
+        </li>
+        <li>
+          <strong>Geographic mismatch</strong> &mdash; comparables pulled
+          from rural areas or lower-cost markets when your vehicle was
+          garaged in a higher-cost metropolitan area
+        </li>
+        <li>
+          <strong>Mileage disparity without full adjustment</strong> &mdash;
+          comparables with 20,000+ more miles than your vehicle, adjusted
+          by less than market data supports
+        </li>
+        <li>
+          <strong>Condition downgrades</strong> &mdash; your vehicle rated
+          as &ldquo;average&rdquo; condition when maintenance records show
+          above-average upkeep
+        </li>
+        <li>
+          <strong>Missing factory options</strong> &mdash; comparables
+          lacking your vehicle&apos;s premium package, navigation, AWD, or
+          towing equipment
+        </li>
+      </ul>
+
+      <p>
+        Each of these is a documentable issue your appraiser can build a
+        formal written argument around. Two or more of these red flags
+        in a single report is a strong signal that appraisal will produce
+        a meaningfully higher outcome.
+      </p>
+
+      <h3 id="verify-line-items-before-appraisal">
+        Verify All Line Items Before Invoking
+      </h3>
+
+      <p>
+        The appraisal clause addresses ACV only &mdash; not missing line
+        items like sales tax, title fees, or dealer documentation fees.
+        Before committing to appraisal time and cost, audit your offer
+        for missing items. If sales tax or fees are absent, a single
+        adjuster call often resolves it in days at no cost to you.
+      </p>
+
+      <SettlementChecklist mode="mini" />
+
+      <p>
+        Once missing line items are corrected through direct negotiation,
+        the remaining ACV gap is what the appraisal clause is designed
+        to address.
+      </p>
+
       <p>
         Do <strong>not</strong> invoke the appraisal clause as a first
         step. Try direct negotiation first using our{" "}
@@ -369,7 +445,7 @@ export default function AppraisalClauseInsurance() {
         </Link>
         . Many disputes resolve within two to four weeks of a well-documented
         counter-offer &mdash; without the cost and delay of formal appraisal.
-        You can also use it when:
+        Appraisal is also not the right tool when:
       </p>
 
       <ul>

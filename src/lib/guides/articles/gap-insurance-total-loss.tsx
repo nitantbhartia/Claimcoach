@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SalesTaxCalculator } from "@/components/tools/sales-tax-calculator";
+import { SettlementChecklist } from "@/components/tools/settlement-checklist";
 import { KeyTakeaway } from "@/components/guides/key-takeaway";
 import { CTABox } from "@/components/guides/cta-box";
 import { CaseStudy } from "@/components/guides/case-study";
@@ -44,6 +45,11 @@ export const headings = [
     id: "how-to-maximize-your-acv-settlement",
     text: "How to Maximize Your ACV Settlement (Which Raises the GAP Baseline)",
     level: 2,
+  },
+  {
+    id: "audit-your-offer-before-gap-claim",
+    text: "Audit Your Offer Before the GAP Claim Is Filed",
+    level: 3,
   },
   {
     id: "check-your-settlement",
@@ -496,6 +502,28 @@ export default function GapInsuranceTotalLoss() {
           identifying a lowball offer
         </Link>
         .
+      </p>
+
+      <h3 id="audit-your-offer-before-gap-claim">
+        Audit Your Offer Before the GAP Claim Is Filed
+      </h3>
+
+      <p>
+        The most important step you can take before the GAP claim is
+        processed is to verify that your primary settlement includes
+        every line item your state requires. Missing line items are the
+        fastest and easiest dollars to recover &mdash; often in a single
+        adjuster call. Once you accept the settlement and the lender is
+        paid, it is very difficult to reopen. Use this checklist to audit
+        your offer now:
+      </p>
+
+      <SettlementChecklist mode="mini" />
+
+      <p>
+        If any items are missing, request them from your adjuster before
+        signing anything. Once the ACV settlement is maximized and
+        confirmed complete, you are ready to proceed with the GAP claim.
       </p>
 
       <h3 id="check-your-settlement">

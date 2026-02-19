@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FairnessQuiz } from "@/components/tools/fairness-quiz";
+import { SettlementChecklist } from "@/components/tools/settlement-checklist";
 import { KeyTakeaway } from "@/components/guides/key-takeaway";
 import { CTABox } from "@/components/guides/cta-box";
 import { CaseStudy } from "@/components/guides/case-study";
@@ -14,6 +15,11 @@ export const headings = [
     id: "before-you-call",
     text: "What to Do Before You Call Your Adjuster",
     level: 2,
+  },
+  {
+    id: "check-your-offer-before-calling",
+    text: "Run the Settlement Checklist Before You Dial",
+    level: 3,
   },
   {
     id: "opening-the-call",
@@ -54,6 +60,11 @@ export const headings = [
     id: "documenting-the-call",
     text: "How to Document Every Adjuster Conversation",
     level: 2,
+  },
+  {
+    id: "follow-up-email-template",
+    text: "Follow-Up Email Template",
+    level: 3,
   },
   {
     id: "the-bottom-line",
@@ -155,8 +166,22 @@ export default function AdjusterCallScript() {
         ]}
       />
 
+      <h3 id="check-your-offer-before-calling">
+        Run the Settlement Checklist Before You Dial
+      </h3>
+
       <p>
-        Before you call, take 60 seconds to score your offer:
+        The most productive adjuster calls are the ones where you already
+        know exactly which line items are missing before you pick up the
+        phone. Run through the checklist below to identify every gap in
+        your offer so you can address each item with specific numbers
+        during the call:
+      </p>
+
+      <SettlementChecklist mode="mini" />
+
+      <p>
+        Also take 60 seconds to score your overall offer fairness:
       </p>
 
       <FairnessQuiz mode="mini" />
@@ -515,6 +540,44 @@ export default function AdjusterCallScript() {
         invoke the appraisal clause, file a state complaint, or
         demonstrate that the insurer failed to respond in a timely manner.
       </p>
+
+      <h3 id="follow-up-email-template">Follow-Up Email Template</h3>
+
+      <p>
+        Send this within two hours of every call. Keep it factual and
+        concise:
+      </p>
+
+      <blockquote className="border-l-4 border-coral pl-4 my-4 italic text-[#4a555e]">
+        <p>
+          Subject: Follow-Up &mdash; Claim [Claim Number] / [Your Name]
+        </p>
+        <p>
+          Hi [Adjuster Name],
+        </p>
+        <p>
+          Thank you for speaking with me today at [Time]. I wanted to
+          confirm the key points from our conversation:
+        </p>
+        <p>
+          1. [Summary of what you discussed, e.g., &ldquo;I provided 6
+          comparable vehicle listings for [Year Make Model Trim] within
+          50 miles of [Zip Code].]&rdquo;
+        </p>
+        <p>
+          2. [Any commitment made, e.g., &ldquo;You agreed to review the
+          comparables and respond by [Date].&rdquo;]
+        </p>
+        <p>
+          3. [Any open items, e.g., &ldquo;Sales tax reimbursement of
+          approximately $[Amount] was not yet confirmed.&rdquo;]
+        </p>
+        <p>
+          Please let me know by [Date] if I have captured anything
+          incorrectly. I look forward to your update.
+        </p>
+        <p>Sincerely,<br />[Your Name]<br />[Phone]<br />[Email]</p>
+      </blockquote>
 
       <p>
         If your call conversations are not producing results, move to a

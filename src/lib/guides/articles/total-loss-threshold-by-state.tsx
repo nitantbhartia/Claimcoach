@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CarValueEstimator } from "@/components/tools/car-value-estimator";
+import { SettlementChecklist } from "@/components/tools/settlement-checklist";
 import { KeyTakeaway } from "@/components/guides/key-takeaway";
 import { CTABox } from "@/components/guides/cta-box";
 import { CaseStudy } from "@/components/guides/case-study";
@@ -39,6 +40,16 @@ export const headings = [
     id: "what-to-do-when-car-is-totaled",
     text: "What to Do When Your Car Is Declared a Total Loss",
     level: 2,
+  },
+  {
+    id: "verify-settlement-line-items",
+    text: "Verify Your Settlement Line Items",
+    level: 3,
+  },
+  {
+    id: "how-to-challenge-repair-estimate",
+    text: "How to Challenge an Inflated Repair Estimate",
+    level: 3,
   },
   {
     id: "keeping-your-totaled-car",
@@ -435,6 +446,51 @@ export default function TotalLossThresholdByState() {
         negotiate to retain it. Your insurer will deduct the salvage value
         from your settlement. You will then receive a salvage title and
         must pass a state inspection before the vehicle can be re-registered.
+      </p>
+
+      <h3 id="verify-settlement-line-items">
+        Verify Your Settlement Line Items
+      </h3>
+
+      <p>
+        Once the total loss declaration is made, the settlement amount
+        is determined by ACV plus required line items. In 70&ndash;80% of
+        initial offers, at least one required line item is missing.
+        Run through the checklist below before responding to any offer:
+      </p>
+
+      <SettlementChecklist mode="mini" />
+
+      <h3 id="how-to-challenge-repair-estimate">
+        How to Challenge an Inflated Repair Estimate
+      </h3>
+
+      <p>
+        In threshold states, if you believe the repair estimate is
+        inflated &mdash; pushing the vehicle over the threshold when it
+        could reasonably be repaired &mdash; you have two options:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Request a second estimate</strong> from an independent
+          body shop. If it comes in significantly lower, you can challenge
+          the insurer&apos;s estimate and potentially avoid a total loss
+          declaration.
+        </li>
+        <li>
+          <strong>Review supplemental damage items.</strong> Insurers
+          sometimes include preliminary supplemental estimates for damage
+          not yet confirmed. Ask which line items are confirmed vs.
+          estimated, and whether final repair cost could land below the
+          threshold.
+        </li>
+      </ul>
+
+      <p>
+        In TLF states, because the total loss math includes salvage value,
+        this dispute is less common &mdash; even modest repair costs can
+        trigger a total loss if the vehicle holds high salvage value.
       </p>
 
       <h3 id="keeping-your-totaled-car">
