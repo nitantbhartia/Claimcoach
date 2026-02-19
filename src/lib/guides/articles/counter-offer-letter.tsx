@@ -37,7 +37,7 @@ export const headings = [
 
 export default function CounterOfferLetter() {
   return (
-    <article>
+    <>
       {/* ---- Lead paragraph ---- */}
       <p className="text-body text-[#4a555e] mb-4">
         When your insurer sends a total loss settlement offer, you are not
@@ -602,7 +602,7 @@ export default function CounterOfferLetter() {
       />
 
       <CaseStudy
-        name="Maria R."
+        name="Sarah R."
         vehicle="2019 Nissan Rogue SV"
         state="Pennsylvania"
         initialOffer="$17,800"
@@ -610,19 +610,19 @@ export default function CounterOfferLetter() {
         gap="+$4,350"
         narrative={
           <p>
-            Maria&apos;s insurer offered $17,800 for her 2019 Nissan Rogue
+            Sarah&apos;s insurer offered $17,800 for her 2019 Nissan Rogue
             SV with 33,000 miles. Her counter-offer of $22,400 included
             four comparable vehicles averaging $20,100, plus $1,206 in
             sales tax (6%), $190 in title and registration fees, a $399
             dealer documentation fee, and $505 for aftermarket roof rails
             and all-weather floor mats (with receipts). The adjuster
             rejected her initial counter-offer, citing their own
-            valuation software. Maria then filed a complaint with the
+            valuation software. Sarah then filed a complaint with the
             Pennsylvania Department of Insurance, attaching her counter-offer
             letter and all supporting documentation. Within three weeks of
             the DOI complaint, the insurer&apos;s supervisor contacted her
             and agreed to a revised settlement of $22,150. The DOI
-            complaint cost Maria nothing to file and resulted in a $4,350
+            complaint cost Sarah nothing to file and resulted in a $4,350
             increase over the original offer.
           </p>
         }
@@ -824,6 +824,24 @@ export default function CounterOfferLetter() {
           comparable vehicle report, and line-item breakdown for a fraction
           of what an attorney or public adjuster would charge.
         </li>
+        <li>
+          <Link href="/guides/total-loss-settlement-amount" className="text-coral hover:underline font-medium">
+            Total loss settlement amounts explained
+          </Link>{" "}
+          — understand every line item your settlement should include.
+        </li>
+        <li>
+          <Link href="/guides/total-loss-car-value" className="text-coral hover:underline font-medium">
+            How insurers calculate your car&apos;s value
+          </Link>{" "}
+          — ACV, valuation services, and the most common mistakes.
+        </li>
+        <li>
+          <Link href="/guides/sales-tax-total-loss" className="text-coral hover:underline font-medium">
+            Sales tax on total loss claims
+          </Link>{" "}
+          — 50-state guide to recovering sales tax in your settlement.
+        </li>
       </ul>
 
       {/* ---- Closing key takeaway ---- */}
@@ -853,6 +871,6 @@ export default function CounterOfferLetter() {
           data from state insurance departments and industry research.
         </p>
       </div>
-    </article>
+    </>
   );
 }

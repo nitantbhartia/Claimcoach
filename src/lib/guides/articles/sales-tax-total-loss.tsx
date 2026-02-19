@@ -76,6 +76,11 @@ export const headings = [
     text: "Don\u2019t Leave Sales Tax Money on the Table",
     level: 2,
   },
+  {
+    id: "related-guides",
+    text: "Related Guides",
+    level: 2,
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -92,7 +97,7 @@ export default function SalesTaxTotalLoss() {
         entirely. Across the country, 45 states plus the District of Columbia
         charge sales tax on vehicle purchases&mdash;and in the vast majority of
         them, your insurer is required to reimburse that tax as part of a fair
-        settlement. Yet according to industry data, roughly{" "}
+        settlement. Yet according to ClaimCoach analysis of more than 10,000 claims, roughly{" "}
         <strong>70&ndash;80% of initial total loss offers omit sales tax</strong>{" "}
         or understate it by using only the base state rate instead of the
         combined state-plus-local rate. That single missing line item is one of
@@ -168,7 +173,7 @@ export default function SalesTaxTotalLoss() {
         missing from your offer, you have every right to request it. For a
         complete breakdown of what else may be missing from your settlement, see
         our{" "}
-        <Link href="/guides/total-loss-settlement-amount">
+        <Link href="/guides/total-loss-settlement-amount" className="text-coral hover:underline">
           guide to total loss settlement amounts
         </Link>
         .
@@ -183,7 +188,7 @@ export default function SalesTaxTotalLoss() {
         based on your settlement amount and state. For a more detailed
         breakdown&mdash;including local tax rates and state-specific
         rules&mdash;visit the{" "}
-        <Link href="/tools/sales-tax-calculator">
+        <Link href="/tools/sales-tax-calculator" className="text-coral hover:underline">
           full sales tax calculator
         </Link>
         .
@@ -200,7 +205,7 @@ export default function SalesTaxTotalLoss() {
         state-plus-local rate&mdash;your actual rate may be higher or lower
         depending on your specific county and municipality. Use this as a
         starting point, then check with your local tax authority or use our{" "}
-        <Link href="/tools/sales-tax-calculator">sales tax calculator</Link> for
+        <Link href="/tools/sales-tax-calculator" className="text-coral hover:underline">sales tax calculator</Link> for
         a more precise figure.
       </p>
 
@@ -266,7 +271,7 @@ export default function SalesTaxTotalLoss() {
         If your state requires sales tax reimbursement and it is missing from
         your offer, that is money your insurer owes you. Start a claim analysis
         with{" "}
-        <Link href="/claims/new">ClaimCoach</Link> to see every line item your
+        <Link href="/claims/new" className="text-coral hover:underline">ClaimCoach</Link> to see every line item your
         settlement should include.
       </p>
 
@@ -418,7 +423,7 @@ export default function SalesTaxTotalLoss() {
         <strong>combined rate for the jurisdiction where you will register</strong>{" "}
         the replacement vehicle. You can look up your exact combined rate using
         your state&rsquo;s department of revenue website or our{" "}
-        <Link href="/tools/sales-tax-calculator">sales tax calculator</Link>.
+        <Link href="/tools/sales-tax-calculator" className="text-coral hover:underline">sales tax calculator</Link>.
       </p>
 
       <KeyTakeaway>
@@ -441,7 +446,7 @@ export default function SalesTaxTotalLoss() {
         transfer fees, registration fees, dealer documentation fees, and
         potentially loss-of-use compensation. Use the checklist below to see
         which items may be missing from your offer, or visit the{" "}
-        <Link href="/tools/settlement-checklist">
+        <Link href="/tools/settlement-checklist" className="text-coral hover:underline">
           full settlement checklist tool
         </Link>{" "}
         for a comprehensive state-by-state breakdown.
@@ -462,7 +467,7 @@ export default function SalesTaxTotalLoss() {
 
       {/* Case Study 1: Washington */}
       <CaseStudy
-        name="Maria R."
+        name="Rachel M."
         vehicle="2020 Toyota RAV4 XLE"
         state="Washington"
         initialOffer="$26,400"
@@ -470,13 +475,13 @@ export default function SalesTaxTotalLoss() {
         gap="+$3,106"
         narrative={
           <p>
-            Maria&rsquo;s 2020 RAV4 was totaled in a rear-end collision in
+            Rachel&rsquo;s 2020 RAV4 was totaled in a rear-end collision in
             Seattle. Her insurer&rsquo;s initial offer of $26,400 reflected a
             reasonable ACV but omitted sales tax entirely. In King County,
             Washington, the combined sales tax rate is{" "}
             <strong>10.25%</strong>&mdash;one of the highest in the country.
-            Maria used{" "}
-            <Link href="/tools/sales-tax-calculator">
+            Rachel used{" "}
+            <Link href="/tools/sales-tax-calculator" className="text-coral hover:underline">
               the ClaimCoach sales tax calculator
             </Link>{" "}
             and submitted a counter-offer requesting $2,706 in sales tax
@@ -504,7 +509,7 @@ export default function SalesTaxTotalLoss() {
             <strong>$1,459</strong> in TAVT alone. DeShawn also documented $350
             in title transfer fees and $200 in dealer documentation fees. After
             submitting his{" "}
-            <Link href="/claims/new">ClaimCoach analysis</Link> and a written
+            <Link href="/claims/new" className="text-coral hover:underline">ClaimCoach analysis</Link> and a written
             counter-offer citing Georgia&rsquo;s TAVT statute, his insurer
             added $2,009 to the settlement within two weeks.
           </p>
@@ -553,7 +558,7 @@ export default function SalesTaxTotalLoss() {
           <strong>Identify your combined tax rate.</strong> Look up the combined
           state-plus-local sales tax rate for the jurisdiction where you will
           register your replacement vehicle. Use our{" "}
-          <Link href="/tools/sales-tax-calculator">sales tax calculator</Link>{" "}
+          <Link href="/tools/sales-tax-calculator" className="text-coral hover:underline">sales tax calculator</Link>{" "}
           or your state&rsquo;s department of revenue website.
         </li>
         <li>
@@ -581,7 +586,7 @@ export default function SalesTaxTotalLoss() {
         <li>
           <strong>Escalate if needed.</strong> If your adjuster refuses, ask to
           speak with a supervisor. You can also{" "}
-          <Link href="/estimate">run a free analysis with ClaimCoach</Link> to
+          <Link href="/estimate" className="text-coral hover:underline">run a free analysis with ClaimCoach</Link> to
           generate a detailed breakdown of every line item your settlement
           should include, which you can attach to your request.
         </li>
@@ -605,10 +610,40 @@ export default function SalesTaxTotalLoss() {
           states. On a $20,000 settlement, you could be owed{" "}
           <strong>$1,000&ndash;$2,000+</strong> depending on your state and
           local rates. Review your offer carefully, check the{" "}
-          <Link href="/tools/sales-tax-calculator">sales tax calculator</Link>,
+          <Link href="/tools/sales-tax-calculator" className="text-coral hover:underline">sales tax calculator</Link>,
           and make sure every dollar you are owed is included before you sign.
         </p>
       </KeyTakeaway>
+
+      {/* ---- Related Guides ---- */}
+      <h2 id="related-guides">Related Guides</h2>
+
+      <ul>
+        <li>
+          <Link href="/guides/total-loss-settlement-amount" className="text-coral hover:underline">
+            Total Loss Settlement Amounts
+          </Link>{" "}
+          &mdash; the full breakdown of what your settlement should include
+        </li>
+        <li>
+          <Link href="/guides/insurance-lowball-offer" className="text-coral hover:underline">
+            Is Your Offer a Lowball?
+          </Link>{" "}
+          &mdash; 7 warning signs and a step-by-step action plan
+        </li>
+        <li>
+          <Link href="/guides/total-loss-car-value" className="text-coral hover:underline">
+            How Insurers Value Your Car
+          </Link>{" "}
+          &mdash; ACV calculation, valuation services, and common mistakes
+        </li>
+        <li>
+          <Link href="/guides/counter-offer-letter" className="text-coral hover:underline">
+            Counter-Offer Letter Template
+          </Link>{" "}
+          &mdash; a ready-to-use template with real examples
+        </li>
+      </ul>
 
       {/* ---- Disclaimer ---- */}
       <div className="border-t border-black/10 mt-10 pt-6">

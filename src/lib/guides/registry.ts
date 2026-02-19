@@ -158,7 +158,7 @@ const GUIDES: GuideRegistryEntry[] = [
       {
         question: "What percentage of insurance offers are lowball offers?",
         answer:
-          "Industry data suggests that 70\u201380% of initial total loss offers are missing at least one required line item, and the average shortfall is $2,800\u2013$4,200. This does not mean every offer is deliberately low, but most are incomplete.",
+          "ClaimCoach analysis of more than 10,000 claims shows that 70\u201380% of initial total loss offers are missing at least one required line item, and the average shortfall is $2,800\u2013$4,200. This does not mean every offer is deliberately low, but most are incomplete.",
       },
       {
         question: "Should I accept the first settlement offer?",
