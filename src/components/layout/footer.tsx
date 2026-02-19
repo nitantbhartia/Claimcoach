@@ -20,6 +20,12 @@ export function Footer() {
 
             <nav className="flex flex-wrap items-center gap-x-5 gap-y-2">
               <Link
+                href="/guides"
+                className="text-[0.75rem] font-body text-primary-dim hover:text-primary transition-colors uppercase"
+              >
+                Guides
+              </Link>
+              <Link
                 href="/pricing"
                 className="text-[0.75rem] font-body text-primary-dim hover:text-primary transition-colors uppercase"
               >
@@ -77,6 +83,12 @@ export function Footer() {
               className="text-body-sm text-[#4a555e] hover:text-coral transition-colors"
             >
               How It Works
+            </Link>
+            <Link
+              href="/guides"
+              className="text-body-sm text-[#4a555e] hover:text-coral transition-colors"
+            >
+              Guides
             </Link>
             <Link
               href="/pricing"
