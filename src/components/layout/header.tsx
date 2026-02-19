@@ -14,45 +14,46 @@ export function Header() {
   if (isHome) {
     return (
       <>
-        <header className="bg-transparent px-5 py-5 flex items-center justify-between">
-          <Link href="/" className="flex items-center">
-            <span className="text-[15px] font-bold tracking-[-0.01em] text-black/80">
+        <header className="max-w-[1400px] mx-auto px-6 py-8 lg:px-12 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5">
+            <span className="w-2.5 h-2.5 bg-black rounded-full inline-block" />
+            <span className="text-[20px] font-bold tracking-[-0.02em] text-black">
               ClaimCoach
             </span>
           </Link>
 
           <div className="flex items-center gap-4">
-            <nav className="hidden sm:flex items-center gap-5">
+            <nav className="hidden md:flex items-center gap-8">
               <Link
-                href="/estimate"
-                className="text-[13px] font-semibold text-black/50 hover:text-black/80 transition-colors"
+                href="/about"
+                className="text-[15px] font-semibold text-black opacity-60 hover:opacity-100 transition-opacity"
               >
-                Estimate
+                How it works
               </Link>
               <Link
                 href="/guides"
-                className="text-[13px] font-semibold text-black/50 hover:text-black/80 transition-colors"
+                className="text-[15px] font-semibold text-black opacity-60 hover:opacity-100 transition-opacity"
               >
-                Guides
+                Success Stories
               </Link>
               <Link
                 href="/pricing"
-                className="text-[13px] font-semibold text-black/50 hover:text-black/80 transition-colors"
+                className="text-[15px] font-semibold text-black opacity-60 hover:opacity-100 transition-opacity"
               >
                 Pricing
               </Link>
               <Link
-                href="/login"
-                className="text-[13px] font-semibold text-black/80 bg-black/10 hover:bg-black/15 rounded-full px-4 py-1.5 transition-colors"
+                href="/claims/new"
+                className="bg-black text-white px-6 py-3 rounded-full text-[15px] font-semibold hover:translate-y-[-2px] hover:bg-[#1a1a1a] transition-all"
               >
-                Log In
+                Check Offer
               </Link>
             </nav>
 
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="sm:hidden flex flex-col gap-1.5 p-1"
+              className="md:hidden flex flex-col gap-1.5 p-1"
               aria-label="Toggle menu"
             >
               <span className={`block w-5 h-[1.5px] bg-black transition-transform duration-200 ${mobileOpen ? "rotate-45 translate-y-[4.5px]" : ""}`} />
@@ -70,43 +71,36 @@ export function Header() {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="sm:hidden bg-[#6CB096] overflow-hidden"
+              className="md:hidden bg-[#F2F0E4] overflow-hidden border-t border-black/5"
             >
-              <div className="px-5 py-4 space-y-3">
-                <Link
-                  href="/estimate"
-                  onClick={() => setMobileOpen(false)}
-                  className="block text-[14px] font-semibold text-black/60 hover:text-black py-2 border-b border-black/10"
-                >
-                  Estimate
-                </Link>
+              <div className="px-6 py-4 space-y-3">
                 <Link
                   href="/about"
                   onClick={() => setMobileOpen(false)}
-                  className="block text-[14px] font-semibold text-black/60 hover:text-black py-2 border-b border-black/10"
+                  className="block text-[15px] font-semibold text-black/60 hover:text-black py-2 border-b border-black/10"
                 >
-                  How It Works
+                  How it works
                 </Link>
                 <Link
                   href="/guides"
                   onClick={() => setMobileOpen(false)}
-                  className="block text-[14px] font-semibold text-black/60 hover:text-black py-2 border-b border-black/10"
+                  className="block text-[15px] font-semibold text-black/60 hover:text-black py-2 border-b border-black/10"
                 >
-                  Guides
+                  Success Stories
                 </Link>
                 <Link
                   href="/pricing"
                   onClick={() => setMobileOpen(false)}
-                  className="block text-[14px] font-semibold text-black/60 hover:text-black py-2 border-b border-black/10"
+                  className="block text-[15px] font-semibold text-black/60 hover:text-black py-2 border-b border-black/10"
                 >
                   Pricing
                 </Link>
                 <Link
-                  href="/login"
+                  href="/claims/new"
                   onClick={() => setMobileOpen(false)}
-                  className="block text-[14px] font-semibold text-black/80 py-2"
+                  className="block bg-black text-white text-center rounded-full px-6 py-3 text-[15px] font-semibold mt-2"
                 >
-                  Log In
+                  Check Offer
                 </Link>
               </div>
             </motion.nav>
