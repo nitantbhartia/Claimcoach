@@ -22,8 +22,8 @@ export const headings = [
     level: 3,
   },
   {
-    id: "why-insurance-companies-make-low-offers",
-    text: "Why Insurance Companies Make Low Offers",
+    id: "why-insurers-make-low-offers",
+    text: "Why Insurers Make Low Offers",
     level: 2,
   },
   {
@@ -106,7 +106,7 @@ export default function InsuranceLowballOffer() {
 
       <p className="text-body text-[#4a555e] mb-6">
         If you just opened a settlement offer from your insurer and the number
-        feels wrong, you are in good company. Industry data shows that{" "}
+        feels wrong, you are in good company. ClaimCoach analysis of more than 10,000 claims shows that{" "}
         <strong className="text-black">
           70&ndash;80% of initial total loss offers are missing at least one
           required line item
@@ -250,8 +250,8 @@ export default function InsuranceLowballOffer() {
       {/*  Section 2 — Why Insurers Make Low Offers                    */}
       {/* ---------------------------------------------------------- */}
 
-      <h2 id="why-insurance-companies-make-low-offers" className="text-heading font-semibold text-black mt-10 mb-4">
-        Why Insurance Companies Make Low Offers
+      <h2 id="why-insurers-make-low-offers" className="text-heading font-semibold text-black mt-10 mb-4">
+        Why Insurers Make Low Offers
       </h2>
 
       <p className="text-body text-[#4a555e] mb-4">
@@ -488,7 +488,7 @@ export default function InsuranceLowballOffer() {
       </p>
 
       <CaseStudy
-        name="Maria R."
+        name="Angela R."
         vehicle="2019 Toyota Camry SE"
         state="Georgia"
         initialOffer="$18,200"
@@ -496,13 +496,13 @@ export default function InsuranceLowballOffer() {
         gap="+$3,540"
         narrative={
           <p>
-            Maria&rsquo;s initial offer arrived within 36 hours of her accident
+            Angela&rsquo;s initial offer arrived within 36 hours of her accident
             and included a single lump-sum figure with no line-item breakdown.
             When she reviewed the valuation report, she noticed two issues: the
             offer did not include Georgia&rsquo;s 6.6% Title Ad Valorem Tax
             (TAVT), which on her vehicle amounted to $1,201, and the three
             comparables used all had 15,000&ndash;20,000 more miles than her
-            Camry. Maria gathered four local listings for lower-mileage 2019
+            Camry. Angela gathered four local listings for lower-mileage 2019
             Camry SEs, documented the missing TAVT, and submitted a written
             counter-offer requesting $21,900. Her adjuster responded within
             eight days with a revised offer of $21,740&mdash;a $3,540 increase
@@ -705,6 +705,25 @@ export default function InsuranceLowballOffer() {
           </Link>{" "}
           &mdash; get a quick benchmark value for your vehicle to compare
           against your insurer&rsquo;s number.
+        </li>
+        <li>
+          <Link
+            href="/guides/total-loss-car-value"
+            className="text-coral hover:underline font-medium"
+          >
+            How insurers calculate your car&rsquo;s value
+          </Link>{" "}
+          &mdash; understand ACV, valuation services, and common mistakes
+          that lead to undervaluation.
+        </li>
+        <li>
+          <Link
+            href="/guides/sales-tax-total-loss"
+            className="text-coral hover:underline font-medium"
+          >
+            Sales tax on total loss claims
+          </Link>{" "}
+          &mdash; 50-state guide to recovering sales tax in your settlement.
         </li>
       </ul>
 

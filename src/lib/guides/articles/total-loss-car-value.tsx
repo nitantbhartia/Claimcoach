@@ -13,7 +13,7 @@ import { DataTable } from "@/components/guides/data-table";
 export const headings = [
   { id: "what-is-actual-cash-value", text: "What Is Actual Cash Value (ACV)?", level: 2 },
   { id: "acv-vs-other-values", text: "ACV vs. Replacement Cost, Trade-In, and Retail", level: 3 },
-  { id: "how-insurance-companies-calculate-value", text: "How Insurance Companies Calculate Your Car's Value", level: 2 },
+  { id: "how-insurers-calculate-value", text: "How Insurers Calculate Your Car's Value", level: 2 },
   { id: "ccc-mitchell-audatex", text: "CCC, Mitchell, and Audatex: The Big Three Valuation Services", level: 3 },
   { id: "factors-that-affect-value", text: "5 Factors That Affect Your Vehicle's Value", level: 2 },
   { id: "mileage", text: "1. Mileage", level: 3 },
@@ -30,6 +30,7 @@ export const headings = [
   { id: "sales-tax-and-fees", text: "Don't Forget Sales Tax and Fees", level: 2 },
   { id: "real-valuation-case-studies", text: "Real Valuation Case Studies", level: 2 },
   { id: "how-to-dispute-valuation", text: "How to Dispute Your Vehicle's Valuation", level: 2 },
+  { id: "related-guides", text: "Related Guides", level: 2 },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -38,7 +39,7 @@ export const headings = [
 
 export default function TotalLossCarValue() {
   return (
-    <article>
+    <>
       {/* ------------------------------------------------------------ */}
       {/*  Lead paragraph                                               */}
       {/* ------------------------------------------------------------ */}
@@ -147,7 +148,7 @@ export default function TotalLossCarValue() {
         costs to <em>replace</em> your car at retail, not what a dealer
         would pay you for a trade. For a deeper look at the full settlement
         calculation, see our{" "}
-        <Link href="/guides/total-loss-settlement-amount">
+        <Link href="/guides/total-loss-settlement-amount" className="text-coral hover:underline">
           total loss settlement amount guide
         </Link>
         .
@@ -156,8 +157,8 @@ export default function TotalLossCarValue() {
       {/* ------------------------------------------------------------ */}
       {/*  Section 2: How Insurance Companies Calculate Value           */}
       {/* ------------------------------------------------------------ */}
-      <h2 id="how-insurance-companies-calculate-value">
-        How Insurance Companies Calculate Your Car&apos;s Value
+      <h2 id="how-insurers-calculate-value">
+        How Insurers Calculate Your Car&apos;s Value
       </h2>
 
       <p>
@@ -374,7 +375,7 @@ export default function TotalLossCarValue() {
         data puts you in a much stronger negotiating position. Use the tool
         below to get a quick estimate based on your vehicle&apos;s year,
         make, model, and mileage, or visit our full{" "}
-        <Link href="/tools/car-value-estimator">
+        <Link href="/tools/car-value-estimator" className="text-coral hover:underline">
           car value estimator
         </Link>{" "}
         for a more detailed analysis.
@@ -488,7 +489,7 @@ export default function TotalLossCarValue() {
       <p>
         Use the calculator below to see how much sales tax your insurer
         should include in your settlement, or visit our full{" "}
-        <Link href="/tools/sales-tax-calculator">
+        <Link href="/tools/sales-tax-calculator" className="text-coral hover:underline">
           sales tax calculator
         </Link>{" "}
         for state-specific rules and requirements.
@@ -644,7 +645,7 @@ export default function TotalLossCarValue() {
           <strong>Check for missing fees.</strong> Verify that your offer
           includes sales tax, title transfer, registration, and dealer
           documentation fees. Use our{" "}
-          <Link href="/tools/sales-tax-calculator">
+          <Link href="/tools/sales-tax-calculator" className="text-coral hover:underline">
             sales tax calculator
           </Link>{" "}
           to determine the exact amount for your state.
@@ -654,7 +655,7 @@ export default function TotalLossCarValue() {
           evidence and requested amount to your adjuster in writing. Be
           specific &mdash; itemize each adjustment you are requesting with
           supporting data. Start your claim analysis with{" "}
-          <Link href="/claims/new">ClaimCoach</Link> to identify every
+          <Link href="/claims/new" className="text-coral hover:underline">ClaimCoach</Link> to identify every
           missing line item automatically.
         </li>
         <li>
@@ -670,15 +671,15 @@ export default function TotalLossCarValue() {
         Most valuation disputes resolve within two to four weeks. The
         average successful dispute recovers $2,800 to $4,200 above the
         initial offer. You can start your analysis right now &mdash;{" "}
-        <Link href="/claims/new">upload your offer to ClaimCoach</Link> and
+        <Link href="/claims/new" className="text-coral hover:underline">upload your offer to ClaimCoach</Link> and
         we will show you exactly where your settlement falls short.
       </p>
 
       <p>
         For more information on how ClaimCoach works and the data behind
-        our analysis, visit our <Link href="/about">about page</Link>. And
+        our analysis, visit our <Link href="/about" className="text-coral hover:underline">about page</Link>. And
         if you want a quick ballpark before diving into the full process,
-        our <Link href="/estimate">instant estimate tool</Link> can give
+        our <Link href="/estimate" className="text-coral hover:underline">instant estimate tool</Link> can give
         you a starting point in seconds.
       </p>
 
@@ -693,6 +694,38 @@ export default function TotalLossCarValue() {
         recover an additional $2,800 to $4,200. The evidence is on your
         side &mdash; you just need to present it.
       </KeyTakeaway>
+
+      {/* ------------------------------------------------------------ */}
+      {/*  Related Guides                                               */}
+      {/* ------------------------------------------------------------ */}
+      <h2 id="related-guides">Related Guides</h2>
+
+      <ul>
+        <li>
+          <Link href="/guides/total-loss-settlement-amount" className="text-coral hover:underline">
+            Total Loss Settlement Amounts
+          </Link>{" "}
+          &mdash; the full breakdown of what your settlement should include
+        </li>
+        <li>
+          <Link href="/guides/insurance-lowball-offer" className="text-coral hover:underline">
+            Is Your Offer a Lowball?
+          </Link>{" "}
+          &mdash; 7 warning signs and a step-by-step action plan
+        </li>
+        <li>
+          <Link href="/guides/counter-offer-letter" className="text-coral hover:underline">
+            Counter-Offer Letter Template
+          </Link>{" "}
+          &mdash; a ready-to-use template with real examples
+        </li>
+        <li>
+          <Link href="/guides/sales-tax-total-loss" className="text-coral hover:underline">
+            Sales Tax on Total Loss Claims
+          </Link>{" "}
+          &mdash; 50-state rules for sales tax reimbursement
+        </li>
+      </ul>
 
       {/* ------------------------------------------------------------ */}
       {/*  Disclaimer                                                   */}
@@ -712,6 +745,6 @@ export default function TotalLossCarValue() {
           department of insurance.
         </p>
       </div>
-    </article>
+    </>
   );
 }

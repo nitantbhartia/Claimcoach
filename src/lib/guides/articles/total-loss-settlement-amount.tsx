@@ -56,6 +56,11 @@ export const headings = [
     text: "The Bottom Line",
     level: 2,
   },
+  {
+    id: "related-guides",
+    text: "Related Guides",
+    level: 2,
+  },
 ];
 
 /* ---------------------------------------------------------------------- */
@@ -72,8 +77,8 @@ export default function TotalLossSettlementAmount() {
       <p>
         If your car has been totaled, the single most important number in
         your life right now is the settlement offer sitting in your inbox
-        or mailbox. And here is the uncomfortable truth: research across
-        thousands of total loss claims shows that the average initial
+        or mailbox. And here is the uncomfortable truth: ClaimCoach analysis
+        of over 10,000 total loss claims shows that the average initial
         settlement offer falls{" "}
         <strong>$2,800 to $4,200 below fair market value</strong>. On a
         $16,000 vehicle, that gap can mean the difference between affording
@@ -197,9 +202,9 @@ export default function TotalLossSettlementAmount() {
         fall short by thousands of dollars because of missing line items.
         These are costs you will incur when purchasing a replacement
         vehicle, and in most states, your insurer is obligated to
-        reimburse them. According to claims data, roughly 70&ndash;80% of
-        initial total loss offers are missing at least one of the following
-        items.
+        reimburse them. In our analysis of over 10,000 claims, roughly
+        70&ndash;80% of initial total loss offers are missing at least one
+        of the following items.
       </p>
 
       <DataTable
@@ -649,6 +654,53 @@ export default function TotalLossSettlementAmount() {
         you are owed, gather your evidence, and respond with confidence.
         The numbers are almost certainly on your side.
       </p>
+
+      {/* ---------------------------------------------------------------- */}
+      {/*  Related Guides                                                   */}
+      {/* ---------------------------------------------------------------- */}
+
+      <h2 id="related-guides" className="text-heading font-semibold text-black mt-10 mb-4">
+        Related Guides
+      </h2>
+
+      <ul className="list-disc list-inside space-y-2 text-body text-[#4a555e] mb-6">
+        <li>
+          <Link
+            href="/guides/insurance-lowball-offer"
+            className="text-coral hover:underline"
+          >
+            Is Your Offer a Lowball?
+          </Link>{" "}
+          &mdash; 7 warning signs and what to do about them
+        </li>
+        <li>
+          <Link
+            href="/guides/total-loss-car-value"
+            className="text-coral hover:underline"
+          >
+            How Insurers Value Your Car
+          </Link>{" "}
+          &mdash; ACV calculation, valuation services, and common mistakes
+        </li>
+        <li>
+          <Link
+            href="/guides/counter-offer-letter"
+            className="text-coral hover:underline"
+          >
+            Counter-Offer Letter Template
+          </Link>{" "}
+          &mdash; a ready-to-use template with real examples
+        </li>
+        <li>
+          <Link
+            href="/guides/sales-tax-total-loss"
+            className="text-coral hover:underline"
+          >
+            Sales Tax on Total Loss Claims
+          </Link>{" "}
+          &mdash; 50-state rules for sales tax reimbursement
+        </li>
+      </ul>
 
       {/* ---------------------------------------------------------------- */}
       {/*  Disclaimer                                                       */}
