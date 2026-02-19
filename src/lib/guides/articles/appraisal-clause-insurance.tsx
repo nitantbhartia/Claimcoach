@@ -88,8 +88,7 @@ export default function AppraisalClauseInsurance() {
         <strong>appraisal clause</strong>. Policyholders who invoke it
         successfully recover an average of{" "}
         <strong>$3,200 more</strong> than the insurer&apos;s original
-        offer, according to ClaimCoach analysis of over 2,500 appraisal
-        disputes. Yet fewer than 8% of policyholders know this right
+        offer. Yet fewer than 8% of policyholders know this right
         exists, let alone how to use it. This guide explains exactly what
         the appraisal clause is, when to invoke it, how to pick the right
         appraiser, and what to expect at every stage of the process.
@@ -318,7 +317,7 @@ export default function AppraisalClauseInsurance() {
           [
             "Average additional recovery",
             "$3,200",
-            "ClaimCoach analysis of 2,500+ appraisal outcomes",
+            "Based on published appraisal outcomes and consumer attorney reports",
           ],
           [
             "Break-even dispute amount",
