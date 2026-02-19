@@ -1,7 +1,23 @@
 import type { MetadataRoute } from "next";
+import { listGuides } from "@/lib/guides/registry";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://claimcoach.app";
+
+  const guideEntries: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/guides`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    ...listGuides().map((guide) => ({
+      url: `${baseUrl}/guides/${guide.slug}`,
+      lastModified: new Date(guide.modified),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+  ];
 
   return [
     {
@@ -82,5 +98,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    ...guideEntries,
   ];
 }

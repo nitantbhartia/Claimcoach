@@ -33,6 +33,12 @@ export function Header() {
                 FREE ESTIMATE
               </Link>
               <Link
+                href="/guides"
+                className="text-[0.8rem] font-body text-primary-dim hover:text-primary transition-colors"
+              >
+                GUIDES
+              </Link>
+              <Link
                 href="/pricing"
                 className="text-[0.8rem] font-body text-primary-dim hover:text-primary transition-colors"
               >
@@ -84,6 +90,13 @@ export function Header() {
                   HOW IT WORKS
                 </Link>
                 <Link
+                  href="/guides"
+                  onClick={() => setMobileOpen(false)}
+                  className="block text-[0.9rem] font-body text-primary-dim hover:text-primary py-2 border-b border-primary-border-light"
+                >
+                  GUIDES
+                </Link>
+                <Link
                   href="/pricing"
                   onClick={() => setMobileOpen(false)}
                   className="block text-[0.9rem] font-body text-primary-dim hover:text-primary py-2 border-b border-primary-border-light"
@@ -119,6 +132,12 @@ export function Header() {
           className="text-body-sm font-medium text-black/60 hover:text-coral transition-colors"
         >
           How It Works
+        </Link>
+        <Link
+          href="/guides"
+          className="text-body-sm font-medium text-black/60 hover:text-coral transition-colors"
+        >
+          Guides
         </Link>
         <Link
           href="/pricing"
