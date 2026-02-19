@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { analyzeWithAI, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { POLICY_ANALYSIS_PROMPT } from "@/lib/ai/prompts";
 import { requireAuth } from "@/lib/auth";
+import { checkAIRateLimit } from "@/lib/rate-limit";
 import { extractJSON } from "@/lib/ai/sanitize";
 
 export const runtime = "nodejs";
@@ -13,6 +14,14 @@ export async function POST(request: NextRequest) {
   try {
     const auth = await requireAuth();
     if (auth.error) return auth.error;
+
+    const rl = checkAIRateLimit(auth.user.id);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait a moment before making another request." },
+        { status: 429, headers: { "Retry-After": String(Math.ceil(rl.resetInMs / 1000)) } }
+      );
+    }
 
     if (!isAIConfigured()) {
       return NextResponse.json({

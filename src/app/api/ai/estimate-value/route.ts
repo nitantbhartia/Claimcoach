@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeWithAI, isAIConfigured, getAIErrorMessage } from "@/lib/ai/client";
 import { sanitizeField, extractJSON } from "@/lib/ai/sanitize";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -56,6 +57,19 @@ function devEstimate(year: string, make: string, model: string) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate-limit by IP: 10 requests per minute for this public endpoint
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      request.headers.get("x-real-ip") ??
+      "unknown";
+    const rl = checkRateLimit(`estimate-value:${ip}`, 10, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait a moment before trying again." },
+        { status: 429, headers: { "Retry-After": String(Math.ceil(rl.resetInMs / 1000)) } }
+      );
+    }
+
     const body = await request.json();
     const { vehicleYear, vehicleMake, vehicleModel, mileage, condition, state } = body;
 
