@@ -460,6 +460,411 @@ const GUIDES: GuideRegistryEntry[] = [
     ],
     component: () => import("./articles/sales-tax-total-loss"),
   },
+
+  /* ---- 6 ---- */
+  {
+    slug: "appraisal-clause-insurance",
+    title: "How to Use Your Policy\u2019s Appraisal Clause to Dispute a Total Loss",
+    metaTitle:
+      "How to Use the Insurance Appraisal Clause to Dispute Your Total Loss (2026)",
+    metaDescription:
+      "The appraisal clause lets you force a binding independent valuation when your insurer\u2019s offer is too low. Step-by-step guide, costs, state rules, and real case studies.",
+    published: "2026-02-19",
+    modified: "2026-02-19",
+    category: "negotiation",
+    readingTimeMinutes: 13,
+    keywords: [
+      "appraisal clause insurance",
+      "how to invoke appraisal clause",
+      "insurance appraisal dispute",
+      "total loss appraisal process",
+      "dispute insurance valuation",
+    ],
+    faqs: [
+      {
+        question: "What is the appraisal clause in auto insurance?",
+        answer:
+          "The appraisal clause is a provision in most auto insurance policies that provides a structured way to resolve disagreements about your vehicle\u2019s actual cash value. Each side hires an independent appraiser; if they disagree, a neutral umpire issues a binding decision.",
+      },
+      {
+        question: "How do I invoke the appraisal clause?",
+        answer:
+          "Send a written demand for appraisal to your adjuster by certified mail, referencing your policy number and claim number. Most policies require written notice. Once invoked, each party selects an independent appraiser within the timeframe specified in your policy.",
+      },
+      {
+        question: "How much does the appraisal clause process cost?",
+        answer:
+          "Your appraiser fee typically runs $400\u2013$900. If a neutral umpire is needed, each side splits that cost, typically $250\u2013$600 per party. Total policyholder cost is usually $650\u2013$1,500. The process is most cost-effective when the valuation dispute exceeds $2,000.",
+      },
+      {
+        question: "Is the appraisal clause umpire decision binding?",
+        answer:
+          "Yes. Once any two of the three parties (your appraiser, the insurer\u2019s appraiser, and the umpire) agree on a value, that figure is binding on both parties. The insurer must pay based on the agreed ACV.",
+      },
+      {
+        question: "Can I invoke the appraisal clause before sending a counter-offer?",
+        answer:
+          "You can, but it is usually better to attempt direct negotiation first. Most valuation disputes resolve through a well-documented counter-offer without the cost and delay of formal appraisal. Invoke the appraisal clause when negotiation has failed or when the gap is large enough to justify the cost.",
+      },
+      {
+        question: "Does the appraisal clause cover missing line items like sales tax?",
+        answer:
+          "No. The appraisal clause addresses the vehicle\u2019s actual cash value (ACV), not coverage questions or specific line items like sales tax. Missing line items like sales tax and registration fees are typically resolved through direct adjuster negotiation or a state insurance department complaint.",
+      },
+    ],
+    sources: [
+      {
+        title: "How to Handle an Insurance Claim Dispute",
+        url: "https://www.iii.org/article/how-to-handle-an-insurance-claim-dispute",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "File a Complaint Against an Insurance Company",
+        url: "https://content.naic.org/consumer/file-complaint",
+        publisher: "NAIC",
+      },
+      {
+        title: "Consumer Rights in Insurance Claims",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "State Insurance Department Directory",
+        url: "https://content.naic.org/state-insurance-departments",
+        publisher: "NAIC",
+      },
+    ],
+    component: () => import("./articles/appraisal-clause-insurance"),
+  },
+
+  /* ---- 7 ---- */
+  {
+    slug: "gap-insurance-total-loss",
+    title: "GAP Insurance and Total Loss: What Gets Paid and What You Still Owe",
+    metaTitle:
+      "GAP Insurance on a Total Loss: What\u2019s Covered and What You Owe (2026)",
+    metaDescription:
+      "GAP insurance covers your loan balance after a total loss, but only after your ACV settlement. Learn how GAP works, what it excludes, and how to maximize your primary settlement first.",
+    published: "2026-02-19",
+    modified: "2026-02-19",
+    category: "settlement-basics",
+    readingTimeMinutes: 12,
+    keywords: [
+      "GAP insurance total loss",
+      "how does GAP insurance work",
+      "GAP insurance payout",
+      "GAP insurance what is covered",
+      "total loss loan balance",
+    ],
+    faqs: [
+      {
+        question: "What does GAP insurance cover on a total loss?",
+        answer:
+          "GAP insurance covers the difference between your vehicle\u2019s actual cash value (ACV) as paid by your primary insurer and your outstanding loan or lease balance. It ensures you are not left paying a loan for a vehicle you can no longer drive.",
+      },
+      {
+        question: "Does GAP insurance cover my deductible?",
+        answer:
+          "Most standard GAP policies do not cover your primary insurer\u2019s deductible. Some premium GAP products cover up to $1,000 of the deductible. Check your specific GAP policy language.",
+      },
+      {
+        question: "What does GAP insurance not cover?",
+        answer:
+          "GAP typically does not cover: your deductible, past-due loan payments, negative equity rolled in from a prior trade-in, extended warranty or other costs financed into the loan, or amounts above the policy\u2019s coverage cap.",
+      },
+      {
+        question: "Should I still negotiate my total loss settlement if I have GAP insurance?",
+        answer:
+          "Yes, absolutely. Every dollar added to your ACV settlement reduces the gap that GAP insurance must cover. In some cases, a higher ACV eliminates the GAP claim entirely and results in a surplus check paid directly to you. Never skip ACV negotiation just because you have GAP coverage.",
+      },
+      {
+        question: "What is the difference between GAP insurance and Loan/Lease Payoff coverage?",
+        answer:
+          "Standalone GAP insurance (from a dealer or specialty provider) typically covers 25%\u2013150% of ACV and costs $200\u2013$400 per year. Loan/Lease Payoff coverage added to your auto policy is cheaper ($20\u2013$60 per year) but usually caps coverage at 25% of ACV, making it less protective for large loan-to-value gaps.",
+      },
+      {
+        question: "What happens if my ACV settlement exceeds my loan balance?",
+        answer:
+          "If your total loss ACV settlement exceeds your loan balance, the surplus goes to you \u2014 not the lender. Your lender receives what is owed, and the remaining balance is paid to you directly. GAP insurance is not triggered in this case.",
+      },
+    ],
+    sources: [
+      {
+        title: "What Is GAP Insurance?",
+        url: "https://www.consumerfinance.gov/ask-cfpb/what-is-gap-insurance-en-2051/",
+        publisher: "Consumer Financial Protection Bureau (CFPB)",
+      },
+      {
+        title: "Understanding Auto Insurance Claims",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "Auto Loan Data",
+        url: "https://www.experian.com/blogs/ask-experian/what-is-gap-insurance/",
+        publisher: "Experian",
+      },
+      {
+        title: "Consumer Guide to Auto Insurance",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Vehicle Depreciation Data",
+        url: "https://www.kbb.com/car-advice/vehicle-depreciation/",
+        publisher: "Kelley Blue Book",
+      },
+    ],
+    component: () => import("./articles/gap-insurance-total-loss"),
+  },
+
+  /* ---- 8 ---- */
+  {
+    slug: "total-loss-threshold-by-state",
+    title: "Total Loss Threshold by State: When Is a Car Declared a Total Loss?",
+    metaTitle:
+      "Total Loss Threshold by State: Complete 50-State Guide (2026)",
+    metaDescription:
+      "When is a car considered a total loss? See every state\u2019s total loss threshold percentage or Total Loss Formula, plus what to do once your car is declared totaled.",
+    published: "2026-02-19",
+    modified: "2026-02-19",
+    category: "state-rules",
+    readingTimeMinutes: 14,
+    keywords: [
+      "total loss threshold by state",
+      "when is a car considered a total loss",
+      "total loss percentage by state",
+      "total loss formula states",
+      "car totaled threshold",
+    ],
+    faqs: [
+      {
+        question: "When is a car considered a total loss?",
+        answer:
+          "A car is considered a total loss when the estimated cost of repairs exceeds a threshold relative to the vehicle\u2019s actual cash value (ACV). In percentage threshold states, this is a fixed percentage (typically 75\u201380% of ACV). In Total Loss Formula (TLF) states, a total loss is declared when repair cost plus salvage value exceeds the ACV.",
+      },
+      {
+        question: "What state has the lowest total loss threshold?",
+        answer:
+          "Oklahoma has the lowest fixed total loss threshold in the U.S. at 60% of ACV. This means a vehicle with a $20,000 ACV and $12,001 in repair costs would be declared a total loss in Oklahoma, whereas in most other states it would be repaired.",
+      },
+      {
+        question: "What is the Total Loss Formula (TLF)?",
+        answer:
+          "The Total Loss Formula is used in about half of U.S. states. Under TLF, a vehicle is declared a total loss when the repair cost plus the vehicle\u2019s salvage value exceeds its pre-loss actual cash value. California and Texas are major TLF states.",
+      },
+      {
+        question: "Can I keep my car if it is declared a total loss?",
+        answer:
+          "Yes. Most states allow a \u201csalvage buy-back\u201d where you retain the totaled vehicle. Your insurer deducts the salvage value from your settlement. The vehicle will receive a salvage title, which affects insurability and resale value. You must typically pass a state inspection to re-register it.",
+      },
+      {
+        question: "Can I dispute a total loss declaration?",
+        answer:
+          "You can dispute the valuation (ACV) used in a total loss declaration, but the total loss determination itself is typically based on the repair estimate, which is set by the insurer\u2019s adjuster or appraiser. If you believe the repair estimate is inflated, you can request a second estimate from an independent body shop.",
+      },
+      {
+        question: "Does a total loss threshold affect my settlement amount?",
+        answer:
+          "The threshold determines whether you get a repair or a settlement, but once a total loss is declared, your settlement is based entirely on the vehicle\u2019s ACV \u2014 not the repair cost. The ACV is negotiable regardless of how the total loss was triggered.",
+      },
+    ],
+    sources: [
+      {
+        title: "Total Loss Thresholds by State",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "State Department of Motor Vehicles Resources",
+        url: "https://www.usa.gov/motor-vehicle-services",
+        publisher: "USA.gov",
+      },
+      {
+        title: "Auto Insurance Claims Process",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Total Loss Vehicle FAQs",
+        url: "https://content.naic.org/consumer/file-complaint",
+        publisher: "NAIC",
+      },
+      {
+        title: "State Insurance Department Directory",
+        url: "https://content.naic.org/state-insurance-departments",
+        publisher: "NAIC",
+      },
+    ],
+    component: () => import("./articles/total-loss-threshold-by-state"),
+  },
+
+  /* ---- 9 ---- */
+  {
+    slug: "adjuster-call-script",
+    title: "What to Say to Your Insurance Adjuster: A Word-for-Word Call Script",
+    metaTitle:
+      "Insurance Adjuster Call Script: What to Say to Get a Higher Settlement (2026)",
+    metaDescription:
+      "Get word-for-word scripts for negotiating with your insurance adjuster, including how to dispute ACV, request missing line items, and escalate effectively.",
+    published: "2026-02-19",
+    modified: "2026-02-19",
+    category: "negotiation",
+    readingTimeMinutes: 13,
+    keywords: [
+      "what to say to insurance adjuster",
+      "insurance adjuster negotiation script",
+      "how to talk to insurance adjuster total loss",
+      "adjuster call script",
+      "negotiate with insurance adjuster",
+    ],
+    faqs: [
+      {
+        question: "What should I say to my insurance adjuster about a low offer?",
+        answer:
+          "Focus on specific, documented facts rather than emotional appeals. State the exact gap between the offer and your market research: \u201cBased on [N] comparable vehicles within 50 miles, I believe a fair settlement is $[Amount].\u201d Reference your claim number, comparables used, and any missing line items (sales tax, fees). Keep a professional tone throughout.",
+      },
+      {
+        question: "Should I record my conversation with my insurance adjuster?",
+        answer:
+          "Recording laws vary by state \u2014 some require all-party consent. Instead of recording, document the call immediately after by sending a follow-up email summarizing what was discussed and any commitments made. This written record is usually more useful than an audio recording.",
+      },
+      {
+        question: "What should I never say to an insurance adjuster?",
+        answer:
+          "Never express financial urgency or desperation (\u201cI really need this money now\u201d), make emotional appeals (\u201cthis offer is insulting\u201d), or make legal threats unless you are prepared to follow through. These statements signal weakness or lack of credibility. Stick to documented facts and specific dollar amounts.",
+      },
+      {
+        question: "How many times should I call my adjuster before escalating?",
+        answer:
+          "One or two substantive calls with documented evidence is usually sufficient before moving to a written counter-offer. If the adjuster is unresponsive after two calls and a written follow-up, escalate to a supervisor. If a supervisor does not resolve the dispute, consider invoking the appraisal clause or filing a state complaint.",
+      },
+      {
+        question: "What is the best way to dispute a comparable vehicle my adjuster used?",
+        answer:
+          "Be specific about the mismatch: trim level, mileage, geography, or options. Provide your own comparable listings that correctly match your vehicle. Phrase it as a question: \u201cComparable #2 is a base LX model; my vehicle was an EX-L. The market difference is typically $X. Can you review with EX-L comparables?\u201d",
+      },
+      {
+        question: "What happens if my adjuster refuses to negotiate?",
+        answer:
+          "If direct negotiation fails, you have three escalation options: (1) request to speak with a claims supervisor, (2) invoke the appraisal clause in your policy for a binding independent valuation, or (3) file a complaint with your state\u2019s department of insurance. All three are legitimate and often effective.",
+      },
+    ],
+    sources: [
+      {
+        title: "How to Handle an Insurance Claim Dispute",
+        url: "https://www.iii.org/article/how-to-handle-an-insurance-claim-dispute",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Consumer Rights in Insurance Claims",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "File a Complaint Against an Insurance Company",
+        url: "https://content.naic.org/consumer/file-complaint",
+        publisher: "NAIC",
+      },
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "Auto Claims Consumer Guide",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+    ],
+    component: () => import("./articles/adjuster-call-script"),
+  },
+
+  /* ---- 10 ---- */
+  {
+    slug: "diminished-value-claim",
+    title: "Diminished Value Claims: How to Recover Lost Car Value After an Accident",
+    metaTitle:
+      "Diminished Value Claim: How to File and What to Recover (2026 Guide)",
+    metaDescription:
+      "Your repaired car is worth less than before the accident. Learn how to file a diminished value claim, calculate your loss using the 17c formula, and negotiate a fair recovery.",
+    published: "2026-02-19",
+    modified: "2026-02-19",
+    category: "valuation",
+    readingTimeMinutes: 14,
+    keywords: [
+      "diminished value claim",
+      "how to file diminished value claim",
+      "car diminished value after accident",
+      "diminished value insurance",
+      "17c formula diminished value",
+    ],
+    faqs: [
+      {
+        question: "What is a diminished value claim?",
+        answer:
+          "A diminished value claim seeks compensation for the permanent reduction in your vehicle\u2019s resale value caused by having an accident on its history, even after full repair. Carfax and independent research show repaired vehicles sell for 10\u201325% less than identical clean-history vehicles.",
+      },
+      {
+        question: "Who can file a diminished value claim?",
+        answer:
+          "In most states, you can file a diminished value claim against the at-fault driver\u2019s liability insurer if another driver caused the accident. In some states (Georgia, Texas, Washington, Colorado, and others), you may also file against your own insurer. Check your state\u2019s specific rules.",
+      },
+      {
+        question: "How is diminished value calculated?",
+        answer:
+          "Many insurers use the 17c formula: start with 10% of the vehicle\u2019s pre-loss value, then multiply by a damage severity multiplier (0.00\u20131.00) and a mileage multiplier (0.00\u20131.00). Independent appraisers often document higher amounts using actual comparable sale data.",
+      },
+      {
+        question: "Do I need a professional appraiser to file a diminished value claim?",
+        answer:
+          "You can file without one, using market data and the 17c formula. However, a professional DV appraisal ($200\u2013$600) significantly strengthens your claim and typically produces a higher documented value than a self-calculated formula result. It is worth the cost when the expected DV exceeds $2,000.",
+      },
+      {
+        question: "How long do I have to file a diminished value claim?",
+        answer:
+          "Statutes of limitation for DV claims vary by state, typically 2\u20134 years from the date of the accident. File as soon as possible after repairs are completed, while comparable market data is current and the accident is recent.",
+      },
+      {
+        question: "Can I file a diminished value claim if the accident was partly my fault?",
+        answer:
+          "In comparative negligence states, your DV recovery may be reduced in proportion to your percentage of fault. In contributory negligence states (Alabama, Maryland, North Carolina, Virginia, D.C.), any fault on your part may bar recovery. Consult a licensed professional in your state if fault is disputed.",
+      },
+    ],
+    sources: [
+      {
+        title: "Diminished Value of Vehicles",
+        url: "https://www.iii.org/article/how-to-handle-an-insurance-claim-dispute",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Vehicle History and Value",
+        url: "https://www.carfax.com/vehicle-research/diminished-value",
+        publisher: "Carfax",
+      },
+      {
+        title: "Consumer Rights in Insurance Claims",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "File a Complaint Against an Insurance Company",
+        url: "https://content.naic.org/consumer/file-complaint",
+        publisher: "NAIC",
+      },
+      {
+        title: "Auto Insurance Consumer Guide",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+    ],
+    component: () => import("./articles/diminished-value-claim"),
+  },
 ];
 
 /* ------------------------------------------------------------------ */
