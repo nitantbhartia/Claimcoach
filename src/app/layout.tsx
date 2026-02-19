@@ -21,12 +21,11 @@ export const metadata: Metadata = {
     default: "ClaimCoach — Check Your Total Loss Offer",
     template: "%s | ClaimCoach",
   },
-  description:
-    "ClaimCoach helps you review your total loss offer, estimate common missing line items, and take the next step with confidence.",
+  description: DEFAULT_DESCRIPTION,
   keywords: [
     "insurance claim help",
     "insurance negotiation",
-    "claim settlement",
+    "total loss settlement",
     "lowball offer",
     "insurance counter offer",
     "auto claim",
@@ -36,6 +35,8 @@ export const metadata: Metadata = {
     "total loss negotiation",
     "insurance underpayment",
     "counter offer letter",
+    "totaled car value",
+    "insurance settlement calculator",
   ],
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
@@ -48,12 +49,19 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "ClaimCoach — Check Your Total Loss Offer",
-    description:
-      "Review your total loss offer with a clear, data-informed estimate of common missing line items and next steps.",
+    description: DEFAULT_DESCRIPTION,
     url: SITE_URL,
     siteName: SITE_NAME,
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "ClaimCoach — Fight Your Lowball Total Loss Offer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -61,6 +69,7 @@ export const metadata: Metadata = {
     description:
       "Check your total loss offer, estimate common missing amounts, and get structured next steps.",
     creator: "@claimcoach",
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,
@@ -75,7 +84,7 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = {
+const softwareApplicationJsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   name: SITE_NAME,
@@ -89,7 +98,7 @@ const jsonLd = {
       price: "0",
       priceCurrency: "USD",
       name: "Free Analysis",
-      description: "Basic claim analysis and score",
+      description: "Basic claim analysis and fairness score",
     },
     {
       "@type": "Offer",
@@ -108,6 +117,39 @@ const jsonLd = {
   },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/icon`,
+  },
+  sameAs: [],
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "support@claimcoach.app",
+    contactType: "customer support",
+  },
+};
+
+const webSiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: DEFAULT_DESCRIPTION,
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${SITE_URL}/guides?q={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -118,7 +160,15 @@ export default function RootLayout({
       <body className="min-h-screen overflow-x-hidden">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
         />
         <RouteProgressBar />
         <Analytics />

@@ -1,56 +1,30 @@
-"use client";
-
-import { useState } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { PricingButton } from "./pricing-client";
 
-function PricingButton({
-  priceType,
-  variant = "primary",
-  children,
-}: {
-  priceType: "per_claim" | "pro";
-  variant?: "primary" | "outline";
-  children: React.ReactNode;
-}) {
-  const [loading, setLoading] = useState(false);
-
-  async function handleClick() {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceType }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        window.location.href = "/signup";
-      }
-    } catch {
-      window.location.href = "/signup";
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  return (
-    <Button
-      variant={variant}
-      size="md"
-      className="w-full"
-      loading={loading}
-      onClick={handleClick}
-    >
-      {children}
-    </Button>
-  );
-}
+export const metadata: Metadata = {
+  title: "Pricing — ClaimCoach",
+  description:
+    "ClaimCoach pricing plans. Start free to check your total loss offer, or unlock the full AI toolkit for $79 per claim — counter-offer letter, call script, and state legal guide included.",
+  keywords: [
+    "insurance claim help cost",
+    "total loss claim tool price",
+    "counter offer letter generator",
+    "ClaimCoach pricing",
+    "insurance negotiation tool",
+  ],
+  alternates: { canonical: "/pricing" },
+  openGraph: {
+    title: "Pricing — ClaimCoach",
+    description:
+      "Start free or unlock the full toolkit for $79 per claim. Generate counter-offer letters, call scripts, and state legal guides backed by AI.",
+    url: "https://claimcoach.app/pricing",
+  },
+};
 
 export default function PricingPage() {
   return (

@@ -12,7 +12,16 @@ export const metadata: Metadata = {
     "what should be included in total loss offer",
     "insurance settlement checklist",
     "total loss claim checklist",
+    "missing line items insurance offer",
+    "insurance settlement line items",
   ],
+  alternates: { canonical: "/tools/settlement-checklist" },
+  openGraph: {
+    title: "Total Loss Settlement Checklist — ClaimCoach",
+    description:
+      "Check every line item that should be in your total loss offer. See what's missing and how much more you're owed.",
+    url: "https://claimcoach.app/tools/settlement-checklist",
+  },
 };
 
 export default function SettlementChecklistPage() {
