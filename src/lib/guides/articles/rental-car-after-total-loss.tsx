@@ -24,6 +24,11 @@ export const headings = [
     level: 3,
   },
   {
+    id: "um-uim-rental",
+    text: "Uninsured/Underinsured Motorist Claims: A Third Scenario",
+    level: 3,
+  },
+  {
     id: "coverage-comparison",
     text: "First-Party vs. Third-Party Coverage at a Glance",
     level: 2,
@@ -167,6 +172,30 @@ export default function RentalCarAfterTotalLoss() {
         replace your vehicle. If you dispute the offer and the settlement
         process extends, the rental question becomes more complicated &mdash;
         more on that below.
+      </p>
+
+      <h3 id="um-uim-rental">
+        Uninsured/Underinsured Motorist Claims: A Third Scenario
+      </h3>
+
+      <p>
+        If the at-fault driver had no insurance &mdash; or not enough to cover
+        your vehicle &mdash; and you have uninsured motorist property damage
+        (UMPD) or underinsured motorist (UIM) coverage on your own policy,
+        that coverage may pay for your vehicle. Whether it includes rental
+        reimbursement depends on your specific policy language. Some UMPD
+        endorsements include a rental component; many do not.
+      </p>
+
+      <p>
+        In states where UMPD includes a rental benefit, the coverage typically
+        functions like your own first-party rental reimbursement add-on, with
+        a daily cap and a dollar maximum. If UMPD does not include rental
+        coverage and the at-fault driver is uninsured, you may have no rental
+        coverage at all unless you separately purchased the rental reimbursement
+        add-on. This is one of the most overlooked gaps in standard policies.
+        If an uninsured driver hit you, contact your adjuster immediately to
+        confirm whether any rental coverage applies under your policy.
       </p>
 
       {/* ---------------------------------------------------------------- */}
@@ -369,6 +398,51 @@ export default function RentalCarAfterTotalLoss() {
         would need to resolve a property damage claim. Your state&apos;s
         department of insurance website typically lists the specific rules.
       </p>
+
+      <p>
+        State rules vary meaningfully. In California, the Department of
+        Insurance considers it an unfair claims settlement practice to terminate
+        loss-of-use coverage before the insurer has made a formal written
+        settlement offer and given the claimant a reasonable opportunity to
+        respond. In Texas, the Insurance Code requires insurers to pay loss-of-use
+        damages for the period of time it would take to repair or replace the
+        vehicle using reasonable diligence &mdash; which in a disputed total
+        loss scenario can extend beyond the date a settlement offer was made.
+        If your rental was cut off before you received a written offer, check
+        your state&apos;s specific rules and document the termination date in
+        writing to your adjuster.
+      </p>
+
+      <DataTable
+        caption="Documentation to maintain for a loss-of-use claim in a third-party total loss"
+        headers={["Item", "Why It Matters"]}
+        rows={[
+          [
+            "Rental agreement (start date, vehicle class, daily rate)",
+            "Establishes the baseline rental period and rate",
+          ],
+          [
+            "All rental receipts",
+            "Documents actual out-of-pocket costs if insurer authorization was terminated early",
+          ],
+          [
+            "Date and method of insurer's settlement offer (if any)",
+            "Establishes whether coverage termination was legally justified",
+          ],
+          [
+            "Rideshare or transit receipts (if no rental was available)",
+            "Loss of use covers actual alternative transportation costs, not just rental cars",
+          ],
+          [
+            "Written communications showing insurer-caused delays",
+            "Supports a claim that extended rental costs were due to insurer delay, not your failure to resolve the claim",
+          ],
+          [
+            "Date you received a written settlement offer",
+            "Insurers can only cut off rental after a reasonable written offer; documenting the offer date protects you",
+          ],
+        ]}
+      />
 
       {/* ---------------------------------------------------------------- */}
       {/*  Step-by-Step                                                     */}

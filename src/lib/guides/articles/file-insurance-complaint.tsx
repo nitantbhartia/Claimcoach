@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FairnessQuiz } from "@/components/tools/fairness-quiz";
 import { KeyTakeaway } from "@/components/guides/key-takeaway";
 import { CTABox } from "@/components/guides/cta-box";
 import { DataTable } from "@/components/guides/data-table";
@@ -34,6 +35,11 @@ export const headings = [
     level: 3,
   },
   {
+    id: "state-specific-examples",
+    text: "State-Specific Examples",
+    level: 3,
+  },
+  {
     id: "what-happens-after-you-file",
     text: "What Happens After You File",
     level: 2,
@@ -57,6 +63,11 @@ export const headings = [
     id: "bad-faith-indicators",
     text: "Common Bad Faith Indicators",
     level: 3,
+  },
+  {
+    id: "check-your-offer",
+    text: "Check Your Offer Before You Escalate",
+    level: 2,
   },
   {
     id: "the-bottom-line",
@@ -168,8 +179,9 @@ export default function FileInsuranceComplaint() {
       <ul>
         <li>
           <strong>Requires a formal insurer response.</strong> The insurer must
-          respond to the department within a specified timeframe, typically 30
-          to 45 days. That response is a documented record of their position
+          respond to the department within a timeframe specified by your state
+          (check your state department&apos;s website for the current
+          requirement). That response is a documented record of their position
           on your claim.
         </li>
         <li>
@@ -288,6 +300,44 @@ export default function FileInsuranceComplaint() {
         them with direct links to their complaint portals.
       </p>
 
+      <h3 id="state-specific-examples">State-Specific Examples</h3>
+
+      <p>
+        The process is broadly similar across states, but the portal names,
+        response timeframes, and available remedies differ. Three examples:
+      </p>
+
+      <DataTable
+        caption="How the complaint process works in three sample states — verify current rules at your state's department website"
+        headers={["State", "Regulatory Body", "Online Portal", "Notable Feature"]}
+        rows={[
+          [
+            "California",
+            "California Department of Insurance (CDI)",
+            "File at insurance.ca.gov/0200-industry/0025-companies/0001-complaints/",
+            "CDI requires insurers to respond to complaints within 21 days. California's Fair Claims Settlement Practices Regulations (CCR Title 10, §2695) set specific deadlines for acknowledgment, investigation, and payment.",
+          ],
+          [
+            "Texas",
+            "Texas Department of Insurance (TDI)",
+            "File at tdi.texas.gov/consumer/complain.html",
+            "TDI offers a complaint resolution program where staff contact the insurer on your behalf. Texas Prompt Payment of Claims Act sets specific timeframes for insurer response.",
+          ],
+          [
+            "Florida",
+            "Florida Department of Financial Services (DFS)",
+            "File at myfloridacfo.com/division/consumers",
+            "Florida offers a Division of Consumer Services mediation program for property damage disputes, including total loss claims. Mediation is free and can be binding.",
+          ],
+        ]}
+      />
+
+      <p>
+        These examples are illustrative. Portal URLs and program details change.
+        Always verify current information at your state department&apos;s
+        official website before filing.
+      </p>
+
       {/* ---------------------------------------------------------------- */}
       {/*  What Happens After You File                                      */}
       {/* ---------------------------------------------------------------- */}
@@ -299,8 +349,10 @@ export default function FileInsuranceComplaint() {
       <p>
         Once your complaint is filed, the state department forwards it to the
         insurer and requires a formal response. Most states specify a response
-        timeframe, typically 30 to 45 days. The insurer&apos;s response
-        must address the specific issues you raised, not simply restate their
+        timeframe &mdash; often in the range of 21 to 45 days, though this
+        varies by state. Check your state department&apos;s website for the
+        specific timeframe that applies. The insurer&apos;s response must
+        address the specific issues you raised, not simply restate their
         original position. Some departments require insurers to respond to
         each allegation individually.
       </p>
@@ -415,6 +467,23 @@ export default function FileInsuranceComplaint() {
         href="/claims/new"
         label="Document my claim"
       />
+
+      {/* ---------------------------------------------------------------- */}
+      {/*  Check Your Offer First                                           */}
+      {/* ---------------------------------------------------------------- */}
+
+      <h2 id="check-your-offer" className="text-heading font-semibold text-black mt-10 mb-4">
+        Check Your Offer Before You Escalate
+      </h2>
+
+      <p>
+        Before filing a complaint, confirm that your offer is actually below
+        what you are owed. A complaint is stronger when you can point to
+        specific missing line items or regulatory requirements the insurer
+        failed to meet. Take two minutes to score your offer:
+      </p>
+
+      <FairnessQuiz mode="mini" />
 
       {/* ---------------------------------------------------------------- */}
       {/*  Bottom Line                                                      */}

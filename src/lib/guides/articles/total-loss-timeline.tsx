@@ -491,6 +491,20 @@ export default function TotalLossTimeline() {
       </ul>
 
       <p>
+        California provides one of the more detailed regulatory frameworks as
+        an example of what state rules can look like. California Code of
+        Regulations Title 10, §2695 (the Fair Claims Settlement Practices
+        Regulations) requires insurers to acknowledge a claim within 10 working
+        days of receiving notice, to accept or deny a claim within 40 calendar
+        days of receiving proof of claim, and to issue payment within 30 days
+        of reaching a settlement agreement. If a California insurer misses
+        these deadlines, a complaint to the California Department of Insurance
+        creates an enforceable record of noncompliance. Your state may have
+        similar or different specific deadlines &mdash; check your state
+        department&apos;s website for the rules that apply to you.
+      </p>
+
+      <p>
         Your state&apos;s department of insurance website lists the specific
         timeframes that apply. If your insurer is not meeting these deadlines,
         a formal complaint creates a documented record of the delay and
