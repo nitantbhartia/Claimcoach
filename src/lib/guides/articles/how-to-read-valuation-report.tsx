@@ -241,11 +241,15 @@ export default function HowToReadValuationReport() {
       <h3 id="condition-rating">2. Condition Rating</h3>
 
       <p>
-        CCC and similar platforms rate vehicle condition on a scale:
-        Excellent, Good, Average, Rough, and Very Rough. Each step down
-        in condition reduces ACV. If your vehicle was well-maintained, had
-        current service records, and showed no significant interior or
-        exterior wear, a rating below &quot;Good&quot; is worth disputing.
+        CCC One rates vehicle condition on a five-tier scale: Excellent, Good,
+        Average, Rough, and Very Rough. Mitchell and Audatex use similar
+        condition frameworks but may label or weight them differently &mdash;
+        check the legend on your specific report to understand how your
+        platform defines each tier. Regardless of the platform, each step
+        down in condition reduces ACV. If your vehicle was well-maintained, had
+        current service records, and showed no significant interior or exterior
+        wear, a rating below the equivalent of &quot;Good&quot; condition is
+        worth disputing.
       </p>
 
       <p>
@@ -290,8 +294,15 @@ export default function HowToReadValuationReport() {
         significantly lower mileage than the comparables, there should be
         a positive (upward) adjustment to your ACV to reflect the value of
         lower miles. If that adjustment is missing or smaller than expected,
-        your ACV is understated. A common benchmark is $0.05 to $0.15 per
-        mile of difference, depending on vehicle age and class.
+        your ACV is understated. For example, if your vehicle has 42,000 miles
+        and a comparable has 67,000 miles, the platform should apply an upward
+        adjustment to your ACV for the 25,000-mile difference &mdash; because
+        lower-mileage vehicles command higher prices in the market. The exact
+        per-mile rate the platform applies varies by vehicle class, model year,
+        and market conditions; the key is to verify that an adjustment exists,
+        that it runs in the correct direction (positive for lower mileage), and
+        that its magnitude is not implausibly small relative to what the market
+        shows for your specific vehicle.
       </p>
 
       <h3 id="final-acv">5. Final ACV</h3>

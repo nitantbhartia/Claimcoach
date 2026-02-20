@@ -256,7 +256,7 @@ export default function SalvageTitleBuyback() {
           [
             "Resale impact",
             "Severely limited; effectively wholesale-only value",
-            "Reduced 20–40% below clean-title equivalent, market-dependent",
+            "Significantly below clean-title equivalent; discount depends on damage history, demand, and local market",
           ],
           [
             "Appears on vehicle history?",
@@ -417,21 +417,46 @@ export default function SalvageTitleBuyback() {
       </p>
 
       <p>
-        <strong>Step 4: Notify your insurer in writing.</strong> If you decide
-        to keep the vehicle, notify your adjuster in writing and ask them to
-        confirm the salvage deduction amount and the net settlement figure.
-        Get this in writing before signing anything.
+        <strong>Step 4: Declare your intent before signing anything.</strong>{" "}
+        This is the most time-sensitive step. You must notify your insurer
+        that you intend to exercise a buyback <em>before</em> you sign the
+        settlement release or before title transfers. Once you sign the release,
+        the insurer takes legal ownership of the vehicle and can sell it to the
+        salvage auction. If you sign first and ask later, the insurer has no
+        obligation to accommodate a buyback. Contact your adjuster in writing
+        as soon as you decide to keep the vehicle &mdash; do not wait until
+        paperwork arrives.
       </p>
 
       <p>
-        <strong>Step 5: Complete the title transfer.</strong> The insurer
+        <strong>What if the vehicle is already at a salvage yard?</strong> If
+        your vehicle was towed directly to a salvage facility after the
+        accident and you have not yet signed a release, you may still be able
+        to exercise a buyback &mdash; but the window is narrow. Contact your
+        adjuster immediately in writing. The vehicle has not changed ownership
+        until you sign the release; the tow was logistical, not a title
+        transfer. That said, the salvage facility may charge storage fees for
+        each day the vehicle remains on their lot, which are typically your
+        responsibility once you elect to keep the vehicle. Ask your adjuster
+        what storage fees have accrued before you decide.
+      </p>
+
+      <p>
+        <strong>Step 5: Confirm the net settlement figure in writing.</strong>{" "}
+        Once your intent to keep the vehicle is confirmed, ask your adjuster
+        to confirm the salvage deduction amount and the net settlement figure
+        in writing before signing anything.
+      </p>
+
+      <p>
+        <strong>Step 6: Complete the title transfer.</strong> The insurer
         will transfer the salvage title to you. Once you have the title, take
         it to your state DMV to understand the inspection requirements for
         converting it to a rebuilt title after repairs are complete.
       </p>
 
       <p>
-        <strong>Step 6: Complete repairs and pursue rebuilt title.</strong>{" "}
+        <strong>Step 7: Complete repairs and pursue rebuilt title.</strong>{" "}
         Have the repairs done by a licensed shop (some states require this).
         Schedule your state DMV inspection. Once the vehicle passes, apply
         for a rebuilt title and re-register the vehicle.
