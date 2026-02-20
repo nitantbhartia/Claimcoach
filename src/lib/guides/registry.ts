@@ -865,6 +865,408 @@ const GUIDES: GuideRegistryEntry[] = [
     ],
     component: () => import("./articles/diminished-value-claim"),
   },
+
+  /* ---- 11 ---- */
+  {
+    slug: "rental-car-after-total-loss",
+    title: "How Long Does Insurance Pay for a Rental Car After a Total Loss?",
+    metaTitle:
+      "Rental Car After Total Loss: How Long Insurance Pays (2026 Guide)",
+    metaDescription:
+      "Find out exactly how long your insurer must cover a rental car after a total loss, what ends rental coverage, and what to do when authorization runs out before your settlement arrives.",
+    published: "2026-02-19",
+    modified: "2026-02-19",
+    category: "settlement-basics",
+    readingTimeMinutes: 10,
+    keywords: [
+      "rental car after total loss",
+      "how long does insurance pay for rental car",
+      "loss of use total loss",
+      "rental reimbursement insurance total loss",
+      "insurance rental car coverage total loss",
+    ],
+    faqs: [
+      {
+        question:
+          "How long does insurance pay for a rental car after a total loss?",
+        answer:
+          "It depends on whether the claim is first-party or third-party. On a first-party claim (your own insurer), rental coverage lasts until the settlement offer is made or your policy cap is reached, whichever comes first. On a third-party claim against an at-fault driver\u2019s insurer, loss-of-use coverage continues until a reasonable settlement offer is made.",
+      },
+      {
+        question: "Does my insurance automatically cover a rental car?",
+        answer:
+          "No. Rental reimbursement is an optional add-on coverage that must be purchased separately. Standard collision and comprehensive policies do not include rental coverage. Check your policy declarations page to see whether you have this coverage and what your daily and total limits are.",
+      },
+      {
+        question: "What is \u201closs of use\u201d in a third-party claim?",
+        answer:
+          "Loss of use is the right to transportation reimbursement when the at-fault driver\u2019s insurer is responsible for your total loss. Unlike a per-day policy cap in a first-party claim, loss of use covers your actual reasonable transportation costs for the period the settlement process takes. Coverage ends when a reasonable settlement offer is made.",
+      },
+      {
+        question: "What happens when my rental coverage runs out?",
+        answer:
+          "If your first-party rental cap is exhausted before the settlement is resolved, contact your adjuster in writing and request a coverage extension. If the delay is due to the insurer\u2019s own processing, many will extend as a goodwill measure. If not, pay out of pocket, keep all receipts, and include the out-of-pocket costs as a line item in your counter-offer.",
+      },
+      {
+        question: "Can I include unpaid rental costs in my settlement demand?",
+        answer:
+          "Yes. If your rental coverage was terminated prematurely and you continued to pay for transportation while the settlement remained unresolved, those out-of-pocket costs are a legitimate damages item. Document every day and every dollar and include them in your written counter-offer.",
+      },
+      {
+        question: "When does rental car coverage end after a total loss?",
+        answer:
+          "Coverage typically ends when (1) the insurer makes a settlement offer, (2) your policy rental cap is reached, (3) you sign the settlement release, or (4) you purchase a replacement vehicle. Do not sign the release until you have secured alternate transportation.",
+      },
+    ],
+    sources: [
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "National Association of Insurance Commissioners (NAIC)",
+      },
+      {
+        title: "Auto Insurance Claims Process",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Consumer Guide to Auto Insurance",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "File a Complaint Against an Insurance Company",
+        url: "https://content.naic.org/consumer/file-complaint",
+        publisher: "NAIC",
+      },
+    ],
+    component: () => import("./articles/rental-car-after-total-loss"),
+  },
+
+  /* ---- 12 ---- */
+  {
+    slug: "how-to-read-valuation-report",
+    title: "How to Read Your Insurance Total Loss Valuation Report",
+    metaTitle:
+      "How to Read Your Total Loss Valuation Report (CCC, Mitchell, Audatex) \u2014 2026",
+    metaDescription:
+      "Your total loss settlement comes from a valuation report. Learn how to read it section by section, spot comparable errors, and dispute the report with specific evidence.",
+    published: "2026-02-19",
+    modified: "2026-02-19",
+    category: "valuation",
+    readingTimeMinutes: 12,
+    keywords: [
+      "how to read total loss valuation report",
+      "CCC valuation report insurance",
+      "Mitchell total loss report",
+      "dispute insurance valuation report",
+      "total loss comparable vehicles report",
+    ],
+    faqs: [
+      {
+        question: "What is a total loss valuation report?",
+        answer:
+          "A total loss valuation report is a document generated by a third-party software platform \u2014 typically CCC Intelligent Solutions, Mitchell International, or Audatex \u2014 that estimates your vehicle\u2019s actual cash value (ACV) by analyzing comparable vehicles in your local market and applying adjustments for mileage, condition, and equipment. Your settlement offer is based on this report.",
+      },
+      {
+        question: "How do I get a copy of my valuation report?",
+        answer:
+          "Send a written request to your adjuster by email, referencing your claim number and asking for the complete valuation report including all comparable vehicles and adjustments. In most states, you are entitled to this document. Most adjusters provide it within one to three business days of a written request.",
+      },
+      {
+        question: "What are the most common errors in a valuation report?",
+        answer:
+          "The most common errors are: using the wrong trim level (base trim instead of your loaded trim), selecting comparables from geographically distant markets, using comparables with significantly higher mileage without adequate upward adjustment to your ACV, and failing to account for factory options like AWD, leather, or a sunroof.",
+      },
+      {
+        question: "What is a condition rating and how does it affect my settlement?",
+        answer:
+          "Valuation platforms rate your vehicle\u2019s condition on a scale \u2014 typically Excellent, Good, Average, Rough, and Very Rough. Each step down in condition reduces your ACV. If your vehicle was well-maintained and the report rated it below \u201cGood,\u201d you can dispute the rating using maintenance records, pre-loss photographs, and if needed, an independent appraisal.",
+      },
+      {
+        question: "Can I dispute specific comparables in the valuation report?",
+        answer:
+          "Yes. You can identify specific comparables that are mismatched \u2014 wrong trim, too far geographically, higher mileage, missing options \u2014 and provide replacement comparables from Cars.com, AutoTrader, or CarGurus that correctly match your vehicle. Submit these to your adjuster in writing with a specific revised ACV calculation.",
+      },
+      {
+        question:
+          "What should I do if my adjuster refuses to correct errors in the report?",
+        answer:
+          "If your adjuster declines to correct specific, documented errors, ask for a written explanation for each point. You can then escalate to a supervisor, invoke the appraisal clause in your policy for an independent binding valuation, or file a complaint with your state\u2019s department of insurance.",
+      },
+    ],
+    sources: [
+      {
+        title: "How Insurance Companies Value Your Car",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Understanding Vehicle Valuation",
+        url: "https://www.kbb.com/what-is-my-car-worth/",
+        publisher: "Kelley Blue Book",
+      },
+      {
+        title: "NADA Used Car Guide",
+        url: "https://www.nadaguides.com/",
+        publisher: "J.D. Power / NADA",
+      },
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "How to Handle an Insurance Claim Dispute",
+        url: "https://www.iii.org/article/how-to-handle-an-insurance-claim-dispute",
+        publisher: "Insurance Information Institute (III)",
+      },
+    ],
+    component: () => import("./articles/how-to-read-valuation-report"),
+  },
+
+  /* ---- 13 ---- */
+  {
+    slug: "salvage-title-buyback",
+    title:
+      "Can I Keep My Totaled Car? A Complete Guide to Salvage Title Buyback",
+    metaTitle:
+      "Keeping a Totaled Car: Salvage Title Buyback Guide (2026)",
+    metaDescription:
+      "Can you keep your car after a total loss? Learn how salvage buyback works, how the salvage deduction is calculated, and when keeping your totaled car actually makes financial sense.",
+    published: "2026-02-19",
+    modified: "2026-02-19",
+    category: "settlement-basics",
+    readingTimeMinutes: 12,
+    keywords: [
+      "keep totaled car insurance",
+      "salvage title buyback",
+      "total loss buyback",
+      "can I keep my car if it is totaled",
+      "salvage title after total loss",
+    ],
+    faqs: [
+      {
+        question: "Can I keep my car if it is declared a total loss?",
+        answer:
+          "Yes. Most states allow a \u201csalvage buyback\u201d or vehicle retention option where you keep the totaled vehicle. In exchange, your insurer deducts the salvage value from your settlement payment. The vehicle receives a salvage title, which you can later convert to a rebuilt title after repairs and a state inspection.",
+      },
+      {
+        question: "How is the salvage deduction calculated?",
+        answer:
+          "Your insurer submits your vehicle\u2019s information to a salvage auction platform (typically Copart or IAA) and receives competitive bids from licensed salvage dealers. The highest bid becomes the salvage value, which is deducted from your ACV settlement. You can ask your adjuster for the specific salvage value and how it was determined.",
+      },
+      {
+        question: "What is a salvage title and what are its consequences?",
+        answer:
+          "A salvage title is a permanent brand issued by the state DMV when a vehicle has been declared a total loss. Salvage-titled vehicles cannot be legally registered or driven in most states until repaired and inspected. They are not eligible for standard insurance coverage, cannot typically be financed by lenders, and have significantly reduced resale value.",
+      },
+      {
+        question: "What is a rebuilt title and how do I get one?",
+        answer:
+          "A rebuilt (or reconstructed) title is issued after a salvage-titled vehicle has been repaired and passed a state DMV inspection. The process varies by state but typically involves completing repairs, scheduling a state inspection, and filing paperwork with your DMV. A rebuilt title allows registration and road use, but the vehicle\u2019s history as a prior salvage remains permanently on its record.",
+      },
+      {
+        question: "When does it make financial sense to keep a totaled car?",
+        answer:
+          "Keeping a totaled car makes financial sense when the cost to repair the vehicle is less than the salvage value that would be deducted from your settlement, when you do not need financing or full insurance coverage, and when the damage is repairable to a safe condition. It makes less sense when there is structural, airbag, or flood damage, or when you plan to sell the vehicle.",
+      },
+      {
+        question: "Should I negotiate my ACV before deciding to exercise a buyback?",
+        answer:
+          "Yes \u2014 this is critical. The salvage deduction is applied to your ACV, so a higher ACV means a larger net settlement even after the deduction. Always negotiate your ACV to its highest possible value before making the buyback decision. Review your valuation report for errors before agreeing to any settlement amount.",
+      },
+    ],
+    sources: [
+      {
+        title: "Total Loss Auto Claims Guide",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "State DMV Resources",
+        url: "https://www.usa.gov/motor-vehicle-services",
+        publisher: "USA.gov",
+      },
+      {
+        title: "Auto Insurance Claims Process",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Vehicle Title Brands and Salvage",
+        url: "https://content.naic.org/state-insurance-departments",
+        publisher: "NAIC",
+      },
+    ],
+    component: () => import("./articles/salvage-title-buyback"),
+  },
+
+  /* ---- 14 ---- */
+  {
+    slug: "file-insurance-complaint",
+    title:
+      "How to File a Complaint With Your State Insurance Department",
+    metaTitle:
+      "How to File an Insurance Complaint With Your State Department (2026 Guide)",
+    metaDescription:
+      "When your insurer ignores your counter-offer or refuses required line items, a state insurance complaint can restart the process. Step-by-step guide with what to include and what to expect.",
+    published: "2026-02-19",
+    modified: "2026-02-19",
+    category: "negotiation",
+    readingTimeMinutes: 11,
+    keywords: [
+      "how to file insurance complaint",
+      "state insurance department complaint",
+      "file complaint against insurance company",
+      "insurance department complaint total loss",
+      "insurance bad faith complaint",
+    ],
+    faqs: [
+      {
+        question:
+          "How do I file a complaint against my insurance company?",
+        answer:
+          "Visit your state\u2019s department of insurance website and use their online complaint portal. The National Association of Insurance Commissioners (NAIC) maintains a directory at naic.org/state-insurance-departments that links to every state\u2019s portal. Include your policy number, claim number, a chronological timeline of events, copies of all correspondence, and a specific description of what you believe the insurer did wrong.",
+      },
+      {
+        question: "Does filing a complaint with the state actually work?",
+        answer:
+          "It can be effective, particularly when the insurer has failed to comply with specific regulatory requirements \u2014 such as refusing to pay sales tax that your state mandates, or failing to respond within required timeframes. Complaints require the insurer to formally respond on record, which often prompts internal review of stalled claims. They do not guarantee a specific dollar outcome.",
+      },
+      {
+        question:
+          "How long does an insurance department complaint take to resolve?",
+        answer:
+          "Most states require insurers to respond to complaints within 30 to 45 days of receipt. The department then reviews the response and determines whether the insurer violated any regulations. The overall process typically takes 45 to 90 days, though timelines vary by state and case complexity.",
+      },
+      {
+        question:
+          "Should I file a complaint before or after sending a counter-offer?",
+        answer:
+          "After. A complaint is most effective when you have already attempted direct negotiation and can document the insurer\u2019s inadequate response. State departments will typically ask whether you attempted to resolve the dispute directly. A well-documented negotiation attempt \u2014 written counter-offer, specific evidence, adjuster non-response \u2014 makes your complaint substantially stronger.",
+      },
+      {
+        question: "What is insurance bad faith?",
+        answer:
+          "Insurance bad faith is a legal doctrine that allows policyholders to sue their own insurer for damages beyond the original claim amount when the insurer unreasonably denies or delays a legitimate claim. It requires evidence that the insurer knew the claim was legitimate and denied or delayed it without a reasonable basis. Bad faith is more serious than a coverage dispute and typically requires an attorney.",
+      },
+      {
+        question: "Is filing an insurance complaint free?",
+        answer:
+          "Yes. Filing a complaint with your state department of insurance is completely free. There is no filing fee and no attorney required. You can submit the complaint yourself through the state\u2019s online portal in under an hour.",
+      },
+    ],
+    sources: [
+      {
+        title: "File a Complaint Against an Insurance Company",
+        url: "https://content.naic.org/consumer/file-complaint",
+        publisher: "National Association of Insurance Commissioners (NAIC)",
+      },
+      {
+        title: "State Insurance Department Directory",
+        url: "https://content.naic.org/state-insurance-departments",
+        publisher: "NAIC",
+      },
+      {
+        title: "Insurance Bad Faith Overview",
+        url: "https://www.iii.org/article/how-to-handle-an-insurance-claim-dispute",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Consumer Rights in Insurance Claims",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+    ],
+    component: () => import("./articles/file-insurance-complaint"),
+  },
+
+  /* ---- 15 ---- */
+  {
+    slug: "total-loss-timeline",
+    title: "How Long Does a Total Loss Claim Take? Stage-by-Stage Guide",
+    metaTitle:
+      "How Long Does a Total Loss Claim Take? Complete Timeline (2026)",
+    metaDescription:
+      "From accident to settlement check: a stage-by-stage breakdown of the total loss claim timeline, what causes delays, and what you can do at each step to keep the process on track.",
+    published: "2026-02-19",
+    modified: "2026-02-19",
+    category: "settlement-basics",
+    readingTimeMinutes: 13,
+    keywords: [
+      "how long does total loss claim take",
+      "total loss settlement timeline",
+      "total loss claim process time",
+      "how long for insurance to pay total loss",
+      "total loss claim steps",
+    ],
+    faqs: [
+      {
+        question: "How long does a total loss claim typically take?",
+        answer:
+          "An uncomplicated total loss claim \u2014 clear liability, no valuation dispute, no lienholder complications \u2014 typically resolves in two to four weeks from total loss declaration to settlement check. Disputed valuation, lienholder payoff processing, and adjuster delays can extend the timeline to six weeks or more.",
+      },
+      {
+        question: "What is the slowest stage of a total loss claim?",
+        answer:
+          "The negotiation stage is typically the most variable in duration. A simple missing-line-item dispute (such as unpaid sales tax) may resolve in days with a written counter-offer. A valuation dispute involving independent appraisal under the appraisal clause can take three to six additional weeks.",
+      },
+      {
+        question: "How long does the insurer have to make a settlement offer?",
+        answer:
+          "State regulations vary. Many states require insurers to acknowledge a claim within 10 to 15 business days and to respond within 15 to 40 days of receiving all necessary documentation. Check your state\u2019s department of insurance website for specific timeframes applicable to your claim.",
+      },
+      {
+        question: "What causes total loss claims to take longer than normal?",
+        answer:
+          "The most common delays are: disputed liability (insurer waits for fault determination), lienholder payoff processing, valuation disputes requiring counter-offers or appraisal, adjuster unresponsiveness, and documentation requests for documents already submitted. Each can be addressed proactively through written follow-up and escalation.",
+      },
+      {
+        question: "Can I speed up my total loss claim?",
+        answer:
+          "Yes. File your claim the same day as the accident, ensure your vehicle is accessible for inspection, provide all requested documents promptly in writing, and follow up by email (not phone) at each stage. If the claim stalls, escalate in writing to a supervisor within two business days of an unanswered communication.",
+      },
+      {
+        question: "What should I do while waiting for my total loss settlement?",
+        answer:
+          "While waiting: confirm your rental car coverage and its limits, request the full valuation report when the offer arrives, research comparable vehicles to prepare a counter-offer if needed, contact your lender with payoff information if you have a loan, and document every communication by email. Do not sign the settlement release until you are satisfied with the offer.",
+      },
+    ],
+    sources: [
+      {
+        title: "Auto Insurance Claims Process",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "Consumer Guide to Auto Insurance",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "State Insurance Department Directory",
+        url: "https://content.naic.org/state-insurance-departments",
+        publisher: "NAIC",
+      },
+      {
+        title: "File a Complaint Against an Insurance Company",
+        url: "https://content.naic.org/consumer/file-complaint",
+        publisher: "NAIC",
+      },
+    ],
+    component: () => import("./articles/total-loss-timeline"),
+  },
 ];
 
 /* ------------------------------------------------------------------ */
