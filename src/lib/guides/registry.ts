@@ -1267,6 +1267,781 @@ const GUIDES: GuideRegistryEntry[] = [
     ],
     component: () => import("./articles/total-loss-timeline"),
   },
+
+  /* ---- 16 ---- */
+  {
+    slug: "aftermarket-upgrades-total-loss",
+    title: "Aftermarket Parts and Custom Equipment in a Total Loss Claim",
+    metaTitle: "Aftermarket Upgrades and Total Loss Insurance: What You Can Recover (2026)",
+    metaDescription:
+      "Did your totaled car have aftermarket wheels, a lift kit, or a custom audio system? Learn what factory options are covered automatically, what aftermarket upgrades require documentation, and how to negotiate recovery.",
+    published: "2026-02-22",
+    modified: "2026-02-22",
+    category: "valuation",
+    readingTimeMinutes: 11,
+    keywords: [
+      "aftermarket upgrades total loss",
+      "custom parts insurance claim",
+      "modified car total loss value",
+      "aftermarket equipment insurance settlement",
+      "custom equipment coverage total loss",
+    ],
+    faqs: [
+      {
+        question: "Does insurance cover aftermarket upgrades in a total loss?",
+        answer:
+          "Standard collision and comprehensive policies typically do not automatically cover aftermarket upgrades. Factory-installed options are included. Aftermarket equipment requires a custom equipment endorsement on your policy or a negotiated credit supported by receipts and market evidence.",
+      },
+      {
+        question: "What documentation do I need to recover aftermarket upgrades?",
+        answer:
+          "You need purchase receipts, installation invoices, pre-loss photographs showing the upgrades, and market listings demonstrating that similar vehicles with the same upgrades sell at a premium. Without receipts, recovery is very difficult.",
+      },
+      {
+        question: "What is a custom equipment endorsement?",
+        answer:
+          "A custom equipment or custom parts and equipment (CPE) endorsement is an add-on to your auto policy that explicitly covers aftermarket modifications up to a specified limit. It is the cleanest way to ensure full recovery of aftermarket equipment in a total loss.",
+      },
+      {
+        question: "What factory options should be included in my ACV?",
+        answer:
+          "All factory-installed options — AWD, leather, sunroof, premium audio, towing package, safety packages — should be included. Valuation platforms pull these from VIN data. Verify the trim level on your valuation report is correct, as trim errors that omit factory options are among the most common ACV mistakes.",
+      },
+      {
+        question: "Can I recover the full cost of aftermarket wheels?",
+        answer:
+          "Full recovery is unlikely without a custom equipment endorsement. With receipts and market evidence showing the wheels add value to your vehicle type, a partial depreciated credit is often achievable through negotiation.",
+      },
+      {
+        question: "Should I negotiate factory option errors or aftermarket upgrades first?",
+        answer:
+          "Always fix factory option and trim level errors first. A trim correction (base to EX-L, for example) typically recovers more ACV than aftermarket negotiation and is easier to win because the evidence is the VIN itself.",
+      },
+    ],
+    sources: [
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "How Insurance Companies Value Your Car",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Vehicle Valuation and Comparables",
+        url: "https://www.kbb.com/what-is-my-car-worth/",
+        publisher: "Kelley Blue Book",
+      },
+      {
+        title: "Consumer Auto Insurance Guide",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+    ],
+    component: () => import("./articles/aftermarket-upgrades-total-loss"),
+  },
+
+  /* ---- 17 ---- */
+  {
+    slug: "total-loss-deductible",
+    title: "Do I Pay a Deductible on a Total Loss? What Your Policy Actually Says",
+    metaTitle: "Do I Pay a Deductible on a Total Loss? Complete Guide (2026)",
+    metaDescription:
+      "Your deductible applies to first-party total loss claims but not to third-party claims. Learn when your deductible applies, how it affects your settlement math, and how to recover it when the accident wasn't your fault.",
+    published: "2026-02-22",
+    modified: "2026-02-22",
+    category: "settlement-basics",
+    readingTimeMinutes: 10,
+    keywords: [
+      "do I pay deductible on total loss",
+      "collision deductible total loss",
+      "insurance deductible totaled car",
+      "total loss deductible waived",
+      "recover deductible total loss",
+    ],
+    faqs: [
+      {
+        question: "Do I have to pay my deductible on a total loss?",
+        answer:
+          "It depends on the claim type. On a first-party claim (your own collision or comprehensive coverage), your deductible is subtracted from your ACV settlement. On a third-party claim directly against the at-fault driver's insurer, no deductible applies.",
+      },
+      {
+        question: "Does the deductible apply to a comprehensive total loss like hail or flood?",
+        answer:
+          "Yes. Your comprehensive deductible applies to comprehensive total losses including hail, flood, fire, and theft. Comprehensive deductibles are typically lower than collision deductibles.",
+      },
+      {
+        question: "Can I recover my deductible if the accident was the other driver's fault?",
+        answer:
+          "Yes. If you filed under your own collision coverage for speed and the other driver was at fault, your insurer may pursue the at-fault driver's insurer through subrogation and return your deductible if successful. You can also file a separate property damage claim directly with the at-fault insurer for the deductible amount.",
+      },
+      {
+        question: "Does GAP insurance cover my deductible?",
+        answer:
+          "Standard GAP insurance does not cover your deductible. Some premium GAP products cover up to $1,000 of the deductible. Check your specific GAP policy language.",
+      },
+      {
+        question: "What is a vanishing deductible?",
+        answer:
+          "A vanishing or disappearing deductible is a policy feature that reduces your deductible by a set amount (typically $50–$100) for each accident-free year. After several clean years, the deductible may reach zero.",
+      },
+      {
+        question: "How does my deductible affect my settlement math?",
+        answer:
+          "Your deductible is subtracted from your ACV before any check is issued. On a first-party claim with a lienholder, the insurer pays ACV minus deductible to your lender first; any surplus above the loan balance goes to you.",
+      },
+    ],
+    sources: [
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "Auto Insurance Claims Process",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Consumer Guide to Auto Insurance",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "What Is GAP Insurance?",
+        url: "https://www.consumerfinance.gov/ask-cfpb/what-is-gap-insurance-en-2051/",
+        publisher: "Consumer Financial Protection Bureau (CFPB)",
+      },
+    ],
+    component: () => import("./articles/total-loss-deductible"),
+  },
+
+  /* ---- 18 ---- */
+  {
+    slug: "insurance-bad-faith",
+    title: "Insurance Bad Faith on a Total Loss Claim: When to Get a Lawyer",
+    metaTitle: "Insurance Bad Faith Total Loss: What It Is and When to Act (2026)",
+    metaDescription:
+      "A low offer is not bad faith. Learn what actually qualifies as insurance bad faith, how to document it, and when to consult an attorney — after exhausting the standard escalation path.",
+    published: "2026-02-22",
+    modified: "2026-02-22",
+    category: "negotiation",
+    readingTimeMinutes: 12,
+    keywords: [
+      "insurance bad faith total loss",
+      "suing insurance company bad faith",
+      "bad faith insurance claim auto",
+      "insurance company acting in bad faith",
+      "bad faith insurance lawyer",
+    ],
+    faqs: [
+      {
+        question: "What is insurance bad faith?",
+        answer:
+          "Insurance bad faith is a legal doctrine that allows a policyholder to sue their own insurer for damages beyond the original claim amount when the insurer unreasonably denies or delays a legitimate claim. It requires evidence that the insurer knew the claim was valid and denied or delayed it without a reasonable basis.",
+      },
+      {
+        question: "Is a low settlement offer bad faith?",
+        answer:
+          "Not automatically. A low offer based on a defensible valuation methodology is a coverage dispute, not bad faith. Bad faith requires more: evidence that the insurer had no reasonable basis for its position and acted with knowledge of that fact. Most total loss disputes are resolved through negotiation, state complaints, or the appraisal clause.",
+      },
+      {
+        question: "What are bad faith indicators in a total loss claim?",
+        answer:
+          "Red flags include: refusing to provide the valuation report after written request, ignoring specific comparable evidence you submitted without explanation, deliberately misrepresenting policy language, complete communication silence for weeks, missing state-mandated response deadlines without explanation, and denying coverage under a policy provision that does not actually apply.",
+      },
+      {
+        question: "What should I do before consulting a bad faith attorney?",
+        answer:
+          "Complete the standard escalation path first: written counter-offer with evidence, supervisor escalation, state insurance complaint, and appraisal clause if applicable. Document every communication. Courts and attorneys expect you to have attempted direct resolution.",
+      },
+      {
+        question: "How does first-party bad faith differ from third-party bad faith?",
+        answer:
+          "First-party bad faith involves your own insurer. Third-party bad faith involves the at-fault driver's insurer acting unreasonably toward you. First-party bad faith is more clearly actionable because you have a direct contractual relationship with your own insurer. Third-party bad faith is more complex and varies significantly by state.",
+      },
+      {
+        question: "Does bad faith law vary by state?",
+        answer:
+          "Yes, significantly. California, Texas, and Florida have specific bad faith statutes with defined remedies. Other states rely primarily on common law tort principles. The threshold for what constitutes actionable bad faith, the damages available, and the procedural requirements vary widely.",
+      },
+    ],
+    sources: [
+      {
+        title: "How to Handle an Insurance Claim Dispute",
+        url: "https://www.iii.org/article/how-to-handle-an-insurance-claim-dispute",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "File a Complaint Against an Insurance Company",
+        url: "https://content.naic.org/consumer/file-complaint",
+        publisher: "NAIC",
+      },
+      {
+        title: "Consumer Rights in Insurance Claims",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "State Insurance Department Directory",
+        url: "https://content.naic.org/state-insurance-departments",
+        publisher: "NAIC",
+      },
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+    ],
+    component: () => import("./articles/insurance-bad-faith"),
+  },
+
+  /* ---- 19 ---- */
+  {
+    slug: "hail-damage-total-loss",
+    title: "Hail Damage Total Loss: What to Expect From a Comprehensive Claim",
+    metaTitle: "Hail Damage Total Loss: How Comprehensive Claims Work (2026 Guide)",
+    metaDescription:
+      "Hail can total a perfectly driveable car. Learn how hail total losses are assessed, why the driveable total loss is frustrating but fixable, and when a salvage buyback makes sense for hail damage.",
+    published: "2026-02-22",
+    modified: "2026-02-22",
+    category: "settlement-basics",
+    readingTimeMinutes: 11,
+    keywords: [
+      "hail damage total loss",
+      "comprehensive claim total loss hail",
+      "hail totaled car insurance",
+      "hail damage car settlement",
+      "PDR total loss insurance",
+    ],
+    faqs: [
+      {
+        question: "Does comprehensive insurance cover hail total loss?",
+        answer:
+          "Yes. Hail damage is covered under comprehensive coverage, not collision. Your comprehensive deductible applies and fault is irrelevant. If your vehicle does not have comprehensive coverage, hail damage is your financial responsibility.",
+      },
+      {
+        question: "Can a car be totaled from hail damage even if it still drives?",
+        answer:
+          "Yes. A total loss declaration is based on the repair cost-to-ACV ratio, not driveability. If the paintless dent repair estimate exceeds your state's total loss threshold relative to your vehicle's ACV, the car is declared a total loss even if it runs perfectly.",
+      },
+      {
+        question: "What is paintless dent repair (PDR) and why does it matter?",
+        answer:
+          "PDR is a specialized repair technique using tools to massage dents out from behind the panel without repainting. It is cheaper than conventional repair for most hail damage. Insurers use PDR rates in hail repair estimates, which affects when the total loss threshold is crossed.",
+      },
+      {
+        question: "Should I exercise a salvage buyback after a hail total loss?",
+        answer:
+          "It deserves serious consideration for hail totals because the vehicle is typically mechanically sound. Compare the salvage deduction from your settlement against an independent PDR estimate. If the PDR shop can fix the vehicle for less than the salvage deduction, keeping it may be financially justified.",
+      },
+      {
+        question: "How does the condition rating on my valuation report affect my hail settlement?",
+        answer:
+          "The condition rating should reflect your pre-hail condition, not the post-hail state. The hail damage itself is what is being replaced. If the report applied a condition downgrade based on the hail damage rather than your vehicle's pre-loss condition, dispute it with maintenance records and pre-loss photographs.",
+      },
+      {
+        question: "Will my insurance premium go up after a hail total loss claim?",
+        answer:
+          "Comprehensive claims typically have less impact on premiums than collision claims, and in many states a single comprehensive claim does not trigger a rate increase. However, this varies by insurer and state. Check with your agent to understand your specific policy's treatment of comprehensive claims.",
+      },
+    ],
+    sources: [
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "Auto Insurance Claims Process",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Consumer Guide to Auto Insurance",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "State Insurance Department Directory",
+        url: "https://content.naic.org/state-insurance-departments",
+        publisher: "NAIC",
+      },
+    ],
+    component: () => import("./articles/hail-damage-total-loss"),
+  },
+
+  /* ---- 20 ---- */
+  {
+    slug: "at-fault-total-loss",
+    title: "Total Loss When the Accident Was Your Fault: How Collision Coverage Works",
+    metaTitle: "At-Fault Total Loss: How Collision Coverage Pays You (2026 Guide)",
+    metaDescription:
+      "When the accident was your fault, collision coverage pays your total loss settlement. Learn how deductibles, rental coverage, and ACV negotiation work differently — and what you can still recover.",
+    published: "2026-02-22",
+    modified: "2026-02-22",
+    category: "settlement-basics",
+    readingTimeMinutes: 10,
+    keywords: [
+      "at fault total loss",
+      "my fault car accident total loss",
+      "collision coverage total loss at fault",
+      "at fault accident totaled car",
+      "collision claim total loss deductible",
+    ],
+    faqs: [
+      {
+        question: "Does insurance pay for my car if the accident was my fault?",
+        answer:
+          "Yes, if you have collision coverage. Collision coverage pays for damage to your vehicle regardless of fault. Your collision deductible is subtracted from your ACV, and the remainder is your settlement.",
+      },
+      {
+        question: "Do I get a rental car if the accident was my fault?",
+        answer:
+          "Only if you purchased a rental reimbursement add-on on your own policy. There is no third-party loss-of-use claim when you are at fault. If you did not add rental reimbursement coverage, you pay for a rental car out of pocket.",
+      },
+      {
+        question: "Can I negotiate my ACV settlement when the accident was my fault?",
+        answer:
+          "Yes. Your right to a fair ACV valuation is the same regardless of fault. The valuation report errors that understate ACV — trim level mistakes, mileage mismatches, geographic comparables — occur at the same rate on at-fault claims.",
+      },
+      {
+        question: "What happens to the other driver's car when I'm at fault?",
+        answer:
+          "Your property damage liability coverage pays for damage to the other driver's vehicle and other property. Your liability limit determines the maximum your insurer will pay; if the other car's value exceeds your limit, you may be personally responsible for the difference.",
+      },
+      {
+        question: "Will my premium go up after an at-fault total loss?",
+        answer:
+          "An at-fault accident is typically a chargeable event that may increase your premium at renewal. The amount of the increase varies by insurer, state, and your prior record. Accident forgiveness may apply if you have that endorsement.",
+      },
+      {
+        question: "What if I don't have collision coverage and the accident was my fault?",
+        answer:
+          "Without collision coverage, your insurer owes you nothing for your own vehicle if you caused the accident. Liability covers the damage you caused to others but not your own car.",
+      },
+    ],
+    sources: [
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "Auto Insurance Claims Process",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Consumer Guide to Auto Insurance",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "File a Complaint Against an Insurance Company",
+        url: "https://content.naic.org/consumer/file-complaint",
+        publisher: "NAIC",
+      },
+    ],
+    component: () => import("./articles/at-fault-total-loss"),
+  },
+
+  /* ---- 21 ---- */
+  {
+    slug: "classic-car-total-loss",
+    title: "Classic and Collector Car Total Loss: Agreed Value, Stated Value, and ACV",
+    metaTitle: "Classic Car Total Loss Insurance: Agreed Value vs. ACV (2026 Guide)",
+    metaDescription:
+      "Standard ACV insurance can leave classic car owners devastated at total loss. Learn the difference between agreed value, stated value, and ACV policies — and how to protect a collector vehicle's true market value.",
+    published: "2026-02-22",
+    modified: "2026-02-22",
+    category: "valuation",
+    readingTimeMinutes: 12,
+    keywords: [
+      "classic car total loss insurance",
+      "agreed value policy total loss",
+      "stated value vs agreed value insurance",
+      "vintage car total loss claim",
+      "collector car insurance settlement",
+    ],
+    faqs: [
+      {
+        question: "Why is standard ACV insurance wrong for classic cars?",
+        answer:
+          "Standard ACV uses depreciation-based methodology and retail market comparables. Classic and collector vehicles often appreciate in value and trade in specialized collector markets that standard platforms cannot accurately price. An ACV settlement on a classic may be a fraction of actual market value.",
+      },
+      {
+        question: "What is an agreed value policy?",
+        answer:
+          "An agreed value policy sets a specific insured amount at policy inception based on an appraisal. In a total loss, the insurer pays exactly that amount with no depreciation and no ACV calculation. Agreed value is the gold standard for classic and collector vehicles.",
+      },
+      {
+        question: "What is the difference between agreed value and stated value?",
+        answer:
+          "An agreed value policy guarantees the stated amount in a total loss. Most stated value policies pay the lesser of the stated amount or ACV at the time of loss — which may be well below what you stated. Read your policy language carefully.",
+      },
+      {
+        question: "What insurers offer agreed value coverage for classic cars?",
+        answer:
+          "Specialty insurers including Hagerty, Grundy, and American Collectors offer agreed value policies designed for classic and collector vehicles. Some standard carriers also offer classic car divisions. These insurers understand the collector market.",
+      },
+      {
+        question: "What vehicles qualify for classic car insurance?",
+        answer:
+          "Eligibility varies by insurer but typically requires: vehicle age of 15–25+ years, limited use (pleasure/show only, typically under 7,500 miles/year), enclosed storage, and a separate daily driver. Some insurers accept newer limited-production or specialty vehicles.",
+      },
+      {
+        question: "What documentation helps establish a classic car's value?",
+        answer:
+          "A professional appraisal from a recognized classic car appraiser or major auction house is the strongest evidence. Supplement with recent comparable auction results (Mecum, Barrett-Jackson, Bring a Trailer), restoration receipts, and photographs documenting condition.",
+      },
+    ],
+    sources: [
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "How Insurance Companies Value Your Car",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Collector Car Valuation Resources",
+        url: "https://www.hagerty.com/valuation-tools",
+        publisher: "Hagerty",
+      },
+      {
+        title: "Consumer Auto Insurance Information",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "Vehicle History and Value",
+        url: "https://www.kbb.com/what-is-my-car-worth/",
+        publisher: "Kelley Blue Book",
+      },
+    ],
+    component: () => import("./articles/classic-car-total-loss"),
+  },
+
+  /* ---- 22 ---- */
+  {
+    slug: "insurance-adjuster-delay",
+    title: "Insurance Adjuster Delay: Your Rights When the Settlement Process Stalls",
+    metaTitle: "Insurance Adjuster Not Responding? Your Rights and What to Do (2026)",
+    metaDescription:
+      "When your insurance adjuster goes silent or the settlement process stalls, you have specific rights and a clear escalation path. Learn the state deadlines, documentation strategy, and escalation steps that get stalled claims moving.",
+    published: "2026-02-22",
+    modified: "2026-02-22",
+    category: "negotiation",
+    readingTimeMinutes: 11,
+    keywords: [
+      "insurance adjuster delay total loss",
+      "insurance company delaying claim",
+      "adjuster not responding total loss",
+      "how to escalate insurance claim",
+      "insurance claim taking too long",
+    ],
+    faqs: [
+      {
+        question: "How long should a total loss claim take?",
+        answer:
+          "An uncomplicated claim typically resolves in two to four weeks from declaration to check. If your claim is taking significantly longer and your adjuster is not communicating, check whether any state regulatory deadlines have been missed and document every communication attempt in writing.",
+      },
+      {
+        question: "What state deadlines do insurers have to meet?",
+        answer:
+          "Most states require acknowledgment within 10 to 15 days of claim filing, a coverage decision within 15 to 40 days of receiving documentation, and payment within 5 to 30 days of settlement agreement. California CCR §2695 is a well-documented example with specific deadlines. Check your state department's website.",
+      },
+      {
+        question: "What should I do if my adjuster is not responding?",
+        answer:
+          "Switch entirely to email (creates timestamps), request a supervisor's contact information in the same email, and set a specific response deadline. If two written attempts produce no response, escalate to a supervisor. If that fails, file a state insurance complaint.",
+      },
+      {
+        question: "Is a state insurance complaint effective for delays?",
+        answer:
+          "It can be. A complaint requires the insurer to formally respond on record, creates an official regulatory file, and often prompts internal review that restarts stalled claims. It is free and appropriate when state regulatory deadlines have been missed.",
+      },
+      {
+        question: "How does adjuster delay affect my rental car coverage?",
+        answer:
+          "Every extra day the claim is delayed costs you more in rental expenses. If your first-party rental cap runs out due to insurer delay, document the delay in writing and request a coverage extension. Out-of-pocket rental costs caused by insurer delay are a legitimate line item in your settlement demand.",
+      },
+      {
+        question: "What if the insurer delays after I accept the settlement?",
+        answer:
+          "Most states require payment within a specific window after settlement agreement (often 5 to 30 days). If payment is delayed, contact your adjuster in writing citing the state deadline. If no action, a state complaint citing the payment delay is appropriate.",
+      },
+    ],
+    sources: [
+      {
+        title: "File a Complaint Against an Insurance Company",
+        url: "https://content.naic.org/consumer/file-complaint",
+        publisher: "NAIC",
+      },
+      {
+        title: "How to Handle an Insurance Claim Dispute",
+        url: "https://www.iii.org/article/how-to-handle-an-insurance-claim-dispute",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "State Insurance Department Directory",
+        url: "https://content.naic.org/state-insurance-departments",
+        publisher: "NAIC",
+      },
+      {
+        title: "Consumer Rights in Insurance Claims",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+    ],
+    component: () => import("./articles/insurance-adjuster-delay"),
+  },
+
+  /* ---- 23 ---- */
+  {
+    slug: "flood-car-total-loss",
+    title: "Flood-Damaged Car Total Loss: Comprehensive Claims, Hidden Damage, and Buyback Risks",
+    metaTitle: "Flood Damage Total Loss: What Your Comprehensive Claim Covers (2026)",
+    metaDescription:
+      "Flood damage triggers a comprehensive total loss claim. Learn how hidden electrical damage affects settlements, why you should not rush a flood settlement, and why salvage buybacks on flood vehicles carry serious risks.",
+    published: "2026-02-22",
+    modified: "2026-02-22",
+    category: "settlement-basics",
+    readingTimeMinutes: 11,
+    keywords: [
+      "flood damaged car total loss",
+      "flood car insurance claim",
+      "comprehensive claim flood total loss",
+      "water damage car insurance settlement",
+      "flooded car total loss payout",
+    ],
+    faqs: [
+      {
+        question: "Does car insurance cover flood damage?",
+        answer:
+          "Yes, if you have comprehensive coverage. Comprehensive covers flood damage along with other non-collision events. Standard vehicle flood insurance is not available separately — comprehensive auto insurance is the coverage.",
+      },
+      {
+        question: "Why is flood damage harder to assess than collision damage?",
+        answer:
+          "Water damage to electronics, wiring harnesses, and mechanical systems is not always immediately visible. Corrosion develops over days and weeks after exposure. An initial inspection may significantly underestimate repair costs that only become apparent after disassembly.",
+      },
+      {
+        question: "Should I accept a quick settlement on a flood claim?",
+        answer:
+          "No. The biggest risk in flood claims is settling before the full extent of hidden damage is documented. Request confirmation that the vehicle was fully disassembled and inspected before accepting. The initial visible damage is often a fraction of the true repair cost.",
+      },
+      {
+        question: "Is a salvage buyback a good idea after flood damage?",
+        answer:
+          "For most flood totals, particularly those with above-seat waterline, the risks outweigh the benefits. Latent electronic failures can create safety hazards weeks after the vehicle appears functional. Flood-damaged vehicles have limited resale markets and significant disclosure requirements.",
+      },
+      {
+        question: "Does standard NFIP flood insurance cover my car?",
+        answer:
+          "No. NFIP (National Flood Insurance Program) flood insurance covers structures and their contents but not personal vehicles. Vehicle flood coverage is provided through comprehensive auto insurance only.",
+      },
+      {
+        question: "How does waterline height affect the total loss determination?",
+        answer:
+          "Higher waterline means more electrical and mechanical exposure and higher repair costs. Full submersion or dashboard-level water almost always triggers a total loss. Floor-level water in a lower-value vehicle may also total the car because interior replacement plus drying costs are significant.",
+      },
+    ],
+    sources: [
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "Auto Insurance Claims Process",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "NFIP Flood Insurance Information",
+        url: "https://www.floodsmart.gov/",
+        publisher: "FEMA / FloodSmart",
+      },
+      {
+        title: "Consumer Guide to Auto Insurance",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+    ],
+    component: () => import("./articles/flood-car-total-loss"),
+  },
+
+  /* ---- 24 ---- */
+  {
+    slug: "upside-down-car-loan-total-loss",
+    title: "Upside Down on Your Car Loan After a Total Loss: What Happens Next",
+    metaTitle: "Upside Down Car Loan After Total Loss: How It Works and What to Do (2026)",
+    metaDescription:
+      "Owe more than your car is worth? Learn exactly how total loss settlements are distributed when you're upside down, how GAP insurance works, and what your options are without it.",
+    published: "2026-02-22",
+    modified: "2026-02-22",
+    category: "settlement-basics",
+    readingTimeMinutes: 11,
+    keywords: [
+      "upside down car loan total loss",
+      "owe more than car worth total loss",
+      "negative equity total loss insurance",
+      "car loan total loss deficiency",
+      "total loss loan balance",
+    ],
+    faqs: [
+      {
+        question: "What happens if I owe more than my car is worth when it's totaled?",
+        answer:
+          "Your insurer pays your lender the vehicle's ACV (minus your deductible). If the ACV is less than your loan balance, you still owe your lender the difference. Unless you have GAP insurance, this deficiency is your responsibility.",
+      },
+      {
+        question: "How does GAP insurance help when I'm upside down?",
+        answer:
+          "GAP insurance covers the difference between your ACV settlement and your outstanding loan or lease balance. Your primary insurer pays the lender the ACV; GAP pays the remaining deficiency. Your loan is satisfied.",
+      },
+      {
+        question: "Does GAP insurance cover my deductible?",
+        answer:
+          "Standard GAP insurance does not cover your deductible. Some premium products cover up to $1,000 of it. Check your specific GAP policy language.",
+      },
+      {
+        question: "What if I don't have GAP insurance and I'm upside down?",
+        answer:
+          "Negotiate your ACV as high as possible to reduce the deficiency. Verify your loan balance and check for refundable products financed into the loan. Contact your lender proactively to arrange a payment plan on the deficiency before it goes to collections.",
+      },
+      {
+        question: "Should I still negotiate my ACV if I'm upside down?",
+        answer:
+          "Absolutely. Every dollar added to your ACV through negotiation reduces the deficiency you owe. The average initial offer is $2,800 to $4,200 below fair market value — correcting that shortfall directly reduces your out-of-pocket obligation.",
+      },
+      {
+        question: "What is the difference between dealer GAP and policy loan/lease payoff coverage?",
+        answer:
+          "Dealer/standalone GAP often covers larger gaps (25%–150% of ACV or more). Policy add-on loan/lease payoff coverage is cheaper but typically caps coverage at 25% of ACV, which may not cover large negative equity gaps.",
+      },
+    ],
+    sources: [
+      {
+        title: "What Is GAP Insurance?",
+        url: "https://www.consumerfinance.gov/ask-cfpb/what-is-gap-insurance-en-2051/",
+        publisher: "Consumer Financial Protection Bureau (CFPB)",
+      },
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+      {
+        title: "Auto Insurance Claims Process",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Vehicle Depreciation Data",
+        url: "https://www.kbb.com/car-advice/vehicle-depreciation/",
+        publisher: "Kelley Blue Book",
+      },
+      {
+        title: "Consumer Financial Protection Information",
+        url: "https://www.consumerfinance.gov/",
+        publisher: "Consumer Financial Protection Bureau (CFPB)",
+      },
+    ],
+    component: () => import("./articles/upside-down-car-loan-total-loss"),
+  },
+
+  /* ---- 25 ---- */
+  {
+    slug: "comparable-vehicles-total-loss",
+    title: "How to Find Your Own Comparable Vehicles to Dispute a Total Loss Offer",
+    metaTitle: "Finding Comparable Vehicles for a Total Loss Dispute (2026 Guide)",
+    metaDescription:
+      "The insurer's comparables drive your settlement. Learn how to find better-matched vehicles on Cars.com, AutoTrader, and CarGurus, document them correctly, and submit them in a winning counter-offer.",
+    published: "2026-02-22",
+    modified: "2026-02-22",
+    category: "valuation",
+    readingTimeMinutes: 12,
+    keywords: [
+      "comparable vehicles total loss",
+      "how to find comparable cars insurance claim",
+      "dispute comparable vehicles total loss",
+      "find comparables for insurance settlement",
+      "comparable cars ACV dispute",
+    ],
+    faqs: [
+      {
+        question: "Why do comparable vehicles matter in a total loss?",
+        answer:
+          "Your insurer's valuation report is built on comparable vehicle listings. When those comparables have the wrong trim level, too-high mileage, or are from a different geographic market, your ACV is understated. Providing corrected comparables is the most direct way to dispute a low offer.",
+      },
+      {
+        question: "Where should I look for comparable vehicles?",
+        answer:
+          "Cars.com, AutoTrader, CarGurus, Carvana, and CarMax are the primary sources. For classic vehicles, Bring a Trailer, Hemmings, and Mecum/Barrett-Jackson auction results provide collector market data.",
+      },
+      {
+        question: "What makes a comparable vehicle accurate?",
+        answer:
+          "An accurate comparable matches your vehicle's year, make, model, trim level, drivetrain, and major options. It should be within 10,000–15,000 miles of your vehicle's mileage, within 50–100 miles geographically, and from a current listing (within the past 30 days).",
+      },
+      {
+        question: "How many comparables do I need for a counter-offer?",
+        answer:
+          "Three to five well-matched comparables are typically sufficient. Quality beats quantity. A small set of highly accurate comparables is more persuasive than a large collection of loosely matched listings.",
+      },
+      {
+        question: "Will the insurer adjust my comparables?",
+        answer:
+          "Yes. Adjustments will be applied for mileage differences, option differences, and geographic variations. Understanding that adjustments will occur helps you present comparables that support your case even after adjustments are applied.",
+      },
+      {
+        question: "Can I submit comparables from private sellers?",
+        answer:
+          "Yes, but dealer listings are generally more credible because they are professionally priced and verifiable. A mix of dealer and private seller listings is acceptable; note the source type for each comparable.",
+      },
+    ],
+    sources: [
+      {
+        title: "How Insurance Companies Value Your Car",
+        url: "https://www.iii.org/article/how-to-file-a-motor-vehicle-insurance-claim",
+        publisher: "Insurance Information Institute (III)",
+      },
+      {
+        title: "Understanding Vehicle Valuation",
+        url: "https://www.kbb.com/what-is-my-car-worth/",
+        publisher: "Kelley Blue Book",
+      },
+      {
+        title: "NADA Used Car Guide",
+        url: "https://www.nadaguides.com/",
+        publisher: "J.D. Power / NADA",
+      },
+      {
+        title: "Consumer Auto Insurance Guide",
+        url: "https://www.usa.gov/car-insurance",
+        publisher: "USA.gov",
+      },
+      {
+        title: "Understanding Your Auto Insurance Policy",
+        url: "https://content.naic.org/consumer/understanding-your-auto-insurance-policy",
+        publisher: "NAIC",
+      },
+    ],
+    component: () => import("./articles/comparable-vehicles-total-loss"),
+  },
 ];
 
 /* ------------------------------------------------------------------ */
