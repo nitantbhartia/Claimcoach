@@ -221,6 +221,33 @@ export default function InsuranceAdjusterDelay() {
         anywhere (cloud storage or email archive).
       </p>
 
+      <p>
+        A useful template for written follow-ups: address the email to the
+        adjuster by name and include the claim number in the subject line.
+        State specifically what is pending (the valuation report, a response
+        to your counter-offer, a payment authorization). Note the date you
+        last received any substantive communication. Set an explicit response
+        deadline &mdash; &quot;I request a written response by [date, 3 to 5
+        business days out]&quot; &mdash; and state that if no response is
+        received by that date, you will contact their supervisor and file a
+        complaint with your state department of insurance. Keep the tone
+        professional and factual. This framing creates a documented record
+        of a reasonable deadline and a clear escalation plan if ignored.
+      </p>
+
+      <p>
+        <strong>When your adjuster changes mid-claim:</strong> Adjuster
+        reassignments happen frequently on longer claims. When you learn of a
+        handoff, email the new adjuster on the same day with a one-page summary:
+        your claim number, a status overview of where the claim stands, a list
+        of any outstanding items (pending documents, an unacknowledged
+        counter-offer, open rental authorizations, a payoff figure awaiting
+        confirmation), and attachments of your key prior communications. Do
+        not assume the new adjuster has reviewed your full file. This summary
+        prevents the &quot;starting over&quot; dynamic that delays resolution
+        and documents that all prior work was communicated.
+      </p>
+
       <h2 id="escalation-path">
         The Escalation Path: Adjuster to Supervisor to Complaint
       </h2>
@@ -265,6 +292,17 @@ export default function InsuranceAdjusterDelay() {
         </Link>{" "}
         forces the process into a structured independent timeline that the
         insurer cannot simply ignore.
+      </p>
+
+      <p>
+        <strong>Statute of limitations:</strong> In most states, the deadline
+        to file a breach of contract lawsuit against your insurer is one to
+        three years from the date of loss (some policies shorten this with
+        a contractual suit limitation clause). Extreme, insurer-caused delays
+        that approach this window without resolution can permanently close
+        your legal options. If your claim has been actively unresolved for
+        more than nine months, consult an attorney to confirm your
+        state&apos;s specific deadline before it passes.
       </p>
 
       <h2 id="delay-and-rental-car">

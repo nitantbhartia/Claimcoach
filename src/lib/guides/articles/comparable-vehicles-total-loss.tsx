@@ -198,6 +198,33 @@ export default function ComparableVehiclesTotalLoss() {
       </p>
 
       <p>
+        Be aware of seasonal price variation. Vehicle prices fluctuate
+        predictably by season: convertibles and sports cars are priced higher
+        in spring and summer; trucks, SUVs, and 4WD vehicles typically see
+        stronger pricing in fall and winter. If your claim occurs during a
+        low-demand season for your vehicle type, current listings may
+        understate the typical market price. If this applies to your vehicle,
+        note the seasonal context in your counter-offer and reference
+        asking-price data from the higher-demand season as supporting evidence.
+      </p>
+
+      <p>
+        If your vehicle is rare enough that no comparables exist in any
+        reasonable geographic area &mdash; a limited-production trim, a
+        heavily optioned configuration with very few examples sold, or a
+        vehicle with specialized equipment &mdash; shift your evidence
+        strategy. Auction results from platforms like Bring a Trailer, Mecum,
+        and Barrett-Jackson document actual transaction prices for low-volume
+        vehicles even when retail listings are absent. A professional appraisal
+        becomes especially important in this scenario, and invoking the{" "}
+        <Link href="/guides/appraisal-clause-insurance" className="text-coral hover:underline">
+          appraisal clause
+        </Link>{" "}
+        may be the most direct path to a fair valuation when your insurer&apos;s
+        platform cannot produce accurate comparables from available market data.
+      </p>
+
+      <p>
         Take screenshots of each listing with the price, mileage, location,
         and features visible in the screenshot. Include the listing URL.
         Listings disappear, and a URL that no longer works is not useful

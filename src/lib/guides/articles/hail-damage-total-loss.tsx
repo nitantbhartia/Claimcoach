@@ -287,9 +287,27 @@ export default function HailDamageTotalLoss() {
         loss. If your vehicle was in excellent pre-hail condition
         &mdash; low mileage, full service history, no prior damage &mdash;
         and the report rates it average or below, dispute the condition
-        rating with maintenance records and pre-loss photos. Your vehicle&apos;s
-        pre-hail condition is what determines ACV; the hail damage itself
-        does not reduce the ACV &mdash; it is what is being replaced.
+        rating with documentation. Useful evidence includes: maintenance
+        records showing oil changes and scheduled services; a CarFax or
+        AutoCheck report showing no prior accidents and clean title history;
+        photographs of the exterior and interior taken within the past year
+        before the hail event; and dealer or dealership service records.
+        Your vehicle&apos;s pre-hail condition is what determines ACV;
+        the hail damage itself is what is being compensated &mdash; it does
+        not retroactively reduce the value of what you had before the storm.
+      </p>
+
+      <p>
+        If your vehicle is being repaired rather than settled, watch for
+        the supplement claim process. When a shop tears down a hail-damaged
+        vehicle, they routinely discover additional damage not visible in
+        the initial assessment &mdash; compressed weatherstripping, bent
+        door frames, damaged roof seals, or interior headliner damage from
+        severe impacts. The shop submits a supplement to your insurer for
+        the additional cost. Request a copy of any supplements and confirm
+        they are approved before you authorize repair completion. An
+        incomplete or underpaid supplement is one of the most common reasons
+        hail repairs are not fully resolved on the first attempt.
       </p>
 
       <h2 id="check-your-offer">Check Your Offer Before Accepting</h2>

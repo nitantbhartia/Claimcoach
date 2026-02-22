@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FairnessQuiz } from "@/components/tools/fairness-quiz";
 import { KeyTakeaway } from "@/components/guides/key-takeaway";
 import { CTABox } from "@/components/guides/cta-box";
 import { DataTable } from "@/components/guides/data-table";
@@ -12,6 +13,7 @@ export const headings = [
   { id: "no-gap-options", text: "What to Do If You Don't Have GAP Insurance", level: 2 },
   { id: "why-negotiate-acv-matters", text: "Why Negotiating Your ACV Matters Even More When Upside Down", level: 2 },
   { id: "prevent-negative-equity", text: "Preventing Negative Equity on Your Next Vehicle", level: 2 },
+  { id: "check-your-offer", text: "Check Your Offer Before You Sign", level: 2 },
   { id: "the-bottom-line", text: "The Bottom Line", level: 2 },
   { id: "related-guides", text: "Related Guides", level: 2 },
 ];
@@ -144,6 +146,19 @@ export default function UpsideDownCarLoanTotalLoss() {
         your outstanding loan or lease balance, GAP insurance covers the
         difference. The insurer pays the lender the ACV; GAP pays the lender
         the remaining deficiency. Your loan obligation is satisfied.
+      </p>
+
+      <p>
+        One significant limitation to understand: some GAP policies cap their
+        coverage at a percentage of ACV (commonly 25%). In high-depreciation
+        scenarios, this cap can leave a meaningful uncovered balance. For
+        example: if your ACV is $17,000, your deductible is $1,000, and your
+        loan balance is $32,000, your insurer pays $16,000 to your lender. If
+        your GAP policy caps at 25% of ACV, it covers a maximum of $4,250
+        &mdash; leaving you responsible for the remaining $11,750. Read your
+        specific GAP policy to understand whether a percentage cap applies
+        and, if so, whether it would fully cover your maximum expected gap
+        given your loan balance and vehicle value.
       </p>
 
       <p>
@@ -298,6 +313,17 @@ export default function UpsideDownCarLoanTotalLoss() {
         href="/claims/new"
         label="Review my settlement offer"
       />
+
+      <h2 id="check-your-offer">Check Your Offer Before You Sign</h2>
+
+      <p>
+        Even when your focus is on minimizing the deficiency you owe, verify
+        your ACV offer before accepting. Every dollar added to your ACV
+        directly reduces what you owe your lender. Take two minutes to
+        score your offer for missing line items and valuation errors:
+      </p>
+
+      <FairnessQuiz mode="mini" />
 
       <h2 id="the-bottom-line">The Bottom Line</h2>
 
