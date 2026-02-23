@@ -1276,7 +1276,7 @@ const GUIDES: GuideRegistryEntry[] = [
     metaDescription:
       "Did your totaled car have aftermarket wheels, a lift kit, or a custom audio system? Learn what factory options are covered automatically, what aftermarket upgrades require documentation, and how to negotiate recovery.",
     published: "2026-02-22",
-    modified: "2026-02-22",
+    modified: "2026-02-23",
     category: "valuation",
     readingTimeMinutes: 11,
     keywords: [
@@ -1351,7 +1351,7 @@ const GUIDES: GuideRegistryEntry[] = [
     metaDescription:
       "Your deductible applies to first-party total loss claims but not to third-party claims. Learn when your deductible applies, how it affects your settlement math, and how to recover it when the accident wasn't your fault.",
     published: "2026-02-22",
-    modified: "2026-02-22",
+    modified: "2026-02-23",
     category: "settlement-basics",
     readingTimeMinutes: 10,
     keywords: [
@@ -1426,7 +1426,7 @@ const GUIDES: GuideRegistryEntry[] = [
     metaDescription:
       "A low offer is not bad faith. Learn what actually qualifies as insurance bad faith, how to document it, and when to consult an attorney — after exhausting the standard escalation path.",
     published: "2026-02-22",
-    modified: "2026-02-22",
+    modified: "2026-02-23",
     category: "negotiation",
     readingTimeMinutes: 12,
     keywords: [
@@ -1506,7 +1506,7 @@ const GUIDES: GuideRegistryEntry[] = [
     metaDescription:
       "Hail can total a perfectly driveable car. Learn how hail total losses are assessed, why the driveable total loss is frustrating but fixable, and when a salvage buyback makes sense for hail damage.",
     published: "2026-02-22",
-    modified: "2026-02-22",
+    modified: "2026-02-23",
     category: "settlement-basics",
     readingTimeMinutes: 11,
     keywords: [
@@ -1581,7 +1581,7 @@ const GUIDES: GuideRegistryEntry[] = [
     metaDescription:
       "When the accident was your fault, collision coverage pays your total loss settlement. Learn how deductibles, rental coverage, and ACV negotiation work differently — and what you can still recover.",
     published: "2026-02-22",
-    modified: "2026-02-22",
+    modified: "2026-02-23",
     category: "settlement-basics",
     readingTimeMinutes: 10,
     keywords: [
@@ -1656,7 +1656,7 @@ const GUIDES: GuideRegistryEntry[] = [
     metaDescription:
       "Standard ACV insurance can leave classic car owners devastated at total loss. Learn the difference between agreed value, stated value, and ACV policies — and how to protect a collector vehicle's true market value.",
     published: "2026-02-22",
-    modified: "2026-02-22",
+    modified: "2026-02-23",
     category: "valuation",
     readingTimeMinutes: 12,
     keywords: [
@@ -1736,7 +1736,7 @@ const GUIDES: GuideRegistryEntry[] = [
     metaDescription:
       "When your insurance adjuster goes silent or the settlement process stalls, you have specific rights and a clear escalation path. Learn the state deadlines, documentation strategy, and escalation steps that get stalled claims moving.",
     published: "2026-02-22",
-    modified: "2026-02-22",
+    modified: "2026-02-23",
     category: "negotiation",
     readingTimeMinutes: 11,
     keywords: [
@@ -1816,7 +1816,7 @@ const GUIDES: GuideRegistryEntry[] = [
     metaDescription:
       "Flood damage triggers a comprehensive total loss claim. Learn how hidden electrical damage affects settlements, why you should not rush a flood settlement, and why salvage buybacks on flood vehicles carry serious risks.",
     published: "2026-02-22",
-    modified: "2026-02-22",
+    modified: "2026-02-23",
     category: "settlement-basics",
     readingTimeMinutes: 11,
     keywords: [
@@ -1891,7 +1891,7 @@ const GUIDES: GuideRegistryEntry[] = [
     metaDescription:
       "Owe more than your car is worth? Learn exactly how total loss settlements are distributed when you're upside down, how GAP insurance works, and what your options are without it.",
     published: "2026-02-22",
-    modified: "2026-02-22",
+    modified: "2026-02-23",
     category: "settlement-basics",
     readingTimeMinutes: 11,
     keywords: [
@@ -1971,7 +1971,7 @@ const GUIDES: GuideRegistryEntry[] = [
     metaDescription:
       "The insurer's comparables drive your settlement. Learn how to find better-matched vehicles on Cars.com, AutoTrader, and CarGurus, document them correctly, and submit them in a winning counter-offer.",
     published: "2026-02-22",
-    modified: "2026-02-22",
+    modified: "2026-02-23",
     category: "valuation",
     readingTimeMinutes: 12,
     keywords: [

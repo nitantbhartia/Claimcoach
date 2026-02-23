@@ -89,6 +89,16 @@ export default function ClassicCarTotalLoss() {
       </p>
 
       <p>
+        One important caution: do not understate your agreed value to reduce
+        your premium. If your vehicle is worth $85,000 in the collector market
+        but you insure it for $60,000 to save on cost, you receive only $60,000
+        at total loss &mdash; a $25,000 gap created by your own policy election.
+        Keep your agreed value current and accurate, and reappraise whenever
+        you complete significant restoration work or when the collector market
+        for your specific model shifts materially.
+      </p>
+
+      <p>
         Agreed value policies are the gold standard for classic and collector
         vehicles. They require an upfront appraisal (from a recognized classic
         car appraiser or major auction house) and periodic reappraisal as your
@@ -273,6 +283,21 @@ export default function ClassicCarTotalLoss() {
       </h2>
 
       <p>
+        If you are reading this in the middle of an active claim and have not
+        yet signed any release: do not sign anything until you have established
+        value. Take these steps immediately &mdash; ideally within the first
+        week of the claim: request the full valuation report in writing; contact
+        a collector car appraiser (Hagerty Valuation Tools offers an online
+        reference; a certified appraiser from a recognized auction house or
+        classic car club is stronger for dispute purposes) and get a written
+        opinion of market value; and confirm you have not been asked to sign
+        a release before receiving the report. Your insurer cannot require you
+        to sign before providing the valuation document. Time matters: some
+        states have relatively short windows for invoking appraisal rights, so
+        starting the documentation process immediately is critical.
+      </p>
+
+      <p>
         If you have an agreed value policy and your vehicle is declared a
         total loss, the process is straightforward: verify the insurer is
         paying the agreed amount, confirm no improper deductions, and complete
@@ -289,6 +314,21 @@ export default function ClassicCarTotalLoss() {
         written counter-offer. The key is providing collector-market evidence,
         not standard retail listings &mdash; a 1969 Camaro does not trade on
         Cars.com.
+      </p>
+
+      <p>
+        If your classic is repaired rather than totaled, collector market value
+        after a known accident is permanently reduced &mdash; even with a
+        perfect restoration-quality repair. A vehicle with documented accident
+        and repair history trades for less than an equivalent vehicle with a
+        clean history, and the discount in the collector market can be
+        significant on desirable models. Request a diminished value assessment
+        from a collector car appraiser after the repair is complete and include
+        a diminished value claim as part of your settlement. First-party
+        diminished value claims are recognized under some state laws (Georgia
+        is a well-established example) but not universally &mdash; consult an
+        attorney familiar with your state&apos;s insurance law to assess your
+        specific situation.
       </p>
 
       <h2 id="appraisal-clause-classic">

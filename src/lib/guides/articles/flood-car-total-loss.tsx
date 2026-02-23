@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FairnessQuiz } from "@/components/tools/fairness-quiz";
 import { KeyTakeaway } from "@/components/guides/key-takeaway";
 import { CTABox } from "@/components/guides/cta-box";
 import { DataTable } from "@/components/guides/data-table";
@@ -12,6 +13,7 @@ export const headings = [
   { id: "salvage-buyback-flood-warning", text: "Salvage Buyback After Flood: Proceed With Caution", level: 2 },
   { id: "documenting-flood-claim", text: "Documenting Your Flood Damage Claim", level: 2 },
   { id: "negotiating-flood-acv", text: "Negotiating Your ACV After a Flood Total Loss", level: 2 },
+  { id: "check-your-flood-offer", text: "Check Your Settlement Offer", level: 2 },
   { id: "the-bottom-line", text: "The Bottom Line", level: 2 },
   { id: "related-guides", text: "Related Guides", level: 2 },
 ];
@@ -287,6 +289,43 @@ export default function FloodCarTotalLoss() {
         rather than the pre-loss condition, dispute it with maintenance records
         and pre-loss photographs.
       </p>
+
+      <p>
+        <strong>If your vehicle was towed without your authorization:</strong>{" "}
+        After major flooding, municipalities and property owners sometimes have
+        vehicles towed to commercial storage lots without owner consent.
+        Storage fees at these facilities can reach $50 to $150 per day. Contact
+        your insurer the same day you learn of the unauthorized tow and ask
+        them to take title responsibility for the vehicle from the lot directly.
+        Most insurers will coordinate with the storage facility to cap fees and
+        arrange inspection once they take ownership of the total loss vehicle.
+        If fees accumulate before the insurer steps in, recovering those costs
+        becomes contested. Act quickly.
+      </p>
+
+      <p>
+        If your vehicle is repaired rather than totaled, be aware that flood
+        history permanently affects its resale value. Vehicle history reports
+        (Carfax, AutoCheck) will flag the flood event, and both private buyers
+        and dealers discount flood-history vehicles significantly even after a
+        complete repair. Consider requesting a diminished value assessment from
+        an independent appraiser after the repair is complete and including a
+        diminished value claim in your settlement. First-party diminished value
+        claims are recognized in some states but not all &mdash; consult an
+        attorney familiar with your state&apos;s insurance law.
+      </p>
+
+      <h2 id="check-your-flood-offer">Check Your Settlement Offer</h2>
+
+      <p>
+        Before accepting any flood total loss settlement, verify the offer
+        includes all required line items: sales tax on replacement, title fees,
+        and registration prorations as required by your state. Flood claims
+        are subject to the same line-item requirements as any other total
+        loss. Score your offer before you sign:
+      </p>
+
+      <FairnessQuiz mode="mini" />
 
       <CTABox
         heading="Do not accept a flood settlement before verifying your ACV"

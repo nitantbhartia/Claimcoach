@@ -112,6 +112,16 @@ export default function TotalLossDeductible() {
       </p>
 
       <p>
+        When your equity position is thin, the deductible compounds the
+        problem. If your ACV is $12,000, your deductible is $1,000, and
+        your loan balance is $12,500, your insurer pays $11,000 to your
+        lender and you still owe $1,500 &mdash; in addition to losing the
+        vehicle. This is why negotiating your ACV upward is especially
+        important when your loan payoff is close to or above your vehicle&apos;s
+        value.
+      </p>
+
+      <p>
         This math makes negotiating your ACV particularly important when you
         are carrying a meaningful deductible. Every dollar added to your ACV
         in negotiation &mdash; by correcting comparable errors, fixing trim
@@ -154,6 +164,17 @@ export default function TotalLossDeductible() {
           ],
         ]}
       />
+
+      <p>
+        For UM/UIM property damage claims specifically: if an uninsured driver
+        hits your car and you file under your own UM/UIM property damage
+        coverage, your policy may carry a separate UMPD deductible (often $200
+        to $300). Some states require that UMPD have no deductible when the
+        at-fault driver is identified but uninsured &mdash; the logic being
+        that you should not pay a deductible for someone else&apos;s fault.
+        Check your policy declarations page and your state&apos;s UMPD rules,
+        since requirements vary significantly by state.
+      </p>
 
       <h2 id="recovering-your-deductible">
         Recovering Your Deductible From the At-Fault Driver

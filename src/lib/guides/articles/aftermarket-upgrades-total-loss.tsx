@@ -267,6 +267,20 @@ export default function AftermarketUpgradesTotalLoss() {
       </h2>
 
       <p>
+        To illustrate how this works in practice: suppose you had a $3,400
+        suspension lift kit professionally installed on your pickup truck 14
+        months before the accident, with a full invoice from a certified 4x4
+        shop. Your insurer&apos;s valuation report makes no mention of the lift
+        kit. You then find three comparable trucks on AutoTrader listing the
+        same year, make, and model with a similar lift kit, each priced $2,500
+        to $3,000 above stock examples. With that documentation, you submit a
+        written request for a depreciated credit of $2,200 &mdash; a defensible
+        ask given 14 months of depreciation on a $3,400 item. Without the
+        invoice and those market listings, the same request is a verbal
+        assertion your adjuster has no obligation to honor.
+      </p>
+
+      <p>
         <strong>Step 1: Review your valuation report for trim errors first.</strong>{" "}
         Before arguing about aftermarket equipment, confirm the report has the
         right trim level and all factory options correctly listed. Trim-level
@@ -298,12 +312,18 @@ export default function AftermarketUpgradesTotalLoss() {
       </p>
 
       <p>
-        <strong>Step 5: Accept partial recovery as a reasonable outcome.</strong>{" "}
-        Full recovery of aftermarket equipment costs is rare in the absence of
-        a custom equipment endorsement. A partial credit &mdash; particularly
-        for high-value items with solid documentation &mdash; is a common and
-        reasonable outcome. The goal is to recover something you would otherwise
-        receive nothing for.
+        <strong>Step 5: If refused, escalate and document your next step.</strong>{" "}
+        If your adjuster declines any credit despite documented receipts and
+        market evidence, request the denial in writing and ask for a supervisor
+        review. If the upgrade amount is significant &mdash; typically $1,000
+        or more &mdash; invoking your policy&apos;s{" "}
+        <Link href="/guides/appraisal-clause-insurance" className="text-coral hover:underline">
+          appraisal clause
+        </Link>{" "}
+        forces a binding independent valuation that accounts for all equipment.
+        For smaller amounts, a partial negotiated credit remains the practical
+        ceiling when no custom equipment endorsement exists: the goal is to
+        recover something you would otherwise receive nothing for.
       </p>
 
       <p>

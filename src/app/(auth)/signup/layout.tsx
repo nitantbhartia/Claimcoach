@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description:
     "Create your free ClaimCoach account. Get AI-powered insurance claim analysis, fair value estimates, and professional counter-offer generation.",
   alternates: { canonical: "/signup" },
+  robots: { index: false },
   openGraph: {
     title: "Sign Up for ClaimCoach",
     description:

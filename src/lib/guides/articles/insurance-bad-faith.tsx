@@ -68,6 +68,19 @@ export default function InsuranceBadFaith() {
         a higher evidentiary bar to prove.
       </p>
 
+      <p>
+        To illustrate what extracontractual damages look like in practice: if
+        a court finds your insurer acted in bad faith by refusing to pay a
+        legitimate $18,000 total loss claim for eight months, a judgment might
+        award the $18,000 policy benefit plus consequential damages (storage
+        fees, rental car costs, lost income if the vehicle was a work vehicle),
+        emotional distress damages, and &mdash; in egregious cases &mdash;
+        punitive damages. The total judgment can reach several multiples of
+        the original claim value. This potential outcome is why bad faith
+        litigation is taken seriously by insurers and why the evidentiary bar
+        to prove it is intentionally high.
+      </p>
+
       <h2 id="dispute-vs-bad-faith">
         Coverage Dispute vs. Bad Faith: The Critical Difference
       </h2>
@@ -278,6 +291,19 @@ export default function InsuranceBadFaith() {
         that no legitimate methodology could produce it.
       </p>
 
+      <p>
+        To find a bad faith attorney: your state bar association&apos;s
+        attorney referral service is the most reliable starting point for
+        licensed, vetted attorneys in your jurisdiction. Most bad faith
+        attorneys handle total loss cases on contingency &mdash; meaning they
+        receive a percentage of any recovery (typically 25% to 40%) with no
+        upfront fee from you. This aligns the attorney&apos;s incentive with
+        yours: they only get paid if you win. Search specifically for attorneys
+        who list insurance bad faith, insurance coverage disputes, or
+        first-party insurance litigation as practice areas, rather than
+        general personal injury practitioners.
+      </p>
+
       <h2 id="state-specific-standards">
         Bad Faith Standards Vary Significantly by State
       </h2>
@@ -311,6 +337,18 @@ export default function InsuranceBadFaith() {
           ],
         ]}
       />
+
+      <p>
+        The Florida requirement deserves specific attention: before filing a
+        civil bad faith lawsuit in Florida, the insured must give the insurer
+        written notice of the alleged violation through a Civil Remedy Notice
+        (CRN), filed with the Florida Department of Financial Services. The
+        insurer then has 60 days to cure the violation. If the insurer cures
+        within that window, the lawsuit cannot proceed. If they do not cure,
+        the insured may file suit. This pre-suit CRN requirement is
+        procedurally mandatory and must be completed before any bad faith
+        litigation begins in Florida.
+      </p>
 
       <p>
         Because bad faith law is so state-specific, the threshold for what

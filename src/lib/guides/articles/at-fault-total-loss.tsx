@@ -65,6 +65,18 @@ export default function AtFaultTotalLoss() {
       </p>
 
       <p>
+        One nuance worth knowing: in states with comparative negligence laws,
+        if you were only partially at fault &mdash; for example, 30% responsible
+        to the other driver&apos;s 70% &mdash; you may still have a valid
+        third-party claim against the other driver&apos;s insurer for their
+        share of your vehicle damages. However, the practical approach for
+        your own vehicle is almost always to file under your own collision
+        coverage first, then let your insurer&apos;s subrogation team pursue
+        proportional recovery from the other insurer. Your insurer handles
+        the proportional split automatically if they determine shared fault.
+      </p>
+
+      <p>
         If you do not carry collision coverage &mdash; common on older, lower-value
         vehicles &mdash; your insurer owes you nothing for your own vehicle
         when the accident was your fault. Liability coverage only pays for the
@@ -233,6 +245,19 @@ export default function AtFaultTotalLoss() {
         The other driver&apos;s claim against your insurer is handled separately
         from your own vehicle claim. Your adjuster manages both, but they
         are distinct processes with distinct limits.
+      </p>
+
+      <p>
+        If the other driver&apos;s vehicle ACV exceeds your property damage
+        liability limit, you may be personally responsible for the excess
+        unless you carry umbrella coverage. For example, if you cause $85,000
+        in damage to a newer vehicle but your policy only provides $50,000 in
+        property damage liability, the other driver could pursue you personally
+        for the remaining $35,000. An umbrella policy &mdash; which typically
+        provides $1 million in additional liability for roughly $150 to $300
+        per year &mdash; covers this gap and is worth considering if your
+        current property damage liability limit is at or near state minimums.
+        State minimums are often set far below the value of vehicles on the road today.
       </p>
 
       <h2 id="premium-impact">
